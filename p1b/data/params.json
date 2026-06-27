@@ -7,6 +7,7 @@
   "V_STALL": 14.0,
   "V_MAX": 60.0,
   "T_MAX": 25.0,
+  "TAU_GAMMA": 5.0,
   "Z_LAUNCH": 0.0,
   "H_LAUNCH": 0.0,
   "Z_GOAL": 2500.0,
