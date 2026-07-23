@@ -290,14 +290,19 @@ def _bellman_response_arrays(bundle: dict[str, Any]) -> dict[str, np.ndarray]:
 
 
 def _stackelberg_arrays(bundle: dict[str, Any]) -> dict[str, np.ndarray]:
+    """Build export arrays that work for any injected `DefenderOptimizer`.
+
+    Only `outer_evaluation_summaries` is guaranteed by the `DefenderOptimizer`
+    protocol; `coarse_sweep_results`/`brent_optimization_history` are
+    `hierarchical_coarse_to_fine_optimizer`-specific extras included only
+    when present, so this does not break for e.g. `direct_global_optimizer`.
+    """
     result = bundle["primary_result"]
     solution = result["final_stackelberg_solution"]
     visual = solution["visualization_payload"]
     summaries = result["outer_evaluation_summaries"]
     optimizer = result["outer_optimizer_result"]
-    coarse = optimizer["coarse_sweep_results"]
-    history = optimizer["brent_optimization_history"]
-    return {
+    arrays = {
         "optimal_trajectory": solution["optimal_glide_trajectory"],
         "optimal_powered_path": solution["optimal_attacker_strategy"]["powered_path"],
         "optimal_switching_point": solution["optimal_switching_point"],
@@ -325,15 +330,24 @@ def _stackelberg_arrays(bundle: dict[str, Any]) -> dict[str, np.ndarray]:
         "outer_mission_pod": np.asarray([item["mission_pod"] for item in summaries]),
         "outer_defender_pod_normalized": np.asarray([item["defender_pod_normalized"] for item in summaries]),
         "outer_coverage_normalized": np.asarray([item["coverage_area_normalized"] for item in summaries]),
-        "coarse_z_sensor": np.asarray([item["z_sensor"] for item in coarse]),
-        "coarse_defender_objective": np.asarray([item["defender_objective"] for item in coarse]),
-        "coarse_coverage_area": np.asarray([item["coverage_area"] for item in coarse]),
-        "coarse_mission_pod": np.asarray([item["mission_pod"] for item in coarse]),
-        "brent_z_sensor": np.asarray([item["z_sensor"] for item in history]),
-        "brent_defender_objective": np.asarray([item["defender_objective"] for item in history]),
-        "brent_coverage_area": np.asarray([item["coverage_area"] for item in history]),
-        "brent_mission_pod": np.asarray([item["mission_pod"] for item in history]),
     }
+    if "coarse_sweep_results" in optimizer:
+        coarse = optimizer["coarse_sweep_results"]
+        arrays.update({
+            "coarse_z_sensor": np.asarray([item["z_sensor"] for item in coarse]),
+            "coarse_defender_objective": np.asarray([item["defender_objective"] for item in coarse]),
+            "coarse_coverage_area": np.asarray([item["coverage_area"] for item in coarse]),
+            "coarse_mission_pod": np.asarray([item["mission_pod"] for item in coarse]),
+        })
+    if "brent_optimization_history" in optimizer:
+        history = optimizer["brent_optimization_history"]
+        arrays.update({
+            "brent_z_sensor": np.asarray([item["z_sensor"] for item in history]),
+            "brent_defender_objective": np.asarray([item["defender_objective"] for item in history]),
+            "brent_coverage_area": np.asarray([item["coverage_area"] for item in history]),
+            "brent_mission_pod": np.asarray([item["mission_pod"] for item in history]),
+        })
+    return arrays
 
 
 def _configuration_snapshot(bundle: dict[str, Any]) -> dict[str, Any]:

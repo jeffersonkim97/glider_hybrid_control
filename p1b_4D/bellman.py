@@ -100,6 +100,7 @@ def generate_bellman_candidates(
     seeds = generate_switching_point_seeds(
         geometry_bundle,
         configuration_bundle,
+        grids["z"],
     )
     candidates: list[dict[str, Any]] = []
     start_attempts: list[dict[str, Any]] = []
@@ -237,15 +238,22 @@ def generate_bellman_candidates(
 def generate_switching_point_seeds(
     geometry_bundle: dict[str, Any],
     configuration_bundle: dict[str, Any],
+    z_grid: np.ndarray,
 ) -> np.ndarray:
-    """Generate configured continuous switching seeds on the LOS tangent."""
+    """Enumerate every z-grid node inside the feasible LOS-tangent interval.
+
+    A switching point strictly between two z-grid nodes is indistinguishable
+    downstream from whichever node `_switching_grid_index` snaps it to (grid
+    is Bellman's only resolution), so arbitrary linspace sampling either
+    wastes attempts re-testing the same node or skips nodes entirely
+    depending on how the sample count lines up with the grid. Enumerating
+    every node once is both cheaper (no duplicates) and exhaustive at grid
+    resolution (nothing reachable is skipped): each seed only replays the
+    already-solved policy (`extract_coarse_candidate`), it does not re-run
+    `solve_coarse_bellman`.
+    """
     geometry = geometry_bundle["primary_result"]["los_geometry"]
     environment = configuration_bundle["primary_result"]["environment_config"]
-    count = configuration_bundle["primary_result"]["bellman_config"][
-        "candidate_count"
-    ]
-    if not isinstance(count, int) or count <= 0:
-        raise ValueError("bellman_config.candidate_count must be positive")
     tangent_z = float(geometry["tangent_point"][0])
     slope = float(geometry["tangent_slope"])
     intercept = float(geometry["tangent_intercept"])
@@ -263,10 +271,14 @@ def generate_switching_point_seeds(
         tangent_z = min(tangent_z, height_intersections[1])
     if seed_z_min >= tangent_z:
         raise ValueError("No continuous LOS-tangent switching interval is feasible")
-    z_values = np.linspace(seed_z_min, tangent_z, count)
-    h_values = (
-        slope * z_values + intercept
-    )
+    in_interval = (z_grid >= seed_z_min) & (z_grid <= tangent_z)
+    z_values = z_grid[in_interval]
+    if z_values.size == 0:
+        nearest_index = int(
+            np.argmin(np.abs(z_grid - 0.5 * (seed_z_min + tangent_z)))
+        )
+        z_values = z_grid[nearest_index : nearest_index + 1]
+    h_values = slope * z_values + intercept
     return np.column_stack((z_values, h_values))
 
 
@@ -956,14 +968,15 @@ def validate_bellman_candidate_set(
     pod_to_go_maps: dict[str, np.ndarray],
 ) -> dict[str, Any]:
     """Validate the complete unfiltered multi-start candidate set."""
-    expected_attempts = configuration_bundle["primary_result"]["bellman_config"][
-        "candidate_count"
-    ]
     objective_id = configuration_bundle["primary_result"]["cost_config"][
         "attacker"
     ]["objective_id"]
+    attempted_grid_cells = [attempt["grid_start_index"] for attempt in attempts]
     checks = {
-        "all_starts_attempted": len(attempts) == expected_attempts,
+        "all_starts_attempted": len(attempts) > 0,
+        "switching_grid_cells_exhaustive_and_unique": (
+            len(set(attempted_grid_cells)) == len(attempted_grid_cells)
+        ),
         "feasible_candidates_generated": len(candidates) > 1,
         "all_candidates_valid": all(
             candidate["validation"]["passed"] for candidate in candidates

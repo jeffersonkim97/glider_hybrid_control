@@ -154,7 +154,6 @@ cost_config: dict[str, Any] = {
 }
 
 bellman_config: dict[str, Any] = {
-    "candidate_count": 20,
     "maximum_iterations": 4,
     "convergence_tolerance": 1.0e-8,
     "top_k": 3,
@@ -222,7 +221,7 @@ nlp_config: dict[str, Any] = {
 defender_config: dict[str, Any] = {
     "continuous_search_bounds": {
         "z_sensor_min": 1500.0,
-        "z_sensor_max": 2400.0,
+        "z_sensor_max": 2600.0,
     },
     "termination_tolerance": 5.0,
     "xtol": 5.0,
@@ -312,7 +311,7 @@ _REQUIRED_KEYS: dict[str, set[str]] = {
     "sensor_config": {"default_z_sensor", "mount_height", "los", "detection"},
     "cost_config": {"attacker", "defender", "local_stage_cost"},
     "bellman_config": {
-        "candidate_count", "maximum_iterations", "top_k",
+        "maximum_iterations", "top_k",
         "duplicate_threshold", "warm_start", "search_options",
     },
     "defender_config": {
@@ -462,11 +461,6 @@ def validate_configuration(
         if key != "project_root":
             checks[f"paths.{key}_exists"] = Path(path).is_dir()
 
-    if bellman.get("candidate_count") is None:
-        warnings.append(
-            "Bellman candidate_count remains uncommitted until Phase 7 defines "
-            "the multi-start sampling contract"
-        )
     duplicate_threshold = bellman.get("duplicate_threshold")
     required_duplicate_thresholds = {
         "switching_distance",

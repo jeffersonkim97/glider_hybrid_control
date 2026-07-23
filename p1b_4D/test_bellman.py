@@ -11,6 +11,7 @@ import numpy as np
 
 from p1b_4D.bellman import (
     generate_bellman_candidates,
+    generate_switching_point_seeds,
     select_authoritative_bellman_response,
 )
 from p1b_4D.bellman_io import export_bellman_candidate_bundle, import_bellman_candidate_bundle
@@ -48,10 +49,26 @@ class BellmanTests(unittest.TestCase):
     def test_complete_unfiltered_candidate_set_passes(self) -> None:
         result = self.bellman["primary_result"]
         self.assertTrue(self.bellman["status"]["success"])
-        self.assertEqual(result["attempted_start_count"], 20)
+        self.assertGreater(result["attempted_start_count"], 1)
         self.assertGreater(result["candidate_count"], 1)
         self.assertFalse(result["filtering_applied"])
         self.assertFalse(result["ranking_applied"])
+
+    def test_switching_seeds_exhaustively_cover_tangent_grid_nodes(self) -> None:
+        z_grid = self.stage["primary_result"]["grids"]["z"]
+        seeds = generate_switching_point_seeds(self.geometry, self.configuration, z_grid)
+        result = self.bellman["primary_result"]
+        self.assertEqual(result["attempted_start_count"], seeds.shape[0])
+        self.assertTrue(
+            self.bellman["validation"]["checks"][
+                "switching_grid_cells_exhaustive_and_unique"
+            ]
+        )
+        self.assertTrue(np.isin(seeds[:, 0], z_grid).all())
+        attempted_grid_z = {
+            attempt["grid_start_index"][0] for attempt in result["start_attempts"]
+        }
+        self.assertEqual(len(attempted_grid_z), seeds.shape[0])
 
     def test_candidates_reach_goal_and_preserve_profiles(self) -> None:
         goal = np.array([2500.0, 0.0])

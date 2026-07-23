@@ -14,6 +14,7 @@ from p1b_4D.phase_logging import close_phase_logger
 from p1b_4D.stackelberg_io import export_stackelberg_solution_bundle, import_stackelberg_solution_bundle
 from p1b_4D.stackelberg_solver import (
     build_defender_optimizer_interface,
+    direct_global_optimizer,
     evaluate_defender_position,
     hierarchical_coarse_to_fine_optimizer,
     solve_attacker_best_response,
@@ -191,6 +192,53 @@ class StackelbergSolverTests(unittest.TestCase):
             result["metadata"]["selected_candidate_source"],
             "coarse_sweep",
         )
+
+    def test_direct_global_optimizer_finds_known_maximum(self) -> None:
+        def fake_evaluation(z_sensor):
+            objective = 1.0 - ((z_sensor - 1900.0) / 300.0) ** 2
+            return {
+                "primary_result": {
+                    "evaluation_id": f"direct-test-{z_sensor:.4f}",
+                    "z_sensor": z_sensor,
+                    "h_sensor": 0.0,
+                    "defender_objective": objective,
+                    "best_found_attacker_response": {
+                        "solution_id": "fake-response",
+                        "switching_point": np.array([0.0, 0.0]),
+                        "mission_objective": 0.0,
+                        "mission_pod": 0.0,
+                        "mission_time": 0.0,
+                    },
+                    "coverage": {"coverage_area": 0.0, "normalized_coverage_area": 0.0},
+                    "objective_breakdown": {"defender_pod_normalized": 0.0},
+                }
+            }
+
+        result = direct_global_optimizer(
+            fake_evaluation,
+            (1500.0, 2400.0),
+            {"direct_maxfun": 40, "direct_maxiter": 100, "direct_len_tol": 1.0e-4},
+        )
+        self.assertAlmostEqual(result["z_sensor"], 1900.0, delta=5.0)
+        self.assertTrue(result["converged"])
+        self.assertEqual(result["metadata"]["algorithm"], "scipy_direct_global")
+        self.assertTrue(result["metadata"]["certified_global"])
+        self.assertFalse(result["metadata"]["locally_biased"])
+        self.assertGreater(len(result["evaluation_history"]), 0)
+
+    def test_direct_global_optimizer_is_a_valid_injected_optimizer(self) -> None:
+        with patch(
+            "p1b_4D.stackelberg_solver.evaluate_defender_position",
+            side_effect=lambda z_sensor, configuration_bundle, evaluation_id="evaluation": dict(self.evaluation),
+        ):
+            solution = solve_stackelberg_game(
+                self.configuration,
+                lambda evaluate, bounds, options: direct_global_optimizer(
+                    evaluate, bounds, {**options, "direct_maxfun": 10, "direct_maxiter": 30}
+                ),
+            )
+        self.assertTrue(solution["status"]["success"])
+        self.assertEqual(solution["metadata"]["outer_optimizer_algorithm"], "scipy_direct_global")
 
     def test_injected_optimizer_gets_fresh_solve_for_every_call_and_final(self) -> None:
         call_count = 0

@@ -121,11 +121,12 @@ class AttackerNLPTests(unittest.TestCase):
                     "kinematically_consistent"
                 ]
             )
-            self.assertLessEqual(
-                solution["mission_objective"],
-                solution["warm_start_diagnostics"][
-                    "initial_mission_objective"
-                ],
+            # Only enforced when the warm start itself was within Bellman
+            # support (see validate_nlp_solution's "warm_start_not_worsened"):
+            # a local IPOPT solve is not guaranteed to dominate a warm start
+            # that support-margin constraints ruled infeasible to begin with.
+            self.assertTrue(
+                solution["validation"]["checks"]["warm_start_not_worsened"]
             )
             self.assertEqual(
                 solution["continuation_history"][-1]["hazard_scale"],

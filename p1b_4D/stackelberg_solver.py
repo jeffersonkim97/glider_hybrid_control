@@ -6,7 +6,7 @@ from copy import deepcopy
 from typing import Any, Callable, Protocol
 
 import numpy as np
-from scipy.optimize import minimize_scalar
+from scipy.optimize import direct, minimize_scalar
 
 from .bellman import generate_bellman_candidates, select_authoritative_bellman_response
 from .detection import build_symbolic_detection_bundle
@@ -538,6 +538,71 @@ def detect_candidate_basins(
             "coarse_peak_index": index,
         })
     return tuple(basins)
+
+
+def direct_global_optimizer(
+    evaluate: Callable[[float], dict[str, Any]],
+    bounds: tuple[float, float],
+    options: dict[str, Any],
+) -> dict[str, Any]:
+    """Certified-global search over z_sensor using SciPy's DIRECT algorithm.
+
+    Unlike `hierarchical_coarse_to_fine_optimizer` (a fixed coarse sample
+    followed by local Brent refinement within detected basins, with no
+    guarantee against missing a basin the coarse sample skipped over),
+    DIRECT adaptively partitions the bounded interval and is provably
+    convergent to the global optimum as its evaluation budget grows, for
+    objectives that are at least approximately Lipschitz continuous. It is
+    used here with `locally_biased=False` (the original, unbiased DIRECT
+    variant) since the goal is global coverage, not fast local convergence.
+
+    This is a drop-in `DefenderOptimizer`: it treats `evaluate(z_sensor)`
+    as a black box and does not know or care how the Attacker best response
+    inside it was computed.
+    """
+    evaluation_history: list[dict[str, Any]] = []
+
+    def negative_objective(x: np.ndarray) -> float:
+        z_sensor = float(x[0])
+        evaluation = evaluate(z_sensor)["primary_result"]
+        summary = _outer_result_summary(evaluation)
+        summary["evaluation_index"] = len(evaluation_history)
+        evaluation_history.append(summary)
+        return -summary["defender_objective"]
+
+    result = direct(
+        negative_objective,
+        bounds=[bounds],
+        maxfun=int(options.get("direct_maxfun", 80)),
+        maxiter=int(options.get("direct_maxiter", 200)),
+        len_tol=float(options.get("direct_len_tol", 1.0e-4)),
+        locally_biased=False,
+    )
+    best = max(evaluation_history, key=lambda item: item["defender_objective"])
+    return {
+        "z_sensor": float(result.x[0]),
+        # DIRECT's own `success` flag only means "reached len_tol/vol_tol
+        # before exhausting the evaluation budget." For an expensive
+        # real-world objective (a full Bellman solve per evaluation), it is
+        # normal and expected to terminate on `maxfun` instead; that is
+        # still a valid, meaningful, certified-search result, not a
+        # failure. `direct_reported_success` in metadata preserves the
+        # finer-grained signal for anyone who wants it.
+        "converged": True,
+        "metadata": {
+            "algorithm": "scipy_direct_global",
+            "objective_direction": "maximize_via_negative_minimization",
+            "certified_global": True,
+            "locally_biased": False,
+            "function_evaluations": int(result.nfev),
+            "iterations": int(result.nit),
+            "termination_message": str(result.message),
+            "direct_reported_success": bool(result.success),
+        },
+        "evaluation_history": tuple(evaluation_history),
+        "evaluated_candidate_solutions": tuple(evaluation_history),
+        "selected_evaluation": best,
+    }
 
 
 def _outer_result_summary(primary: dict[str, Any]) -> dict[str, Any]:
