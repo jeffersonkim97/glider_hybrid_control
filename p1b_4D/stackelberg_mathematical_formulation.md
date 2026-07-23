@@ -4,6 +4,8 @@
 
 **Status:** mathematical specification only. This document contains no implementation, algorithm selection, or notebook-cell design.
 
+> **SUPERSEDED (2026-07-23):** Following advisor review, the Attacker best response is computed exclusively by Bellman dynamic programming (`p1b_4D.bellman.select_authoritative_bellman_response`) — an optimal solution of the discretized dynamic-programming formulation on the switching-point and state-action grid, not a continuous global optimum. The "CasADi NLP role" section and every reference to continuous NLP refinement of a selected Bellman candidate are **deprecated and disconnected**; `attacker_nlp.py` is retained only as an offline discretization-error comparison, never called by the authoritative solver. Bellman and NLP no longer need to "use the same normalized objective" for correctness — Bellman alone defines \(J_A\) for the reported response.
+
 This document defines the mathematical objects and relationships that every future implementation shall preserve.
 
 ## 1. Stackelberg game

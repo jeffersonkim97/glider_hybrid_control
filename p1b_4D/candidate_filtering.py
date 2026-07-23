@@ -1,4 +1,11 @@
-"""Phase 7 Bellman candidate filtering, objective ranking, and Top-K selection."""
+"""DEPRECATED / EXPERIMENTAL: Bellman candidate filtering and Top-K ranking.
+
+Existed solely to prepare NLP multistart warm starts. Disconnected from the
+authoritative solver now that `bellman.select_authoritative_bellman_response`
+selects the Attacker best response directly from the complete, unfiltered
+Bellman candidate set. Retained only alongside the deprecated `attacker_nlp`
+comparison module.
+"""
 
 from __future__ import annotations
 

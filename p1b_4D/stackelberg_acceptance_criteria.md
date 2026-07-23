@@ -4,6 +4,8 @@
 
 **Status:** final Phase 0 acceptance contract. This document defines completion; it does not claim that future implementation work is already complete.
 
+> **SUPERSEDED (2026-07-23):** Following advisor review, the Attacker best response is computed exclusively by Bellman dynamic programming (`p1b_4D.bellman.select_authoritative_bellman_response`). The CasADi/IPOPT NLP refinement stage, candidate filtering/Top-K warm-start selection, and the "Bellman → filter → warm-start → multi-start NLP → selection" pipeline described in ATT-03 through ATT-05 and elsewhere below are **deprecated and disconnected** from the authoritative pipeline (`attacker_nlp.py`, `candidate_filtering.py` are retained only as offline experimental comparison code, never imported by `stackelberg_solver.py` or the notebook). Read NLP/warm-start/Top-K acceptance items below as historical design context, not current pass conditions. See `stackelberg_solver.py`, `bellman.py`, and the notebook's Phase 7–8 cells for the current architecture.
+
 Every future phase and the final notebook shall satisfy all applicable requirements in this document together with the governing Phase 0–1 through Phase 0–6 specifications. A phase is incomplete when required evidence is missing, even if its primary computation appears to run.
 
 ## 1. Acceptance status model

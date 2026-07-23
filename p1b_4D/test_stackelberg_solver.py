@@ -28,7 +28,6 @@ class StackelbergSolverTests(unittest.TestCase):
     def setUpClass(cls) -> None:
         cls.temporary_directory = TemporaryDirectory()
         cls.configuration = build_configuration_bundle(Path(cls.temporary_directory.name))
-        cls.configuration["primary_result"]["nlp_config"]["ipopt_options"]["ipopt.print_level"] = 0
         cls.z_sensor = 2000.125
         cls.evaluation = evaluate_defender_position(cls.z_sensor, cls.configuration, "full-nested-test")
 
@@ -53,7 +52,7 @@ class StackelbergSolverTests(unittest.TestCase):
         self.assertNotEqual(self.z_sensor, round(self.z_sensor))
         self.assertEqual(
             primary["nested_pipeline_execution"],
-            ("geometry", "detection", "stage_cost_4d", "bellman", "candidate_filtering", "attacker_nlp", "best_found_response"),
+            ("geometry", "detection", "stage_cost_4d", "bellman", "bellman_optimal_response"),
         )
         self.assertTrue(self.evaluation["metadata"]["fresh_nested_attacker_solve"])
 
@@ -133,6 +132,20 @@ class StackelbergSolverTests(unittest.TestCase):
             fixed_best["mission_objective"],
             outer_best["mission_objective"],
         )
+
+    def test_defender_positions_evaluate_without_nlp_related_failure(self) -> None:
+        for z_sensor in (1500.0, 1725.0):
+            with self.subTest(z_sensor=z_sensor):
+                evaluation = evaluate_defender_position(
+                    z_sensor, self.configuration, f"regression-{z_sensor:.1f}"
+                )
+                self.assertTrue(evaluation["status"]["success"])
+                best = evaluation["primary_result"]["best_found_attacker_response"]
+                self.assertEqual(best["metadata"].get("warm_start_only"), False)
+                bundle = evaluation["primary_result"]["attacker_best_response_bundle"]
+                self.assertEqual(
+                    bundle["metadata"]["solution_method"], "bellman_dynamic_programming"
+                )
 
     def test_outer_optimizer_keeps_a_superior_boundary_evaluation(self) -> None:
         counter = 0

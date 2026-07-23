@@ -4,6 +4,8 @@
 
 **Status:** mandatory data and visualization contract. This document contains no computational or plotting implementation.
 
+> **SUPERSEDED (2026-07-23):** Following advisor review, there is no separate "NLP Solution Bundle" or NLP path in the authoritative export/visualization pipeline. Figure 4 overlays the Bellman candidate set plus the single Bellman-optimal Attacker response (`bellman_response` bundle) selected by `p1b_4D.bellman.select_authoritative_bellman_response`; Figure 5 uses the same response for the final Defender evaluation. References below to "NLP Solution Bundle," "Bellman and NLP paths," or running CasADi NLP describe the deprecated, disconnected `attacker_nlp.py` comparison path, not the current `result_export.py`/`visualization.py` behavior.
+
 This policy preserves the required pipeline:
 
 **Computation → Validation → Export → Import → Visualization**

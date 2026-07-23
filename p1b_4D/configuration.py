@@ -103,8 +103,11 @@ sensor_config: dict[str, Any] = {
         "range_floor": 10.0,
         "acoustic_coefficient": 2.4e-3,
         "acoustic_speed_exponent": 4,
-        "radar_coefficient": 5.2e8,
-        "doppler_coefficient": 1.33e6,
+        # radar/doppler scaled 1/40 from prior values: those saturated PoD to
+        # ~1 within ~300m (mission_pod > 0.999 almost everywhere reachable),
+        # collapsing the Defender placement game to a single kill radius.
+        "radar_coefficient": 1.3e7,
+        "doppler_coefficient": 3.325e4,
         "rcs_min": 0.1,
         "rcs_max": 1.0,
         "radar_rate_scale": 1.0,
@@ -184,6 +187,9 @@ bellman_config: dict[str, Any] = {
     "random_seed": GLOBAL_RANDOM_SEED,
 }
 
+# Experimental only: consumed solely by the deprecated, disconnected
+# attacker_nlp.py continuous-refinement comparison. Not required by
+# validate_configuration and not read by the authoritative Bellman solver.
 nlp_config: dict[str, Any] = {
     "number_of_nodes": 80,
     # "hazard_homotopy_scales": (0.01, 0.1, 1.0),
@@ -249,7 +255,6 @@ plot_config: dict[str, Any] = {
         "terrain": "-",
         "los_tangent": "--",
         "bellman": "--",
-        "nlp": "-",
         "stackelberg": "-",
     },
     "marker_styles": {
@@ -264,7 +269,6 @@ plot_config: dict[str, Any] = {
         "los": "green",
         "occlusion": "red",
         "bellman": "tab:blue",
-        "nlp": "tab:orange",
         "stackelberg": "tab:purple",
         "sensor": "black",
         "goal": "gold",
@@ -310,12 +314,6 @@ _REQUIRED_KEYS: dict[str, set[str]] = {
     "bellman_config": {
         "candidate_count", "maximum_iterations", "top_k",
         "duplicate_threshold", "warm_start", "search_options",
-    },
-    "nlp_config": {
-        "number_of_nodes", "solver_tolerance", "maximum_iterations",
-        "ipopt_options", "multi_start", "constraint_tolerance", "initialization",
-        "hazard_homotopy_scales",
-        "minimum_interval_time", "maximum_interval_time",
     },
     "defender_config": {
         "continuous_search_bounds", "termination_tolerance",
@@ -396,7 +394,6 @@ def validate_configuration(
     vehicle = configs.get("vehicle_config", {})
     costs = configs.get("cost_config", {})
     bellman = configs.get("bellman_config", {})
-    nlp = configs.get("nlp_config", {})
     defender = configs.get("defender_config", {})
     grid = env.get("grid", {})
     checks["grid.z_spacing_consistent"] = (
@@ -438,27 +435,7 @@ def validate_configuration(
         - 1.0
     ) <= 1.0e-12
     checks["cost.shared_attacker_objective"] = (
-        bellman.get("attacker_objective_id")
-        == nlp.get("attacker_objective_id")
-        == attacker.get("objective_id")
-    )
-    homotopy_scales = nlp.get("hazard_homotopy_scales", ())
-    checks["nlp.hazard_homotopy"] = (
-        isinstance(homotopy_scales, (tuple, list))
-        and len(homotopy_scales) >= 1
-        and all(
-            isfinite(scale) and 0.0 < scale <= 1.0
-            for scale in homotopy_scales
-        )
-        and all(
-            left < right
-            for left, right in zip(homotopy_scales, homotopy_scales[1:])
-        )
-        and homotopy_scales[-1] == 1.0
-    )
-    checks["nlp.interval_time_bounds"] = (
-        0.0 < nlp.get("minimum_interval_time", 0.0)
-        < nlp.get("maximum_interval_time", 0.0)
+        bellman.get("attacker_objective_id") == attacker.get("objective_id")
     )
     validation = configs.get("validation_config", {})
     checks["goal.region_radius"] = (
@@ -479,9 +456,7 @@ def validate_configuration(
         and defender.get("basin_prominence_threshold", -1.0) >= 0.0
     )
     checks["random_seed.shared"] = (
-        bellman.get("random_seed")
-        == nlp.get("multi_start", {}).get("random_seed")
-        == GLOBAL_RANDOM_SEED
+        bellman.get("random_seed") == GLOBAL_RANDOM_SEED
     )
     for key, path in project_paths.__dict__.items():
         if key != "project_root":

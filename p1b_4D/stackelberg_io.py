@@ -29,7 +29,7 @@ def export_stackelberg_solution_bundle(
         "optimal_trajectory": np.asarray(solution["optimal_glide_trajectory"]),
         "optimal_switching_point": np.asarray(solution["optimal_switching_point"]),
         "optimal_sensor_position": np.asarray(solution["optimal_sensor_position"]),
-        "optimal_velocity_profile": np.asarray(attacker["velocity_profile"]),
+        "optimal_velocity_profile": np.asarray(attacker["speed_profile"]),
         "optimal_gamma_profile": np.asarray(attacker["gamma_profile"]),
         "coverage_los_mask": np.asarray(solution["coverage_maps"]["los_mask"]),
         "coverage_occlusion_mask": np.asarray(solution["coverage_maps"]["occlusion_mask"]),
@@ -41,8 +41,6 @@ def export_stackelberg_solution_bundle(
         "outer_mission_pod": np.asarray([item["mission_pod"] for item in summaries]),
         "outer_coverage_normalized": np.asarray([item["coverage_area_normalized"] for item in summaries]),
         "constraint_goal_error": np.asarray(attacker["constraint_residuals"]["goal_error"]),
-        "constraint_dynamic_z": np.asarray(attacker["constraint_residuals"]["dynamic_z_residual"]),
-        "constraint_dynamic_h": np.asarray(attacker["constraint_residuals"]["dynamic_h_residual"]),
     }
     paths = configuration_bundle["primary_result"]["project_paths"]
     json_path = paths.json_dir / f"{bundle_name}.json"
@@ -80,7 +78,10 @@ def export_stackelberg_solution_bundle(
         },
         "solver_metadata": {
             "outer": result["outer_optimizer_result"],
-            "attacker": attacker["solver_status"],
+            "attacker": {
+                "solution_method": "bellman_dynamic_programming",
+                "success": attacker["validation"]["passed"],
+            },
             "stackelberg": stackelberg_bundle["metadata"],
         },
         "validation": stackelberg_bundle["validation"],

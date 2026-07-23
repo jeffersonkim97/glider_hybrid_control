@@ -4,6 +4,8 @@
 
 **Status:** interface contract only. This document contains no algorithms, optimization code, or implementation.
 
+> **SUPERSEDED (2026-07-23):** Following advisor review, Phase 9 (Bellman to NLP Interface) and Phase 10 (Attacker CasADi NLP) below — `BellmanWarmStartSet` and `RefinedNlpSolutionSet` — are **deprecated and disconnected** from the authoritative pipeline. The Attacker best response is now produced directly from `BellmanCandidateSet` by `p1b_4D.bellman.select_authoritative_bellman_response`, returning an `AuthoritativeBellmanAttackerResponse`. `attacker_nlp.py`/`candidate_filtering.py` remain only as an offline experimental comparison, never imported by `stackelberg_solver.py` or the notebook.
+
 This specification defines the data exchanged by all modules. It preserves the 15-phase notebook architecture established in Phase 0–3. Names, meanings, units, provenance, and dependency direction are part of the public contract.
 
 ## 1. Interface principles

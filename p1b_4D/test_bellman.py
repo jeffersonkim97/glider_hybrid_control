@@ -9,7 +9,10 @@ import unittest
 
 import numpy as np
 
-from p1b_4D.bellman import generate_bellman_candidates
+from p1b_4D.bellman import (
+    generate_bellman_candidates,
+    select_authoritative_bellman_response,
+)
 from p1b_4D.bellman_io import export_bellman_candidate_bundle, import_bellman_candidate_bundle
 from p1b_4D.configuration import build_configuration_bundle
 from p1b_4D.detection import build_symbolic_detection_bundle
@@ -145,6 +148,58 @@ class BellmanTests(unittest.TestCase):
         )
         for original_candidate, changed_candidate in zip(original, changed, strict=True):
             np.testing.assert_array_equal(original_candidate["trajectory"], changed_candidate["trajectory"])
+
+    def test_pod_to_go_is_bounded_probability_matching_cost_to_go_support(self) -> None:
+        result = self.bellman["primary_result"]
+        checks = self.bellman["validation"]["checks"]
+        self.assertIn("pod_to_go_bounded_unit_interval", checks)
+        self.assertTrue(checks["pod_to_go_bounded_unit_interval"])
+        self.assertIn("pod_to_go_matches_cost_to_go_support", checks)
+        self.assertTrue(checks["pod_to_go_matches_cost_to_go_support"])
+        primary_ordering = result["cost_to_go_primary_ordering"]
+        pod_to_go = result["pod_to_go_maps"][primary_ordering]
+        cost_to_go = result["cost_to_go_maps"][primary_ordering]
+        finite = np.isfinite(cost_to_go)
+        np.testing.assert_array_equal(np.isfinite(pod_to_go), finite)
+        self.assertTrue(np.all(pod_to_go[finite] >= 0.0))
+        self.assertTrue(np.all(pod_to_go[finite] <= 1.0))
+        goal_mask = result["finite_cost_to_go_mask"] & (cost_to_go == 0.0)
+        np.testing.assert_allclose(pod_to_go[goal_mask], 0.0, atol=1.0e-12)
+
+    def test_ordering_value_agreement_is_checked(self) -> None:
+        checks = self.bellman["validation"]["checks"]
+        self.assertIn("ordering_value_agreement", checks)
+        self.assertTrue(checks["ordering_value_agreement"])
+
+    def test_authoritative_response_selects_minimum_cost_candidate(self) -> None:
+        response = select_authoritative_bellman_response(
+            self.bellman, self.configuration
+        )
+        self.assertTrue(response["status"]["success"])
+        candidates = self.bellman["primary_result"]["candidates"]
+        minimum_cost = min(candidate["mission_cost"] for candidate in candidates)
+        primary = response["primary_result"]
+        self.assertEqual(primary["mission_cost"], minimum_cost)
+        self.assertEqual(primary["mission_objective"], minimum_cost)
+        self.assertEqual(response["metadata"]["solution_method"], "bellman_dynamic_programming")
+        self.assertFalse(response["metadata"]["global_optimum_claim"])
+        self.assertTrue(response["validation"]["checks"]["objective_matches_bellman_value"])
+        self.assertTrue(response["validation"]["checks"]["selection_is_minimum_cost"])
+
+    def test_authoritative_response_is_traceable_to_one_source_candidate(self) -> None:
+        response = select_authoritative_bellman_response(
+            self.bellman, self.configuration
+        )
+        primary = response["primary_result"]
+        candidates = {
+            candidate["candidate_id"]: candidate
+            for candidate in self.bellman["primary_result"]["candidates"]
+        }
+        source = candidates[primary["source_candidate_id"]]
+        np.testing.assert_array_equal(primary["trajectory"], source["trajectory"])
+        np.testing.assert_array_equal(primary["switching_point"], source["switching_point"])
+        self.assertEqual(primary["powered_hazard"], source["hazard_breakdown"]["powered_acoustic_hazard"])
+        self.assertEqual(primary["glide_hazard"], source["hazard_breakdown"]["glide_radar_doppler_hazard"])
 
     def test_json_npz_round_trip(self) -> None:
         exported = export_bellman_candidate_bundle(self.bellman, self.configuration)

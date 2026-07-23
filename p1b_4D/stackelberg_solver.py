@@ -8,9 +8,7 @@ from typing import Any, Callable, Protocol
 import numpy as np
 from scipy.optimize import minimize_scalar
 
-from .attacker_nlp import solve_attacker_nlp_multistart
-from .bellman import generate_bellman_candidates
-from .candidate_filtering import filter_bellman_candidates
+from .bellman import generate_bellman_candidates, select_authoritative_bellman_response
 from .detection import build_symbolic_detection_bundle
 from .geometry import build_geometry_bundle, terrain_height
 from .stage_cost import construct_stage_cost_4d
@@ -71,7 +69,13 @@ def solve_attacker_best_response(
     configuration_bundle: dict[str, Any],
     evaluation_id: str = "attacker-best-response",
 ) -> dict[str, Any]:
-    """Execute the one authoritative Bellman-to-NLP Attacker computation."""
+    """Execute the one authoritative Bellman Attacker computation.
+
+    The Attacker best response is the Bellman-optimal path on the
+    discretized switching-point and state-action grid. No CasADi/IPOPT NLP
+    is used here; see `attacker_nlp.py` for the deprecated, disconnected
+    continuous-refinement experiment.
+    """
     _require_successful_bundle(configuration_bundle, "configuration_bundle")
     if isinstance(z_sensor, bool) or not np.isscalar(z_sensor) or not np.isfinite(z_sensor):
         raise TypeError("z_sensor must be one finite continuous scalar")
@@ -87,12 +91,7 @@ def solve_attacker_best_response(
     bellman = generate_bellman_candidates(
         nested_configuration, geometry, detection, stage, None
     )
-    filtered = filter_bellman_candidates(
-        bellman, nested_configuration, nested_configuration["validation"]
-    )
-    attacker = solve_attacker_nlp_multistart(
-        nested_configuration, geometry, detection, stage, bellman, filtered
-    )
+    attacker = select_authoritative_bellman_response(bellman, nested_configuration)
     if not attacker["status"]["success"]:
         raise RuntimeError(attacker["status"]["message"])
     return {
@@ -104,22 +103,21 @@ def solve_attacker_best_response(
             "detection_bundle": detection,
             "stage_cost_4d_bundle": stage,
             "bellman_candidate_bundle": bellman,
-            "filtered_bellman_bundle": filtered,
-            "attacker_nlp_bundle": attacker,
-            "best_found_attacker_response": attacker["primary_result"][
-                "best_found_attacker_response"
-            ],
+            "bellman_response_bundle": attacker,
+            "best_found_attacker_response": attacker["primary_result"],
         },
         "validation": attacker["validation"],
         "metadata": {
             "schema_name": "AuthoritativeAttackerBestResponseBundle",
             "schema_version": "1.0.0",
-            "producer_phase": 9,
+            "producer_phase": 8,
             "same_computation_for_fixed_and_outer_evaluations": True,
             "projected_cost_used_for_policy": False,
             "attacker_objective_id": attacker["metadata"][
                 "attacker_objective_id"
             ],
+            "solution_method": attacker["metadata"]["solution_method"],
+            "optimality_scope": attacker["metadata"]["optimality_scope"],
         },
         "status": dict(attacker["status"]),
     }
@@ -142,9 +140,8 @@ def evaluate_defender_position(
     detection = pipeline["detection_bundle"]
     stage = pipeline["stage_cost_4d_bundle"]
     bellman = pipeline["bellman_candidate_bundle"]
-    filtered = pipeline["filtered_bellman_bundle"]
-    attacker = pipeline["attacker_nlp_bundle"]
-    best = attacker["primary_result"]["best_found_attacker_response"]
+    attacker = pipeline["bellman_response_bundle"]
+    best = attacker["primary_result"]
     coverage = geometry["primary_result"]["coverage"]
     defender_components = evaluate_defender_objective(
         best,
@@ -174,7 +171,7 @@ def evaluate_defender_position(
             "sensor_position": sensor_position,
             "best_found_attacker_response": best,
             "attacker_best_response_bundle": attacker_pipeline,
-            "attacker_nlp_summary": attacker["validation"]["metrics"],
+            "attacker_response_summary": attacker["validation"]["metrics"],
             "coverage": coverage,
             "coverage_maps": {
                 "los_mask": geometry["primary_result"]["los_masks"]["los_mask"],
@@ -196,7 +193,7 @@ def evaluate_defender_position(
             },
             "nested_pipeline_execution": (
                 "geometry", "detection", "stage_cost_4d", "bellman",
-                "candidate_filtering", "attacker_nlp", "best_found_response",
+                "bellman_optimal_response",
             ),
         },
         "validation": validation,
@@ -206,11 +203,10 @@ def evaluate_defender_position(
             "producer_phase": 9,
             "fresh_nested_attacker_solve": True,
             "authoritative_attacker_solver": "solve_attacker_best_response",
-            "attacker_solution_source": "Best-found Attacker Response",
+            "attacker_solution_source": "Bellman-optimal Attacker Response",
             "stage_cost_schema": stage["metadata"]["schema_name"],
             "bellman_schema": bellman["metadata"]["schema_name"],
-            "filtered_schema": filtered["metadata"]["schema_name"],
-            "attacker_nlp_schema": attacker["metadata"]["schema_name"],
+            "bellman_response_schema": attacker["metadata"]["schema_name"],
         },
         "status": {
             "success": validation["passed"],
@@ -275,6 +271,7 @@ def _build_defender_visualization_payload(
         "tangent_intercept": float(los["tangent_intercept"]),
         "tangent_line_height": los["tangent_line_height"],
         "cost_to_go": bellman["cost_to_go_maps"][ordering],
+        "pod_to_go": bellman["pod_to_go_maps"][ordering],
         "cost_to_go_ordering": ordering,
         "geometry_schema": geometry_bundle["metadata"]["schema_name"],
         "bellman_schema": bellman_bundle["metadata"]["schema_name"],
@@ -592,8 +589,8 @@ def validate_defender_evaluation(
     goal_error_norm = best["constraint_residuals"]["goal_error_norm"]
     checks = {
         "attacker_convergence": best["validation"]["passed"],
-        "attacker_exact_objective_selected": best["validation"]["checks"][
-            "exact_continuation_endpoint_selected"
+        "attacker_objective_consistency": best["validation"]["checks"][
+            "objective_consistency"
         ],
         "attacker_goal_region_reached": goal_error_norm <= (
             configs["validation_config"]["goal_radius"]
@@ -618,8 +615,8 @@ def validate_stackelberg_solution(
     final_primary = final_evaluation["primary_result"]
     payload = solution["visualization_payload"]
     attacker_pipeline = final_primary["attacker_best_response_bundle"]
-    attacker_multistart = attacker_pipeline["primary_result"][
-        "attacker_nlp_bundle"
+    attacker_bellman_response = attacker_pipeline["primary_result"][
+        "bellman_response_bundle"
     ]
     switch = solution["optimal_switching_point"]
     tangent_residual = abs(
@@ -637,9 +634,9 @@ def validate_stackelberg_solution(
         "authoritative_attacker_solver_used": attacker_pipeline["metadata"][
             "same_computation_for_fixed_and_outer_evaluations"
         ],
-        "all_top_k_warm_starts_refined": attacker_multistart["validation"][
-            "checks"
-        ]["all_warm_starts_refined"],
+        "bellman_response_valid": attacker_bellman_response["validation"][
+            "passed"
+        ],
         "attacker_goal_region_reached": final_evaluation["validation"][
             "checks"
         ]["attacker_goal_region_reached"],
@@ -651,7 +648,7 @@ def validate_stackelberg_solution(
         "switching_point_on_final_tangent": tangent_residual <= configuration_bundle["primary_result"]["validation_config"]["los_tolerance"],
         "figure5_sensor_matches_final_defender": np.allclose(payload["sensor_position"], solution["optimal_sensor_position"], rtol=0.0, atol=configuration_bundle["primary_result"]["validation_config"]["solver_tolerance"]),
         "figure5_evaluation_id_matches_final": payload["evaluation_id"] == final_primary["evaluation_id"],
-        "figure5_arrays_consistent": payload["cost_to_go"].shape == payload["los_mask"].shape == payload["occlusion_mask"].shape == payload["terrain_mask"].shape,
+        "figure5_arrays_consistent": payload["cost_to_go"].shape == payload["pod_to_go"].shape == payload["los_mask"].shape == payload["occlusion_mask"].shape == payload["terrain_mask"].shape,
     }
     failed = [name for name, passed in checks.items() if not passed]
     warnings = [] if optimizer_result["converged"] else ["Injected outer optimizer did not report convergence"]

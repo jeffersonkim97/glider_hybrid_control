@@ -11,7 +11,7 @@ import numpy as np
 
 
 STANDARD_DIRECTORIES = (
-    "geometry", "cost", "bellman", "nlp", "stackelberg", "metadata", "logs"
+    "geometry", "cost", "bellman", "stackelberg", "metadata", "logs"
 )
 
 
@@ -37,8 +37,7 @@ def export_all_results(
     stage_cost_4d_bundle: dict[str, Any],
     projected_cost_bundle: dict[str, Any],
     bellman_candidate_bundle: dict[str, Any],
-    filtered_bellman_bundle: dict[str, Any],
-    attacker_nlp_bundle: dict[str, Any],
+    bellman_response_bundle: dict[str, Any],
     stackelberg_solution_bundle: dict[str, Any] | None,
 ) -> dict[str, Any]:
     """Write every available result through one standardized JSON+NPZ system."""
@@ -50,8 +49,7 @@ def export_all_results(
         "stage_cost": stage_cost_4d_bundle,
         "projected_cost": projected_cost_bundle,
         "bellman": bellman_candidate_bundle,
-        "filtered_bellman": filtered_bellman_bundle,
-        "attacker_nlp": attacker_nlp_bundle,
+        "bellman_response": bellman_response_bundle,
         "stackelberg": stackelberg_solution_bundle,
     }
     for name, bundle in supplied.items():
@@ -68,8 +66,7 @@ def export_all_results(
         ("stage_cost", "cost", stage_cost_4d_bundle, _stage_arrays),
         ("projected_cost", "cost", projected_cost_bundle, _projection_arrays),
         ("bellman", "bellman", bellman_candidate_bundle, _bellman_arrays),
-        ("filtered_bellman", "bellman", filtered_bellman_bundle, _filtered_arrays),
-        ("attacker_nlp", "nlp", attacker_nlp_bundle, _nlp_arrays),
+        ("bellman_response", "bellman", bellman_response_bundle, _bellman_response_arrays),
         ("stackelberg", "stackelberg", stackelberg_solution_bundle, _stackelberg_arrays),
     )
     exports: list[dict[str, Any]] = []
@@ -256,16 +253,16 @@ def _bellman_arrays(bundle: dict[str, Any]) -> dict[str, np.ndarray]:
         f"cost_to_go_{ordering}": values
         for ordering, values in primary["cost_to_go_maps"].items()
     })
+    arrays.update({
+        f"pod_to_go_{ordering}": values
+        for ordering, values in primary["pod_to_go_maps"].items()
+    })
     arrays["cost_to_go"] = primary["cost_to_go_maps"][
         primary["cost_to_go_primary_ordering"]
     ]
-    return arrays
-
-
-def _filtered_arrays(bundle: dict[str, Any]) -> dict[str, np.ndarray]:
-    candidates = bundle["primary_result"]["candidates"]
-    arrays = _candidate_arrays(candidates, "speed_profile")
-    arrays["ranks"] = np.asarray([item["rank"] for item in candidates], dtype=np.int64)
+    arrays["pod_to_go"] = primary["pod_to_go_maps"][
+        primary["cost_to_go_primary_ordering"]
+    ]
     return arrays
 
 
@@ -273,19 +270,23 @@ def _candidate_arrays(candidates: tuple[dict[str, Any], ...], speed_key: str) ->
     trajectories, trajectory_offsets = _pack([item["trajectory"] for item in candidates], 2)
     speeds, speed_offsets = _pack([item[speed_key] for item in candidates], 1)
     gammas, gamma_offsets = _pack([item["gamma_profile"] for item in candidates], 1)
-    return {"switching_points": np.asarray([item["switching_point"] for item in candidates]).reshape(-1, 2), "trajectory_points": trajectories, "trajectory_offsets": trajectory_offsets, "velocity_profiles": speeds, "velocity_offsets": speed_offsets, "gamma_profiles": gammas, "gamma_offsets": gamma_offsets, "mission_costs": np.asarray([item["mission_cost"] for item in candidates])}
+    powered_paths, powered_path_offsets = _pack([item["powered_path"] for item in candidates], 2)
+    return {"switching_points": np.asarray([item["switching_point"] for item in candidates]).reshape(-1, 2), "trajectory_points": trajectories, "trajectory_offsets": trajectory_offsets, "velocity_profiles": speeds, "velocity_offsets": speed_offsets, "gamma_profiles": gammas, "gamma_offsets": gamma_offsets, "powered_path_points": powered_paths, "powered_path_offsets": powered_path_offsets, "mission_costs": np.asarray([item["mission_cost"] for item in candidates])}
 
 
-def _nlp_arrays(bundle: dict[str, Any]) -> dict[str, np.ndarray]:
-    solutions = bundle["primary_result"]["feasible_solutions"]
-    trajectories, trajectory_offsets = _pack([item["trajectory"] for item in solutions], 2)
-    velocities, velocity_offsets = _pack([item["velocity_profile"] for item in solutions], 1)
-    gammas, gamma_offsets = _pack([item["gamma_profile"] for item in solutions], 1)
-    interval_times, interval_time_offsets = _pack(
-        [item["interval_time_profile"] for item in solutions], 1
-    )
-    best = bundle["primary_result"]["best_found_attacker_response"]
-    return {"switching_points": np.asarray([item["switching_point"] for item in solutions]).reshape(-1, 2), "trajectory_points": trajectories, "trajectory_offsets": trajectory_offsets, "velocity_profiles": velocities, "velocity_offsets": velocity_offsets, "gamma_profiles": gammas, "gamma_offsets": gamma_offsets, "interval_time_profiles": interval_times, "interval_time_offsets": interval_time_offsets, "mission_objectives": np.asarray([item["mission_objective"] for item in solutions]), "best_trajectory": best["trajectory"], "best_switching_point": best["switching_point"], "best_velocity_profile": best["velocity_profile"], "best_gamma_profile": best["gamma_profile"], "best_interval_time_profile": best["interval_time_profile"]}
+def _bellman_response_arrays(bundle: dict[str, Any]) -> dict[str, np.ndarray]:
+    primary = bundle["primary_result"]
+    return {
+        "switching_point": np.asarray(primary["switching_point"]),
+        "trajectory": np.asarray(primary["trajectory"]),
+        "powered_path": np.asarray(primary["powered_path"]),
+        "speed_profile": np.asarray(primary["speed_profile"]),
+        "gamma_profile": np.asarray(primary["gamma_profile"]),
+        "mission_cost": np.asarray(primary["mission_cost"]),
+        "mission_pod": np.asarray(primary["mission_pod"]),
+        "mission_time": np.asarray(primary["mission_time"]),
+        "goal_error": np.asarray(primary["constraint_residuals"]["goal_error"]),
+    }
 
 
 def _stackelberg_arrays(bundle: dict[str, Any]) -> dict[str, np.ndarray]:
@@ -298,12 +299,13 @@ def _stackelberg_arrays(bundle: dict[str, Any]) -> dict[str, np.ndarray]:
     history = optimizer["brent_optimization_history"]
     return {
         "optimal_trajectory": solution["optimal_glide_trajectory"],
+        "optimal_powered_path": solution["optimal_attacker_strategy"]["powered_path"],
         "optimal_switching_point": solution["optimal_switching_point"],
         "optimal_sensor_position": solution["optimal_sensor_position"],
-        "optimal_velocity_profile": solution["optimal_attacker_strategy"]["velocity_profile"],
+        "optimal_velocity_profile": solution["optimal_attacker_strategy"]["speed_profile"],
         "optimal_gamma_profile": solution["optimal_attacker_strategy"]["gamma_profile"],
-        "optimal_interval_time_profile": solution["optimal_attacker_strategy"]["interval_time_profile"],
         "final_cost_to_go": visual["cost_to_go"],
+        "final_pod_to_go": visual["pod_to_go"],
         "final_terrain_z": visual["terrain_z"],
         "final_terrain_height": visual["terrain_height"],
         "final_terrain_h_grid": visual["terrain_h_grid"],
@@ -336,7 +338,7 @@ def _stackelberg_arrays(bundle: dict[str, Any]) -> dict[str, np.ndarray]:
 
 def _configuration_snapshot(bundle: dict[str, Any]) -> dict[str, Any]:
     primary = bundle["primary_result"]
-    return {key: primary[key] for key in ("environment_config", "vehicle_config", "sensor_config", "cost_config", "bellman_config", "nlp_config", "defender_config", "plot_config", "validation_config")}
+    return {key: primary[key] for key in ("environment_config", "vehicle_config", "sensor_config", "cost_config", "bellman_config", "defender_config", "plot_config", "validation_config")}
 
 
 def _solver_information(bundle: dict[str, Any]) -> Any:
@@ -346,6 +348,8 @@ def _solver_information(bundle: dict[str, Any]) -> Any:
 
 def _objective_values(bundle: dict[str, Any]) -> dict[str, Any]:
     primary = bundle["primary_result"]
+    if "mission_objective" in primary:
+        return {key: primary[key] for key in ("mission_objective", "mission_pod", "mission_time")}
     best = primary.get("best_found_attacker_response")
     if best is not None:
         return {key: best[key] for key in ("mission_objective", "mission_pod", "mission_time")}

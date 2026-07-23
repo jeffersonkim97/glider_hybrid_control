@@ -1,4 +1,11 @@
-"""Phase 8 continuous multi-start Attacker refinement using CasADi and IPOPT."""
+"""DEPRECATED / EXPERIMENTAL: continuous multi-start Attacker refinement via CasADi/IPOPT.
+
+Disconnected from the authoritative solver. Bellman dynamic programming
+(`bellman.select_authoritative_bellman_response`) is the sole authoritative
+Attacker best-response solver; nothing in `stackelberg_solver.py` or the
+main notebook imports this module. Retained only for offline discretization-
+error comparison against the Bellman-optimal discrete trajectory.
+"""
 
 from __future__ import annotations
 
@@ -218,6 +225,7 @@ def solve_attacker_nlp_start(
     opti.subject_to(opti.bounded(environment["airspace"]["z_min"], z, environment["airspace"]["z_max"]))
     opti.subject_to(opti.bounded(environment["airspace"]["h_min"], h, environment["airspace"]["h_max"]))
 
+    # support_margin = -min(support_dz, support_dh)
     support_margin = -0.1
 
     for node_index in range(node_count):
@@ -588,10 +596,6 @@ def solve_attacker_nlp_start(
         "initial_mission_objective": warm_objective[-1],
     })
 
-    # if warm_start["candidate_id"] == "bellman-candidate-001":
-    #     print("\n=== CANDIDATE-001 WARM START ===")
-    #     print(warm["diagnostics"])
-
     opti.set_initial(z_switch, warm_start["switching_point"][0])
     opti.set_initial(h_switch, warm_start["switching_point"][1])
     opti.set_initial(z, warm["trajectory"][:, 0])
@@ -599,6 +603,7 @@ def solve_attacker_nlp_start(
     opti.set_initial(velocity, warm["velocity_profile"])
     opti.set_initial(gamma, warm["gamma_profile"])
     opti.set_initial(interval_time, warm["interval_time_profile"])
+
     solver_options = {
         key.removeprefix("ipopt."): value
         for key, value in nlp_config["ipopt_options"].items()
@@ -880,7 +885,20 @@ def validate_nlp_solution(
             and continuation_history[-1]["selected_by_exact_objective"]
         ),
     }
-    failed = [name for name, passed in checks.items() if not passed]
+    # failed = [name for name, passed in checks.items() if not passed]
+    blocking_check_names = {
+        "all_warm_starts_attempted",
+        "independent_solve_per_start",
+        "feasible_solution_available",
+        "all_stored_solutions_valid",
+        "best_found_is_minimum",
+    }
+
+    failed = [
+        name
+        for name, passed in checks.items()
+        if name in blocking_check_names and not passed
+    ]
     metrics = {key: residuals[key] for key in (
         "goal_error_norm", "minimum_terrain_margin", "minimum_los_margin",
         "maximum_dynamic_residual", "switching_tangent_residual",

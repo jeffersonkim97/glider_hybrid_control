@@ -89,6 +89,14 @@ def generate_bellman_candidates(
         )
         for ordering in orderings
     }
+    glide_detection_rate = stage["component_maps"]["glide_detection_rate"]
+    time_step = vehicle["time_step"]
+    pod_to_go_maps = {
+        ordering: _compute_glide_pod_to_go(
+            policy, transitions, glide_detection_rate, time_step
+        )
+        for ordering, policy in policies.items()
+    }
     seeds = generate_switching_point_seeds(
         geometry_bundle,
         configuration_bundle,
@@ -155,6 +163,7 @@ def generate_bellman_candidates(
         configuration_bundle,
         geometry_bundle,
         stage_cost_4d_bundle,
+        pod_to_go_maps,
     )
 
     primary_ordering = orderings[0]
@@ -172,6 +181,10 @@ def generate_bellman_candidates(
             },
             "cost_to_go_maps": {
                 ordering: policy["value"] for ordering, policy in policies.items()
+            },
+            "pod_to_go_maps": {
+                ordering: _readonly(values)
+                for ordering, values in pod_to_go_maps.items()
             },
             # "cost_to_go_primary_ordering": orderings[0],
             "cost_to_go_primary_ordering": primary_ordering,
@@ -511,6 +524,59 @@ def solve_coarse_bellman(
             "local_cost_source": "j4d",
         },
     }
+
+
+def _compute_glide_pod_to_go(
+    policy: dict[str, Any],
+    transitions: dict[str, np.ndarray],
+    glide_detection_rate: np.ndarray,
+    time_step: float,
+) -> np.ndarray:
+    """Replay the fixed Bellman-optimal policy accumulating hazard, not cost.
+
+    This performs no additional optimization: it follows the exact same
+    policy pointers `solve_coarse_bellman` already computed, in the same
+    z-descending order (transitions strictly advance z, so every successor
+    is resolved before its predecessor). It exists only to report the
+    probability-of-detection-to-go for visualization; the authoritative
+    Bellman value used for policy selection is untouched.
+    """
+    value = policy["value"]
+    z_size, h_size = value.shape
+    hazard_to_go = np.full(value.shape, np.nan, dtype=float)
+    for z_index in range(z_size - 1, -1, -1):
+        for h_index in range(h_size):
+            if policy["goal_mask"][z_index, h_index]:
+                hazard_to_go[z_index, h_index] = 0.0
+                continue
+            if not np.isfinite(value[z_index, h_index]):
+                continue
+            velocity_index = int(policy["policy_velocity_index"][z_index, h_index])
+            gamma_index = int(policy["policy_gamma_index"][z_index, h_index])
+            terminal = bool(policy["policy_terminal"][z_index, h_index])
+            segment_fraction = (
+                float(transitions["terminal_fraction"][
+                    z_index, h_index, velocity_index, gamma_index
+                ])
+                if terminal
+                else 1.0
+            )
+            local_hazard = (
+                float(glide_detection_rate[
+                    z_index, h_index, velocity_index, gamma_index
+                ])
+                * time_step
+                * segment_fraction
+            )
+            if terminal:
+                hazard_to_go[z_index, h_index] = local_hazard
+            else:
+                next_z = int(policy["policy_next_z_index"][z_index, h_index])
+                next_h = int(policy["policy_next_h_index"][z_index, h_index])
+                hazard_to_go[z_index, h_index] = (
+                    local_hazard + hazard_to_go[next_z, next_h]
+                )
+    return 1.0 - np.exp(-hazard_to_go)
 
 
 def evaluate_powered_segment(
@@ -887,6 +953,7 @@ def validate_bellman_candidate_set(
     configuration_bundle: dict[str, Any],
     geometry_bundle: dict[str, Any],
     stage_cost_4d_bundle: dict[str, Any],
+    pod_to_go_maps: dict[str, np.ndarray],
 ) -> dict[str, Any]:
     """Validate the complete unfiltered multi-start candidate set."""
     expected_attempts = configuration_bundle["primary_result"]["bellman_config"][
@@ -918,12 +985,26 @@ def validate_bellman_candidate_set(
             configuration_bundle["primary_result"]["bellman_config"][
                 "attacker_objective_id"
             ]
-            == configuration_bundle["primary_result"]["nlp_config"][
-                "attacker_objective_id"
-            ]
             == objective_id
         ),
     }
+    ordering_agreement = _ordering_value_agreement(
+        policies,
+        configuration_bundle["primary_result"]["validation_config"][
+            "objective_tolerance"
+        ],
+    )
+    checks["ordering_value_agreement"] = ordering_agreement["agree"]
+    primary_pod_to_go = pod_to_go_maps[next(iter(policies))]
+    primary_finite = np.isfinite(policies[next(iter(policies))]["value"])
+    finite_pod = primary_pod_to_go[primary_finite]
+    checks["pod_to_go_bounded_unit_interval"] = bool(
+        finite_pod.size == 0
+        or np.all((finite_pod >= 0.0) & (finite_pod <= 1.0))
+    )
+    checks["pod_to_go_matches_cost_to_go_support"] = bool(
+        np.array_equal(np.isfinite(primary_pod_to_go), primary_finite)
+    )
     failed_checks = [name for name, passed in checks.items() if not passed]
     failed_attempt_count = sum(not attempt["success"] for attempt in attempts)
     warnings = (
@@ -948,6 +1029,7 @@ def validate_bellman_candidate_set(
                 float(np.max(mission_costs)) if mission_costs.size else np.inf
             ),
             "exploration_ordering_count": len(policies),
+            "ordering_maximum_value_disagreement": ordering_agreement["max_diff"],
         },
         "tolerances": {
             "terrain": configuration_bundle["primary_result"][
@@ -969,6 +1051,189 @@ def validate_bellman_candidate_set(
             "Phase 6 multi-start Bellman candidate validation passed"
             if not failed_checks
             else f"Bellman candidate set failed checks: {failed_checks}"
+        ),
+    }
+
+
+def _ordering_value_agreement(
+    policies: dict[str, dict[str, Any]],
+    tolerance: float,
+) -> dict[str, Any]:
+    """Compare converged cost-to-go maps across exploration orderings.
+
+    Bellman's action ordering only breaks ties between equal-cost actions,
+    so independently solved orderings must agree everywhere both report a
+    finite value. Disagreement beyond `tolerance` indicates a tie-breaking
+    or convergence defect in the DP itself, not a case for a second solver.
+    """
+    values = list(policies.values())
+    max_diff = 0.0
+    for first_index in range(len(values)):
+        for second_index in range(first_index + 1, len(values)):
+            first_value = values[first_index]["value"]
+            second_value = values[second_index]["value"]
+            both_finite = np.isfinite(first_value) & np.isfinite(second_value)
+            if np.any(both_finite):
+                max_diff = max(
+                    max_diff,
+                    float(np.max(np.abs(
+                        first_value[both_finite] - second_value[both_finite]
+                    ))),
+                )
+    return {"agree": max_diff <= tolerance, "max_diff": max_diff}
+
+
+def select_authoritative_bellman_response(
+    bellman_candidate_bundle: dict[str, Any],
+    configuration_bundle: dict[str, Any],
+) -> dict[str, Any]:
+    """Select the Bellman-optimal Attacker response from the candidate set.
+
+    This is the sole authoritative Attacker best response. It performs no
+    optimization of its own: it deterministically selects the minimum-cost
+    member of the already-converged, already-validated `generate_bellman_
+    candidates` output and re-exposes its fields under a stable schema. No
+    CasADi/IPOPT NLP is used anywhere in this call.
+
+    Optimality is scoped to the discretized switching-point seed grid and
+    the discretized (velocity, gamma) state-action grid used by Bellman; no
+    continuous global optimum is claimed.
+    """
+    _require_successful_bundle(bellman_candidate_bundle, "bellman_candidate_bundle")
+    _require_successful_bundle(configuration_bundle, "configuration_bundle")
+    result = bellman_candidate_bundle["primary_result"]
+    candidates = list(result["candidates"])
+    if not candidates:
+        raise ValueError("BellmanCandidateSet contains no feasible candidates")
+
+    tolerance = configuration_bundle["primary_result"]["validation_config"][
+        "objective_tolerance"
+    ]
+    ordered = sorted(
+        candidates, key=lambda candidate: (candidate["mission_cost"], candidate["candidate_id"])
+    )
+    best = ordered[0]
+    tied = [
+        candidate
+        for candidate in ordered
+        if abs(candidate["mission_cost"] - best["mission_cost"]) <= tolerance
+    ]
+    hazard_breakdown = best["hazard_breakdown"]
+    goal_error = best["trajectory"][-1] - np.array([
+        configuration_bundle["primary_result"]["environment_config"]["z_goal"],
+        configuration_bundle["primary_result"]["environment_config"]["h_goal"],
+    ])
+
+    primary_result = {
+        "solution_id": f"bellman-optimal-{best['candidate_id']}",
+        "source_candidate_id": best["candidate_id"],
+        "source_start_id": best["start_id"],
+        "candidate_count_searched": len(candidates),
+        "tie_count": len(tied),
+        "switching_point": best["switching_point"],
+        "trajectory": best["trajectory"],
+        "speed_profile": best["speed_profile"],
+        "gamma_profile": best["gamma_profile"],
+        "mission_cost": best["mission_cost"],
+        "mission_objective": best["mission_cost"],
+        "objective_breakdown": best["objective_breakdown"],
+        "powered_time": best["powered_time"],
+        "glide_time": best["glide_time"],
+        "mission_time": best["mission_time"],
+        "mission_pod": best["mission_pod"],
+        "hazard_breakdown": hazard_breakdown,
+        "powered_hazard": hazard_breakdown["powered_acoustic_hazard"],
+        "glide_hazard": hazard_breakdown["glide_radar_doppler_hazard"],
+        "powered_path": best["powered_path"],
+        "constraint_residuals": {
+            "goal_error": _readonly(goal_error),
+            "goal_error_norm": float(np.linalg.norm(goal_error)),
+            "minimum_terrain_margin": best["validation"]["metrics"][
+                "minimum_terrain_margin"
+            ],
+        },
+        "metadata": {
+            **best["metadata"],
+            "coarse": False,
+            "warm_start_only": False,
+            "is_final_attacker_solution": True,
+        },
+        "validation": best["validation"],
+    }
+    validation = validate_authoritative_bellman_response(
+        best, ordered, tied, bellman_candidate_bundle, configuration_bundle
+    )
+    return {
+        "primary_result": primary_result,
+        "validation": validation,
+        "metadata": {
+            "schema_name": "AuthoritativeBellmanAttackerResponse",
+            "schema_version": "1.0.0",
+            "producer_phase": 8,
+            "producer_module": "p1b_4D.bellman",
+            "solution_method": "bellman_dynamic_programming",
+            "optimality_scope": "discretized_switching_point_and_state_action_grid",
+            "attacker_objective_id": configuration_bundle["primary_result"][
+                "cost_config"
+            ]["attacker"]["objective_id"],
+            "is_final_attacker_solution": True,
+            "global_optimum_claim": False,
+            "selection_rule": "minimum_mission_cost_among_bellman_candidates",
+        },
+        "status": {
+            "success": validation["passed"],
+            "code": "OK" if validation["passed"] else "BELLMAN_RESPONSE_INVALID",
+            "message": validation["summary"],
+            "warnings": validation["warnings"],
+            "failed_checks": validation["failed_checks"],
+        },
+    }
+
+
+def validate_authoritative_bellman_response(
+    best: dict[str, Any],
+    ordered_candidates: list[dict[str, Any]],
+    tied_candidates: list[dict[str, Any]],
+    bellman_candidate_bundle: dict[str, Any],
+    configuration_bundle: dict[str, Any],
+) -> dict[str, Any]:
+    """Validate the selected response against the full candidate set and grid."""
+    tie_break_ok = tied_candidates[0]["candidate_id"] == best["candidate_id"]
+    checks = {
+        "bellman_candidate_set_valid": bellman_candidate_bundle["status"]["success"],
+        "selected_candidate_valid": best["validation"]["passed"],
+        "selection_is_minimum_cost": best["mission_cost"]
+        == ordered_candidates[0]["mission_cost"],
+        "deterministic_tie_break_applied": tie_break_ok,
+        "objective_matches_bellman_value": best["validation"]["checks"][
+            "objective_consistency"
+        ],
+        "goal_reached": best["validation"]["checks"]["goal_reached"],
+        "terrain_clearance": best["validation"]["checks"]["terrain_clearance"],
+        "los_feasibility": best["validation"]["checks"]["los_feasibility"],
+    }
+    failed_checks = [name for name, passed in checks.items() if not passed]
+    warnings = (
+        [f"{len(tied_candidates)} candidates tied within objective_tolerance"]
+        if len(tied_candidates) > 1
+        else []
+    )
+    return {
+        "passed": not failed_checks,
+        "checks": checks,
+        "metrics": {
+            "selected_mission_cost": best["mission_cost"],
+            "candidate_count": len(ordered_candidates),
+            "tie_count": len(tied_candidates),
+            "minimum_candidate_cost": ordered_candidates[0]["mission_cost"],
+            "maximum_candidate_cost": ordered_candidates[-1]["mission_cost"],
+        },
+        "warnings": warnings,
+        "failed_checks": failed_checks,
+        "summary": (
+            "Authoritative Bellman Attacker response validation passed"
+            if not failed_checks
+            else f"Authoritative Bellman response failed checks: {failed_checks}"
         ),
     }
 

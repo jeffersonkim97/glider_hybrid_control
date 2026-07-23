@@ -14,7 +14,7 @@ import numpy as np
 
 REQUIRED_BUNDLES = (
     "geometry", "detection", "projected_cost", "bellman",
-    "filtered_bellman", "attacker_nlp", "stackelberg",
+    "bellman_response", "stackelberg",
 )
 
 
@@ -117,14 +117,17 @@ def _figure_projected_cost(bundles: dict[str, Any], config: dict[str, Any]):
 
 def _figure_cost_to_go(bundles: dict[str, Any], config: dict[str, Any], paths: bool):
     figure, axis = plt.subplots(figsize=config["default_figure_size"], constrained_layout=True)
-    image = _draw_heatmap(axis, bundles["bellman"]["arrays"]["cost_to_go"], bundles, config["colormaps"]["projected_cost_to_go"], config)
+    image = _draw_heatmap(axis, bundles["bellman"]["arrays"]["pod_to_go"], bundles, config["colormaps"]["projected_cost_to_go"], config, vmin=0.0, vmax=1.0)
     _draw_zones(axis, bundles, config)
     if paths:
         _draw_all_paths(axis, bundles, config)
     _draw_geometry_markers(axis, bundles, config)
     _draw_terrain_last(axis, bundles, config)
-    figure.colorbar(image, ax=axis, label="Bellman cost-to-go")
-    axis.set_title("Cost-to-Go with Bellman and NLP Paths" if paths else "Projected Cost-to-Go Heatmap")
+    figure.colorbar(image, ax=axis, label="Probability of detection (PoD) cost-to-go")
+    axis.set_title(
+        "PoD Cost-to-Go with Bellman Candidates and Bellman-optimal Path"
+        if paths else "PoD Cost-to-Go Heatmap"
+    )
     _finish_axis(axis, bundles)
     return figure
 
@@ -134,15 +137,15 @@ def _figure_stackelberg(bundles: dict[str, Any], config: dict[str, Any]):
     stack = bundles["stackelberg"]["arrays"]
     z = stack["final_terrain_z"]
     h_grid = stack["final_terrain_h_grid"]
-    extent = (z[0], z[-1], h_grid[0], h_grid[-1])
-    cost_to_go = np.ma.masked_invalid(np.ma.masked_where(
-        ~np.isfinite(stack["final_cost_to_go"]),
-        stack["final_cost_to_go"],
+    extent = _pixel_extent(z, h_grid)
+    pod_to_go = np.ma.masked_invalid(np.ma.masked_where(
+        ~np.isfinite(stack["final_pod_to_go"]),
+        stack["final_pod_to_go"],
     ))
     image = axis.imshow(
-        cost_to_go.T, origin="lower", aspect="auto", extent=extent,
+        pod_to_go.T, origin="lower", aspect="auto", extent=extent,
         cmap=config["colormaps"]["projected_cost_to_go"],
-        alpha=config["heatmap_alpha"], zorder=1,
+        alpha=config["heatmap_alpha"], vmin=0.0, vmax=1.0, zorder=1,
     )
     axis.imshow(
         stack["final_los_mask"].T, origin="lower", aspect="auto",
@@ -159,7 +162,8 @@ def _figure_stackelberg(bundles: dict[str, Any], config: dict[str, Any]):
     trajectory = stack["optimal_trajectory"]
     sensor = stack["final_sensor_position"]
     switching = stack["optimal_switching_point"]
-    axis.plot(trajectory[:, 0], trajectory[:, 1], color=config["colors"]["stackelberg"], linewidth=2.8, label="Optimal NLP path", zorder=40)
+    full_path = np.vstack((stack["optimal_powered_path"], trajectory))
+    axis.plot(full_path[:, 0], full_path[:, 1], color=config["colors"]["stackelberg"], linewidth=2.8, label="Bellman-optimal path", zorder=40)
     axis.scatter(sensor[0], sensor[1], marker=config["marker_styles"]["defender"], color=config["colors"]["stackelberg"], edgecolor="black", s=90, label="Optimal Defender", zorder=50)
     axis.scatter(switching[0], switching[1], marker=config["marker_styles"]["switching_point"], color=config["colors"]["stackelberg"], s=55, label="Optimal switch", zorder=50)
     axis.plot(z, stack["final_tangent_line_height"], linestyle=config["line_styles"]["los_tangent"], color="dimgray", linewidth=config["line_width"], label="LOS tangent", zorder=30)
@@ -169,32 +173,44 @@ def _figure_stackelberg(bundles: dict[str, Any], config: dict[str, Any]):
     terrain_zorder = config["terrain_zorder"]
     axis.fill_between(z, 0.0, terrain, color=config["colors"]["terrain_fill"], zorder=terrain_zorder, label="Terrain")
     axis.plot(z, terrain, color=config["colors"]["terrain_outline"], linestyle=config["line_styles"]["terrain"], linewidth=config["line_width"], zorder=terrain_zorder + 1)
-    figure.colorbar(image, ax=axis, label="Bellman cost-to-go")
+    figure.colorbar(image, ax=axis, label="Probability of detection (PoD) cost-to-go")
     axis.set_title("Final Stackelberg Solution")
     axis.set_xlabel("Horizontal position z [m]")
     axis.set_ylabel("Altitude h [m]")
     axis.set_xlim(z[0], z[-1])
     axis.set_ylim(h_grid[0], h_grid[-1])
     axis.grid(True, linewidth=0.4, alpha=0.25)
-    handles, labels = axis.get_legend_handles_labels()
-    unique = dict(zip(labels, handles))
-    axis.legend(unique.values(), unique.keys(), loc="best", frameon=True)
+    _place_legend_outside(axis)
     return figure
 
 
-def _draw_heatmap(axis, values, bundles, cmap, config):
+def _pixel_extent(z, h):
+    """Outer image bounds for imshow given cell-center grid coordinates.
+
+    `z`/`h` are linspace-sampled cell centers, but `imshow`'s `extent` is the
+    outer edge of the pixel grid. Passing cell centers directly shifts every
+    pixel center half a cell away from its true coordinate, misaligning the
+    heatmap against anything else plotted at exact grid coordinates (e.g. the
+    Bellman-optimal trajectory).
+    """
+    dz = (z[1] - z[0]) / 2.0 if z.size > 1 else 0.0
+    dh = (h[1] - h[0]) / 2.0 if h.size > 1 else 0.0
+    return (z[0] - dz, z[-1] + dz, h[0] - dh, h[-1] + dh)
+
+
+def _draw_heatmap(axis, values, bundles, cmap, config, vmin=None, vmax=None):
     geometry = bundles["geometry"]["arrays"]
     z = geometry["terrain_z"]
     h = geometry["terrain_h_grid"]
     masked = np.ma.masked_invalid(np.ma.masked_where(~np.isfinite(values), values))
-    return axis.imshow(masked.T, origin="lower", aspect="auto", extent=(z[0], z[-1], h[0], h[-1]), cmap=cmap, alpha=config["heatmap_alpha"], zorder=1)
+    return axis.imshow(masked.T, origin="lower", aspect="auto", extent=_pixel_extent(z, h), cmap=cmap, alpha=config["heatmap_alpha"], vmin=vmin, vmax=vmax, zorder=1)
 
 
 def _draw_zones(axis, bundles, config):
     geometry = bundles["geometry"]["arrays"]
     z = geometry["terrain_z"]
     h = geometry["terrain_h_grid"]
-    extent = (z[0], z[-1], h[0], h[-1])
+    extent = _pixel_extent(z, h)
     axis.imshow(geometry["los_los_mask"].T, origin="lower", aspect="auto", extent=extent, cmap="Greens", alpha=0.13, interpolation="nearest", zorder=4)
     axis.imshow(geometry["los_occlusion_mask"].T, origin="lower", aspect="auto", extent=extent, cmap="Reds", alpha=0.13, interpolation="nearest", zorder=5)
     axis.plot([], [], color=config["colors"]["los"], linewidth=6, alpha=0.35, label="LOS zone")
@@ -215,12 +231,15 @@ def _draw_geometry_markers(axis, bundles, config, sensor=True):
 
 def _draw_all_paths(axis, bundles, config):
     bellman = bundles["bellman"]["arrays"]
-    for index, trajectory in enumerate(_unpack(bellman["trajectory_points"], bellman["trajectory_offsets"])):
-        axis.plot(trajectory[:, 0], trajectory[:, 1], color=config["colors"]["bellman"], linestyle=config["line_styles"]["bellman"], linewidth=1.0, alpha=0.55, label="Bellman candidates" if index == 0 else None, zorder=20)
-    nlp = bundles["attacker_nlp"]["arrays"]
-    for index, trajectory in enumerate(_unpack(nlp["trajectory_points"], nlp["trajectory_offsets"])):
-        axis.plot(trajectory[:, 0], trajectory[:, 1], color=config["colors"]["nlp"], linestyle=config["line_styles"]["nlp"], linewidth=config["line_width"], alpha=0.85, label="NLP refinements" if index == 0 else None, zorder=25)
-    switches = np.vstack((bellman["switching_points"], nlp["switching_points"]))
+    glide_trajectories = _unpack(bellman["trajectory_points"], bellman["trajectory_offsets"])
+    powered_paths = _unpack(bellman["powered_path_points"], bellman["powered_path_offsets"])
+    for index, (powered_path, trajectory) in enumerate(zip(powered_paths, glide_trajectories)):
+        full_path = np.vstack((powered_path, trajectory))
+        axis.plot(full_path[:, 0], full_path[:, 1], color=config["colors"]["bellman"], linestyle=config["line_styles"]["bellman"], linewidth=1.0, alpha=0.55, label="Bellman candidates" if index == 0 else None, zorder=20)
+    response = bundles["bellman_response"]["arrays"]
+    response_full_path = np.vstack((response["powered_path"], response["trajectory"]))
+    axis.plot(response_full_path[:, 0], response_full_path[:, 1], color=config["colors"]["stackelberg"], linestyle="-", linewidth=config["line_width"] + 0.6, alpha=0.95, label="Bellman-optimal response", zorder=25)
+    switches = np.vstack((bellman["switching_points"], response["switching_point"].reshape(1, 2)))
     axis.scatter(switches[:, 0], switches[:, 1], marker=config["marker_styles"]["switching_point"], facecolors="none", edgecolors="black", s=30, label="Switching points", zorder=35)
 
 
@@ -239,9 +258,17 @@ def _finish_axis(axis, bundles):
     axis.set_xlim(left=0.0)
     axis.set_ylim(0.0, bundles["geometry"]["arrays"]["terrain_h_grid"][-1])
     axis.grid(True, linewidth=0.4, alpha=0.25)
+    _place_legend_outside(axis)
+
+
+def _place_legend_outside(axis, ncol=3):
     handles, labels = axis.get_legend_handles_labels()
     unique = dict(zip(labels, handles))
-    axis.legend(unique.values(), unique.keys(), loc="best", frameon=True)
+    axis.legend(
+        unique.values(), unique.keys(),
+        loc="upper left", bbox_to_anchor=(0.0, -0.14),
+        ncol=ncol, frameon=True,
+    )
 
 
 def _export_figure(figure, figure_id, directory, config):
@@ -265,15 +292,21 @@ def _apply_style(config):
 def _validate_visualizations(bundles, generated, missing_figures, config):
     geometry = bundles["geometry"]["arrays"]
     shape = geometry["los_los_mask"].shape
+    bellman_pod_to_go = bundles["bellman"]["arrays"]["pod_to_go"]
     dimensions_consistent = (
         geometry["los_occlusion_mask"].shape == shape
         and bundles["projected_cost"]["arrays"]["projected_cost"].shape == shape
         and bundles["bellman"]["arrays"]["cost_to_go"].shape == shape
+        and bellman_pod_to_go.shape == shape
+    )
+    finite_pod = bellman_pod_to_go[np.isfinite(bellman_pod_to_go)]
+    pod_to_go_bounded = bool(
+        finite_pod.size == 0 or np.all((finite_pod >= 0.0) & (finite_pod <= 1.0))
     )
     paths = [path for item in generated for path in item["paths"]]
     stack = bundles.get("stackelberg", {}).get("arrays")
     stack_required = (
-        "final_cost_to_go", "final_terrain_z", "final_terrain_height",
+        "final_cost_to_go", "final_pod_to_go", "final_terrain_z", "final_terrain_height",
         "final_terrain_h_grid", "final_terrain_mask", "final_los_mask",
         "final_occlusion_mask", "final_sensor_position",
         "final_goal_position", "final_tangent_line_height",
@@ -284,6 +317,7 @@ def _validate_visualizations(bundles, generated, missing_figures, config):
     stack_dimensions_consistent = stack is None or (
         stack_arrays_present
         and stack["final_cost_to_go"].shape
+        == stack["final_pod_to_go"].shape
         == stack["final_los_mask"].shape
         == stack["final_occlusion_mask"].shape
         == stack["final_terrain_mask"].shape
@@ -301,6 +335,7 @@ def _validate_visualizations(bundles, generated, missing_figures, config):
         "figure5_final_arrays_present": stack_arrays_present,
         "figure5_final_dimensions_consistent": stack_dimensions_consistent,
         "figure5_sensor_consistent": stack_sensor_consistent,
+        "pod_to_go_bounded_unit_interval": pod_to_go_bounded,
     }
     failed = [name for name, passed in checks.items() if not passed]
     return {"passed": not failed, "checks": checks, "metrics": {"generated_figure_count": len(generated), "exported_file_count": len(paths), "missing_figure_count": len(missing_figures)}, "warnings": [f"Not generated: {name}" for name in missing_figures], "failed_checks": failed, "summary": "Available visualization validation passed" if not failed else f"Visualization validation failed: {failed}"}

@@ -4,6 +4,8 @@
 
 **Status:** mandatory implementation contract. This document contains no algorithm implementation or optimization code.
 
+> **SUPERSEDED (2026-07-23):** Following advisor review, the Attacker best response is computed exclusively by Bellman dynamic programming (`p1b_4D.bellman.select_authoritative_bellman_response`). Rules below that require Bellman/NLP weight consistency, NLP feasibility/termination tracking, or warm-start provenance apply only to the deprecated, disconnected `attacker_nlp.py`/`candidate_filtering.py` experimental comparison path, not the authoritative pipeline in `stackelberg_solver.py`.
+
 These standards apply to every future module, function, notebook execution cell, validation routine, exporter, and visualization component in the project. Earlier architecture, mathematics, public interfaces, output schemas, and solver hierarchy remain authoritative.
 
 ## 1. Priority order
