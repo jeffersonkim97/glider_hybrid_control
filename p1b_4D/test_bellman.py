@@ -122,7 +122,7 @@ class BellmanTests(unittest.TestCase):
         environment = boundary_configuration["primary_result"][
             "environment_config"
         ]
-        goal = np.array([environment["z_goal"], environment["h_goal"]])
+        goal = np.array(geometry["primary_result"]["goal_position"])
         goal_radius = boundary_configuration["primary_result"][
             "validation_config"
         ]["goal_radius"]
@@ -159,8 +159,7 @@ class BellmanTests(unittest.TestCase):
             two_hill_configuration, geometry, detection, stage, None
         )
         self.assertTrue(bellman["status"]["success"])
-        environment = two_hill_configuration["primary_result"]["environment_config"]
-        goal = np.array([environment["z_goal"], environment["h_goal"]])
+        goal = np.array(geometry["primary_result"]["goal_position"])
         goal_radius = two_hill_configuration["primary_result"]["validation_config"][
             "goal_radius"
         ]

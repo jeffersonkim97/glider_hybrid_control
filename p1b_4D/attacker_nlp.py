@@ -218,8 +218,8 @@ def solve_attacker_nlp_start(
     opti.subject_to(h[0] == h_switch)
     goal_radius = validation_config["goal_radius"]
     opti.subject_to(
-        (z[-1] - environment["z_goal"]) ** 2
-        + (h[-1] - environment["h_goal"]) ** 2
+        (z[-1] - geometry["goal_position"][0]) ** 2
+        + (h[-1] - geometry["goal_position"][1]) ** 2
         <= goal_radius**2
     )
     opti.subject_to(opti.bounded(environment["airspace"]["z_min"], z, environment["airspace"]["z_max"]))
@@ -799,9 +799,7 @@ def compute_constraint_residuals(
     dynamics_h = np.diff(h) - interval_time * velocity * np.sin(gamma)
     los_margin = h - (tangent["tangent_slope"] * z + tangent["tangent_intercept"])
     terrain_margin = h - terrain
-    goal_error = values["trajectory"][-1] - np.array([
-        configs["environment_config"]["z_goal"], configs["environment_config"]["h_goal"]
-    ])
+    goal_error = values["trajectory"][-1] - np.asarray(geometry["goal_position"])
     return {
         "goal_error": _readonly(goal_error),
         "terrain_margin": _readonly(terrain_margin),
@@ -1017,9 +1015,7 @@ def build_dynamically_consistent_warm_start(
         )
 
     switching_point = np.asarray(candidate["switching_point"], dtype=float)
-    goal_center = np.array(
-        [environment["z_goal"], environment["h_goal"]], dtype=float
-    )
+    goal_center = np.asarray(geometry["goal_position"], dtype=float)
     goal = source[-1].copy()
     if np.linalg.norm(goal - goal_center) > (
         configs["validation_config"]["goal_radius"]

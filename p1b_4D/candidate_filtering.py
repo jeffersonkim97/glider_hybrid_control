@@ -76,6 +76,7 @@ def filter_bellman_candidates(
         thresholds,
         top_k,
         configuration_bundle,
+        bellman_candidate_bundle["metadata"]["goal_position"],
     )
     return {
         "primary_result": {
@@ -165,9 +166,9 @@ def validate_filtered_candidate_set(
     thresholds: dict[str, Any],
     top_k: int,
     configuration_bundle: dict[str, Any],
+    goal_position: tuple[float, float],
 ) -> dict[str, Any]:
     """Validate unique topology, objective order, ranks, switches, and goals."""
-    environment = configuration_bundle["primary_result"]["environment_config"]
     validation_config = configuration_bundle["primary_result"]["validation_config"]
     ids = [candidate["candidate_id"] for candidate in retained]
     costs = [candidate["mission_cost"] for candidate in retained]
@@ -176,7 +177,7 @@ def validate_filtered_candidate_set(
         for i in range(len(retained))
         for j in range(i + 1, len(retained))
     )
-    goal = np.array([environment["z_goal"], environment["h_goal"]])
+    goal = np.array(goal_position)
     checks = {
         "candidate_ids_unique": len(ids) == len(set(ids)),
         "unique_path_topology": topology_unique,

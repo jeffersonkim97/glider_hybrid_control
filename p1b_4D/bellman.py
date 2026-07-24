@@ -64,10 +64,10 @@ def generate_bellman_candidates(
             raise ValueError("ProjectedCost must explicitly prohibit Bellman use")
 
     configs = configuration_bundle["primary_result"]
-    environment = configs["environment_config"]
     vehicle = configs["vehicle_config"]
     bellman_config = configs["bellman_config"]
     validation_config = configs["validation_config"]
+    goal_position = geometry_bundle["primary_result"]["goal_position"]
     stage = stage_cost_4d_bundle["primary_result"]
     grids = stage["grids"]
     j4d = stage["j4d"]
@@ -82,7 +82,7 @@ def generate_bellman_candidates(
             j4d,
             transitions,
             grids,
-            environment,
+            goal_position,
             validation_config,
             ordering,
             bellman_config,
@@ -224,6 +224,13 @@ def generate_bellman_candidates(
             },
             "random_seed": bellman_config["random_seed"],
             "filtering_applied": False,
+            # Terrain-derived, like h_sensor: carried here so downstream
+            # consumers that only receive this bundle (not geometry_bundle
+            # itself) can still read the authoritative goal position.
+            "goal_position": (
+                float(goal_position[0]),
+                float(goal_position[1]),
+            ),
         },
         "status": {
             "success": validation["passed"],
@@ -297,7 +304,6 @@ def construct_coarse_transitions(
     geometry = geometry_bundle["primary_result"]
     stage = stage_cost_4d_bundle["primary_result"]
     grids = stage["grids"]
-    environment = configuration_bundle["primary_result"]["environment_config"]
     vehicle = configuration_bundle["primary_result"]["vehicle_config"]
     bellman = configuration_bundle["primary_result"]["bellman_config"]
     validation = configuration_bundle["primary_result"]["validation_config"]
@@ -316,6 +322,7 @@ def construct_coarse_transitions(
     terrain_model = geometry["terrain_model"]
     tangent = geometry["los_geometry"]
     sensor_position = geometry["sensor_position"]
+    goal_position = geometry["goal_position"]
     segment_count = bellman["search_options"]["segment_check_count"]
     fractions = np.linspace(0.0, 1.0, segment_count)
     goal_radius = float(validation["goal_radius"])
@@ -327,8 +334,8 @@ def construct_coarse_transitions(
             delta_h = velocity * vehicle["time_step"] * np.sin(gamma)
             next_z = mesh_z + delta_z
             next_h = mesh_h + delta_h
-            relative_z = mesh_z - environment["z_goal"]
-            relative_h = mesh_h - environment["h_goal"]
+            relative_z = mesh_z - goal_position[0]
+            relative_h = mesh_h - goal_position[1]
             quadratic_a = delta_z**2 + delta_h**2
             quadratic_b = relative_z * delta_z + relative_h * delta_h
             quadratic_c = relative_z**2 + relative_h**2 - goal_radius**2
@@ -367,8 +374,8 @@ def construct_coarse_transitions(
                 mapped_z_safe, mapped_h_safe
             ]
             successor_goal = (
-                (z_grid[mapped_z_safe] - environment["z_goal"]) ** 2
-                + (h_grid[mapped_h_safe] - environment["h_goal"]) ** 2
+                (z_grid[mapped_z_safe] - goal_position[0]) ** 2
+                + (h_grid[mapped_h_safe] - goal_position[1]) ** 2
                 <= goal_radius**2
             )
             segment_valid = np.ones(mesh_z.shape, dtype=bool)
@@ -441,7 +448,7 @@ def solve_coarse_bellman(
     j4d: np.ndarray,
     transitions: dict[str, np.ndarray],
     grids: dict[str, np.ndarray],
-    environment: dict[str, Any],
+    goal_position: np.ndarray,
     validation_config: dict[str, Any],
     exploration_ordering: str,
     bellman_config: dict[str, Any],
@@ -457,8 +464,8 @@ def solve_coarse_bellman(
     policy_next_h = np.full(value.shape, -1, dtype=np.int32)
     policy_terminal = np.zeros(value.shape, dtype=bool)
     goal_mask = (
-        (z_grid[:, None] - environment["z_goal"]) ** 2
-        + (h_grid[None, :] - environment["h_goal"]) ** 2
+        (z_grid[:, None] - goal_position[0]) ** 2
+        + (h_grid[None, :] - goal_position[1]) ** 2
         <= validation_config["goal_radius"] ** 2
     )
     value[goal_mask] = 0.0
@@ -871,6 +878,7 @@ def validate_bellman_candidate(
     validation = configs["validation_config"]
     tangent = geometry_bundle["primary_result"]["los_geometry"]
     sensor_position = geometry_bundle["primary_result"]["sensor_position"]
+    goal_position = geometry_bundle["primary_result"]["goal_position"]
     terrain_model = geometry_bundle["primary_result"]["terrain_model"]
     terrain_margin = trajectory[:, 1] - terrain_height(
         terrain_model, trajectory[:, 0]
@@ -888,10 +896,7 @@ def validate_bellman_candidate(
     combined_local_residual = abs(
         powered["powered_cost"] + glide_topology_cost - mission_cost
     )
-    goal_distance = float(np.linalg.norm(
-        trajectory[-1]
-        - np.array([environment["z_goal"], environment["h_goal"]])
-    ))
+    goal_distance = float(np.linalg.norm(trajectory[-1] - goal_position))
     delta_z = np.diff(trajectory[:, 0])
     checks = {
         "goal_reached": (
@@ -1128,10 +1133,9 @@ def select_authoritative_bellman_response(
         if abs(candidate["mission_cost"] - best["mission_cost"]) <= tolerance
     ]
     hazard_breakdown = best["hazard_breakdown"]
-    goal_error = best["trajectory"][-1] - np.array([
-        configuration_bundle["primary_result"]["environment_config"]["z_goal"],
-        configuration_bundle["primary_result"]["environment_config"]["h_goal"],
-    ])
+    goal_error = best["trajectory"][-1] - np.array(
+        bellman_candidate_bundle["metadata"]["goal_position"]
+    )
 
     primary_result = {
         "solution_id": f"bellman-optimal-{best['candidate_id']}",

@@ -144,10 +144,22 @@ def sensor_position_from_z(
     return _readonly(np.array([coordinate, height], dtype=float))
 
 
-def goal_position_from_environment(environment: dict[str, Any]) -> np.ndarray:
-    """Return the fixed configured goal position [z_goal, h_goal]."""
+def goal_position_from_environment(
+    environment: dict[str, Any], terrain_model: TerrainModel
+) -> np.ndarray:
+    """Return the terrain-following goal position [z_goal, h_goal].
+
+    Mirrors `sensor_position_from_z`: h_goal is not a free configuration
+    value, it is the terrain elevation at the configured z_goal (a ground
+    target sits at whatever height the ground actually has there), so
+    moving a hill under a fixed z_goal moves h_goal with it automatically.
+    """
     _require_mapping(environment, "environment")
-    goal = np.array([environment["z_goal"], environment["h_goal"]], dtype=float)
+    z_goal = float(environment["z_goal"])
+    if not np.isfinite(z_goal):
+        raise ValueError("z_goal must be finite")
+    h_goal = float(terrain_height(terrain_model, z_goal))
+    goal = np.array([z_goal, h_goal], dtype=float)
     if goal.shape != (2,) or not np.all(np.isfinite(goal)):
         raise ValueError("goal position must contain two finite coordinates")
     return _readonly(goal)
@@ -361,7 +373,7 @@ def build_geometry_bundle(configuration_bundle: dict[str, Any]) -> dict[str, Any
     sensor_position = sensor_position_from_z(
         model, sensor["default_z_sensor"], sensor
     )
-    goal_position = goal_position_from_environment(environment)
+    goal_position = goal_position_from_environment(environment, model)
     los = compute_los_geometry(
         model,
         sensor_position,
@@ -439,6 +451,7 @@ def build_geometry_bundle(configuration_bundle: dict[str, Any]) -> dict[str, Any
             },
             "axis_order": ("z", "h"),
             "z_sensor": float(sensor_position[0]),
+            "goal_position": (float(goal_position[0]), float(goal_position[1])),
         },
         "status": {
             "success": validation["passed"],
@@ -469,6 +482,7 @@ def validate_geometry(
         terrain_height(terrain_model, sensor_position[0])
         + sensor["mount_height"]
     )
+    expected_goal_h = float(terrain_height(terrain_model, environment["z_goal"]))
     tangent_tolerance = float(validation["los_tolerance"])
     checks = {
         "terrain_dimensions": (
@@ -491,12 +505,9 @@ def validate_geometry(
         ),
         "goal_position": (
             goal_position.shape == (2,)
-            and np.allclose(
-                goal_position,
-                [environment["z_goal"], environment["h_goal"]],
-                rtol=0.0,
-                atol=0.0,
-            )
+            and goal_position[0] == environment["z_goal"]
+            and abs(goal_position[1] - expected_goal_h)
+            <= float(validation["terrain_tolerance"])
         ),
         "coverage_area": (
             0.0 <= los["coverage_area"] <= los["admissible_airspace_area"]

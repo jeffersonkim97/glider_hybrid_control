@@ -316,9 +316,9 @@ def build_symbolic_detection_bundle(
                 "hazard": "dimensionless",
                 "probability": "dimensionless",
             },
-            "goal_position": (
-                environment["z_goal"],
-                environment["h_goal"],
+            "goal_position": tuple(
+                float(value)
+                for value in geometry_bundle["primary_result"]["goal_position"]
             ),
             "powered_speed": vehicle["powered_speed"],
         },

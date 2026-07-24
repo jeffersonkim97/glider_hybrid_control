@@ -57,10 +57,20 @@ def generate_project_visualizations(
             _figure_stackelberg(bundles, plot_config), "figure_5_stackelberg_solution",
             output_directory, plot_config,
         ))
+        mission_history = _reconstruct_mission_hazard_history(bundles)
+        generated.append(_export_figure(
+            _figure_attacker_state_history(mission_history, plot_config),
+            "figure_6_attacker_state_history", output_directory, plot_config,
+        ))
+        generated.append(_export_figure(
+            _figure_defender_pod_accumulation(bundles, mission_history, plot_config),
+            "figure_7_defender_pod_accumulation", output_directory, plot_config,
+        ))
     generated_names = {item["figure_id"] for item in generated}
     expected_names = {
         "figure_1_geometry_overview", "figure_2_projected_cost",
         "figure_3_cost_to_go", "figure_4_all_paths", "figure_5_stackelberg_solution",
+        "figure_6_attacker_state_history", "figure_7_defender_pod_accumulation",
     }
     absent_figures = sorted(expected_names - generated_names)
     validation = _validate_visualizations(bundles, generated, absent_figures, plot_config)
@@ -184,6 +194,202 @@ def _figure_stackelberg(bundles: dict[str, Any], config: dict[str, Any]):
     return figure
 
 
+def _reconstruct_mission_hazard_history(bundles: dict[str, Any]) -> dict[str, np.ndarray]:
+    """Rebuild z/h/v/gamma and cumulative hazard/PoD vs time for the final path.
+
+    Built entirely from already-exported arrays and the exported configuration
+    snapshot -- no computation module (detection.py, bellman.py, ...) is
+    called, matching this module's "exported data only" contract. The rate
+    formulas below are copied verbatim from detection.py's symbolic graph
+    (powered = acoustic only; glide = radar + Doppler, gated by LOS
+    visibility) so the reconstructed cumulative hazard matches the
+    authoritative mission_pod this bundle already reports.
+    """
+    stack = bundles["stackelberg"]["arrays"]
+    manifest = bundles["stackelberg"]["manifest"]
+    detection_cfg = manifest["configuration"]["sensor_config"]["detection"]
+    vehicle_cfg = manifest["configuration"]["vehicle_config"]
+    time_step = float(vehicle_cfg["time_step"])
+    powered_speed = float(vehicle_cfg["powered_speed"])
+
+    powered_path = np.asarray(stack["optimal_powered_path"], dtype=float)
+    trajectory = np.asarray(stack["optimal_trajectory"], dtype=float)
+    velocity_profile = np.asarray(stack["optimal_velocity_profile"], dtype=float)
+    gamma_profile = np.asarray(stack["optimal_gamma_profile"], dtype=float)
+    sensor = np.asarray(stack["final_sensor_position"], dtype=float)
+    z_grid = np.asarray(stack["final_terrain_z"], dtype=float)
+    h_grid = np.asarray(stack["final_terrain_h_grid"], dtype=float)
+    los_mask = np.asarray(stack["final_los_mask"], dtype=bool)
+
+    def rate_at(z: float, h: float, v: float, gamma: float, powered: bool) -> float:
+        horizontal_range = sensor[0] - z
+        vertical_range = sensor[1] - h
+        slant_range = float(np.hypot(horizontal_range, vertical_range))
+        sensor_range = max(slant_range, float(detection_cfg["range_floor"]))
+        if powered:
+            acoustic_rate = (
+                float(detection_cfg["acoustic_coefficient"])
+                * v ** float(detection_cfg["acoustic_speed_exponent"])
+                / sensor_range**2
+            )
+            return float(detection_cfg["acoustic_rate_scale"]) * acoustic_rate
+        z_index = int(np.clip(np.searchsorted(z_grid, z), 0, z_grid.size - 1))
+        h_index = int(np.clip(np.searchsorted(h_grid, h), 0, h_grid.size - 1))
+        if not bool(los_mask[z_index, h_index]):
+            return 0.0
+        los_angle = np.arctan2(vertical_range, horizontal_range)
+        aspect_angle = np.arctan2(np.sin(gamma - los_angle), np.cos(gamma - los_angle))
+        rcs = float(detection_cfg["rcs_min"]) + (
+            float(detection_cfg["rcs_max"]) - float(detection_cfg["rcs_min"])
+        ) * np.cos(aspect_angle) ** 2
+        radar_rate = float(detection_cfg["radar_coefficient"]) * rcs / sensor_range**4
+        radial_velocity = v * (
+            np.cos(gamma) * horizontal_range + np.sin(gamma) * vertical_range
+        ) / sensor_range
+        doppler_rate = (
+            float(detection_cfg["doppler_coefficient"]) * radial_velocity**2 / sensor_range**4
+        )
+        return (
+            float(detection_cfg["radar_rate_scale"]) * radar_rate
+            + float(detection_cfg["radial_velocity_rate_scale"]) * doppler_rate
+        )
+
+    # Powered phase: same straight-line samples evaluate_powered_segment used,
+    # integrated the same way (trapezoid over the sample times).
+    powered_delta = powered_path[-1] - powered_path[0]
+    powered_distance = float(np.hypot(powered_delta[0], powered_delta[1]))
+    powered_time = powered_distance / powered_speed if powered_speed > 0.0 else 0.0
+    powered_gamma = float(np.arctan2(powered_delta[1], powered_delta[0]))
+    powered_count = powered_path.shape[0]
+    t_powered = np.linspace(0.0, powered_time, powered_count)
+    rate_powered = np.array([
+        rate_at(z, h, powered_speed, powered_gamma, True) for z, h in powered_path
+    ])
+    hazard_powered = np.concatenate((
+        [0.0],
+        np.cumsum(0.5 * (rate_powered[:-1] + rate_powered[1:]) * np.diff(t_powered)),
+    )) if powered_count > 1 else np.zeros(1)
+
+    # Glide phase: same left-endpoint-rate x time_step rule bellman.py's own
+    # accumulation uses (the terminal segment's fractional duration is a
+    # visualization-only approximation -- at most one time_step out of a
+    # multi-node glide, negligible for a time-history plot).
+    glide_count = trajectory.shape[0]
+    v_glide = np.array([
+        velocity_profile[min(i, velocity_profile.size - 1)] for i in range(glide_count)
+    ]) if velocity_profile.size else np.full(glide_count, powered_speed)
+    gamma_glide = np.array([
+        gamma_profile[min(i, gamma_profile.size - 1)] for i in range(glide_count)
+    ]) if gamma_profile.size else np.zeros(glide_count)
+    t_glide = powered_time + np.arange(glide_count) * time_step
+    hazard_glide = np.zeros(glide_count)
+    for index in range(1, glide_count):
+        rate = rate_at(
+            trajectory[index - 1, 0], trajectory[index - 1, 1],
+            v_glide[index - 1], gamma_glide[index - 1], False,
+        )
+        hazard_glide[index] = hazard_glide[index - 1] + rate * time_step
+
+    times = np.concatenate((t_powered, t_glide[1:]))
+    z_history = np.concatenate((powered_path[:, 0], trajectory[1:, 0]))
+    h_history = np.concatenate((powered_path[:, 1], trajectory[1:, 1]))
+    v_history = np.concatenate((np.full(powered_count, powered_speed), v_glide[1:]))
+    gamma_history = np.concatenate((np.full(powered_count, powered_gamma), gamma_glide[1:]))
+    hazard = np.concatenate((hazard_powered, hazard_powered[-1] + hazard_glide[1:]))
+
+    return {
+        "times": times,
+        "z": z_history,
+        "h": h_history,
+        "v": v_history,
+        "gamma": gamma_history,
+        "cumulative_hazard": hazard,
+        "cumulative_pod": 1.0 - np.exp(-hazard),
+        "switching_time": powered_time,
+        "reconstructed_mission_pod": float(1.0 - np.exp(-hazard[-1])),
+    }
+
+
+def _figure_attacker_state_history(history: dict[str, np.ndarray], config: dict[str, Any]):
+    figure, axes = plt.subplots(
+        4, 1, figsize=(config["default_figure_size"][0], config["default_figure_size"][1] * 1.4),
+        sharex=True, constrained_layout=True,
+    )
+    panels = (
+        (axes[0], history["z"], "z [m]", "post"),
+        (axes[1], history["h"], "h [m]", "post"),
+        (axes[2], history["v"], "v [m/s]", "post"),
+        (axes[3], np.degrees(history["gamma"]), "gamma [deg]", "post"),
+    )
+    for axis, values, label, style in panels:
+        axis.plot(
+            history["times"], values, color=config["colors"]["stackelberg"],
+            drawstyle=f"steps-{style}", linewidth=config["line_width"] + 0.4,
+            label="Bellman-optimal attacker state",
+        )
+        axis.axvline(
+            history["switching_time"], color="dimgray", linestyle="--",
+            linewidth=1.2, label="Powered to glide switch",
+        )
+        axis.set_ylabel(label)
+        axis.grid(True, linewidth=0.4, alpha=0.25)
+    axes[-1].set_xlabel("Mission time [s]")
+    axes[0].set_title("Attacker Optimal Strategy: State History")
+    _place_legend_outside(axes[-1], ncol=2, y_offset=-0.32)
+    return figure
+
+
+def _figure_defender_pod_accumulation(
+    bundles: dict[str, Any], history: dict[str, np.ndarray], config: dict[str, Any],
+):
+    stack = bundles["stackelberg"]["arrays"]
+    z_grid = np.asarray(stack["final_terrain_z"], dtype=float)
+    h_grid = np.asarray(stack["final_terrain_h_grid"], dtype=float)
+    cell_area = float(np.diff(z_grid)[0] * np.diff(h_grid)[0])
+    admissible_mask = ~np.asarray(stack["coverage_terrain_mask"], dtype=bool)
+    coverage_mask = np.asarray(stack["coverage_los_mask"], dtype=bool)
+    admissible_area = float(np.count_nonzero(admissible_mask)) * cell_area
+    coverage_area = float(np.count_nonzero(coverage_mask)) * cell_area
+    coverage_normalized = coverage_area / admissible_area if admissible_area > 0.0 else 0.0
+
+    figure, (axis_pod, axis_coverage) = plt.subplots(
+        2, 1, figsize=config["default_figure_size"],
+        gridspec_kw={"height_ratios": [3, 1]}, constrained_layout=True,
+    )
+    axis_pod.plot(
+        history["times"], history["cumulative_pod"],
+        color=config["colors"]["stackelberg"], linewidth=config["line_width"] + 0.4,
+        label="Cumulative probability of detection",
+    )
+    axis_pod.axvline(
+        history["switching_time"], color="dimgray", linestyle="--",
+        linewidth=1.2, label="Powered to glide switch",
+    )
+    axis_pod.set_ylabel("Cumulative PoD")
+    axis_pod.set_ylim(0.0, 1.0)
+    axis_pod.grid(True, linewidth=0.4, alpha=0.25)
+    axis_pod.set_title("Defender Optimal Strategy: PoD Accumulation and Coverage")
+
+    axis_coverage.barh(
+        [0], [coverage_normalized], color=config["colors"]["stackelberg"],
+        label="Normalized coverage area",
+    )
+    axis_coverage.set_xlim(0.0, 1.0)
+    axis_coverage.set_yticks([])
+    axis_coverage.set_xlabel("Normalized coverage area (fraction of admissible airspace)")
+    axis_coverage.text(
+        min(coverage_normalized + 0.02, 0.7), 0, f"{coverage_area:,.0f} m^2",
+        va="center", fontsize=config["font_size"] - 1,
+    )
+    axis_coverage.grid(True, axis="x", linewidth=0.4, alpha=0.25)
+
+    axis_pod.set_xlabel("Mission time [s]")
+    _place_legend_outside(
+        axis_coverage, ncol=2, y_offset=-0.55, source_axes=(axis_pod, axis_coverage),
+    )
+    return figure
+
+
 def _pixel_extent(z, h):
     """Outer image bounds for imshow given cell-center grid coordinates.
 
@@ -261,12 +467,17 @@ def _finish_axis(axis, bundles):
     _place_legend_outside(axis)
 
 
-def _place_legend_outside(axis, ncol=3):
-    handles, labels = axis.get_legend_handles_labels()
-    unique = dict(zip(labels, handles))
+def _place_legend_outside(axis, ncol=3, y_offset=-0.14, source_axes=None):
+    combined_handles: list = []
+    combined_labels: list = []
+    for source in (source_axes or (axis,)):
+        handles, labels = source.get_legend_handles_labels()
+        combined_handles.extend(handles)
+        combined_labels.extend(labels)
+    unique = dict(zip(combined_labels, combined_handles))
     axis.legend(
         unique.values(), unique.keys(),
-        loc="upper left", bbox_to_anchor=(0.0, -0.14),
+        loc="upper left", bbox_to_anchor=(0.0, y_offset),
         ncol=ncol, frameon=True,
     )
 

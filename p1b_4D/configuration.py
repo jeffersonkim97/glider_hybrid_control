@@ -17,7 +17,9 @@ environment_config: dict[str, Any] = {
     "z_start": 0.0,
     "h_start": 0.0,
     "z_goal": 2500.0,
-    "h_goal": 0.0,
+    # h_goal is not configured here: it is the terrain elevation at z_goal,
+    # computed once terrain exists (see geometry.goal_position_from_environment),
+    # exactly like h_sensor is derived from z_sensor rather than configured.
     "terrain": {
         "z_min": 0.0,
         "z_max": 2750.0,
@@ -305,7 +307,7 @@ validation_config: dict[str, Any] = {
 
 _REQUIRED_KEYS: dict[str, set[str]] = {
     "environment_config": {
-        "z_start", "h_start", "z_goal", "h_goal", "terrain", "grid",
+        "z_start", "h_start", "z_goal", "terrain", "grid",
         "airspace", "simulation", "units",
     },
     "vehicle_config": {
@@ -409,12 +411,12 @@ def validate_configuration(
         == (grid.get("h_max", 0.0) - grid.get("h_min", 0.0))
         / (grid.get("h_count", 2) - 1)
     )
+    # h_goal is terrain-derived (see environment_config's h_goal comment),
+    # so it cannot be bounds-checked before Phase 2 builds terrain -- exactly
+    # like h_sensor, which is likewise not bounds-checked here either.
     checks["goal.inside_environment"] = (
         env.get("z_start", 1.0) <= env.get("z_goal", 0.0)
         <= env.get("airspace", {}).get("z_max", -1.0)
-        and env.get("airspace", {}).get("h_min", 1.0)
-        <= env.get("h_goal", 0.0)
-        <= env.get("airspace", {}).get("h_max", -1.0)
     )
     checks["vehicle.speed_bounds"] = (
         0.0 < vehicle.get("glide_speed_min", 0.0)

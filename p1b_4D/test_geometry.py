@@ -108,14 +108,17 @@ class GeometryTests(unittest.TestCase):
             float(terrain_height(model, sensor_position[0])) + mount_height,
         )
 
-    def test_goal_is_fixed_from_environment(self) -> None:
+    def test_goal_follows_terrain(self) -> None:
         result = self.geometry_bundle["primary_result"]
         environment = self.configuration_bundle["primary_result"][
             "environment_config"
         ]
-        np.testing.assert_array_equal(
-            result["goal_position"],
-            [environment["z_goal"], environment["h_goal"]],
+        model = result["terrain_model"]
+        goal_position = result["goal_position"]
+        self.assertEqual(goal_position[0], environment["z_goal"])
+        self.assertAlmostEqual(
+            goal_position[1],
+            float(terrain_height(model, environment["z_goal"])),
         )
 
     def test_masks_partition_grid_and_include_terrain_in_occlusion(self) -> None:
