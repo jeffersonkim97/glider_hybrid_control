@@ -17,7 +17,7 @@ from p1b_4D.bellman import (
 from p1b_4D.bellman_io import export_bellman_candidate_bundle, import_bellman_candidate_bundle
 from p1b_4D.configuration import build_configuration_bundle
 from p1b_4D.detection import build_symbolic_detection_bundle
-from p1b_4D.geometry import build_geometry_bundle
+from p1b_4D.geometry import build_geometry_bundle, los_boundary_height
 from p1b_4D.phase_logging import close_phase_logger
 from p1b_4D.projection import construct_projected_cost_map
 from p1b_4D.stage_cost import construct_stage_cost_4d
@@ -98,7 +98,7 @@ class BellmanTests(unittest.TestCase):
             z_switch, h_switch = candidate["switching_point"]
             self.assertAlmostEqual(
                 h_switch,
-                tangent["tangent_slope"] * z_switch + tangent["tangent_intercept"],
+                float(los_boundary_height(tangent, np.array([z_switch]))[0]),
                 places=10,
             )
 
@@ -135,6 +135,52 @@ class BellmanTests(unittest.TestCase):
             self.assertLessEqual(
                 np.max(trajectory[:, 0]), environment["z_goal"] + goal_radius
             )
+
+    def test_two_hill_terrain_runs_end_to_end_through_bellman(self) -> None:
+        two_hill_configuration = deepcopy(self.configuration)
+        two_hill_configuration["primary_result"]["environment_config"] = deepcopy(
+            two_hill_configuration["primary_result"]["environment_config"]
+        )
+        two_hill_configuration["primary_result"]["environment_config"]["terrain"] = {
+            "z_min": 0.0,
+            "z_max": 2750.0,
+            "hills": (
+                {"z_ridge": 1000.0, "h_ridge": 100.0, "width": 100.0},
+                {"z_ridge": 1500.0, "h_ridge": 100.0, "width": 100.0},
+            ),
+        }
+        geometry = build_geometry_bundle(two_hill_configuration)
+        self.assertTrue(geometry["status"]["success"])
+        detection = build_symbolic_detection_bundle(two_hill_configuration, geometry)
+        self.assertTrue(detection["status"]["success"])
+        stage = construct_stage_cost_4d(two_hill_configuration, geometry, detection)
+        self.assertTrue(stage["status"]["success"])
+        bellman = generate_bellman_candidates(
+            two_hill_configuration, geometry, detection, stage, None
+        )
+        self.assertTrue(bellman["status"]["success"])
+        environment = two_hill_configuration["primary_result"]["environment_config"]
+        goal = np.array([environment["z_goal"], environment["h_goal"]])
+        goal_radius = two_hill_configuration["primary_result"]["validation_config"][
+            "goal_radius"
+        ]
+        self.assertGreater(len(bellman["primary_result"]["candidates"]), 0)
+        # gamma_max_deg is always negative (see vehicle_config), so gliding
+        # cannot climb; each step's continuous descent is real, but the
+        # coarse Bellman grid snaps successors to the nearest h-grid node
+        # (np.rint), which can round a tiny continuous descent up by at most
+        # one grid cell -- a pre-existing discretization artifact confirmed
+        # to already occur identically in the single-hill baseline, not
+        # something this terrain generalization introduced.
+        dh = float(np.diff(stage["primary_result"]["grids"]["h"])[0])
+        for candidate in bellman["primary_result"]["candidates"]:
+            trajectory = candidate["trajectory"]
+            self.assertTrue(np.all(np.diff(trajectory[:, 0]) > 0.0))
+            self.assertTrue(np.all(np.diff(trajectory[:, 1]) <= dh + 1.0e-6))
+            self.assertLessEqual(
+                np.linalg.norm(trajectory[-1] - goal), goal_radius + 1.0e-6
+            )
+            self.assertTrue(candidate["validation"]["passed"])
 
     def test_candidate_ranking_cost_uses_complete_mission_objective(self) -> None:
         for candidate in self.bellman["primary_result"]["candidates"]:

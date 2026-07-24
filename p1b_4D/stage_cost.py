@@ -63,12 +63,6 @@ def construct_stage_cost_4d(
     flat_z = mesh_z.reshape(1, spatial_size)
     flat_h = mesh_h.reshape(1, spatial_size)
     sensor_position = geometry["sensor_position"]
-    tangent = geometry["los_geometry"]
-    tangent_arguments = (
-        np.full((1, spatial_size), tangent["tangent_point"][0]),
-        np.full((1, spatial_size), tangent["tangent_slope"]),
-        np.full((1, spatial_size), tangent["tangent_intercept"]),
-    )
     sensor_arguments = (
         np.full((1, spatial_size), sensor_position[0]),
         np.full((1, spatial_size), sensor_position[1]),
@@ -135,7 +129,6 @@ def construct_stage_cost_4d(
                 velocity_values,
                 gamma_values,
                 *sensor_arguments,
-                *tangent_arguments,
             )
             glide_rate = outputs[8].reshape(z_grid.size, h_grid.size)
             glide_hazard = glide_rate.reshape(1, spatial_size) * time_step

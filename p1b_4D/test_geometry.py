@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 import unittest
+from copy import deepcopy
 from pathlib import Path
 from tempfile import TemporaryDirectory
 
@@ -19,6 +20,16 @@ from p1b_4D.geometry import (
 )
 from p1b_4D.geometry_io import export_geometry_bundle, import_geometry_bundle
 from p1b_4D.phase_logging import close_phase_logger
+
+
+def _sum_of_gaussian_hills(z: np.ndarray, hills: tuple[dict, ...]) -> np.ndarray:
+    """Independent (test-local) reimplementation used to check geometry.py."""
+    height = np.zeros_like(z, dtype=float)
+    for hill in hills:
+        height = height + hill["h_ridge"] * np.exp(
+            -0.5 * ((z - hill["z_ridge"]) / hill["width"]) ** 2
+        )
+    return height
 
 
 class GeometryTests(unittest.TestCase):
@@ -50,18 +61,40 @@ class GeometryTests(unittest.TestCase):
         terrain_config = self.configuration_bundle["primary_result"][
             "environment_config"
         ]["terrain"]
-        expected = terrain_config["h_ridge"] * np.exp(
-            -0.5
-            * (
-                (arrays["z"] - terrain_config["z_ridge"])
-                / terrain_config["width"]
-            )
-            ** 2
-        )
+        expected = _sum_of_gaussian_hills(arrays["z"], terrain_config["hills"])
         np.testing.assert_array_equal(arrays["height"], expected)
         model = result["terrain_model"]
         self.assertTrue(np.all(np.isfinite(terrain_gradient(model, arrays["z"]))))
         self.assertTrue(np.all(np.isfinite(terrain_curvature(model, arrays["z"]))))
+
+    def test_two_hill_terrain_is_one_combined_profile(self) -> None:
+        two_hill_configuration = deepcopy(self.configuration_bundle)
+        two_hill_configuration["primary_result"]["environment_config"] = deepcopy(
+            two_hill_configuration["primary_result"]["environment_config"]
+        )
+        two_hill_configuration["primary_result"]["environment_config"]["terrain"] = {
+            "z_min": 0.0,
+            "z_max": 2750.0,
+            "hills": (
+                {"z_ridge": 1000.0, "h_ridge": 100.0, "width": 100.0},
+                {"z_ridge": 1500.0, "h_ridge": 100.0, "width": 100.0},
+            ),
+        }
+        geometry_bundle = build_geometry_bundle(two_hill_configuration)
+        self.assertTrue(geometry_bundle["status"]["success"])
+        arrays = geometry_bundle["primary_result"]["terrain_arrays"]
+        terrain_config = two_hill_configuration["primary_result"][
+            "environment_config"
+        ]["terrain"]
+        expected = _sum_of_gaussian_hills(arrays["z"], terrain_config["hills"])
+        np.testing.assert_array_equal(arrays["height"], expected)
+        # A point exactly between the two equal hills should sit measurably
+        # above either hill alone (it is fed by both), not equal to a
+        # single-hill profile evaluated at the same point.
+        model = geometry_bundle["primary_result"]["terrain_model"]
+        midpoint_height = float(terrain_height(model, 1250.0))
+        single_hill_height = 100.0 * np.exp(-0.5 * ((1250.0 - 1000.0) / 100.0) ** 2)
+        self.assertGreater(midpoint_height, single_hill_height)
 
     def test_sensor_always_follows_terrain(self) -> None:
         result = self.geometry_bundle["primary_result"]

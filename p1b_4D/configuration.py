@@ -21,9 +21,13 @@ environment_config: dict[str, Any] = {
     "terrain": {
         "z_min": 0.0,
         "z_max": 2750.0,
-        "z_ridge": 1250.0,
-        "h_ridge": 100.0,
-        "width": 200.0,
+        # Terrain height is the sum of every hill's Gaussian. A single-hill
+        # tuple reproduces the original one-ridge terrain exactly; multiple
+        # hills combine into one continuous profile (one CubicSpline), not
+        # separate terrain objects with separately-computed LOS geometry.
+        "hills": (
+            {"z_ridge": 1250.0, "h_ridge": 100.0, "width": 200.0},
+        ),
     },
     "grid": {
         "z_min": 0.0,

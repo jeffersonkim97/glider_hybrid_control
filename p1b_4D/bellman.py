@@ -7,7 +7,7 @@ from typing import Any
 import casadi as ca
 import numpy as np
 
-from .geometry import terrain_height
+from .geometry import los_boundary_height, terrain_height
 
 
 def generate_bellman_candidates(
@@ -251,34 +251,40 @@ def generate_switching_point_seeds(
     resolution (nothing reachable is skipped): each seed only replays the
     already-solved policy (`extract_coarse_candidate`), it does not re-run
     `solve_coarse_bellman`.
+
+    The switching-point height at each candidate z is read directly off the
+    general swept LOS boundary (`los_boundary_height`), not a single tangent
+    line: with one hill this reduces exactly to the old tangent-line formula
+    over its whole domain, and with several it automatically follows
+    whichever obstacle governs visibility at that z, with no per-hill
+    special-casing. Only the configured airspace altitude band still bounds
+    the search -- the old separate "before the single global tangent point"
+    cutoff is subsumed by the general boundary already being correct at
+    every z left of the sensor.
     """
     geometry = geometry_bundle["primary_result"]["los_geometry"]
+    sensor_position = geometry_bundle["primary_result"]["sensor_position"]
     environment = configuration_bundle["primary_result"]["environment_config"]
-    tangent_z = float(geometry["tangent_point"][0])
-    slope = float(geometry["tangent_slope"])
-    intercept = float(geometry["tangent_intercept"])
     airspace = environment["airspace"]
-    if abs(slope) <= np.finfo(float).eps:
-        if not airspace["h_min"] <= intercept <= airspace["h_max"]:
-            raise ValueError("LOS tangent does not intersect the configured airspace")
-        seed_z_min = environment["z_start"]
-    else:
-        height_intersections = sorted((
-            (airspace["h_min"] - intercept) / slope,
-            (airspace["h_max"] - intercept) / slope,
-        ))
-        seed_z_min = max(environment["z_start"], height_intersections[0])
-        tangent_z = min(tangent_z, height_intersections[1])
-    if seed_z_min >= tangent_z:
-        raise ValueError("No continuous LOS-tangent switching interval is feasible")
-    in_interval = (z_grid >= seed_z_min) & (z_grid <= tangent_z)
-    z_values = z_grid[in_interval]
+    z_sensor = float(sensor_position[0])
+    in_domain = (z_grid >= environment["z_start"]) & (z_grid < z_sensor)
+    domain_z = z_grid[in_domain]
+    if domain_z.size == 0:
+        raise ValueError("No z-grid nodes lie strictly between launch and the sensor")
+    domain_h = los_boundary_height(geometry, domain_z)
+    within_airspace = (
+        (domain_h >= airspace["h_min"]) & (domain_h <= airspace["h_max"])
+    )
+    z_values = domain_z[within_airspace]
+    h_values = domain_h[within_airspace]
     if z_values.size == 0:
-        nearest_index = int(
-            np.argmin(np.abs(z_grid - 0.5 * (seed_z_min + tangent_z)))
+        violation = np.minimum(
+            np.abs(domain_h - airspace["h_min"]),
+            np.abs(domain_h - airspace["h_max"]),
         )
-        z_values = z_grid[nearest_index : nearest_index + 1]
-    h_values = slope * z_values + intercept
+        nearest_index = int(np.argmin(violation))
+        z_values = domain_z[nearest_index : nearest_index + 1]
+        h_values = domain_h[nearest_index : nearest_index + 1]
     return np.column_stack((z_values, h_values))
 
 
@@ -309,6 +315,7 @@ def construct_coarse_transitions(
     dh_grid = float(h_grid[1] - h_grid[0])
     terrain_model = geometry["terrain_model"]
     tangent = geometry["los_geometry"]
+    sensor_position = geometry["sensor_position"]
     segment_count = bellman["search_options"]["segment_check_count"]
     fractions = np.linspace(0.0, 1.0, segment_count)
     goal_radius = float(validation["goal_radius"])
@@ -380,12 +387,10 @@ def construct_coarse_transitions(
                     )
                     - terrain_tolerance
                 )
-                los_visible = ~(
-                    (sample_z < tangent["tangent_point"][0])
-                    & (
-                        sample_h
-                        < tangent["tangent_slope"] * sample_z
-                        + tangent["tangent_intercept"]
+                los_visible = (sample_z >= sensor_position[0]) | (
+                    sample_h
+                    >= los_boundary_height(
+                        tangent, np.clip(sample_z, z_grid[0], z_grid[-1])
                     )
                 )
                 sample_valid = sample_in_domain & terrain_clear & los_visible
@@ -617,14 +622,11 @@ def evaluate_powered_segment(
         - terrain_height(geometry["terrain_model"], path[:, 0])
     )
     tangent = geometry["los_geometry"]
-    inside_occlusion = (
-        (path[:, 0] <= tangent["tangent_point"][0])
-        & (
-            path[:, 1]
-            <= tangent["tangent_slope"] * path[:, 0]
-            + tangent["tangent_intercept"]
-            + validation_config["los_tolerance"]
-        )
+    # path[:, 0] never reaches z_sensor (a switching point is always strictly
+    # left of the sensor by construction), so the general boundary lookup is
+    # valid over the whole straight powered path without a separate cutoff.
+    inside_occlusion = path[:, 1] <= (
+        los_boundary_height(tangent, path[:, 0]) + validation_config["los_tolerance"]
     )
     sensor_position = geometry["sensor_position"]
     acoustic_function = functions["powered_detection_components"].map(
@@ -868,25 +870,19 @@ def validate_bellman_candidate(
     environment = configs["environment_config"]
     validation = configs["validation_config"]
     tangent = geometry_bundle["primary_result"]["los_geometry"]
+    sensor_position = geometry_bundle["primary_result"]["sensor_position"]
     terrain_model = geometry_bundle["primary_result"]["terrain_model"]
     terrain_margin = trajectory[:, 1] - terrain_height(
         terrain_model, trajectory[:, 0]
     )
-    los_visible = ~(
-        (trajectory[:-1, 0] < tangent["tangent_point"][0])
-        & (
-            trajectory[:-1, 1]
-            < tangent["tangent_slope"] * trajectory[:-1, 0]
-            + tangent["tangent_intercept"]
-            - validation["los_tolerance"]
-        )
+    los_visible = (trajectory[:-1, 0] >= sensor_position[0]) | (
+        trajectory[:-1, 1]
+        >= los_boundary_height(tangent, trajectory[:-1, 0])
+        - validation["los_tolerance"]
     )
     tangent_error = abs(
         switching_point[1]
-        - (
-            tangent["tangent_slope"] * switching_point[0]
-            + tangent["tangent_intercept"]
-        )
+        - float(los_boundary_height(tangent, np.array([switching_point[0]]))[0])
     )
     objective_residual = abs(mission_cost - recomputed_mission_objective)
     combined_local_residual = abs(

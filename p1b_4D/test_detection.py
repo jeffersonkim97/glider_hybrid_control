@@ -104,7 +104,6 @@ class DetectionTests(unittest.TestCase):
         ]
         geometry = self.geometry_bundle["primary_result"]
         sensor_position = geometry["sensor_position"]
-        tangent = geometry["los_geometry"]
         detection = self.configuration_bundle["primary_result"]["sensor_config"][
             "detection"
         ]
@@ -120,9 +119,6 @@ class DetectionTests(unittest.TestCase):
             gamma,
             sensor_position[0],
             sensor_position[1],
-            tangent["tangent_point"][0],
-            tangent["tangent_slope"],
-            tangent["tangent_intercept"],
         )
         delta_z = sensor_position[0] - z
         delta_h = sensor_position[1] - h

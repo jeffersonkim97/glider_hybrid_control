@@ -13,6 +13,17 @@ from .detection import build_symbolic_detection_bundle
 from .geometry import build_geometry_bundle, terrain_height
 from .stage_cost import construct_stage_cost_4d
 
+# A certified-global search (DIRECT) samples across the *whole* bounded
+# interval, including geometrically degenerate sensor positions where no
+# Attacker path can reach the goal at all (e.g. a sensor sitting exactly on
+# a ridge crest with terrain that otherwise blocks every switching point).
+# Such a position is a real, valid outcome of the search space, not a bug,
+# so it must be scored as "far worse than any real objective" rather than
+# crashing the whole outer search. Real defender_objective values are
+# normalized combinations of probabilities/areas in [0, 1], so this finite
+# (not inf/nan, to stay JSON-portable) sentinel is unambiguously dominated.
+_INFEASIBLE_DEFENDER_OBJECTIVE = -1.0e6
+
 
 class DefenderOptimizer(Protocol):
     """Implementation-independent outer optimizer callable contract."""
@@ -299,10 +310,51 @@ def solve_stackelberg_game(
     def fresh_evaluation(z_sensor: float) -> dict[str, Any]:
         nonlocal evaluation_counter
         evaluation_counter += 1
-        evaluation = evaluate_defender_position(
-            float(z_sensor), configuration_bundle,
-            evaluation_id=f"outer-evaluation-{evaluation_counter:04d}",
-        )
+        evaluation_id = f"outer-evaluation-{evaluation_counter:04d}"
+        try:
+            evaluation = evaluate_defender_position(
+                float(z_sensor), configuration_bundle, evaluation_id=evaluation_id,
+            )
+        except (ValueError, RuntimeError) as error:
+            # No Attacker path reaches the goal from this z_sensor (e.g. the
+            # LOS boundary never re-enters the airspace altitude band): a
+            # real, scoreable search-space outcome, not a crash.
+            evaluation_summaries.append({
+                "evaluation_id": evaluation_id,
+                "z_sensor": float(z_sensor),
+                # h_sensor/attacker_objective/mission_pod/defender_pod_normalized/
+                # coverage_area_normalized are NaN, not None: exports build
+                # np.asarray([item[key] for item in summaries]) over these
+                # fields, and a bare None would silently degrade that to an
+                # object-dtype array. defender_objective alone stays a real
+                # finite sentinel because optimizers compare/max() over it.
+                "h_sensor": float("nan"),
+                "defender_objective": _INFEASIBLE_DEFENDER_OBJECTIVE,
+                "attacker_objective": float("nan"),
+                "mission_pod": float("nan"),
+                "defender_pod_normalized": float("nan"),
+                "coverage_area_normalized": float("nan"),
+                "fresh_nested_attacker_solve": True,
+                "infeasible": True,
+                "infeasibility_reason": str(error),
+            })
+            return {
+                "primary_result": {
+                    "evaluation_id": evaluation_id,
+                    "z_sensor": float(z_sensor),
+                    "infeasible": True,
+                    "infeasibility_reason": str(error),
+                },
+                "validation": {"passed": False, "checks": {}, "metrics": {}, "failed_checks": ["attacker_best_response_exists"], "summary": str(error)},
+                "metadata": {"schema_name": "DefenderEvaluation", "producer_phase": 9, "infeasible": True},
+                "status": {
+                    "success": False,
+                    "code": "DEFENDER_EVALUATION_INFEASIBLE",
+                    "message": str(error),
+                    "warnings": [],
+                    "failed_checks": ["attacker_best_response_exists"],
+                },
+            }
         primary = evaluation["primary_result"]
         evaluation_summaries.append({
             "evaluation_id": primary["evaluation_id"],
@@ -316,6 +368,7 @@ def solve_stackelberg_game(
             ],
             "coverage_area_normalized": primary["coverage"]["normalized_coverage_area"],
             "fresh_nested_attacker_solve": True,
+            "infeasible": False,
         })
         return evaluation
 
@@ -333,6 +386,15 @@ def solve_stackelberg_game(
     )
     _validate_optimizer_result(optimizer_result, bounds)
     final_evaluation = fresh_evaluation(float(optimizer_result["z_sensor"]))
+    if not final_evaluation["status"]["success"]:
+        # The optimizer must never settle on an infeasible position: every
+        # feasible point strictly dominates the -1e6 sentinel, so this can
+        # only happen if no feasible z_sensor exists anywhere in bounds.
+        # That is a real, reportable failure, not something to paper over.
+        raise RuntimeError(
+            "Outer optimizer selected an infeasible z_sensor as its final "
+            f"answer: {final_evaluation['status']['message']}"
+        )
     final_primary = final_evaluation["primary_result"]
     best = final_primary["best_found_attacker_response"]
     final_solution = {
@@ -606,6 +668,20 @@ def direct_global_optimizer(
 
 
 def _outer_result_summary(primary: dict[str, Any]) -> dict[str, Any]:
+    if primary.get("infeasible"):
+        return {
+            "evaluation_id": primary["evaluation_id"],
+            "z_sensor": primary["z_sensor"],
+            "h_sensor": float("nan"),
+            "defender_objective": _INFEASIBLE_DEFENDER_OBJECTIVE,
+            "coverage_area": float("nan"),
+            "coverage_area_normalized": float("nan"),
+            "defender_pod_normalized": float("nan"),
+            "mission_pod": float("nan"),
+            "attacker_objective": float("nan"),
+            "best_found_attacker_response": None,
+            "infeasible": True,
+        }
     best = primary["best_found_attacker_response"]
     return {
         "evaluation_id": primary["evaluation_id"],
@@ -626,6 +702,7 @@ def _outer_result_summary(primary: dict[str, Any]) -> dict[str, Any]:
             "mission_pod": best["mission_pod"],
             "mission_time": best["mission_time"],
         },
+        "infeasible": False,
     }
 
 
@@ -686,7 +763,7 @@ def validate_stackelberg_solution(
     switch = solution["optimal_switching_point"]
     tangent_residual = abs(
         switch[1]
-        - (payload["tangent_slope"] * switch[0] + payload["tangent_intercept"])
+        - float(np.interp(switch[0], payload["terrain_z"], payload["tangent_line_height"]))
     )
     pre_final_summaries = summaries[:-1] or summaries
     evaluated_maximum = max(

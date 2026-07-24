@@ -43,9 +43,7 @@ def build_terrain_model(environment: dict[str, Any]) -> TerrainModel:
     grid = environment["grid"]
     terrain = environment["terrain"]
     z_grid = np.linspace(grid["z_min"], grid["z_max"], grid["z_count"])
-    sampled_height = terrain["h_ridge"] * np.exp(
-        -0.5 * ((z_grid - terrain["z_ridge"]) / terrain["width"]) ** 2
-    )
+    sampled_height = _sum_of_hills(z_grid, terrain["hills"])
     interpolant = CubicSpline(z_grid, sampled_height, bc_type="natural")
     return TerrainModel(
         z_grid=_readonly(z_grid),
@@ -186,14 +184,23 @@ def compute_los_geometry(
 
     Assumptions
     -----------
-    The existing single-ridge geometry has a sensor-visible tangent left of
-    the sensor. Airspace cells at or below terrain are occluded.
+    The attacker always approaches from z below the sensor. Airspace cells
+    at or below terrain are occluded.
 
     Notes
     -----
-    Every residual sign change is refined. Selecting the minimum ray slope
-    preserves the existing ridge tangent when a non-occluding stationary root
-    appears over the flat terrain tail for a terrain-following sensor.
+    The LOS boundary is computed by a single outward sweep from the sensor,
+    not by finding one ridge's tangent point: for every terrain sample left
+    of the sensor, the minimum-required-height ray slope to clear every
+    intervening terrain sample is the running minimum of the point-to-sensor
+    ray slope, accumulated from the sensor outward. This is the general
+    multi-obstacle visibility boundary -- with one hill it reduces exactly
+    to that hill's tangent line; with several, shadows merge or stay
+    separate correctly without treating any hill specially. `tangent_point`/
+    `tangent_slope`/`tangent_intercept` below report only the single most
+    restrictive sample of that sweep, kept for diagnostics/backward
+    compatibility -- the actual boundary used for the masks is the full
+    swept array.
     """
     _require_mapping(sensor, "sensor")
     _require_mapping(validation, "validation")
@@ -211,51 +218,34 @@ def compute_los_geometry(
     candidates = z_values[z_values < z_sensor]
     if candidates.size < 2:
         raise ValueError("At least two terrain samples must lie left of the sensor")
-    chord_denominator = candidates - z_sensor
-    residual = (
-        terrain_height(terrain_model, candidates) - h_sensor
-    ) / chord_denominator - terrain_gradient(terrain_model, candidates)
-    changes = np.flatnonzero(
-        np.signbit(residual[:-1]) != np.signbit(residual[1:])
-    )
-    if changes.size == 0:
-        raise ValueError("No sensor-visible LOS tangent sign change was found")
 
-    iterations = int(sensor["los"]["tangent_bisection_iterations"])
-    if iterations <= 0:
-        raise ValueError("tangent_bisection_iterations must be positive")
-    roots: list[tuple[float, float, float]] = []
-    for change in changes:
-        left = float(candidates[change])
-        right = float(candidates[change + 1])
-        for _ in range(iterations):
-            middle = 0.5 * (left + right)
-            left_residual = _tangent_residual(
-                terrain_model, left, z_sensor, h_sensor
-            )
-            middle_residual = _tangent_residual(
-                terrain_model, middle, z_sensor, h_sensor
-            )
-            if np.signbit(left_residual) == np.signbit(middle_residual):
-                left = middle
-            else:
-                right = middle
-        root_z = 0.5 * (left + right)
-        root_h = float(terrain_height(terrain_model, root_z))
-        root_slope = (root_h - h_sensor) / (root_z - z_sensor)
-        roots.append((float(root_slope), float(root_z), root_h))
-    tangent_slope, tangent_z, tangent_h = min(roots, key=lambda item: item[0])
-    tangent_intercept = h_sensor - tangent_slope * z_sensor
-    boundary_height = tangent_slope * z_values + tangent_intercept
+    slope_to_sensor = (
+        terrain_height(terrain_model, candidates) - h_sensor
+    ) / (candidates - z_sensor)
+    if not np.all(np.isfinite(slope_to_sensor)):
+        raise ValueError("No sensor-visible LOS tangent sign change was found")
+    # Sweep from the sensor outward (candidates are ascending, i.e. sensor
+    # end last): the boundary slope at each point is the tightest (most
+    # occluding) ray slope anywhere between it and the sensor.
+    boundary_slope = np.minimum.accumulate(slope_to_sensor[::-1])[::-1]
+    boundary_height_candidates = h_sensor + boundary_slope * (candidates - z_sensor)
+    boundary_height = np.full(z_values.shape, boundary_height_candidates[-1])
+    boundary_height[: candidates.size] = boundary_height_candidates
     los_boundary = np.column_stack((z_values, boundary_height))
+
+    tangent_index = int(np.argmin(slope_to_sensor))
+    tangent_z = float(candidates[tangent_index])
+    tangent_h = float(terrain_height(terrain_model, tangent_z))
+    tangent_slope = float(slope_to_sensor[tangent_index])
+    tangent_intercept = float(h_sensor - tangent_slope * z_sensor)
 
     mesh_z, mesh_h = np.meshgrid(z_values, h_values, indexing="ij")
     terrain_tolerance = float(validation["terrain_tolerance"])
     terrain_heights = terrain_height(terrain_model, z_values)
     terrain_mask = mesh_h <= terrain_heights[:, None] + terrain_tolerance
     non_visible_airspace = (
-        (mesh_z < tangent_z)
-        & (mesh_h < tangent_slope * mesh_z + tangent_intercept)
+        (mesh_z < z_sensor)
+        & (mesh_h < boundary_height[:, None])
         & ~terrain_mask
     )
     occlusion_mask = terrain_mask | non_visible_airspace
@@ -291,6 +281,38 @@ def compute_los_geometry(
         "normalized_coverage_area": float(normalized_coverage),
         "tangent_residual": float(tangent_residual),
     }
+
+
+def los_boundary_height(los_geometry: dict[str, Any], z: Any) -> np.ndarray:
+    """Interpolate the general swept LOS visibility boundary height at z.
+
+    Inputs
+    ------
+    los_geometry:
+        The `los_geometry` sub-dict of a GeometryBundle's primary_result
+        (must contain `los_boundary`, an (N, 2) array of [z, boundary_height]
+        pairs from `compute_los_geometry`).
+    z:
+        Scalar or array horizontal coordinate(s) in metres.
+
+    Outputs
+    -------
+    numpy.ndarray
+        Boundary height with the same broadcast shape as z.
+
+    Notes
+    -----
+    Piecewise-linear interpolation over the swept boundary array is exact
+    (not approximate) everywhere the governing obstacle does not change
+    strictly between two adjacent z-grid nodes, because the boundary height
+    is itself piecewise-linear in z between such changes (see
+    `compute_los_geometry`'s docstring); with one hill this reproduces the
+    single tangent line exactly over its whole domain. This is the one
+    general replacement for the old `tangent_slope * z + tangent_intercept`
+    formula used by every occlusion check.
+    """
+    boundary = np.asarray(los_geometry["los_boundary"], dtype=float)
+    return np.interp(np.asarray(z, dtype=float), boundary[:, 0], boundary[:, 1])
 
 
 def build_geometry_bundle(configuration_bundle: dict[str, Any]) -> dict[str, Any]:
@@ -512,13 +534,23 @@ def validate_geometry(
     }
 
 
-def _tangent_residual(
-    model: TerrainModel, z: float, z_sensor: float, h_sensor: float
-) -> float:
-    return float(
-        (terrain_height(model, z) - h_sensor) / (z - z_sensor)
-        - terrain_gradient(model, z)
-    )
+def _sum_of_hills(z_grid: np.ndarray, hills: Any) -> np.ndarray:
+    """Sum every configured Gaussian hill into one continuous height profile.
+
+    A single-hill tuple reproduces the original terrain exactly. Multiple
+    hills are not separate terrain objects: this returns one combined
+    profile, which is the only thing `build_terrain_model` ever turns into
+    a spline, and the only thing any later LOS/visibility computation ever
+    sees.
+    """
+    if not hills:
+        raise ValueError("environment_config.terrain.hills must be non-empty")
+    sampled_height = np.zeros_like(z_grid, dtype=float)
+    for hill in hills:
+        sampled_height = sampled_height + hill["h_ridge"] * np.exp(
+            -0.5 * ((z_grid - hill["z_ridge"]) / hill["width"]) ** 2
+        )
+    return sampled_height
 
 
 def _validated_coordinates(model: TerrainModel, values: Any) -> np.ndarray:

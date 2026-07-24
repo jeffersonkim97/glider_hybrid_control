@@ -31,8 +31,10 @@ def build_symbolic_detection_bundle(
     Assumptions
     -----------
     Detection coefficients and normalization methods come only from Phase 1.
-    LOS tangent parameters come only from Phase 2 and are explicit function
-    arguments wherever sensor-dependent visibility is evaluated.
+    The LOS visibility boundary comes only from Phase 2 and is baked into
+    this bundle's functions as a fixed lookup table (this bundle is always
+    rebuilt alongside its geometry_bundle for one fixed sensor position, so
+    the boundary is never stale relative to the functions using it).
 
     Notes
     -----
@@ -55,9 +57,6 @@ def build_symbolic_detection_bundle(
     gamma = ca.SX.sym("gamma")
     z_sensor = ca.SX.sym("z_sensor")
     h_sensor = ca.SX.sym("h_sensor")
-    tangent_z = ca.SX.sym("tangent_z")
-    tangent_slope = ca.SX.sym("tangent_slope")
-    tangent_intercept = ca.SX.sym("tangent_intercept")
     powered_hazard = ca.SX.sym("powered_hazard")
     glide_hazard = ca.SX.sym("glide_hazard")
     powered_time = ca.SX.sym("powered_time")
@@ -69,9 +68,22 @@ def build_symbolic_detection_bundle(
     slant_range = ca.sqrt(horizontal_range**2 + vertical_range**2)
     sensor_range = ca.fmax(slant_range, detection["range_floor"])
 
-    los_boundary_height = tangent_slope * z + tangent_intercept
+    los_geometry = geometry_bundle["primary_result"]["los_geometry"]
+    los_boundary_array = np.asarray(los_geometry["los_boundary"], dtype=float)
+    # The general swept multi-obstacle visibility boundary (see
+    # geometry.compute_los_geometry), not a single tangent line: baked in as
+    # a fixed lookup table because this bundle is always (re)built from one
+    # already-fixed sensor position, exactly like `_terrain_interpolant`
+    # bakes the terrain spline for one already-fixed terrain.
+    los_boundary_interpolant = ca.interpolant(
+        "los_boundary_height",
+        "linear",
+        [np.ascontiguousarray(los_boundary_array[:, 0])],
+        np.ascontiguousarray(los_boundary_array[:, 1]),
+    )
+    los_boundary_height = los_boundary_interpolant(z)
     los_margin = h - los_boundary_height
-    is_occluded = ca.logic_and(z < tangent_z, h < los_boundary_height)
+    is_occluded = ca.logic_and(z < z_sensor, h < los_boundary_height)
     los_visible = ca.if_else(is_occluded, 0.0, 1.0)
     occlusion_indicator = 1.0 - los_visible
 
@@ -166,9 +178,6 @@ def build_symbolic_detection_bundle(
         "h_sensor": h_sensor,
     }
     auxiliary_symbols = {
-        "tangent_z": tangent_z,
-        "tangent_slope": tangent_slope,
-        "tangent_intercept": tangent_intercept,
         "powered_hazard": powered_hazard,
         "glide_hazard": glide_hazard,
         "powered_time": powered_time,
@@ -336,7 +345,6 @@ def validate_symbolic_detection(
     costs = configs["cost_config"]
     geometry = geometry_bundle["primary_result"]
     sensor_position = geometry["sensor_position"]
-    tangent = geometry["los_geometry"]
     coverage = geometry["coverage"]["normalized_coverage_area"]
     sample_z = 0.5 * (environment["z_start"] + environment["z_goal"])
     sample_h = 0.5 * environment["grid"]["h_max"]
@@ -354,11 +362,6 @@ def validate_symbolic_detection(
         float(sensor_position[0]),
         float(sensor_position[1]),
     )
-    los_parameters = (
-        float(tangent["tangent_point"][0]),
-        float(tangent["tangent_slope"]),
-        float(tangent["tangent_intercept"]),
-    )
     range_outputs = _numeric_outputs(functions["range"], *state[:2], *state[4:])
     powered_outputs = _numeric_outputs(
         functions["powered_detection_components"],
@@ -371,7 +374,6 @@ def validate_symbolic_detection(
     glide_outputs = _numeric_outputs(
         functions["glide_detection_components"],
         *state,
-        *los_parameters,
     )
     powered_hazard = powered_outputs[-1] * vehicle["time_step"]
     glide_hazard = glide_outputs[-1] * vehicle["time_step"]
@@ -504,10 +506,6 @@ def _build_functions(
         symbols[name]
         for name in ("z", "h", "v", "gamma", "z_sensor", "h_sensor")
     )
-    tangent_z, tangent_slope, tangent_intercept = (
-        auxiliary[name]
-        for name in ("tangent_z", "tangent_slope", "tangent_intercept")
-    )
     powered_hazard, glide_hazard, powered_time, glide_time = (
         auxiliary[name]
         for name in (
@@ -533,14 +531,14 @@ def _build_functions(
         ),
         "los": ca.Function(
             "SymbolicLosFunction",
-            [z, h, tangent_z, tangent_slope, tangent_intercept],
+            [z, h, z_sensor],
             [
                 expression["los_boundary_height"],
                 expression["los_margin"],
                 expression["los_visible"],
                 expression["occlusion_indicator"],
             ],
-            ["z", "h", "tangent_z", "tangent_slope", "tangent_intercept"],
+            ["z", "h", "z_sensor"],
             ["boundary_height", "los_margin", "visible", "occluded"],
         ),
         "powered_detection_components": ca.Function(
@@ -552,17 +550,7 @@ def _build_functions(
         ),
         "glide_detection_components": ca.Function(
             "GlideDetectionComponentsFunction",
-            [
-                z,
-                h,
-                v,
-                gamma,
-                z_sensor,
-                h_sensor,
-                tangent_z,
-                tangent_slope,
-                tangent_intercept,
-            ],
+            [z, h, v, gamma, z_sensor, h_sensor],
             [
                 expression["los_angle"],
                 expression["aspect_angle"],
@@ -574,17 +562,7 @@ def _build_functions(
                 expression["radial_velocity_rate"],
                 expression["glide_detection_rate"],
             ],
-            [
-                "z",
-                "h",
-                "v",
-                "gamma",
-                "z_sensor",
-                "h_sensor",
-                "tangent_z",
-                "tangent_slope",
-                "tangent_intercept",
-            ],
+            ["z", "h", "v", "gamma", "z_sensor", "h_sensor"],
             [
                 "los_angle",
                 "aspect_angle",
