@@ -16,29 +16,33 @@ CONFIG_SCHEMA_VERSION = "1.0.0"
 environment_config: dict[str, Any] = {
     "z_start": 0.0,
     "h_start": 0.0,
-    "z_goal": 2500.0,
+    "z_goal": 5000.0,
     # h_goal is not configured here: it is the terrain elevation at z_goal,
     # computed once terrain exists (see geometry.goal_position_from_environment),
     # exactly like h_sensor is derived from z_sensor rather than configured.
     "terrain": {
         "z_min": 0.0,
-        "z_max": 2750.0,
+        "z_max": 5500.0,
         # Terrain height is the sum of every hill's Gaussian. A single-hill
         # tuple reproduces the original one-ridge terrain exactly; multiple
         # hills combine into one continuous profile (one CubicSpline), not
         # separate terrain objects with separately-computed LOS geometry.
+        # 2x distance-scale-up (advisor presentation scenario) from the
+        # original (1250, 100, 200) baseline -- z_count/h_count below are
+        # doubled in step so grid spacing (and thus the coarse Bellman
+        # transition's grid-cell-advance guarantee) is unchanged.
         "hills": (
-            {"z_ridge": 1250.0, "h_ridge": 100.0, "width": 200.0},
+            {"z_ridge": 2500.0, "h_ridge": 200.0, "width": 400.0},
         ),
     },
     "grid": {
         "z_min": 0.0,
-        "z_max": 2750.0,
-        "z_count": 161,
+        "z_max": 5500.0,
+        "z_count": 321,
         "z_spacing": 17.1875,
         "h_min": 0.0,
-        "h_max": 200.0,
-        "h_count": 101,
+        "h_max": 400.0,
+        "h_count": 201,
         "h_spacing": 2.0,
         "v_count": 5,
         "gamma_count": 20,
@@ -46,15 +50,15 @@ environment_config: dict[str, Any] = {
     },
     "airspace": {
         "z_min": 0.0,
-        "z_max": 2750.0,
+        "z_max": 5500.0,
         "h_min": 0.0,
-        "h_max": 200.0,
+        "h_max": 400.0,
     },
     "simulation": {
         "z_min": 0.0,
-        "z_max": 2750.0,
+        "z_max": 5500.0,
         "h_min": 0.0,
-        "h_max": 200.0,
+        "h_max": 400.0,
         "max_path_steps": 1000,
     },
     "units": {"distance": "m", "time": "s", "speed": "m/s", "angle": "rad"},
@@ -97,7 +101,7 @@ vehicle_config: dict[str, Any] = {
 }
 
 sensor_config: dict[str, Any] = {
-    "default_z_sensor": 2000.0,
+    "default_z_sensor": 4000.0,
     "mount_height": 0.0,
     "height_rule": "terrain(z_sensor) + mount_height",
     "los": {
@@ -134,14 +138,14 @@ cost_config: dict[str, Any] = {
             },
             "time": {
                 "method": "reference_time",
-                "reference_seconds": 2500.0 / 22.6,
+                "reference_seconds": 5000.0 / 22.6,
             },
         },
         "objective_id": "attacker_hazard_time_v2",
     },
     "defender": {
-        "w_pod": 0.8,
-        "w_cover": 0.2,
+        "w_pod": 0.5,
+        "w_cover": 0.5,
         "normalization": {
             "pod": {
                 "method": "hazard_reference",
@@ -226,8 +230,8 @@ nlp_config: dict[str, Any] = {
 
 defender_config: dict[str, Any] = {
     "continuous_search_bounds": {
-        "z_sensor_min": 1500.0,
-        "z_sensor_max": 2600.0,
+        "z_sensor_min": 2750.0,
+        "z_sensor_max": 4500.0,
     },
     "termination_tolerance": 5.0,
     "xtol": 5.0,

@@ -29,7 +29,7 @@ class StackelbergSolverTests(unittest.TestCase):
     def setUpClass(cls) -> None:
         cls.temporary_directory = TemporaryDirectory()
         cls.configuration = build_configuration_bundle(Path(cls.temporary_directory.name))
-        cls.z_sensor = 2000.125
+        cls.z_sensor = 3500.125
         cls.evaluation = evaluate_defender_position(cls.z_sensor, cls.configuration, "full-nested-test")
 
     @classmethod
@@ -135,7 +135,7 @@ class StackelbergSolverTests(unittest.TestCase):
         )
 
     def test_defender_positions_evaluate_without_nlp_related_failure(self) -> None:
-        for z_sensor in (1500.0, 1725.0):
+        for z_sensor in (3000.0, 3225.0):
             with self.subTest(z_sensor=z_sensor):
                 evaluation = evaluate_defender_position(
                     z_sensor, self.configuration, f"regression-{z_sensor:.1f}"

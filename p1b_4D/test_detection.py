@@ -136,12 +136,20 @@ class DetectionTests(unittest.TestCase):
             np.cos(gamma) * delta_z + np.sin(gamma) * delta_h
         ) / distance
         doppler = detection["doppler_coefficient"] * radial**2 / distance**4
+        # The real formula gates radar/doppler on LOS visibility; this fixed
+        # test point's visibility depends on where the configured hill sits,
+        # so read the actual visibility rather than assuming it's always 1
+        # (assuming so made this test fragile to terrain/domain changes).
+        los_visible = _outputs(
+            self.detection_bundle["primary_result"]["functions"]["los"],
+            z, h, sensor_position[0],
+        )[2]
         self.assertAlmostEqual(outputs[1], aspect)
         self.assertAlmostEqual(outputs[2], rcs)
         self.assertAlmostEqual(outputs[3], radar)
         self.assertAlmostEqual(outputs[4], radial)
         self.assertAlmostEqual(outputs[5], doppler)
-        self.assertAlmostEqual(outputs[8], radar + doppler)
+        self.assertAlmostEqual(outputs[8], los_visible * (radar + doppler))
 
     def test_mission_fusion_time_and_attacker_objective(self) -> None:
         functions = self.detection_bundle["primary_result"]["functions"]

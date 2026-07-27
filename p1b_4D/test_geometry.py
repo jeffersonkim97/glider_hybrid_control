@@ -62,7 +62,12 @@ class GeometryTests(unittest.TestCase):
             "environment_config"
         ]["terrain"]
         expected = _sum_of_gaussian_hills(arrays["z"], terrain_config["hills"])
-        np.testing.assert_array_equal(arrays["height"], expected)
+        # atol, not exact equality: far enough from every hill, the Gaussian
+        # value underflows into the subnormal range (~1e-150), where two
+        # mathematically-equivalent summation orders can legitimately differ
+        # in their last bits -- physically meaningless noise, not a real
+        # terrain-height mismatch.
+        np.testing.assert_allclose(arrays["height"], expected, rtol=0.0, atol=1.0e-6)
         model = result["terrain_model"]
         self.assertTrue(np.all(np.isfinite(terrain_gradient(model, arrays["z"]))))
         self.assertTrue(np.all(np.isfinite(terrain_curvature(model, arrays["z"]))))
@@ -87,7 +92,12 @@ class GeometryTests(unittest.TestCase):
             "environment_config"
         ]["terrain"]
         expected = _sum_of_gaussian_hills(arrays["z"], terrain_config["hills"])
-        np.testing.assert_array_equal(arrays["height"], expected)
+        # atol, not exact equality: far enough from every hill, the Gaussian
+        # value underflows into the subnormal range (~1e-150), where two
+        # mathematically-equivalent summation orders can legitimately differ
+        # in their last bits -- physically meaningless noise, not a real
+        # terrain-height mismatch.
+        np.testing.assert_allclose(arrays["height"], expected, rtol=0.0, atol=1.0e-6)
         # A point exactly between the two equal hills should sit measurably
         # above either hill alone (it is fed by both), not equal to a
         # single-hill profile evaluated at the same point.

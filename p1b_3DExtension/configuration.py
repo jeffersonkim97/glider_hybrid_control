@@ -53,7 +53,7 @@ environment_config: dict[str, Any] = {
         "x_count": 41,
         "y_min": -1500.0,
         "y_max": 1500.0,
-        "y_count": 61,
+        "y_count": 31,
         "h_min": 0.0,
         "h_max": 200.0,
         "h_count": 41,
@@ -144,12 +144,10 @@ sensor_config: dict[str, Any] = {
     # to 3D range with no change in form -- see detection.py).
     "detection": {
         "range_floor": 10.0,
-        # radar/doppler/acoustic coefficients x10 vs. p1b_4D's defaults, per
-        # the notebook's sensor-sensitivity comparison.
-        "acoustic_coefficient": 2.4e-2,
+        "acoustic_coefficient": 2.4e-3,
         "acoustic_speed_exponent": 4,
-        "radar_coefficient": 1.3e8,
-        "doppler_coefficient": 3.325e5,
+        "radar_coefficient": 1.3e7,
+        "doppler_coefficient": 3.325e4,
         "rcs_min": 0.1,
         "rcs_max": 1.0,
         "radar_rate_scale": 1.0,

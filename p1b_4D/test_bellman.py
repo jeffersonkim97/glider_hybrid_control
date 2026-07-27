@@ -71,7 +71,7 @@ class BellmanTests(unittest.TestCase):
         self.assertEqual(len(attempted_grid_z), seeds.shape[0])
 
     def test_candidates_reach_goal_and_preserve_profiles(self) -> None:
-        goal = np.array([2500.0, 0.0])
+        goal = np.array(self.geometry["primary_result"]["goal_position"])
         goal_radius = self.configuration["primary_result"]["validation_config"][
             "goal_radius"
         ]
@@ -182,6 +182,7 @@ class BellmanTests(unittest.TestCase):
             self.assertTrue(candidate["validation"]["passed"])
 
     def test_candidate_ranking_cost_uses_complete_mission_objective(self) -> None:
+        costs = self.configuration["primary_result"]["cost_config"]["attacker"]
         for candidate in self.bellman["primary_result"]["candidates"]:
             breakdown = candidate["objective_breakdown"]
             self.assertAlmostEqual(
@@ -189,8 +190,8 @@ class BellmanTests(unittest.TestCase):
             )
             self.assertAlmostEqual(
                 candidate["mission_cost"],
-                0.5 * breakdown["pod_normalized"]
-                + 0.5 * breakdown["time_normalized"],
+                costs["w_pod"] * breakdown["pod_normalized"]
+                + costs["w_time"] * breakdown["time_normalized"],
                 places=14,
             )
 
