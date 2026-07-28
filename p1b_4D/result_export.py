@@ -9,6 +9,8 @@ from typing import Any
 
 import numpy as np
 
+from .result_provenance import build_result_provenance
+
 
 STANDARD_DIRECTORIES = (
     "geometry", "cost", "bellman", "stackelberg", "metadata", "logs"
@@ -55,6 +57,19 @@ def export_all_results(
     for name, bundle in supplied.items():
         if bundle is not None:
             _require_successful(bundle, f"{name}_bundle")
+    continuous_validation = None
+    if stackelberg_solution_bundle is not None:
+        final = stackelberg_solution_bundle["primary_result"][
+            "final_stackelberg_solution"
+        ]
+        continuous_validation = final["optimal_attacker_strategy"].get(
+            "continuous_replay_validation"
+        )
+    provenance = build_result_provenance(
+        configuration_bundle,
+        script_identifier="p1b_4D/stackelberg_security_problem.ipynb",
+        continuous_validation=continuous_validation,
+    )
     root = configuration_bundle["primary_result"]["project_paths"].results_dir
     directories = {name: root / name for name in STANDARD_DIRECTORIES}
     for directory in directories.values():
@@ -79,7 +94,7 @@ def export_all_results(
         arrays = array_builder(bundle)
         exports.append(_write_standard_bundle(
             bundle_name, category, bundle, arrays,
-            configuration_bundle, directories[category],
+            configuration_bundle, directories[category], provenance,
         ))
     master = {
         "schema_name": "StandardResultCollection",
@@ -90,6 +105,7 @@ def export_all_results(
         "missing_bundles": missing,
         "complete": not missing,
         "future_visualization_input_policy": "exported_files_only",
+        "provenance": provenance,
         "execution_time_seconds": perf_counter() - started,
     }
     master_path = directories["metadata"] / "result_collection_manifest.json"
@@ -138,13 +154,27 @@ def validate_export_collection(
     checks = {
         "directories_exist": all(path.is_dir() for path in directories.values()),
         "master_json_readable": False,
+        "provenance_present": False,
+        "provenance_consistent": True,
         "bundle_files_readable": True,
         "metadata_consistent": True,
         "array_dimensions_consistent": True,
     }
+    master_manifest: dict[str, Any] = {}
     try:
-        json.loads(master_path.read_text(encoding="utf-8"))
+        master_manifest = json.loads(master_path.read_text(encoding="utf-8"))
         checks["master_json_readable"] = True
+        provenance = master_manifest.get("provenance", {})
+        checks["provenance_present"] = {
+            "source_control",
+            "configuration_hash_sha256",
+            "resolution",
+            "numerical_validation",
+            "continuous_validation",
+            "script_identifier",
+            "generated_at_utc",
+            "random_seed",
+        }.issubset(provenance)
     except (OSError, json.JSONDecodeError):
         failures.append("master_json_readable")
     for item in exports:
@@ -154,6 +184,15 @@ def validate_export_collection(
             manifest = json.loads(Path(item["json_path"]).read_text(encoding="utf-8"))
             if manifest["bundle_name"] != item["bundle_name"]:
                 checks["metadata_consistent"] = False
+            if (
+                manifest.get("provenance", {}).get(
+                    "configuration_hash_sha256"
+                )
+                != master_manifest.get("provenance", {}).get(
+                    "configuration_hash_sha256"
+                )
+            ):
+                checks["provenance_consistent"] = False
             with np.load(item["npz_path"], allow_pickle=False) as payload:
                 for name, declaration in manifest["array_references"].items():
                     if name not in payload or list(payload[name].shape) != declaration["shape"] or str(payload[name].dtype) != declaration["dtype"]:
@@ -180,6 +219,7 @@ def validate_export_collection(
 def _write_standard_bundle(
     name: str, category: str, bundle: dict[str, Any], arrays: dict[str, np.ndarray],
     configuration_bundle: dict[str, Any], directory: Path,
+    provenance: dict[str, Any],
 ) -> dict[str, Any]:
     started = perf_counter()
     json_path = directory / f"{name}_bundle.json"
@@ -195,6 +235,7 @@ def _write_standard_bundle(
         "schema_name": bundle["metadata"]["schema_name"],
         "schema_version": bundle["metadata"]["schema_version"],
         "configuration": _configuration_snapshot(configuration_bundle),
+        "provenance": provenance,
         "metadata": bundle["metadata"],
         "validation": bundle["validation"],
         "summary_statistics": bundle["validation"].get("metrics", {}),

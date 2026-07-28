@@ -52,6 +52,7 @@ def generate_project_visualizations(
         _figure_cost_to_go(bundles, plot_config, True), "figure_4_all_paths",
         output_directory, plot_config,
     ))
+    mission_history = None
     if "stackelberg" in bundles:
         generated.append(_export_figure(
             _figure_stackelberg(bundles, plot_config), "figure_5_stackelberg_solution",
@@ -73,7 +74,9 @@ def generate_project_visualizations(
         "figure_6_attacker_state_history", "figure_7_defender_pod_accumulation",
     }
     absent_figures = sorted(expected_names - generated_names)
-    validation = _validate_visualizations(bundles, generated, absent_figures, plot_config)
+    validation = _validate_visualizations(
+        bundles, generated, absent_figures, plot_config, mission_history
+    )
     return {
         "primary_result": {
             "generated_figures": tuple(item["figure_id"] for item in generated),
@@ -209,6 +212,8 @@ def _reconstruct_mission_hazard_history(bundles: dict[str, Any]) -> dict[str, np
     manifest = bundles["stackelberg"]["manifest"]
     detection_cfg = manifest["configuration"]["sensor_config"]["detection"]
     vehicle_cfg = manifest["configuration"]["vehicle_config"]
+    attacker_solver_cfg = manifest["configuration"]["attacker_solver_config"]
+    transition_model = attacker_solver_cfg["transition_model"]
     time_step = float(vehicle_cfg["time_step"])
     powered_speed = float(vehicle_cfg["powered_speed"])
 
@@ -235,7 +240,10 @@ def _reconstruct_mission_hazard_history(bundles: dict[str, Any]) -> dict[str, np
             return float(detection_cfg["acoustic_rate_scale"]) * acoustic_rate
         z_index = int(np.clip(np.searchsorted(z_grid, z), 0, z_grid.size - 1))
         h_index = int(np.clip(np.searchsorted(h_grid, h), 0, h_grid.size - 1))
-        if not bool(los_mask[z_index, h_index]):
+        if (
+            transition_model != "successor_grid_physical_edge"
+            and not bool(los_mask[z_index, h_index])
+        ):
             return 0.0
         los_angle = np.arctan2(vertical_range, horizontal_range)
         aspect_angle = np.arctan2(np.sin(gamma - los_angle), np.cos(gamma - los_angle))
@@ -270,10 +278,9 @@ def _reconstruct_mission_hazard_history(bundles: dict[str, Any]) -> dict[str, np
         np.cumsum(0.5 * (rate_powered[:-1] + rate_powered[1:]) * np.diff(t_powered)),
     )) if powered_count > 1 else np.zeros(1)
 
-    # Glide phase: same left-endpoint-rate x time_step rule bellman.py's own
-    # accumulation uses (the terminal segment's fractional duration is a
-    # visualization-only approximation -- at most one time_step out of a
-    # multi-node glide, negligible for a time-history plot).
+    # Glide phase: successor-grid edges have nonuniform physical durations.
+    # Use the exported duration profile when present; fixed-time legacy
+    # exports retain the time_step fallback.
     glide_count = trajectory.shape[0]
     v_glide = np.array([
         velocity_profile[min(i, velocity_profile.size - 1)] for i in range(glide_count)
@@ -281,24 +288,66 @@ def _reconstruct_mission_hazard_history(bundles: dict[str, Any]) -> dict[str, np
     gamma_glide = np.array([
         gamma_profile[min(i, gamma_profile.size - 1)] for i in range(glide_count)
     ]) if gamma_profile.size else np.zeros(glide_count)
-    t_glide = powered_time + np.arange(glide_count) * time_step
+    edge_count = max(glide_count - 1, 0)
+    if "optimal_duration_profile" in stack:
+        durations = np.asarray(stack["optimal_duration_profile"], dtype=float)
+        if durations.shape != (edge_count,):
+            raise ValueError(
+                "optimal_duration_profile must contain one duration per glide edge"
+            )
+        if np.any(~np.isfinite(durations)) or np.any(durations <= 0.0):
+            raise ValueError("optimal_duration_profile must be positive and finite")
+    else:
+        durations = np.full(edge_count, time_step, dtype=float)
+    t_glide = powered_time + np.concatenate(([0.0], np.cumsum(durations)))
     hazard_glide = np.zeros(glide_count)
-    for index in range(1, glide_count):
-        rate = rate_at(
-            trajectory[index - 1, 0], trajectory[index - 1, 1],
-            v_glide[index - 1], gamma_glide[index - 1], False,
+    edge_quadrature_count = int(
+        attacker_solver_cfg.get("successor_grid", {}).get(
+            "edge_quadrature_count", 2
         )
-        hazard_glide[index] = hazard_glide[index - 1] + rate * time_step
+    )
+    for index in range(1, glide_count):
+        if transition_model == "successor_grid_physical_edge":
+            fractions = np.linspace(0.0, 1.0, edge_quadrature_count)
+            points = (
+                trajectory[index - 1][None, :]
+                + fractions[:, None]
+                * (trajectory[index] - trajectory[index - 1])[None, :]
+            )
+            rates = np.asarray([
+                rate_at(
+                    point[0], point[1], v_glide[index - 1],
+                    gamma_glide[index - 1], False,
+                )
+                for point in points
+            ])
+            edge_hazard = float(
+                np.trapezoid(rates, fractions) * durations[index - 1]
+            )
+        else:
+            rate = rate_at(
+                trajectory[index - 1, 0], trajectory[index - 1, 1],
+                v_glide[index - 1], gamma_glide[index - 1], False,
+            )
+            edge_hazard = rate * durations[index - 1]
+        hazard_glide[index] = hazard_glide[index - 1] + edge_hazard
 
-    times = np.concatenate((t_powered, t_glide[1:]))
+    state_times = np.concatenate((t_powered, t_glide[1:]))
     z_history = np.concatenate((powered_path[:, 0], trajectory[1:, 0]))
     h_history = np.concatenate((powered_path[:, 1], trajectory[1:, 1]))
-    v_history = np.concatenate((np.full(powered_count, powered_speed), v_glide[1:]))
-    gamma_history = np.concatenate((np.full(powered_count, powered_gamma), gamma_glide[1:]))
+    action_times = np.concatenate(([0.0, powered_time], t_glide))
+    v_history = np.concatenate((
+        [powered_speed, powered_speed], v_glide,
+    ))
+    gamma_history = np.concatenate((
+        [powered_gamma, powered_gamma], gamma_glide,
+    ))
     hazard = np.concatenate((hazard_powered, hazard_powered[-1] + hazard_glide[1:]))
 
     return {
-        "times": times,
+        "times": state_times,
+        "state_times": state_times,
+        "action_times": action_times,
         "z": z_history,
         "h": h_history,
         "v": v_history,
@@ -316,15 +365,19 @@ def _figure_attacker_state_history(history: dict[str, np.ndarray], config: dict[
         sharex=True, constrained_layout=True,
     )
     panels = (
-        (axes[0], history["z"], "z [m]", "post"),
-        (axes[1], history["h"], "h [m]", "post"),
-        (axes[2], history["v"], "v [m/s]", "post"),
-        (axes[3], np.degrees(history["gamma"]), "gamma [deg]", "post"),
+        (axes[0], history["state_times"], history["z"], "z [m]", None),
+        (axes[1], history["state_times"], history["h"], "h [m]", None),
+        (axes[2], history["action_times"], history["v"], "v [m/s]", "steps-post"),
+        (
+            axes[3], history["action_times"], np.degrees(history["gamma"]),
+            "gamma [deg]", "steps-post",
+        ),
     )
-    for axis, values, label, style in panels:
+    for axis, times, values, label, drawstyle in panels:
         axis.plot(
-            history["times"], values, color=config["colors"]["stackelberg"],
-            drawstyle=f"steps-{style}", linewidth=config["line_width"] + 0.4,
+            times, values, color=config["colors"]["stackelberg"],
+            drawstyle=drawstyle or "default",
+            linewidth=config["line_width"] + 0.4,
             label="Bellman-optimal attacker state",
         )
         axis.axvline(
@@ -500,7 +553,9 @@ def _apply_style(config):
     plt.rcParams.update({"font.family": config["font_family"], "font.size": config["font_size"], "axes.linewidth": 0.8, "lines.linewidth": config["line_width"], "savefig.dpi": config["dpi"]})
 
 
-def _validate_visualizations(bundles, generated, missing_figures, config):
+def _validate_visualizations(
+    bundles, generated, missing_figures, config, mission_history=None,
+):
     geometry = bundles["geometry"]["arrays"]
     shape = geometry["los_los_mask"].shape
     bellman_pod_to_go = bundles["bellman"]["arrays"]["pod_to_go"]
@@ -537,6 +592,19 @@ def _validate_visualizations(bundles, generated, missing_figures, config):
         stack["final_sensor_position"], stack["optimal_sensor_position"],
         rtol=0.0, atol=1.0e-9,
     )
+    reconstructed_pod_consistent = True
+    if stack is not None and mission_history is not None:
+        authoritative_pod = float(
+            bundles["stackelberg"]["manifest"]["objective_values"][
+                "mission_pod"
+            ]
+        )
+        reconstructed_pod_consistent = bool(np.isclose(
+            mission_history["reconstructed_mission_pod"],
+            authoritative_pod,
+            rtol=0.0,
+            atol=1.0e-9,
+        ))
     checks = {
         "available_bundles_loaded": all(name in bundles for name in REQUIRED_BUNDLES if name != "stackelberg"),
         "required_arrays_present": all(key in geometry for key in ("terrain_z", "terrain_height", "terrain_h_grid", "los_los_mask", "los_occlusion_mask", "sensor_position", "goal_position", "tangent_line_height")),
@@ -546,6 +614,7 @@ def _validate_visualizations(bundles, generated, missing_figures, config):
         "figure5_final_arrays_present": stack_arrays_present,
         "figure5_final_dimensions_consistent": stack_dimensions_consistent,
         "figure5_sensor_consistent": stack_sensor_consistent,
+        "time_history_pod_matches_authoritative": reconstructed_pod_consistent,
         "pod_to_go_bounded_unit_interval": pod_to_go_bounded,
     }
     failed = [name for name, passed in checks.items() if not passed]

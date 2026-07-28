@@ -31,6 +31,10 @@ import numpy as np
 from p1b_4D.configuration import build_configuration_bundle
 from p1b_4D.stackelberg_solver import evaluate_defender_position
 from p1b_4D.phase_logging import close_phase_logger
+from p1b_4D.result_provenance import (
+    build_result_provenance,
+    provenance_from_evaluation,
+)
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 OUTPUT_DIR = REPO_ROOT / "results" / "resolution_convergence_multiterrain"
@@ -107,7 +111,7 @@ def build_config(terrain_name: str, resolution_name: str, project_root: Path) ->
     return cb
 
 
-def summarize(result: dict) -> dict:
+def summarize(result: dict, configuration_bundle: dict) -> dict:
     primary = result["primary_result"]
     best = primary["best_found_attacker_response"]
     replay = best["continuous_replay_validation"]
@@ -122,6 +126,13 @@ def summarize(result: dict) -> dict:
         "continuous_feasible": replay["feasible"],
         "continuous_violation": replay["violation"],
         "continuous_goal_miss": replay["goal_miss"],
+        "provenance": provenance_from_evaluation(
+            configuration_bundle,
+            result,
+            script_identifier=(
+                "p1b_4D/experiment_resolution_convergence_multiterrain.py"
+            ),
+        ),
     }
 
 
@@ -140,7 +151,7 @@ def main() -> None:
                 try:
                     result = evaluate_defender_position(z_sensor, cb, run_id)
                     elapsed = time.perf_counter() - start
-                    summary = summarize(result)
+                    summary = summarize(result, cb)
                     summary.update({
                         "terrain": terrain_name, "resolution": resolution_name,
                         "z_sensor": z_sensor, "elapsed_seconds": elapsed,
@@ -160,6 +171,13 @@ def main() -> None:
                         "terrain": terrain_name, "resolution": resolution_name,
                         "z_sensor": z_sensor, "status_success": False,
                         "error": traceback.format_exc(),
+                        "provenance": build_result_provenance(
+                            cb,
+                            script_identifier=(
+                                "p1b_4D/experiment_resolution_convergence_"
+                                "multiterrain.py"
+                            ),
+                        ),
                     })
                 finally:
                     close_phase_logger(logger)

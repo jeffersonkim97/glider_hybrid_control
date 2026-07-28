@@ -19,6 +19,10 @@ import p1b_4D.experiment_strategic_baselines as sb
 from p1b_4D.configuration import build_configuration_bundle
 from p1b_4D.stackelberg_solver import evaluate_defender_position
 from p1b_4D.phase_logging import close_phase_logger
+from p1b_4D.result_provenance import (
+    build_result_provenance,
+    provenance_from_evaluation,
+)
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 OUTPUT_DIR = REPO_ROOT / "results" / "multiterrain_strategic_baselines"
@@ -127,6 +131,11 @@ def evaluate_baseline(configuration_bundle: dict, z_sensor: float, run_id: str) 
         "continuous_feasible": replay["feasible"],
         "continuous_violation": replay["violation"],
         "continuous_goal_miss": replay["goal_miss"],
+        "provenance": provenance_from_evaluation(
+            configuration_bundle,
+            result,
+            script_identifier="p1b_4D/experiment_multiterrain_baselines.py",
+        ),
     }
 
 
@@ -177,7 +186,16 @@ def main() -> None:
                 except Exception:
                     print(f"  [{run_id}] EVAL FAILED:", flush=True)
                     traceback.print_exc()
-                    all_results[terrain_name][baseline_name] = {"status_success": False, "error": traceback.format_exc()}
+                    all_results[terrain_name][baseline_name] = {
+                        "status_success": False,
+                        "error": traceback.format_exc(),
+                        "provenance": build_result_provenance(
+                            cb,
+                            script_identifier=(
+                                "p1b_4D/experiment_multiterrain_baselines.py"
+                            ),
+                        ),
+                    }
         except Exception:
             print(f"  [{terrain_name}] TERRAIN-LEVEL FAILURE:", flush=True)
             traceback.print_exc()

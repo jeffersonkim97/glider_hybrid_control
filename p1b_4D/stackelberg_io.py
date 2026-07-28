@@ -9,6 +9,7 @@ from typing import Any
 import numpy as np
 
 from .result_export import write_json_npz
+from .result_provenance import build_result_provenance
 
 
 def export_stackelberg_solution_bundle(
@@ -52,6 +53,11 @@ def export_stackelberg_solution_bundle(
         for name, value in arrays.items()
     }
     config = configuration_bundle["primary_result"]
+    provenance = build_result_provenance(
+        configuration_bundle,
+        script_identifier="p1b_4D/stackelberg_io.py",
+        continuous_validation=attacker.get("continuous_replay_validation"),
+    )
     manifest = {
         "bundle_id": "continuous-stackelberg-solution-v1",
         "bundle_type": "StackelbergSolutionBundle",
@@ -59,6 +65,7 @@ def export_stackelberg_solution_bundle(
         "schema_version": stackelberg_bundle["metadata"]["schema_version"],
         "producer_phase": 9,
         "producer_module": "p1b_4D.stackelberg_io",
+        "provenance": provenance,
         "configuration": {
             "environment_config": config["environment_config"],
             "sensor_config": config["sensor_config"],
