@@ -196,6 +196,25 @@ bellman_config: dict[str, Any] = {
     "random_seed": GLOBAL_RANDOM_SEED,
 }
 
+# Selects between the preserved fixed-time snapped lattice and the physical
+# successor-grid formulation.  The default remains legacy-compatible; the
+# authoritative notebook exposes the same value as its one user-facing
+# switch.
+attacker_solver_config: dict[str, Any] = {
+    "transition_model": "snapped_fixed_time_step",
+    "supported_transition_models": (
+        "snapped_fixed_time_step",
+        "successor_grid_physical_edge",
+    ),
+    "successor_grid": {
+        "maximum_forward_cells": 3,
+        "maximum_descent_cells": 8,
+        "edge_quadrature_count": 9,
+        "virtual_switch_maximum_forward_cells": 3,
+        "virtual_switch_maximum_descent_cells": 8,
+    },
+}
+
 # Experimental only: consumed solely by the deprecated, disconnected
 # attacker_nlp.py continuous-refinement comparison. Not required by
 # validate_configuration and not read by the authoritative Bellman solver.
@@ -324,6 +343,9 @@ _REQUIRED_KEYS: dict[str, set[str]] = {
         "maximum_iterations", "top_k",
         "duplicate_threshold", "warm_start", "search_options",
     },
+    "attacker_solver_config": {
+        "transition_model", "supported_transition_models", "successor_grid",
+    },
     "defender_config": {
         "continuous_search_bounds", "termination_tolerance",
         "xtol", "maximum_iterations", "optimizer", "coarse_sample_count",
@@ -352,6 +374,7 @@ def _configuration_dicts() -> dict[str, dict[str, Any]]:
         "sensor_config": deepcopy(sensor_config),
         "cost_config": deepcopy(cost_config),
         "bellman_config": deepcopy(bellman_config),
+        "attacker_solver_config": deepcopy(attacker_solver_config),
         "nlp_config": deepcopy(nlp_config),
         "defender_config": deepcopy(defender_config),
         "plot_config": deepcopy(plot_config),
@@ -404,6 +427,7 @@ def validate_configuration(
     costs = configs.get("cost_config", {})
     bellman = configs.get("bellman_config", {})
     defender = configs.get("defender_config", {})
+    attacker_solver = configs.get("attacker_solver_config", {})
     grid = env.get("grid", {})
     checks["grid.z_spacing_consistent"] = (
         grid.get("z_spacing")
@@ -466,6 +490,22 @@ def validate_configuration(
     )
     checks["random_seed.shared"] = (
         bellman.get("random_seed") == GLOBAL_RANDOM_SEED
+    )
+    supported_models = attacker_solver.get("supported_transition_models", ())
+    successor = attacker_solver.get("successor_grid", {})
+    checks["attacker_solver.transition_model_supported"] = (
+        attacker_solver.get("transition_model") in supported_models
+        and set(supported_models) == {
+            "snapped_fixed_time_step", "successor_grid_physical_edge"
+        }
+    )
+    checks["attacker_solver.successor_grid_complete"] = (
+        all(successor.get(name, 0) >= 1 for name in (
+            "maximum_forward_cells", "maximum_descent_cells",
+            "edge_quadrature_count", "virtual_switch_maximum_forward_cells",
+            "virtual_switch_maximum_descent_cells",
+        ))
+        and successor.get("edge_quadrature_count", 0) >= 2
     )
     for key, path in project_paths.__dict__.items():
         if key != "project_root":

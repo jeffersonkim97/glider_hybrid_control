@@ -271,12 +271,18 @@ def _candidate_arrays(candidates: tuple[dict[str, Any], ...], speed_key: str) ->
     speeds, speed_offsets = _pack([item[speed_key] for item in candidates], 1)
     gammas, gamma_offsets = _pack([item["gamma_profile"] for item in candidates], 1)
     powered_paths, powered_path_offsets = _pack([item["powered_path"] for item in candidates], 2)
-    return {"switching_points": np.asarray([item["switching_point"] for item in candidates]).reshape(-1, 2), "trajectory_points": trajectories, "trajectory_offsets": trajectory_offsets, "velocity_profiles": speeds, "velocity_offsets": speed_offsets, "gamma_profiles": gammas, "gamma_offsets": gamma_offsets, "powered_path_points": powered_paths, "powered_path_offsets": powered_path_offsets, "mission_costs": np.asarray([item["mission_cost"] for item in candidates])}
+    arrays = {"switching_points": np.asarray([item["switching_point"] for item in candidates]).reshape(-1, 2), "trajectory_points": trajectories, "trajectory_offsets": trajectory_offsets, "velocity_profiles": speeds, "velocity_offsets": speed_offsets, "gamma_profiles": gammas, "gamma_offsets": gamma_offsets, "powered_path_points": powered_paths, "powered_path_offsets": powered_path_offsets, "mission_costs": np.asarray([item["mission_cost"] for item in candidates])}
+    if candidates and all("duration_profile" in item for item in candidates):
+        durations, duration_offsets = _pack(
+            [item["duration_profile"] for item in candidates], 1
+        )
+        arrays.update({"duration_profiles": durations, "duration_offsets": duration_offsets})
+    return arrays
 
 
 def _bellman_response_arrays(bundle: dict[str, Any]) -> dict[str, np.ndarray]:
     primary = bundle["primary_result"]
-    return {
+    arrays = {
         "switching_point": np.asarray(primary["switching_point"]),
         "trajectory": np.asarray(primary["trajectory"]),
         "powered_path": np.asarray(primary["powered_path"]),
@@ -287,6 +293,9 @@ def _bellman_response_arrays(bundle: dict[str, Any]) -> dict[str, np.ndarray]:
         "mission_time": np.asarray(primary["mission_time"]),
         "goal_error": np.asarray(primary["constraint_residuals"]["goal_error"]),
     }
+    if "duration_profile" in primary:
+        arrays["duration_profile"] = np.asarray(primary["duration_profile"])
+    return arrays
 
 
 def _stackelberg_arrays(bundle: dict[str, Any]) -> dict[str, np.ndarray]:
@@ -331,6 +340,8 @@ def _stackelberg_arrays(bundle: dict[str, Any]) -> dict[str, np.ndarray]:
         "outer_defender_pod_normalized": np.asarray([item["defender_pod_normalized"] for item in summaries]),
         "outer_coverage_normalized": np.asarray([item["coverage_area_normalized"] for item in summaries]),
     }
+    if "duration_profile" in solution["optimal_attacker_strategy"]:
+        arrays["optimal_duration_profile"] = solution["optimal_attacker_strategy"]["duration_profile"]
     if "coarse_sweep_results" in optimizer:
         coarse = optimizer["coarse_sweep_results"]
         arrays.update({
@@ -352,7 +363,7 @@ def _stackelberg_arrays(bundle: dict[str, Any]) -> dict[str, np.ndarray]:
 
 def _configuration_snapshot(bundle: dict[str, Any]) -> dict[str, Any]:
     primary = bundle["primary_result"]
-    return {key: primary[key] for key in ("environment_config", "vehicle_config", "sensor_config", "cost_config", "bellman_config", "defender_config", "plot_config", "validation_config")}
+    return {key: primary[key] for key in ("environment_config", "vehicle_config", "sensor_config", "cost_config", "bellman_config", "attacker_solver_config", "defender_config", "plot_config", "validation_config")}
 
 
 def _solver_information(bundle: dict[str, Any]) -> Any:

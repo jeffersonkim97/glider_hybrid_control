@@ -9,11 +9,13 @@ import numpy as np
 from scipy.optimize import direct, minimize_scalar
 
 from .bellman import generate_bellman_candidates, select_authoritative_bellman_response
+from .continuous_replay_evaluation import replay_glide_continuous
 from .detection import build_symbolic_detection_bundle
 from .geometry import build_geometry_bundle, terrain_height
 from .stage_cost import construct_stage_cost_4d
+from .successor_grid_solver import solve_successor_grid_attacker
 
-# A certified-global search (DIRECT) samples across the *whole* bounded
+# An asymptotically-global search (DIRECT) samples across the *whole* bounded
 # interval, including geometrically degenerate sensor positions where no
 # Attacker path can reach the goal at all (e.g. a sensor sitting exactly on
 # a ridge crest with terrain that otherwise blocks every switching point).
@@ -99,12 +101,64 @@ def solve_attacker_best_response(
     geometry = build_geometry_bundle(nested_configuration)
     detection = build_symbolic_detection_bundle(nested_configuration, geometry)
     stage = construct_stage_cost_4d(nested_configuration, geometry, detection)
-    bellman = generate_bellman_candidates(
-        nested_configuration, geometry, detection, stage, None
-    )
-    attacker = select_authoritative_bellman_response(bellman, nested_configuration)
+    transition_model = nested_configuration["primary_result"][
+        "attacker_solver_config"
+    ]["transition_model"]
+    if transition_model == "snapped_fixed_time_step":
+        bellman = generate_bellman_candidates(
+            nested_configuration, geometry, detection, stage, None
+        )
+        attacker = select_authoritative_bellman_response(
+            bellman, nested_configuration
+        )
+    elif transition_model == "successor_grid_physical_edge":
+        bellman, attacker = solve_successor_grid_attacker(
+            nested_configuration, geometry, detection
+        )
+    else:
+        raise ValueError(f"Unsupported attacker transition_model: {transition_model}")
     if not attacker["status"]["success"]:
         raise RuntimeError(attacker["status"]["message"])
+    best = attacker["primary_result"]
+    configs = nested_configuration["primary_result"]
+    geometry_result = geometry["primary_result"]
+    continuous_replay = replay_glide_continuous(
+        best["switching_point"],
+        best["speed_profile"],
+        best["gamma_profile"],
+        time_step=configs["vehicle_config"]["time_step"],
+        goal_position=geometry_result["goal_position"],
+        goal_radius=configs["validation_config"]["goal_radius"],
+        terrain_model=geometry_result["terrain_model"],
+        los_geometry=geometry_result["los_geometry"],
+        sensor_position=geometry_result["sensor_position"],
+        glide_detection_rate_function=detection["primary_result"]["functions"][
+            "glide_detection_components"
+        ],
+        terrain_tolerance=configs["validation_config"]["terrain_tolerance"],
+        segment_check_count=configs["bellman_config"]["search_options"][
+            "segment_check_count"
+        ],
+        max_steps=configs["environment_config"]["simulation"]["max_path_steps"],
+        reference_trajectory=best["trajectory"],
+        duration_profile=best.get("duration_profile"),
+    )
+    best["continuous_replay_validation"] = continuous_replay
+    best["metadata"]["continuous_feasibility_checked"] = True
+    best["metadata"]["continuous_feasibility_passed"] = continuous_replay[
+        "feasible"
+    ]
+    best["metadata"]["continuous_feasibility_guaranteed_by_bellman"] = False
+    attacker["metadata"]["continuous_feasibility_checked"] = True
+    attacker["metadata"]["continuous_feasibility_passed"] = continuous_replay[
+        "feasible"
+    ]
+    if not continuous_replay["feasible"]:
+        attacker["status"]["warnings"] = [
+            *attacker["status"].get("warnings", []),
+            "Discrete-optimal response failed unsnapped continuous replay: "
+            f"{continuous_replay['violation']}",
+        ]
     return {
         "primary_result": {
             "evaluation_id": evaluation_id,
@@ -129,6 +183,7 @@ def solve_attacker_best_response(
             ],
             "solution_method": attacker["metadata"]["solution_method"],
             "optimality_scope": attacker["metadata"]["optimality_scope"],
+            "transition_model": transition_model,
         },
         "status": dict(attacker["status"]),
     }
@@ -607,7 +662,7 @@ def direct_global_optimizer(
     bounds: tuple[float, float],
     options: dict[str, Any],
 ) -> dict[str, Any]:
-    """Certified-global search over z_sensor using SciPy's DIRECT algorithm.
+    """Asymptotically-global search over z_sensor using SciPy's DIRECT.
 
     Unlike `hierarchical_coarse_to_fine_optimizer` (a fixed coarse sample
     followed by local Brent refinement within detected basins, with no
@@ -617,6 +672,13 @@ def direct_global_optimizer(
     objectives that are at least approximately Lipschitz continuous. It is
     used here with `locally_biased=False` (the original, unbiased DIRECT
     variant) since the goal is global coverage, not fast local convergence.
+
+    That convergence guarantee is asymptotic (budget -> infinity), not a
+    finite-sample certificate: this function's *return value* is always a
+    best-found result within the configured evaluation budget, not a
+    certified global optimum, regardless of whether DIRECT's own len_tol
+    stopping criterion was reached. See `metadata["terminated_via"]` for
+    which happened on this run.
 
     This is a drop-in `DefenderOptimizer`: it treats `evaluate(z_sensor)`
     as a black box and does not know or care how the Attacker best response
@@ -643,18 +705,28 @@ def direct_global_optimizer(
     best = max(evaluation_history, key=lambda item: item["defender_objective"])
     return {
         "z_sensor": float(result.x[0]),
-        # DIRECT's own `success` flag only means "reached len_tol/vol_tol
-        # before exhausting the evaluation budget." For an expensive
-        # real-world objective (a full Bellman solve per evaluation), it is
-        # normal and expected to terminate on `maxfun` instead; that is
-        # still a valid, meaningful, certified-search result, not a
-        # failure. `direct_reported_success` in metadata preserves the
-        # finer-grained signal for anyone who wants it.
-        "converged": True,
+        # `converged` reflects DIRECT's own len_tol/vol_tol stopping
+        # criterion (result.success), not evaluation-budget exhaustion.
+        # For an expensive real-world objective (a full Bellman solve per
+        # evaluation) it is normal and expected to terminate on `maxfun`
+        # instead -- that is still a valid, meaningful best-found result,
+        # not a failure, but it is honestly a *different* outcome than
+        # reaching the algorithm's own convergence tolerance, and callers
+        # (e.g. validate_stackelberg_solution) that warn on non-
+        # convergence should see the real signal instead of a constant.
+        "converged": bool(result.success),
         "metadata": {
             "algorithm": "scipy_direct_global",
             "objective_direction": "maximize_via_negative_minimization",
-            "certified_global": True,
+            # DIRECT's global-convergence guarantee is asymptotic (budget
+            # -> infinity); no finite run -- regardless of `converged`
+            # above -- constitutes a certificate of global optimality, so
+            # this field describes the algorithm's theoretical class, not
+            # a claim about this particular result. Downstream code and
+            # the paper should say "best-found, asymptotically-global
+            # algorithm", never "certified global".
+            "algorithm_class": "direct_asymptotically_global",
+            "terminated_via": "length_tolerance" if result.success else "evaluation_budget",
             "locally_biased": False,
             "function_evaluations": int(result.nfev),
             "iterations": int(result.nit),
@@ -770,7 +842,11 @@ def validate_stackelberg_solution(
         item["defender_objective"] for item in pre_final_summaries
     )
     checks = {
-        "outer_optimizer_convergence": bool(optimizer_result["converged"]),
+        # Not a hard pass/fail gate: DIRECT terminating via evaluation-
+        # budget exhaustion rather than its own length-tolerance criterion
+        # is normal and expected for an expensive per-evaluation objective
+        # (see direct_global_optimizer's docstring/comments) -- it is
+        # surfaced as a warning below, not treated as a validation failure.
         "objective_consistency": abs(solution["defender_objective"] - final_primary["defender_objective"]) <= tolerance,
         "attacker_convergence": solution["optimal_attacker_strategy"]["validation"]["passed"],
         "authoritative_attacker_solver_used": attacker_pipeline["metadata"][
@@ -793,8 +869,12 @@ def validate_stackelberg_solution(
         "figure5_arrays_consistent": payload["cost_to_go"].shape == payload["pod_to_go"].shape == payload["los_mask"].shape == payload["occlusion_mask"].shape == payload["terrain_mask"].shape,
     }
     failed = [name for name, passed in checks.items() if not passed]
-    warnings = [] if optimizer_result["converged"] else ["Injected outer optimizer did not report convergence"]
-    return {"passed": not failed, "checks": checks, "metrics": {"outer_evaluation_count": len(summaries), "optimal_z_sensor": solution["optimal_z_sensor"], "defender_objective": solution["defender_objective"], "maximum_pre_final_evaluation_objective": evaluated_maximum, "switching_tangent_residual": tangent_residual, "figure5_evaluation_id": payload["evaluation_id"]}, "warnings": warnings, "failed_checks": failed, "summary": "Phase 9 Stackelberg solution validation passed" if not failed else f"Stackelberg solution failed checks: {failed}"}
+    warnings = [] if optimizer_result["converged"] else [
+        "Outer optimizer terminated via evaluation-budget exhaustion, not "
+        "its own length-tolerance criterion -- a valid best-found result, "
+        "not a certified global optimum for this run."
+    ]
+    return {"passed": not failed, "checks": checks, "metrics": {"outer_evaluation_count": len(summaries), "optimal_z_sensor": solution["optimal_z_sensor"], "defender_objective": solution["defender_objective"], "maximum_pre_final_evaluation_objective": evaluated_maximum, "switching_tangent_residual": tangent_residual, "figure5_evaluation_id": payload["evaluation_id"], "outer_optimizer_converged": bool(optimizer_result["converged"])}, "warnings": warnings, "failed_checks": failed, "summary": "Phase 9 Stackelberg solution validation passed" if not failed else f"Stackelberg solution failed checks: {failed}"}
 
 
 def _configuration_for_sensor(bundle: dict[str, Any], z_sensor: float) -> dict[str, Any]:

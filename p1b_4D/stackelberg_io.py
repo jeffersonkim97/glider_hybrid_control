@@ -42,6 +42,8 @@ def export_stackelberg_solution_bundle(
         "outer_coverage_normalized": np.asarray([item["coverage_area_normalized"] for item in summaries]),
         "constraint_goal_error": np.asarray(attacker["constraint_residuals"]["goal_error"]),
     }
+    if "duration_profile" in attacker:
+        arrays["optimal_duration_profile"] = np.asarray(attacker["duration_profile"])
     paths = configuration_bundle["primary_result"]["project_paths"]
     json_path = paths.json_dir / f"{bundle_name}.json"
     npz_path = paths.npz_dir / f"{bundle_name}.npz"
@@ -61,6 +63,7 @@ def export_stackelberg_solution_bundle(
             "environment_config": config["environment_config"],
             "sensor_config": config["sensor_config"],
             "cost_config": config["cost_config"],
+            "attacker_solver_config": config["attacker_solver_config"],
             "defender_config": config["defender_config"],
         },
         "final_objectives": {

@@ -45,6 +45,7 @@ class ConfigurationTests(unittest.TestCase):
             "sensor_config",
             "cost_config",
             "bellman_config",
+            "attacker_solver_config",
             "nlp_config",
             "defender_config",
             "plot_config",

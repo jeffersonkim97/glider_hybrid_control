@@ -220,9 +220,16 @@ class StackelbergSolverTests(unittest.TestCase):
             {"direct_maxfun": 40, "direct_maxiter": 100, "direct_len_tol": 1.0e-4},
         )
         self.assertAlmostEqual(result["z_sensor"], 1900.0, delta=5.0)
-        self.assertTrue(result["converged"])
+        # Even this cheap synthetic objective does not reach DIRECT's own
+        # length-tolerance criterion within the small evaluation budget
+        # configured here (maxfun=40) -- confirmed empirically, not
+        # assumed. It still finds the right z_sensor (assertion above):
+        # exactly the "valid best-found result, not a certified global
+        # optimum" distinction this metadata exists to make explicit.
+        self.assertFalse(result["converged"])
+        self.assertEqual(result["metadata"]["terminated_via"], "evaluation_budget")
         self.assertEqual(result["metadata"]["algorithm"], "scipy_direct_global")
-        self.assertTrue(result["metadata"]["certified_global"])
+        self.assertEqual(result["metadata"]["algorithm_class"], "direct_asymptotically_global")
         self.assertFalse(result["metadata"]["locally_biased"])
         self.assertGreater(len(result["evaluation_history"]), 0)
 

@@ -64,6 +64,12 @@ def export_bellman_candidate_bundle(
             [candidate["mission_pod"] for candidate in candidates]
         ),
     }
+    if candidates and all("duration_profile" in candidate for candidate in candidates):
+        durations, duration_offsets = _pack(
+            [candidate["duration_profile"] for candidate in candidates], 1
+        )
+        arrays["duration_profiles"] = durations
+        arrays["duration_offsets"] = duration_offsets
     paths = configuration_bundle["primary_result"]["project_paths"]
     json_path = paths.json_dir / f"{bundle_name}.json"
     npz_path = paths.npz_dir / f"{bundle_name}.npz"
