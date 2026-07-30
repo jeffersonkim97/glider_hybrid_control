@@ -145,7 +145,8 @@ class StackelbergSolverTests(unittest.TestCase):
                 self.assertEqual(best["metadata"].get("warm_start_only"), False)
                 bundle = evaluation["primary_result"]["attacker_best_response_bundle"]
                 self.assertEqual(
-                    bundle["metadata"]["solution_method"], "bellman_dynamic_programming"
+                    bundle["metadata"]["solution_method"],
+                    "successor_grid_bellman_dynamic_programming",
                 )
 
     def test_outer_optimizer_keeps_a_superior_boundary_evaluation(self) -> None:

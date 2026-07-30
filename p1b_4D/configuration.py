@@ -201,7 +201,7 @@ bellman_config: dict[str, Any] = {
 # authoritative notebook exposes the same value as its one user-facing
 # switch.
 attacker_solver_config: dict[str, Any] = {
-    "transition_model": "snapped_fixed_time_step",
+        "transition_model": "successor_grid_physical_edge",
     "supported_transition_models": (
         "snapped_fixed_time_step",
         "successor_grid_physical_edge",
@@ -507,6 +507,36 @@ def validate_configuration(
         ))
         and successor.get("edge_quadrature_count", 0) >= 2
     )
+    action_family = successor.get("action_family", "enriched")
+    virtual_family = successor.get(
+        "virtual_switch_target_family", "legacy_cell_window"
+    )
+    checks["attacker_solver.successor_action_family_supported"] = (
+        action_family in {"enriched", "transported"}
+    )
+    supplemental_offsets = successor.get("supplemental_offsets", ())
+    checks["attacker_solver.successor_supplemental_offsets_valid"] = (
+        isinstance(supplemental_offsets, (tuple, list))
+        and all(
+            isinstance(offset, (tuple, list))
+            and len(offset) == 2
+            and all(isinstance(value, int) and value >= 1 for value in offset)
+            for offset in supplemental_offsets
+        )
+    )
+    checks["attacker_solver.virtual_switch_family_supported"] = (
+        virtual_family in {
+            "legacy_cell_window",
+            "physical_box_enriched",
+            "physical_box_transported",
+        }
+    )
+    if virtual_family.startswith("physical_box_"):
+        checks["attacker_solver.virtual_switch_physical_box_complete"] = (
+            successor.get("virtual_switch_maximum_forward_distance", 0.0) > 0.0
+            and successor.get("virtual_switch_maximum_descent_distance", 0.0) > 0.0
+            and successor.get("nested_level") in {0, 1, 2}
+        )
     for key, path in project_paths.__dict__.items():
         if key != "project_root":
             checks[f"paths.{key}_exists"] = Path(path).is_dir()

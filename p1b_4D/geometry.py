@@ -42,7 +42,10 @@ def build_terrain_model(environment: dict[str, Any]) -> TerrainModel:
     _require_mapping(environment, "environment")
     grid = environment["grid"]
     terrain = environment["terrain"]
-    z_grid = np.linspace(grid["z_min"], grid["z_max"], grid["z_count"])
+    reference_count = int(terrain.get("reference_z_count", grid["z_count"]))
+    if reference_count < 2:
+        raise ValueError("terrain reference_z_count must be at least two")
+    z_grid = np.linspace(grid["z_min"], grid["z_max"], reference_count)
     sampled_height = _sum_of_hills(z_grid, terrain["hills"])
     interpolant = CubicSpline(z_grid, sampled_height, bc_type="natural")
     return TerrainModel(
@@ -172,6 +175,7 @@ def compute_los_geometry(
     h_grid: Any,
     sensor: dict[str, Any],
     validation: dict[str, Any],
+    boundary_z_grid: Any | None = None,
 ) -> dict[str, Any]:
     """Compute tangent, boundary, masks, and LOS coverage for one sensor.
 
@@ -220,6 +224,11 @@ def compute_los_geometry(
     if position.shape != (2,) or not np.all(np.isfinite(position)):
         raise ValueError("sensor_position must have shape (2,) and be finite")
     z_values = _validated_grid(terrain_model, z_grid, "z_grid")
+    boundary_z_values = _validated_grid(
+        terrain_model,
+        terrain_model.z_grid if boundary_z_grid is None else boundary_z_grid,
+        "boundary_z_grid",
+    )
     h_values = np.asarray(h_grid, dtype=float)
     if h_values.ndim != 1 or h_values.size < 2:
         raise ValueError("h_grid must be a one-dimensional array with two points")
@@ -227,7 +236,7 @@ def compute_los_geometry(
         raise ValueError("h_grid must be finite and strictly increasing")
 
     z_sensor, h_sensor = position
-    candidates = z_values[z_values < z_sensor]
+    candidates = boundary_z_values[boundary_z_values < z_sensor]
     if candidates.size < 2:
         raise ValueError("At least two terrain samples must lie left of the sensor")
 
@@ -241,9 +250,16 @@ def compute_los_geometry(
     # occluding) ray slope anywhere between it and the sensor.
     boundary_slope = np.minimum.accumulate(slope_to_sensor[::-1])[::-1]
     boundary_height_candidates = h_sensor + boundary_slope * (candidates - z_sensor)
-    boundary_height = np.full(z_values.shape, boundary_height_candidates[-1])
-    boundary_height[: candidates.size] = boundary_height_candidates
-    los_boundary = np.column_stack((z_values, boundary_height))
+    reference_boundary_height = np.full(
+        boundary_z_values.shape, boundary_height_candidates[-1]
+    )
+    reference_boundary_height[: candidates.size] = boundary_height_candidates
+    los_boundary = np.column_stack(
+        (boundary_z_values, reference_boundary_height)
+    )
+    boundary_height = np.interp(
+        z_values, boundary_z_values, reference_boundary_height
+    )
 
     tangent_index = int(np.argmin(slope_to_sensor))
     tangent_z = float(candidates[tangent_index])
@@ -381,6 +397,7 @@ def build_geometry_bundle(configuration_bundle: dict[str, Any]) -> dict[str, Any
         h_grid,
         sensor,
         validation_config,
+        boundary_z_grid=model.z_grid,
     )
     validation = validate_geometry(
         model,

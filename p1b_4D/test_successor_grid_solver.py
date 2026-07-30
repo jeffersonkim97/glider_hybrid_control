@@ -15,6 +15,7 @@ from p1b_4D.phase_logging import close_phase_logger
 from p1b_4D.stackelberg_solver import solve_attacker_best_response
 from p1b_4D.stage_cost import construct_state_grids
 from p1b_4D.successor_grid_solver import (
+    _select_exact_minimum_candidate,
     build_successor_grid_graph,
     solve_successor_grid_bellman,
 )
@@ -56,6 +57,61 @@ class SuccessorGridSolverTests(unittest.TestCase):
         self.assertEqual(
             len(best["duration_profile"]), len(best["trajectory"]) - 1
         )
+        self.assertTrue(
+            result["validation"]["checks"]["selection_is_exact_minimum_cost"]
+        )
+        candidates = result["primary_result"]["bellman_candidate_bundle"][
+            "primary_result"
+        ]["candidates"]
+        self.assertEqual(
+            float(best["mission_cost"]),
+            min(float(candidate["mission_cost"]) for candidate in candidates),
+        )
+
+    def test_near_tie_never_displaces_absolute_minimum(self) -> None:
+        tolerance = float(
+            self.configuration["primary_result"]["validation_config"][
+                "objective_tolerance"
+            ]
+        )
+        delta = max(0.5 * tolerance, float(np.spacing(1.0)))
+        self.assertLessEqual(delta, tolerance)
+        exact_minimum = {
+            "mission_cost": 1.0,
+            "switching_point": np.array([20.0, 0.0]),
+            "metadata": {"seed_index": 1},
+        }
+        earlier_near_tie = {
+            "mission_cost": 1.0 + delta,
+            "switching_point": np.array([10.0, 0.0]),
+            "metadata": {"seed_index": 0},
+        }
+
+        best, ordered, tied = _select_exact_minimum_candidate(
+            [earlier_near_tie, exact_minimum]
+        )
+
+        self.assertIs(best, exact_minimum)
+        self.assertIs(ordered[0], exact_minimum)
+        self.assertEqual(tied, [exact_minimum])
+
+    def test_exact_cost_tie_uses_smallest_switching_z(self) -> None:
+        later = {
+            "mission_cost": 1.0,
+            "switching_point": np.array([20.0, 0.0]),
+            "metadata": {"seed_index": 1},
+        }
+        earlier = {
+            "mission_cost": 1.0,
+            "switching_point": np.array([10.0, 0.0]),
+            "metadata": {"seed_index": 2},
+        }
+
+        best, ordered, tied = _select_exact_minimum_candidate([later, earlier])
+
+        self.assertIs(best, earlier)
+        self.assertEqual(ordered, [earlier, later])
+        self.assertEqual(tied, [earlier, later])
 
     def test_bellman_values_match_independent_networkx_shortest_paths(self) -> None:
         geometry = build_geometry_bundle(self.configuration)

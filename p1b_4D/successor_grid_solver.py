@@ -89,12 +89,7 @@ def solve_successor_grid_attacker(
 
     if not candidates:
         raise RuntimeError("No physical successor-grid switching response reaches the goal")
-    ordered = sorted(
-        candidates, key=lambda item: (item["mission_cost"], item["candidate_id"])
-    )
-    best = ordered[0]
-    tolerance = configs["validation_config"]["objective_tolerance"]
-    tied = [item for item in ordered if item["mission_cost"] - best["mission_cost"] <= tolerance]
+    best, ordered, tied = _select_exact_minimum_candidate(candidates)
 
     candidate_bundle = _candidate_bundle(
         candidates, attempts, seeds, graph, policy, configuration_bundle,
@@ -104,6 +99,29 @@ def solve_successor_grid_attacker(
         best, ordered, tied, candidate_bundle, configuration_bundle
     )
     return candidate_bundle, response_bundle
+
+
+def _select_exact_minimum_candidate(
+    candidates: list[dict[str, Any]],
+) -> tuple[dict[str, Any], list[dict[str, Any]], list[dict[str, Any]]]:
+    """Select the absolute minimum cost, using switching z only for exact ties."""
+    if not candidates:
+        raise ValueError("At least one successor-grid candidate is required")
+    ordered = sorted(
+        candidates,
+        key=lambda item: (
+            float(item["mission_cost"]),
+            float(item["switching_point"][0]),
+            int(item["metadata"]["seed_index"]),
+        ),
+    )
+    minimum_cost = float(ordered[0]["mission_cost"])
+    tied = [
+        item
+        for item in ordered
+        if float(item["mission_cost"]) == minimum_cost
+    ]
+    return tied[0], ordered, tied
 
 
 def build_successor_grid_graph(
@@ -123,22 +141,21 @@ def build_successor_grid_graph(
     dz, dh = float(z_grid[1] - z_grid[0]), float(h_grid[1] - h_grid[0])
 
     actions: list[dict[str, Any]] = []
-    for forward in range(1, options["maximum_forward_cells"] + 1):
-        for descent in range(1, options["maximum_descent_cells"] + 1):
-            edge_dz, edge_dh = forward * dz, -descent * dh
-            length = math.hypot(edge_dz, edge_dh)
-            gamma = math.atan2(edge_dh, edge_dz)
-            for speed_index, speed in enumerate(speed_grid):
-                if _control_is_valid(float(speed), gamma, vehicle):
-                    actions.append({
-                        "forward_cells": forward,
-                        "descent_cells": descent,
-                        "speed_index": speed_index,
-                        "speed": float(speed),
-                        "gamma": gamma,
-                        "length": length,
-                        "duration": length / float(speed),
-                    })
+    for forward, descent in regular_action_offsets(options):
+        edge_dz, edge_dh = forward * dz, -descent * dh
+        length = math.hypot(edge_dz, edge_dh)
+        gamma = math.atan2(edge_dh, edge_dz)
+        for speed_index, speed in enumerate(speed_grid):
+            if _control_is_valid(float(speed), gamma, vehicle):
+                actions.append({
+                    "forward_cells": forward,
+                    "descent_cells": descent,
+                    "speed_index": speed_index,
+                    "speed": float(speed),
+                    "gamma": gamma,
+                    "length": length,
+                    "duration": length / float(speed),
+                })
     if not actions:
         raise RuntimeError("Successor-grid configuration creates no feasible controls")
 
@@ -230,8 +247,48 @@ def build_successor_grid_graph(
             "state_action_count": int(np.prod(shape)),
             "endpoint_snapping": False,
             "multi_hill_geometry_api": True,
+            "action_family": options.get("action_family", "enriched"),
+            "virtual_switch_target_family": options.get(
+                "virtual_switch_target_family", "legacy_cell_window"
+            ),
         },
     }
+
+
+def regular_action_offsets(options: dict[str, Any]) -> tuple[tuple[int, int], ...]:
+    """Return regular successor offsets in the frozen lexicographic order.
+
+    The legacy/default ``enriched`` family is the full positive rectangular
+    offset set.  Direction B's ``transported`` family keeps only the two L0
+    physical vectors after multiplying their cell offsets by ``2**level``.
+    """
+    maximum_forward = int(options["maximum_forward_cells"])
+    maximum_descent = int(options["maximum_descent_cells"])
+    family = options.get("action_family", "enriched")
+    if family == "enriched":
+        offsets = {
+            (forward, descent)
+            for forward in range(1, maximum_forward + 1)
+            for descent in range(1, maximum_descent + 1)
+        }
+        offsets.update(
+            (int(forward), int(descent))
+            for forward, descent in options.get("supplemental_offsets", ())
+        )
+        if any(forward < 1 or descent < 1 for forward, descent in offsets):
+            raise ValueError("Successor offsets must contain positive integers")
+        return tuple(sorted(offsets))
+    if family == "transported":
+        level = int(options.get("nested_level", 0))
+        stride = 2**level
+        expected = (stride, 2 * stride)
+        if (maximum_forward, maximum_descent) != expected:
+            raise ValueError(
+                "Transported Direction-B actions require maximum cell offsets "
+                f"{expected}, received {(maximum_forward, maximum_descent)}"
+            )
+        return ((stride, stride), (stride, 2 * stride))
+    raise ValueError(f"Unsupported successor-grid action_family: {family}")
 
 
 def solve_successor_grid_bellman(
@@ -306,47 +363,115 @@ def _best_virtual_switch_edge(
     options = configs["attacker_solver_config"]["successor_grid"]
     vehicle = configs["vehicle_config"]
     z_grid, h_grid, speeds = grids["z"], grids["h"], grids["v"]
-    base_z = int(np.argmin(np.abs(z_grid - switching_point[0])))
-    base_h = int(np.searchsorted(h_grid, switching_point[1], side="right") - 1)
     best = None
-    for forward in range(1, options["virtual_switch_maximum_forward_cells"] + 1):
-        zi = base_z + forward
-        if zi >= z_grid.size:
+    for zi, hi in virtual_switch_target_indices(switching_point, grids, options):
+        target = np.array([z_grid[zi], h_grid[hi]])
+        delta = target - switching_point
+        gamma = math.atan2(float(delta[1]), float(delta[0]))
+        length = float(np.linalg.norm(delta))
+        if not np.isfinite(policy["value"][zi, hi]):
             continue
-        lower = max(0, base_h - options["virtual_switch_maximum_descent_cells"])
-        for hi in range(lower, base_h + 1):
-            target = np.array([z_grid[zi], h_grid[hi]])
-            delta = target - switching_point
-            gamma = math.atan2(float(delta[1]), float(delta[0]))
-            length = float(np.linalg.norm(delta))
-            if delta[0] <= 0.0 or delta[1] >= 0.0 or not np.isfinite(policy["value"][zi, hi]):
+        for speed_index, speed in enumerate(speeds):
+            speed = float(speed)
+            if not _control_is_valid(speed, gamma, vehicle):
                 continue
-            for speed_index, speed in enumerate(speeds):
-                speed = float(speed)
-                if not _control_is_valid(speed, gamma, vehicle):
-                    continue
-                metrics = _physical_edge_metrics(
-                    switching_point, target, speed, configuration_bundle,
-                    geometry_bundle,
-                )
-                if not metrics["valid"]:
-                    continue
-                total = metrics["cost"] + float(policy["value"][zi, hi])
-                record = {
-                    **metrics,
-                    "target_index": (zi, hi),
-                    "target": target,
-                    "speed_index": speed_index,
-                    "speed": speed,
-                    "gamma": gamma,
-                    "length": length,
-                    "total_glide_cost": total,
-                }
-                if best is None or (total, zi, hi, speed_index) < (
-                    best["total_glide_cost"], *best["target_index"], best["speed_index"]
-                ):
-                    best = record
+            metrics = _physical_edge_metrics(
+                switching_point, target, speed, configuration_bundle,
+                geometry_bundle,
+            )
+            if not metrics["valid"]:
+                continue
+            total = metrics["cost"] + float(policy["value"][zi, hi])
+            record = {
+                **metrics,
+                "target_index": (zi, hi),
+                "target": target,
+                "speed_index": speed_index,
+                "speed": speed,
+                "gamma": gamma,
+                "length": length,
+                "total_glide_cost": total,
+            }
+            if best is None or (total, zi, hi, speed_index) < (
+                best["total_glide_cost"], *best["target_index"], best["speed_index"]
+            ):
+                best = record
     return best
+
+
+def virtual_switch_target_indices(
+    switching_point: np.ndarray,
+    grids: dict[str, np.ndarray],
+    options: dict[str, Any],
+) -> tuple[tuple[int, int], ...]:
+    """Enumerate structural virtual-switch targets deterministically.
+
+    Existing configurations retain the old cell-window behavior. Direction B
+    uses a physical box measured from the continuous switching state.  The
+    transported variant additionally retains only nodes that map exactly to
+    the L0 spatial grid.
+    """
+    point = np.asarray(switching_point, dtype=float)
+    if point.shape != (2,) or not np.all(np.isfinite(point)):
+        raise ValueError("switching_point must contain two finite coordinates")
+    z_grid, h_grid = np.asarray(grids["z"]), np.asarray(grids["h"])
+    family = options.get("virtual_switch_target_family", "legacy_cell_window")
+    if family == "legacy_cell_window":
+        base_z = int(np.argmin(np.abs(z_grid - point[0])))
+        base_h = int(np.searchsorted(h_grid, point[1], side="right") - 1)
+        targets: list[tuple[int, int]] = []
+        for forward in range(
+            1, int(options["virtual_switch_maximum_forward_cells"]) + 1
+        ):
+            zi = base_z + forward
+            if zi >= z_grid.size:
+                continue
+            lower = max(
+                0,
+                base_h
+                - int(options["virtual_switch_maximum_descent_cells"]),
+            )
+            for hi in range(lower, base_h + 1):
+                target = np.array([z_grid[zi], h_grid[hi]])
+                delta = target - point
+                if delta[0] > 0.0 and delta[1] < 0.0:
+                    targets.append((zi, hi))
+        return tuple(targets)
+
+    if family not in {"physical_box_enriched", "physical_box_transported"}:
+        raise ValueError(
+            "Unsupported successor-grid virtual_switch_target_family: "
+            f"{family}"
+        )
+    maximum_forward = float(options["virtual_switch_maximum_forward_distance"])
+    maximum_descent = float(options["virtual_switch_maximum_descent_distance"])
+    if maximum_forward <= 0.0 or maximum_descent <= 0.0:
+        raise ValueError("Physical virtual-switch distances must be positive")
+    scale = max(
+        1.0,
+        abs(float(point[0])),
+        abs(float(point[1])),
+        abs(float(z_grid[-1])),
+        abs(float(h_grid[-1])),
+    )
+    tolerance = 64.0 * np.finfo(float).eps * scale
+    z_mask = (
+        (z_grid - point[0] > tolerance)
+        & (z_grid - point[0] <= maximum_forward + tolerance)
+    )
+    h_mask = (
+        (point[1] - h_grid > tolerance)
+        & (point[1] - h_grid <= maximum_descent + tolerance)
+    )
+    z_indices = np.flatnonzero(z_mask)
+    h_indices = np.flatnonzero(h_mask)
+    if family == "physical_box_transported":
+        stride = 2 ** int(options.get("nested_level", 0))
+        z_indices = z_indices[z_indices % stride == 0]
+        h_indices = h_indices[h_indices % stride == 0]
+    return tuple(
+        (int(zi), int(hi)) for zi in z_indices for hi in h_indices
+    )
 
 
 def _extract_candidate(
@@ -565,6 +690,7 @@ def _candidate_bundle(candidates, attempts, seeds, graph, policy, configuration_
 
 def _response_bundle(best, ordered, tied, candidate_bundle, configuration_bundle):
     best["metadata"]["is_final_attacker_solution"] = True
+    minimum_cost = float(ordered[0]["mission_cost"])
     primary = {
         **best,
         "solution_id": f"successor-grid-optimal-{best['candidate_id']}",
@@ -577,8 +703,19 @@ def _response_bundle(best, ordered, tied, candidate_bundle, configuration_bundle
     }
     validation = {
         "passed": best["validation"]["passed"],
-        "checks": {**best["validation"]["checks"], "selection_is_minimum_cost": best is ordered[0]},
-        "metrics": {"selected_mission_cost": best["mission_cost"], "candidate_count": len(ordered), "tie_count": len(tied)},
+        "checks": {
+            **best["validation"]["checks"],
+            "selection_is_exact_minimum_cost": (
+                float(best["mission_cost"]) == minimum_cost
+            ),
+            "smallest_switching_z_selected_within_tie": best is tied[0],
+        },
+        "metrics": {
+            "selected_mission_cost": best["mission_cost"],
+            "minimum_mission_cost": minimum_cost,
+            "candidate_count": len(ordered),
+            "tie_count": len(tied),
+        },
         "warnings": [], "failed_checks": best["validation"]["failed_checks"],
         "summary": "Authoritative physical successor-grid response validation passed",
     }
@@ -594,7 +731,10 @@ def _response_bundle(best, ordered, tied, candidate_bundle, configuration_bundle
                 "cost_config"
             ]["attacker"]["objective_id"],
             "is_final_attacker_solution": True, "global_optimum_claim": False,
-            "selection_rule": "minimum_mission_cost_among_virtual_switching_states",
+            "selection_rule": (
+                "absolute_minimum_planning_cost_then_smallest_switching_z_"
+                "for_exact_cost_ties"
+            ),
         },
         "status": {"success": validation["passed"], "code": "OK", "message": validation["summary"], "warnings": [], "failed_checks": validation["failed_checks"]},
     }
