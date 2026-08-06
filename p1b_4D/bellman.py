@@ -8,6 +8,7 @@ import casadi as ca
 import numpy as np
 
 from .geometry import los_boundary_height, terrain_height
+from .segment_feasibility import certify_straight_segment_geometry
 
 
 def generate_bellman_candidates(
@@ -264,10 +265,20 @@ def generate_switching_point_seeds(
     line: with one hill this reduces exactly to the old tangent-line formula
     over its whole domain, and with several it automatically follows
     whichever obstacle governs visibility at that z, with no per-hill
-    special-casing. Only the configured airspace altitude band still bounds
-    the search -- the old separate "before the single global tangent point"
-    cutoff is subsumed by the general boundary already being correct at
-    every z left of the sensor.
+    special-casing.
+
+    Where the boundary height exceeds the airspace ceiling, the seed is
+    clipped to `h_max` rather than dropped: flying at `h_max` there is still
+    strictly under the true (higher) shadow line, so it stays fully
+    occluded -- only the boundary curve itself is out of reach, not
+    concealment. Dropping those z-nodes instead of clipping them silently
+    empties out the seed set near launch whenever a distant obstacle casts a
+    shadow taller than the airspace allows (e.g. a shadow-casting hill far
+    from launch but still close to the sensor), which starves the search of
+    exactly the candidates that region of z needs. Clipping keeps every
+    z-node in play; `evaluate_powered_segment`'s downstream occlusion
+    certificate is what actually accepts or rejects each seed; a node below
+    `h_min` has no concealed altitude at all and stays excluded.
     """
     geometry = geometry_bundle["primary_result"]["los_geometry"]
     sensor_position = geometry_bundle["primary_result"]["sensor_position"]
@@ -279,19 +290,14 @@ def generate_switching_point_seeds(
     if domain_z.size == 0:
         raise ValueError("No z-grid nodes lie strictly between launch and the sensor")
     domain_h = los_boundary_height(geometry, domain_z)
-    within_airspace = (
-        (domain_h >= airspace["h_min"]) & (domain_h <= airspace["h_max"])
-    )
+    seed_h = np.minimum(domain_h, airspace["h_max"])
+    within_airspace = seed_h >= airspace["h_min"]
     z_values = domain_z[within_airspace]
-    h_values = domain_h[within_airspace]
+    h_values = seed_h[within_airspace]
     if z_values.size == 0:
-        violation = np.minimum(
-            np.abs(domain_h - airspace["h_min"]),
-            np.abs(domain_h - airspace["h_max"]),
-        )
-        nearest_index = int(np.argmin(violation))
+        nearest_index = int(np.argmax(seed_h))
         z_values = domain_z[nearest_index : nearest_index + 1]
-        h_values = domain_h[nearest_index : nearest_index + 1]
+        h_values = seed_h[nearest_index : nearest_index + 1]
     return np.column_stack((z_values, h_values))
 
 
@@ -624,16 +630,16 @@ def evaluate_powered_segment(
     sample_count = bellman["search_options"]["segment_check_count"]
     fractions = np.linspace(0.0, 1.0, sample_count)
     path = launch[None, :] + fractions[:, None] * delta[None, :]
-    terrain_margin = (
-        path[:, 1]
-        - terrain_height(geometry["terrain_model"], path[:, 0])
-    )
-    tangent = geometry["los_geometry"]
-    # path[:, 0] never reaches z_sensor (a switching point is always strictly
-    # left of the sensor by construction), so the general boundary lookup is
-    # valid over the whole straight powered path without a separate cutoff.
-    inside_occlusion = path[:, 1] <= (
-        los_boundary_height(tangent, path[:, 0]) + validation_config["los_tolerance"]
+    geometry_certificate = certify_straight_segment_geometry(
+        launch,
+        np.asarray(switching_point, dtype=float),
+        geometry["terrain_model"],
+        geometry["los_geometry"],
+        float(geometry["sensor_position"][0]),
+        environment["airspace"],
+        terrain_tolerance=float(validation_config["terrain_tolerance"]),
+        los_requirement="occluded",
+        los_tolerance=float(validation_config["los_tolerance"]),
     )
     sensor_position = geometry["sensor_position"]
     acoustic_function = functions["powered_detection_components"].map(
@@ -661,11 +667,9 @@ def evaluate_powered_segment(
         powered_time,
         0.0,
     )
-    terrain_clear = bool(
-        np.all(terrain_margin >= -validation_config["terrain_tolerance"])
-    )
-    occlusion_valid = bool(np.all(inside_occlusion))
-    passed = terrain_clear and occlusion_valid
+    terrain_clear = bool(geometry_certificate["terrain_clear"])
+    occlusion_valid = bool(geometry_certificate["los_clear"])
+    passed = bool(geometry_certificate["passed"])
     return {
         "path": _readonly(path),
         "powered_time": powered_time,
@@ -676,7 +680,16 @@ def evaluate_powered_segment(
             "passed": passed,
             "terrain_clear": terrain_clear,
             "occlusion_valid": occlusion_valid,
-            "minimum_terrain_margin": float(np.min(terrain_margin)),
+            "domain_clear": bool(geometry_certificate["domain_clear"]),
+            "minimum_terrain_margin": geometry_certificate[
+                "minimum_terrain_margin"
+            ],
+            "minimum_occlusion_margin": geometry_certificate[
+                "minimum_los_margin"
+            ],
+            "terrain_argmin_z": geometry_certificate["terrain_argmin_z"],
+            "occlusion_argmin_z": geometry_certificate["los_argmin_z"],
+            "geometry_certificate": geometry_certificate["certificate"],
             "summary": (
                 "Powered segment feasible"
                 if passed

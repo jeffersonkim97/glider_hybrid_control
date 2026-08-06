@@ -1,180 +1,407 @@
-# Discrete Optimality of the Coarse Bellman Attacker Response
+# Discrete Optimality of the Physical Successor-Grid Bellman Follower
 
-Paper-section draft for the ACC/L-CSS submission (plan item 6,
-`p1b_roadmap_0727.md`). Establishes that `select_authoritative_bellman_
-response` returns the exact minimum-cost Attacker response over the full
-discretized decision space — not a local or greedy approximation — given
-the transition structure `p1b_4D` actually constructs. Existing residual/
-telescoping-sum unit tests (`test_bellman.py`, `test_stage_cost.py`, etc.)
-are cited as *implementation validation* that the code satisfies this
-proposition's hypotheses; they are not offered as a substitute for the
-proof itself, and the two should stay visibly distinct in the writeup.
+This document states the formal result implemented by
+`successor_grid_solver.py`. It supersedes the legacy proposition based on
+`solve_coarse_bellman`, fixed-duration actions, and endpoint snapping. The
+result concerns the Attacker follower problem for one fixed terrain, sensor
+configuration, cost-weight selection, and finite discretization.
 
-## Setup
+The central claim is deliberately scoped:
 
-Fix a configuration (terrain, sensor position, cost weights, grid
-resolution). Let:
+> Bellman computes the exact optimal value on the finite physical-successor
+> graph. It does not compute or certify the optimum of a continuous
+> trajectory space.
 
-- $z_1 < z_2 < \dots < z_{N_z}$ and $h_1, \dots, h_{N_h}$ be the along-track
-  and altitude grids (`grids["z"]`, `grids["h"]`).
-- $\mathcal{X} = \{1,\dots,N_z\} \times \{1,\dots,N_h\}$ be the discrete
-  spatial state space (glide phase); a state is a grid index pair
-  $(i,j)$, not a continuous position.
-- $\mathcal{A} = \{1,\dots,N_v\} \times \{1,\dots,N_\gamma\}$ be the
-  finite discretized action space (speed, flight-path angle).
-- $G \subset \mathcal{X}$ be the goal mask (`goal_mask`): states within
-  `goal_radius` of the goal position.
-- $\Sigma \subset \{1,\dots,N_z\}$ be the discretized admissible switching
-  set — **the set the code actually enumerates**
-  (`generate_switching_point_seeds`): every $z$-grid index strictly
-  between launch and the sensor whose LOS-boundary height lies inside the
-  configured airspace band. This is *not* claimed to equal the continuous
-  LOS-tangent boundary; it is the boundary's value at each admissible grid
-  node, which is what the algorithm can distinguish at this resolution.
+## 1. Finite follower problem
 
-For $(i,j)\in\mathcal{X}$ and $(k,l)\in\mathcal{A}$, `construct_coarse_
-transitions` computes a kinematic step $\delta z = v_k\cos\gamma_l\,\Delta
-t$, $\delta h = v_k\sin\gamma_l\,\Delta t$ and maps it to a successor
-index via
+Let the spatial grids be
+
 $$
-\text{next}_z(i,k,l) = \left\lceil \frac{(z_i+\delta z) - z_1}{\Delta z}
-\right\rceil, \qquad
-\text{next}_h(i,j,k,l) = \operatorname{round}\!\left(\frac{(h_j+\delta h)
-- h_1}{\Delta h}\right),
+\mathcal Z_\Delta=\{z_0,\ldots,z_{N_z-1}\},
+\qquad
+\mathcal H_\Delta=\{h_0,\ldots,h_{N_h-1}\},
 $$
-marked **valid** only if both indices are in-bounds, every intermediate
-sub-sample (`segment_check_count` fractions of the segment) stays clear of
-terrain and inside the LOS-visible region, and the transition either
-reaches $G$ or lands on a spatially-valid, non-goal successor state.
 
-## Proposition 1 (finite DAG)
+with uniform spacings $\Delta z>0$ and $\Delta h>0$. A regular glide state is
 
-*The set of valid transitions, viewed as a directed graph on $\mathcal{X}$,
-is a finite DAG in which every edge strictly increases the $z$-index.*
-
-**Proof.** $\mathcal{X}$ is finite by construction. Fix a valid transition
-from $(i,j)$ under action $(k,l)$. The vehicle's configured flight-path-
-angle bounds satisfy $\gamma_{\min} \le \gamma_l \le \gamma_{\max} <
-0^\circ$ (glide is always descending, never level or climbing), so
-$\cos\gamma_l > 0$ for every $\gamma_l$ in this range, and since $v_k > 0$,
-$\delta z = v_k\cos\gamma_l\,\Delta t > 0$ strictly. Writing $x =
-i + \delta z/\Delta z > i$ with $i$ an integer, $\lceil x\rceil \ge i+1$
-for any $x>i$. Hence $\text{next}_z(i,k,l) \ge i+1 > i$ for *every* valid
-transition, with no exception. A graph in which every edge strictly
-increases an integer-valued node label cannot contain a cycle, so the
-graph is acyclic; sorting nodes by decreasing $z$-index is therefore a
-valid topological order. $\blacksquare$
-
-This is exactly the property `solve_coarse_bellman` relies on structurally
-(`"acyclic_forward_transition": True` in its own diagnostics) and exactly
-why a *single* backward sweep — not iterate-to-convergence value
-iteration — suffices (Proposition 3).
-
-## Proposition 2 (exhaustive action and switching-seed enumeration)
-
-*For every state, all $N_v \times N_\gamma$ actions are evaluated. For the
-switching decision, every element of $\Sigma$ is evaluated as a candidate.*
-
-**Proof.** `_ordered_actions` constructs `actions` as the full Python
-list comprehension over `range(v_grid.size) × range(gamma_grid.size)` —
-i.e. the complete Cartesian product — and only *sorts* it into one of four
-tie-breaking orders; no action is filtered out before `solve_coarse_
-bellman`'s inner loop `for velocity_index, gamma_index in actions` visits
-it. Separately, `generate_switching_point_seeds` builds `domain_z` as
-every $z$-grid node with `z_start <= z < z_sensor`, restricted to
-`within_airspace`, and returns one seed per surviving node — i.e. all of
-$\Sigma$, not a sample of it. `generate_bellman_candidates` then calls
-`evaluate_powered_segment` and `extract_coarse_candidate` once per seed in
-this full set, with no early termination. $\blacksquare$
-
-## Proposition 3 (backward induction computes exact cost-to-go)
-
-*After one sweep of `solve_coarse_bellman`, `value[i,j]` equals the exact
-minimum discretized cost-to-go from $(i,j)$ to the goal, for every
-$(i,j)\in\mathcal{X}$ reachable from some switching seed.*
-
-**Proof.** By Proposition 1 the transition graph is a DAG with edges only
-increasing the $z$-index; processing $z$-index from $N_z{-}1$ down to $0$
-(as the code does: `for z_index in range(z_grid.size - 1, -1, -1)`) is a
-valid reverse topological order, so whenever state $(i,j)$ is processed,
-`value[next_z, next_h]` for every action's successor has *already* been
-finalized (either it is a goal cell, pinned to $0$ before the sweep
-starts, or it was visited at a strictly larger $z$-index earlier in the
-same sweep). The update computed for $(i,j)$,
 $$
-\text{value}[i,j] = \min_{(k,l)\in\mathcal{A},\ \text{valid}}\ \Big(
-f(i,j,k,l)\cdot j_{4D}[i,j,k,l] + \text{value}[\text{next}(i,j,k,l)]
-\Big),
+x_{i,j}=(z_i,h_j)\in\mathcal X_\Delta
+=\mathcal Z_\Delta\times\mathcal H_\Delta.
 $$
-(where $f$ is $1$ for a non-terminal transition or the terminal fraction
-for one that reaches $G$ mid-segment, and $j_{4D}$ is the local stage cost
-from `construct_stage_cost_4d` — itself already validated elsewhere to
-equal the additive hazard/time increment for that one coarse step) is
-exactly the Bellman optimality equation restricted to this DAG. By
-induction on topological distance to $G$ — base case $\text{value}[G]=0$
-by definition, inductive step is the minimization above using only
-already-correct successor values — `value[i,j]` equals the true minimum
-sum of local costs over all valid discrete paths from $(i,j)$ to $G$. This
-is the standard single-source-shortest-path-in-a-DAG argument (one
-relaxation pass in topological order is sufficient and exact whenever the
-graph has no cycles), applied here to a DAG whose acyclicity is *forced*
-by vehicle dynamics (Proposition 1) rather than assumed. No further sweep
-can change any value once computed, which is exactly why the
-implementation performs `"sweep_count": 1` rather than an
-iterate-to-convergence loop — this is not an approximation or an
-early-exit; on this DAG, one sweep already is the fixed point.
-$\blacksquare$
 
-## Proposition 4 (overall discrete Attacker optimum)
+The goal set is the finite-grid mask
 
-*Combining Propositions 1–3, `select_authoritative_bellman_response`'s
-`mission_cost` is the exact global minimum of the Attacker's total mission
-cost (powered-segment cost plus glide-phase cost-to-go) over the entire
-discretized decision space — every switching seed in $\Sigma$ crossed with
-every DAG-optimal glide policy from that seed.*
+$$
+\mathcal G_\Delta
+=
+\left\{
+x_{i,j}\in\mathcal X_\Delta:
+\|x_{i,j}-x_g\|_2\le r_g
+\right\},
+$$
 
-**Proof.** For each seed $\sigma\in\Sigma$ (Proposition 2), `evaluate_
-powered_segment` computes the exact powered-phase cost for the one
-admissible straight-line path from launch to $\sigma$ (closed form, no
-discretization choice involved beyond the already-fixed seed), and
-`extract_coarse_candidate` replays the policy fixed by Proposition 3 from
-$\sigma$'s grid cell forward, so the resulting `mission_cost` for that seed
-is exactly (powered cost) + (exact glide cost-to-go from $\sigma$).
-`select_authoritative_bellman_response` takes the minimum of this
-quantity over *all* $\sigma\in\Sigma$ (`sorted(candidates, key=...
-mission_cost...)`, no filtering applied beforehand). Since every seed was
-evaluated exactly (not approximately) and every seed in the admissible set
-was tried, the returned minimum is the global minimum over the full
-discretized joint space. $\blacksquare$
+together with a terminal sink $g$ representing an edge that intersects the
+goal ball before reaching its full grid-to-grid endpoint.
 
-## Scope and what this does *not* claim
+### 1.1 Regular physical-successor actions
 
-- This is optimality **over the discretization the code defines** — grid
-  resolution, action grid, and the switching-seed set $\Sigma$ are all
-  finite approximations of the true continuous problem. No claim is made
-  about the continuous-problem optimum; item 1's resolution-convergence
-  study is the empirical evidence for how close the discretized optimum
-  tracks it.
-- This says nothing about the **Defender's** continuous outer search
-  (DIRECT) — that remains "best-found," not certified (see item 7's
-  terminology cleanup). Propositions 1–4 apply strictly to the inner
-  (Attacker) problem for one *fixed* sensor position.
-- The empirical scaling exponent of 1.043 (item 5) is consistent with, but
-  not itself proof of, Proposition 3's $O(1)$-work-per-cell claim — the
-  proposition is proved from the code's control flow, the measurement is
-  corroborating evidence, and the writeup should present them as two
-  independent lines of evidence for the same underlying structural fact,
-  not conflate them.
+A regular action is defined by a positive integer successor offset and a
+speed,
 
-## Independent cross-check
+$$
+a=(p,q,v),
+\qquad p\ge1,\quad q\ge1,\quad v\in\mathcal V_\Delta.
+$$
 
-Proof by inspection of control flow is not a substitute for testing the
-actual numbers it predicts. `test_discrete_optimality_crosscheck.py`
-(new, see below) constructs a small toy grid, builds the *same* transition
-graph and stage costs via the real `construct_coarse_transitions`/
-`construct_stage_cost_4d` code, then computes shortest-cost-to-go via an
-independent library (`networkx.single_source_dijkstra`) over that graph
-and asserts it matches `solve_coarse_bellman`'s output exactly. This
-tests the Proposition 3 argument's *conclusion* against a trusted external
-implementation, using the project's own (separately validated) transition
-construction as the shared input — it does not re-derive the physics.
+Its physical displacement, flight-path angle, length, and duration are
+
+$$
+d_a=(p\Delta z,-q\Delta h),
+$$
+
+$$
+\gamma_a
+=
+\operatorname{atan2}(-q\Delta h,p\Delta z),
+\qquad
+\ell_a=\|d_a\|_2,
+\qquad
+\tau_a=\frac{\ell_a}{v}.
+$$
+
+Thus a nonterminal edge from $x_{i,j}$ ends at the exact successor node
+
+$$
+T(x_{i,j},a)=x_{i+p,j-q}.
+$$
+
+No endpoint is rounded or snapped. The implementation admits the edge only
+when:
+
+1. the speed, angle, lift coefficient, and drag checks pass;
+2. the endpoint is in bounds and spatially admissible, unless the edge is
+   terminal; and
+3. the P1 all-segment geometry certificate proves terrain and LOS feasibility
+   over the complete straight segment under the implemented piecewise-cubic
+   terrain and piecewise-linear swept LOS boundary.
+
+If the segment first intersects the goal ball at fraction
+$\rho\in(0,1]$, it becomes a terminal edge to $g$ with displacement
+$\rho d_a$ and duration $\rho\tau_a$.
+
+### 1.2 Edge cost
+
+For a regular or terminal edge $e$, let $H_e^{(Q)}$ be the cumulative hazard
+computed by the configured $Q$-sample trapezoidal rule, and let $T_e$ be its
+physical duration. The finite problem defines the edge cost as
+
+$$
+c_\Delta(e)
+=
+w_{\mathrm{PoD}}
+\frac{H_e^{(Q)}}{H_{\mathrm{ref}}}
++
+w_{\mathrm{time}}
+\frac{T_e}{T_{\mathrm{ref}}}.
+$$
+
+The quadrature is part of the finite objective definition. The proposition
+does not call this integral closed form and does not claim that $Q$ samples
+equal an exact continuous-time integral.
+
+### 1.3 Virtual switching states
+
+`generate_switching_point_seeds` defines a finite switching set
+$\Sigma_\Delta$. In the normal case it evaluates the swept, potentially
+multi-hill LOS boundary at every eligible $z$-grid coordinate strictly left
+of the sensor and retains the points inside the configured altitude band.
+Accordingly, a switching seed
+
+$$
+\sigma=(z_i,h_{\mathrm{LOS}}(z_i))\in\Sigma_\Delta
+$$
+
+can have an off-grid altitude and is treated as a virtual state rather than
+being snapped onto $\mathcal X_\Delta$.
+
+For each $\sigma$, `virtual_switch_target_indices` enumerates the complete
+finite target set $\mathcal Y_\Delta(\sigma)$ specified by the configured
+physical forward/descent box. For every target $y\in\mathcal Y_\Delta(\sigma)$
+and speed $v\in\mathcal V_\Delta$, the virtual edge uses
+
+$$
+\gamma(\sigma,y)=\operatorname{atan2}(y_h-\sigma_h,y_z-\sigma_z),
+$$
+
+$$
+\tau(\sigma,y,v)=\frac{\|y-\sigma\|_2}{v}.
+$$
+
+The edge therefore terminates exactly at $y$. It is admitted only if its
+control, P1 all-segment terrain/LOS certificate, and downstream finite-value
+checks pass.
+
+The powered phase is the implementation-defined straight segment from the
+launch state $x_0$ to $\sigma$. Its terrain and powered-occlusion feasibility
+use the P1 all-segment certificate; its hazard uses the configured finite
+quadrature. Let its resulting finite cost be $C_p^\Delta(\sigma)$.
+
+## 2. Proposition 1: the regular successor graph is a finite DAG
+
+**Statement.** The directed graph produced by `build_successor_grid_graph`
+is finite and acyclic. Every nonterminal regular edge strictly increases the
+$z$-index.
+
+**Proof.** The graph has at most $N_zN_h$ regular nodes and one terminal sink,
+so it is finite. Every regular action has $p\ge1$ and maps
+
+$$
+(i,j)\longmapsto(i+p,j-q).
+$$
+
+Hence the $z$-index strictly increases along every nonterminal edge. A
+directed cycle would have to return to its original $z$-index, which is
+impossible under a strict increase. Terminal edges end at $g$, which has no
+outgoing edge. Therefore the graph is a DAG, and descending $z$-index is a
+valid reverse-topological processing order. $\blacksquare$
+
+## 3. Proposition 2: every admitted edge is execution-consistent
+
+**Statement.** Every regular and virtual edge represents the straight
+constant-speed physical segment defined by its two stored endpoints. Its
+kinematic reconstruction reaches the stored endpoint without a state reset
+or endpoint snapping.
+
+**Proof.** Consider any admitted edge from $x$ to $y$ with
+
+$$
+\gamma=\operatorname{atan2}(y_h-x_h,y_z-x_z),
+\qquad
+\tau=\frac{\|y-x\|_2}{v}.
+$$
+
+Since $y_z>x_z$ and $y_h<x_h$ for every enumerated glide edge,
+
+$$
+v\tau
+\begin{bmatrix}
+\cos\gamma\\
+\sin\gamma
+\end{bmatrix}
+=y-x.
+$$
+
+Therefore constant-speed execution from $x$ for duration $\tau$ ends at $y$
+exactly, up to floating-point roundoff. For a terminal edge, replacing
+$y-x$ by $\rho(y-x)$ and $\tau$ by $\rho\tau$ gives the same identity at the
+goal-ball intersection. The virtual switching edge uses the identical
+endpoint-derived construction with $x=\sigma$. No transition applies a
+post-execution grid reset. $\blacksquare$
+
+This proposition establishes endpoint consistency. P1 additionally computes
+the global terrain and LOS margin minima for each straight edge under the
+implemented geometry representation: cubic-spline knots and stationary points
+for terrain, and every crossed breakpoint for the piecewise-linear swept LOS
+boundary. The high-fidelity replay remains an independent sampled objective
+reevaluation and implementation diagnostic; it is no longer the formal basis
+for terrain/LOS edge feasibility.
+
+## 4. Proposition 3: one backward Bellman sweep is exact on the graph
+
+Let $\mathcal E_\Delta(x)$ denote all valid regular or terminal edges leaving
+regular node $x$. Define
+
+$$
+V_\Delta(g)=0
+$$
+
+and
+
+$$
+V_\Delta(x)
+=
+\min_{e\in\mathcal E_\Delta(x)}
+\left[c_\Delta(e)+V_\Delta(T(e))\right],
+$$
+
+where $T(e)=g$ for a terminal edge and $V_\Delta(x)=+\infty$ if no path from
+$x$ reaches $g$.
+
+**Statement.** `solve_successor_grid_bellman` computes $V_\Delta(x)$ exactly
+for every regular grid node, relative to the stored finite edge costs.
+
+**Proof.** By Proposition 1, descending $z$-index is a reverse-topological
+order. When the algorithm processes $x_{i,j}$, the value of every
+nonterminal successor $x_{i+p,j-q}$ has already been finalized because
+$i+p>i$; the terminal sink has value zero. The update enumerates every action
+stored in `graph["actions"]`, discards exactly those marked invalid, and takes
+the minimum of the stored edge cost plus the already-final successor value.
+This is the shortest-path recursion on a finite DAG. Induction in
+reverse-topological order therefore proves that the stored value equals the
+minimum total edge cost over every finite graph path from that node to $g$.
+No fixed-point iteration is required. $\blacksquare$
+
+If two regular actions have exactly equal floating-point candidate costs,
+the first action in the frozen action enumeration is retained. This changes
+only the representative policy, not $V_\Delta$.
+
+## 5. Proposition 4: exhaustive virtual-switch evaluation gives the finite follower optimum
+
+For a seed $\sigma\in\Sigma_\Delta$, let
+$\mathcal E_\Delta^V(\sigma)$ be every admissible virtual edge produced by
+the Cartesian enumeration of its configured target indices and speed grid.
+Define
+
+$$
+J_\Delta(\sigma)
+=
+C_p^\Delta(\sigma)
++
+\min_{e\in\mathcal E_\Delta^V(\sigma)}
+\left[c_\Delta(e)+V_\Delta(T(e))\right],
+$$
+
+with $J_\Delta(\sigma)=+\infty$ when the powered segment or every virtual edge
+is infeasible. The finite follower optimal value is
+
+$$
+\boxed{
+J_\Delta^*
+=
+\min_{\sigma\in\Sigma_\Delta}J_\Delta(\sigma)
+}.
+$$
+
+**Statement.** `solve_successor_grid_attacker` evaluates every member of
+$\Sigma_\Delta$, every configured virtual target for that seed, and every
+configured speed. Its reported `minimum_mission_cost` equals $J_\Delta^*$,
+up to ordinary floating-point evaluation of the finite costs.
+
+**Proof.** Proposition 3 supplies the exact regular-graph value at every
+finite virtual-edge target. `_best_virtual_switch_edge` enumerates the full
+finite target/speed Cartesian product, checks the finite admissibility rules,
+and minimizes virtual-edge cost plus downstream Bellman value. The outer
+loop evaluates every generated switching seed and forms the additive powered
+plus glide mission cost. Finally, sorting all feasible candidates by mission
+cost places the smallest finite value first. These nested exhaustive minima
+are exactly the definition of $J_\Delta^*$. $\blacksquare$
+
+## 6. Exact minimum selection and deterministic tie rule
+
+After computing $J_\Delta^*$, the implementation restricts tie-breaking to
+the exact finite-cost minimizers
+
+$$
+\mathcal T_\Delta
+=
+\left\{
+\sigma\in\Sigma_\Delta:
+J_\Delta(\sigma)=J_\Delta^*
+\right\}.
+$$
+
+It returns the member of $\mathcal T_\Delta$ with the smallest switching
+$z$, followed by seed index. A candidate whose cost is merely close to the
+minimum cannot displace an absolute minimizer. Consequently,
+
+$$
+\boxed{
+J_\Delta^{\mathrm{selected}}=J_\Delta^*
+}.
+$$
+
+The switching-$z$ rule therefore chooses a deterministic representative from
+the exact best-response set without weakening finite follower optimality.
+
+## 7. Complexity
+
+Let
+
+- $N=N_zN_h$ be the number of regular spatial nodes;
+- $M$ be the number of dynamically admissible regular offset-speed actions;
+- $Q$ be the planning quadrature count;
+- $S=|\Sigma_\Delta|$ be the number of switching seeds;
+- $B$ be the maximum number of virtual target-speed pairs per seed; and
+- $L$ be the maximum extracted policy length.
+
+Then graph construction costs
+
+$$
+O(QNM)
+$$
+
+time and $O(NM)$ stored edge data. The Bellman sweep costs $O(NM)$ time and
+$O(N)$ value/policy storage in addition to the graph. Switching evaluation
+and path extraction cost
+
+$$
+O\!\left(S(BQ+L)\right)
+$$
+
+plus the configured powered-segment evaluation for each seed. For a fixed
+finite action family and quadrature count, the Bellman portion scales
+linearly with the number of grid states.
+
+## 8. B4 production instance
+
+Direction B4 freezes one instance of this finite family for C-lite:
+
+- the L2 spatial grid for each terrain;
+- the enriched physical-offset family;
+- nine speed candidates;
+- nine planning samples per edge; and
+- 1025 samples per selected edge in the common high-fidelity replay.
+
+The configuration identifier is
+`direction_b_l2_enriched_v9_q9_e1025`. The 1025-point evaluator does not
+alter the Bellman optimum; it independently reevaluates the selected finite
+policy at a common higher sampling resolution.
+
+## 9. Scope of the result
+
+The proposition proves:
+
+1. exact shortest-path values on the implementation-defined finite regular
+   successor graph;
+2. exhaustive optimization over the implementation-defined finite virtual
+   switching decisions;
+3. endpoint-consistent physical execution of every selected edge; and
+4. an exact finite-cost-minimizing returned representative, with deterministic
+   switching-$z$ selection only among exact cost ties.
+
+The proposition does **not** prove:
+
+- a continuous state-action or continuous trajectory-space optimum;
+- a continuous defender-position optimum;
+- a certificate relative to an unknown real terrain surface beyond the
+  implemented spline/LOS representation;
+- exact continuous integration of detection hazard; or
+- resolution-independent optimality.
+
+Those are intentionally outside the ACC core. Nested L0/L1/L2 experiments
+measure sensitivity to finite spatial/action resolution, and the common
+high-fidelity replay independently checks execution and objective integration
+at higher sampling resolution. Neither is relabeled as continuous global
+optimality.
+
+## 10. Implementation validation
+
+The proof and tests have distinct roles. The propositions follow from the
+finite graph definition and exhaustive control flow. The tests verify that
+the implementation satisfies those hypotheses:
+
+- `test_successor_grid_solver.py` compares Bellman values with independent
+  NetworkX shortest-path distances on the same finite graph;
+- `test_direction_b_discretization.py` checks nested physical actions,
+  virtual-switch targets, and machine-precision endpoint reconstruction;
+- `test_continuous_replay_evaluation.py` and
+  `test_successor_grid_solver.py` check executable replay without endpoint
+  snapping; and
+- `test_segment_feasibility.py` checks exact cubic stationary points, LOS
+  breakpoints, multi-hill dense-reference agreement, and degenerate powered
+  segments; and
+- the B2, B3, and B4 regression tests check that the frozen production
+  configuration and evaluator contract remain unchanged.
+
+Passing these tests supports implementation fidelity; it is not a substitute
+for the finite-DAG proof above.

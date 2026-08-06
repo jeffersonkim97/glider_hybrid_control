@@ -197,9 +197,9 @@ bellman_config: dict[str, Any] = {
 }
 
 # Selects between the preserved fixed-time snapped lattice and the physical
-# successor-grid formulation.  The default remains legacy-compatible; the
-# authoritative notebook exposes the same value as its one user-facing
-# switch.
+# successor-grid formulation.  The physical successor model is the current
+# default; callers may still select the legacy model explicitly for controlled
+# ablations and backward-compatibility tests.
 attacker_solver_config: dict[str, Any] = {
         "transition_model": "successor_grid_physical_edge",
     "supported_transition_models": (

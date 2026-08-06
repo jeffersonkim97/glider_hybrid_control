@@ -4,6 +4,18 @@
 side-view로 옮긴 것이 아니라, terrain-coupled hybrid regime으로 확장한
 후속 연구로 잡는 것이 가장 자연스럽다.
 
+## Current execution status — 2026-07-29
+
+- **Direction B technical core: COMPLETED.** Finite physical-successor
+  Bellman optimality, exact minimum-response selection, B2/B3의 54-case
+  nested-consistency study, common high-fidelity replay 및 B4 production
+  lattice freeze를 완료했다.
+- Continuous optimal lower bound는 검토 후 제외했으며, B의 scope는
+  discretized follower space에 한정한다.
+- 다음 technical stage는 C-lite finite defender-set exhaustive solve이다.
+- ACC manuscript로 theorem, table 및 figure를 옮기는 작업은 이후 전체
+  paper-writing 단계에서 수행한다.
+
 예비 판단은 다음과 같다.
 
 - Problem novelty: 충분히 설득력 있을 가능성이 높음
@@ -259,28 +271,30 @@ finite-grid oracle로 교체했다는 흐름이다.
 
 ## 7. 현재 상태에서 부족한 점
 
-### 7.1 Proposition과 실제 successor solver의 불일치
+### 7.1 Proposition과 실제 successor solver의 정합화 — RESOLVED (2026-07-29)
 
-현재 `discrete_optimality_proposition.md`는 상당 부분 legacy
-`solve_coarse_bellman`을 기준으로 작성돼 있다.
+`discrete_optimality_proposition.md`를 현재
+`successor_grid_solver.py`와 B4 production contract 기준으로 다시 작성했다.
+Legacy `solve_coarse_bellman`, fixed-duration action 및 endpoint snapping
+가정은 제거했다.
 
-ACC용 formal result는 실제 solver를 기준으로 다시 작성해야 한다.
-
-필요한 명제:
+현재 formal result에 포함된 명제:
 
 1. successor graph acyclicity
 2. virtual switching edge admissibility
 3. graph path와 piecewise-physical trajectory의 대응
-4. backward Bellman optimality
-5. switching-state enumeration을 포함한 finite-grid follower optimality
+4. backward Bellman의 exact finite-graph optimal value
+5. switching-state와 virtual target/speed enumeration을 포함한 finite-grid
+   follower optimal value
 6. 계산복잡도
 
-그리고 scope를 분명히 해야 한다.
+Scope와 구현상의 tie rule도 명시했다.
 
 - inner follower에 대한 finite-grid optimum
 - continuous trajectory-space optimum은 아님
 - outer DIRECT는 best-found
-- tie-breaking rule 포함
+- absolute minimum-cost candidate를 항상 선택하고, exact-equal cost에서만
+  smallest switching-z와 seed index로 tie-break
 
 ### 7.2 Continuous feasibility는 아직 analytic certificate가 아님
 
@@ -645,8 +659,9 @@ scope를 명확히 제한한 C-lite를 추가할 수 있다.
 1. **Direction B:** execution-consistent successor-grid follower에 대해
    올바른 nested discretization family를 구성하고, 공통 continuous evaluator
    및 cross-resolution error indicator로 numerical consistency를 평가한다.
-   Valid하고 유용한 relaxed lower bound가 구성되면 lower/upper gap을 함께
-   보고하되, 실패하거나 지나치게 느슨하면 analytic continuous certificate를
+   Continuous optimal lower bound는 검토 후 제외한다. 본 연구는 finite
+   discretized state-action space의 exact Bellman value, physical-edge replay,
+   nested-grid consistency에 집중하며 analytic continuous certificate를
    주장하지 않는다.
 2. **Direction C-lite:** finite defender sensor set과 finite physical-successor
    follower lattice로 정의된 fully discretized Stackelberg game을 exhaustive
@@ -688,16 +703,14 @@ scope를 명확히 제한한 C-lite를 추가할 수 있다.
 현재 일정에서 현실적인 B는 다음으로 정의한다.
 
 > Nested-discretization consistency study with a common high-fidelity
-> continuous evaluator, plus an optional valid relaxed lower bound if one can
-> be constructed.
+> continuous evaluator for an execution-consistent finite follower family.
 
 필수 B는 올바른 nested discretization, 동일한 physical action envelope,
 공통 high-fidelity evaluator, objective/path/switching/ranking 변화 측정 및
-numerical error indicator를 포함한다. 선택적 B+는 valid relaxed lower
-bound와 continuous-feasible upper bound를 이용한 gap을 포함한다.
-
-Lower bound가 없거나 지나치게 느슨하면 `error-controlled` 또는
-`certified`라고 부르지 않고 `numerical consistency study`라고 부른다.
+numerical error indicator를 포함한다. Continuous optimal lower bound는
+검토 후 제외했으므로 결과를 `continuous-optimal`, `error-controlled` 또는
+`certified`라고 부르지 않고 `nested-discretization consistency study`라고
+부른다.
 
 ### 15.2 Nested spatial grid
 
@@ -831,18 +844,38 @@ J_D^{\mathrm{HF}}(s_a)-J_D^{\mathrm{HF}}(s_b)
 
 로 정의하고 sign, magnitude, resolution shift, reversal을 기록한다.
 
-### 15.9 Optional relaxed lower bound
+### 15.9 Continuous optimal lower bound — REVIEWED AND EXCLUDED (2026-07-29)
 
-가능한 relaxed problem은 terrain/LOS constraint 완화, optimistic edge cost,
-확대된 action set 또는 admissible minimum-time cost를 사용한다.
+Continuous optimal lower bound는 검토 후 ACC core에서 제외한다.
+
+제외 사유:
+
+1. 본 연구의 follower problem과 optimality claim은 구현이 정의한 finite
+   discretized state-action space를 대상으로 한다.
+2. Bellman은 해당 finite physical-successor DAG의 optimal value를 직접
+   계산하므로, discrete optimality를 증명하기 위한 별도 lower bound가
+   필요하지 않다.
+3. Continuous lower bound를 도입하려면 continuous feasible set, objective
+   integration, switching set 및 interval/global minimization에 대한 별도
+   certification이 필요하며, 이는 현재 논문의 범위를 실질적으로 확장한다.
+4. Grid 밖의 물리적 타당성은 continuous global optimality claim이 아니라
+   high-fidelity replay와 L0/L1/L2 nested-consistency evidence로 다룬다.
+
+따라서 Direction B의 최종 구조는 다음으로 고정한다.
 
 \[
-J_{\mathrm{relaxed}}\le J^*\le J_{\mathrm{feasible}}.
+\boxed{
+\text{finite-grid Bellman optimality}
++
+\text{physical-edge replay}
++
+\text{nested-grid consistency}
+}
 \]
 
-Lower-bound 연구는 2–3일로 time-box하고 toy hill에서 validity와 tightness를
-먼저 확인한다. Gap이 유용할 때만 production으로 확장하며, 그렇지 않으면 B는
-consistency study로 확정한다.
+`p1b_4D/optimal_lower_bound_analytic_equation.md`는 수학적 검토 기록으로만
+보존하며, ACC core claim, acceptance gate 또는 production experiment에는
+사용하지 않는다.
 
 ### 15.10 B execution sequence
 
@@ -868,11 +901,14 @@ consistency study로 확정한다.
    segment.
 3. Coarse physical actions are embedded in the refined lattice.
 4. Bellman computes the exact minimum on each finite graph.
-5. Exhaustive switching-state comparison returns the finite follower optimum.
+5. Exhaustive switching-state comparison returns the exact finite follower
+   value and an exact minimum-cost representative path; exact cost ties use
+   the stated switching-z/seed-index rule.
 6. High-fidelity replay supplies a feasible-policy upper value.
 
-Relaxed lower bound가 성공할 때만 lower-bound validity와 lower/upper gap
-proposition을 추가한다.
+Continuous lower-bound proposition은 추가하지 않는다. Formal result는
+finite physical-successor graph의 optimality와 high-fidelity replay의 역할을
+분리해 기술한다.
 
 ### 15.12 Link from B to C-lite
 
@@ -893,12 +929,13 @@ J_D(s_i,\operatorname{BR}_\Delta(s_i))
 1. B protocol 수식 확정
 2. nestedness regression
 3. two-hill B pilot
-4. lower-bound feasibility time-box
+4. continuous lower-bound 검토 후 제외 — 완료
 5. B main experiment
 6. production lattice freeze
-7. C-lite exhaustive leader solve
-8. 3D qualitative demo
-9. ACC writing 및 figure 정리
+7. discrete optimality proposition 현 구현 기준 재작성 — 완료
+8. C-lite exhaustive leader solve
+9. 3D qualitative demo
+10. ACC writing 및 figure 정리
 
 3D는 마지막에 수행한다. B와 C-lite가 formal core이고, 3D는 일정이 남을 때
 추가하는 demonstration이다.
@@ -946,3 +983,551 @@ B1 may begin only by implementing tests for:
 5. virtual-switch seed and physical-target nestedness;
 6. machine-precision physical endpoint alignment; and
 7. common-evaluator 129/257 qualification behavior.
+
+## 17. B1 implementation and pre-B2 audit — COMPLETED WITH B2 BLOCKER (2026-07-29)
+
+### 17.1 Implemented foundation
+
+B1 now has an executable, machine-checkable version of the B0 protocol:
+
+- `p1b_4D/direction_b_discretization.py` constructs the frozen L0/L1/L2,
+  enriched/transported, V5/V9, and 9/17-point planning configurations;
+- `p1b_4D/successor_grid_solver.py` supports both regular action families,
+  physical-box virtual switching targets, and the frozen exact-minimum
+  candidate tie rule;
+- `p1b_4D/high_fidelity_policy_evaluation.py` independently reevaluates
+  powered and glide edges with endpoint-inclusive trapezoidal quadrature and
+  no state snapping;
+- `p1b_4D/geometry.py` can use a fixed physical-geometry reference z-grid so
+  changing the planning grid no longer changes the terrain spline or LOS
+  boundary being solved; and
+- `p1b_4D/test_direction_b_discretization.py` implements all seven B1 entry
+  gates.
+
+The fixed geometry reference is necessary for a valid nested comparison.
+Previously the terrain spline and LOS sweep were rebuilt on each planning
+grid, so L0/L1/L2 did not represent exactly the same physical geometry.
+
+### 17.2 Verification completed
+
+- All 7 B1 entry-gate tests pass.
+- 38 existing configuration, geometry, successor-grid, continuous-replay,
+  and Stackelberg regression tests pass.
+- The two-hill L2 enriched V5/Q9 policy is continuously feasible under the
+  common evaluator, with maximum physical endpoint residual
+  `1.11e-16 m`.
+- For that L2 pilot, 129 versus 257 samples did **not** meet the frozen
+  objective threshold: `|ΔJ_A| = 3.84864e-6 > 1e-6`.
+- The prescribed 257 versus 513 fallback passed:
+  `|ΔJ_A| = 9.62142e-7` and `|ΔPoD| = 5.02816e-9`, with matching feasibility
+  and goal classifications. This is a preliminary pilot; the final common
+  sample count is still qualified over every selected B2 policy.
+
+### 17.3 Blocking feasibility result for the frozen three-level family
+
+At the fixed two-hill Stackelberg sensor candidate
+`z_sensor = 1982.9218106995881 m`, the enriched V5/Q9 audit found:
+
+| Level | Result | Minimum available descent angle |
+|---|---|---:|
+| L0 | no switching response reaches the goal | `6.6373 deg` |
+| L1 | no switching response reaches the goal | `3.3298 deg` |
+| L2 | feasible | `1.6663 deg` |
+
+The regular DAG itself has goal-reachable states at L0/L1, but none lies in
+the frozen physical virtual-switch target box of any LOS switching seed. This
+is caused by action-lattice resolution: with fixed maximum forward reach
+`34.375 m`, the smallest positive descent is `4 m`, `2 m`, and `1 m` at
+L0/L1/L2. Only L2 supplies a sufficiently shallow edge direction to connect
+the LOS switching boundary to the goal-reachable portion of the DAG.
+
+This is not repaired silently in B1 because changing the envelope, spatial
+levels, or admissible offsets would change the frozen B0 experiment family.
+B1 infrastructure and regression gates are complete, but B2 cannot produce
+the planned three-level objective-convergence table until the protocol is
+revised. The next decision must preserve exact nesting while ensuring at
+least two, preferably three, feasible enriched levels.
+
+## 18. B1.5 feasible-family revision — COMPLETED (2026-07-29)
+
+The B2 precondition was repaired with one nested shallow backbone added only
+to the enriched family:
+
+\[
+(4,1)_{L0}\rightarrow(8,2)_{L1}\rightarrow(16,4)_{L2}.
+\]
+
+For two hill this represents `(137.5,-4.0) m` and `1.6663 deg` at every
+level. Candidate preflight results were:
+
+- no backbone: L0/L1 infeasible at both fixed sensors;
+- L0 `(2,1)` backbone: L0/L1 still infeasible;
+- L0 `(3,1)` backbone: feasible, but its `2.22 deg` minimum direction does
+  not match L2's existing `1.6663 deg` minimum;
+- L0 `(4,1)` backbone: feasible at both sensors and both L0/L1, while exactly
+  matching L2's shallowest local direction.
+
+The revised enriched offset counts are `3 -> 9 -> 33`, or
+`15 -> 45 -> 165` regular actions with V5. The transported ablation is not
+augmented. Nine B1/B1.5 tests now pass, including explicit L0/L1 feasibility
+at the coverage and Stackelberg B2 sensor candidates.
+
+B2 proceeds with this revised family. The outer defender optimization remains
+fixed; only the two recorded P2 sensor candidates are evaluated.
+
+## 19. B2 two-hill nested-consistency run — COMPLETED (2026-07-29)
+
+The full 18-case matrix completed in `148.78 s`:
+
+- 12 enriched main/sensitivity cases were feasible;
+- all 6 transported ablation cases were infeasible and retained as such;
+- all feasible paths passed terrain, LOS, goal, and physical endpoint checks;
+- maximum reported endpoint residual was below `3e-14 m`.
+
+### 19.1 Common evaluator
+
+The initially planned sample counts were insufficient for the `1e-6`
+objective gate. Feasibility and goal classifications agreed at every tested
+count, but objective quadrature required further refinement. An explicit
+doubling sequence was applied:
+
+`129 -> 257 -> 513 -> 1025 -> 2049`.
+
+All 12 feasible policies passed the common 1025/2049 qualification pair. The
+worst objective difference was `8.74272e-7`, so B2 uses 1025 samples per edge.
+
+### 19.2 Main enriched V5/Q9 values
+
+| Sensor | L0 HF objective | L1 HF objective | L2 HF objective |
+|---|---:|---:|---:|
+| coverage | 2.409797807 | 2.398538133 | 2.254588383 |
+| Stackelberg | 3.469798211 | 3.171011091 | 3.001366624 |
+
+Objective shifts:
+
+- coverage: L0->L1 `0.011259673`, L1->L2 `0.143949750`;
+- Stackelberg: L0->L1 `0.298787120`, L1->L2 `0.169644467`.
+
+The coverage sequence does not show monotonically shrinking shifts. The
+Stackelberg shift decreases but remains substantial. B2 therefore records the
+actual numerical behavior rather than labeling the three-level sequence as
+asymptotically converged.
+
+### 19.3 Path changes
+
+L1-to-L2 common-z altitude RMSE was `10.0736 m` for coverage and `5.2216 m`
+for Stackelberg. The corresponding symmetric Hausdorff distances were
+`45.3453 m` and `28.5652 m`. Switching-point displacement was about `8.61 m`
+for both. All paths retained the same switching-region topology signature.
+
+### 19.4 Ranking and production-lattice decision
+
+The common-reference defender margins were:
+
+- L0: `0.023949998`;
+- L1: `0.018420070`;
+- L2: `0.019997874`.
+
+Their signs were stable. With L1-to-L2 defender resolution shift
+`R = 0.005443445`, the diagnostic condition
+`|M_L2| > 2R` passed.
+
+Speed sensitivity exceeded `tau_B = 0.000544344` because the maximum
+V9-minus-V5 objective change was `0.001869241`. The production speed lattice
+is therefore V9. Q9/Q17 high-fidelity policy values were identical at both
+sensors, so production planning quadrature remains Q9.
+
+Machine-readable output:
+`results/direction_b/b2_two_hill_nested_consistency.json`.
+
+## 20. B3 multi-terrain nested-consistency extension — COMPLETED (2026-07-29)
+
+B3 repeated the frozen B2 nine-case-per-sensor matrix without rerunning the
+outer defender optimization. The fixed final-P2 coverage/Stackelberg sensor
+candidates were:
+
+- single hill: `4499.866636 m` / `4499.955545 m`;
+- goal in valley: `2199.657064 m` / `2197.828075 m`.
+
+The complete 36-case run finished in `1034.48 s`. Thirty cases were feasible.
+For single hill, all 12 enriched main/sensitivity cases were feasible and all
+6 transported cases were infeasible. For goal in valley, all 18 cases were
+feasible, including every transported ablation. Transported-family
+feasibility is therefore terrain/goal dependent rather than a universal
+property of the lattice.
+
+### 20.1 Common evaluator and execution consistency
+
+B3 alone would satisfy the objective gate at a smaller sample count, but B2
+already required 1025 samples per edge. To preserve one common evaluator for
+all Direction-B results, B3 inherited the B2 minimum and was evaluated with
+the 1025/2049 qualification pair.
+
+- all 30 feasible policies passed continuous replay;
+- maximum 1025/2049 attacker-objective difference: `5.18120e-8`;
+- maximum 1025/2049 PoD difference: `2.86160e-8`;
+- maximum physical endpoint residual: `4.54748e-13 m`.
+
+### 20.2 Main enriched V5/Q9 values
+
+| Terrain | Sensor | L0 HF objective | L1 HF objective | L2 HF objective |
+|---|---|---:|---:|---:|
+| single hill | coverage | 0.674388957 | 0.544707020 | 0.535539594 |
+| single hill | Stackelberg | 0.674465576 | 0.544718126 | 0.535540156 |
+| goal in valley | coverage | 0.913991916 | 0.369200570 | 0.323638614 |
+| goal in valley | Stackelberg | 0.903246377 | 0.367479675 | 0.323403740 |
+
+Successive objective shifts were:
+
+- single-hill coverage: `0.129681938`, then `0.009167425`;
+- single-hill Stackelberg: `0.129747450`, then `0.009177970`;
+- valley coverage: `0.544791345`, then `0.045561956`;
+- valley Stackelberg: `0.535766702`, then `0.044075934`.
+
+The L1-to-L2 path changes remain material. Single-hill altitude RMSE was
+`29.7271 m` at both candidates and switching displacement was about
+`328.26 m`. Valley altitude RMSE was `14.9617 m` for coverage and `14.4851 m`
+for Stackelberg, with switching displacement about `8.71 m`. No categorical
+switching-region change occurred.
+
+### 20.3 Fixed-candidate ranking diagnostics
+
+Single-hill defender margins remained positive but were extremely small:
+
+- L0: `+5.07757e-5`;
+- L1: `+1.67218e-5`;
+- L2: `+7.36917e-6`.
+
+The L1-to-L2 defender resolution shift was `R = 0.011579167`, so the frozen
+`|M_L2| > 2R` diagnostic did not pass.
+
+Goal-in-valley margins were negative at all three levels:
+
+- L0: `-0.002088802`;
+- L1: `-0.001230536`;
+- L2: `-0.000224653`.
+
+This means the previously recorded P2 Stackelberg candidate is worse than the
+P2 coverage candidate under the B3 finite problems. However, the diagnostic
+is unresolved because `R = 0.034359843` is much larger than `|M_L2|`. The
+sign reversal must therefore be reported as a grid-family sensitivity of the
+fixed candidates, not as a resolved continuous-game ranking.
+
+V5/V9 and Q9/Q17 selected-policy high-fidelity objectives were identical for
+both added terrains. Terrain-only decisions would therefore use V5/Q9, but
+B4 must combine this result with B2, which required V9/Q9.
+
+### 20.4 Artifacts and verification
+
+- machine-readable result:
+  `results/direction_b/b3_multiterrain_nested_consistency.json`;
+- trajectories:
+  `results/direction_b/figures/b3_multiterrain_trajectories.png`;
+- objective/ranking diagnostics:
+  `results/direction_b/figures/b3_multiterrain_consistency.png`;
+- evaluator qualification:
+  `results/direction_b/figures/b3_common_evaluator_qualification.png`.
+
+Forty-two configuration, geometry, successor-grid, continuous-replay,
+Direction-B, B2/B3-driver, and visualization regression tests passed after
+the B3 implementation.
+
+## 21. B4 production-lattice freeze — COMPLETED (2026-07-29)
+
+B4 did not run another outer optimization. It converted the B1–B3 evidence
+into one immutable follower configuration for the finite C-lite game.
+
+### 21.1 Frozen solver in intuitive terms
+
+Every C-lite sensor candidate must now use:
+
+- the finest tested position grid for its terrain;
+- 33 physical movement directions and 9 speed candidates, giving 297 regular
+  movement choices per state before terrain/LOS filtering;
+- 9 samples along each movement segment when planning its cost;
+- 1025 samples along each selected segment in the final continuous replay;
+- physical successor edges with no endpoint snapping.
+
+The corresponding configuration ID is
+`direction_b_l2_enriched_v9_q9_e1025`.
+
+Terrain position-grid sizes are:
+
+| Terrain | Production position grid | Position nodes |
+|---|---:|---:|
+| single hill | `641x401` | 257,041 |
+| two hill | `321x201` | 64,521 |
+| goal in valley | `465x201` | 93,465 |
+
+### 21.2 Why these settings were selected
+
+- **Finest grid/action set:** required by the frozen B protocol after the
+  L0/L1/L2 consistency study.
+- **Nine speeds:** two-hill maximum speed sensitivity was `0.001869241`,
+  which exceeded its selection tolerance `0.000544344` by a factor of about
+  `3.43`. The other two terrains showed zero selected-policy speed
+  sensitivity, but the global configuration uses the most conservative
+  terrain requirement.
+- **Nine planning samples:** Q9 and Q17 selected the same policy and produced
+  the same common-evaluator objective at every tested candidate.
+- **1025 replay samples:** B2 required 1025/2049 qualification, and all B3
+  policies also passed at this shared count.
+
+### 21.3 C-lite contract
+
+The P2 coverage and Stackelberg locations are not carried forward as C-lite
+optima. C-lite must enumerate its stated finite sensor set and solve every
+candidate with the B4 production factory. The freeze is an exact contract for
+the fully discretized leader–follower game; it does not claim a continuous
+leader or continuous follower optimum.
+
+Artifacts:
+
+- manifest: `results/direction_b/b4_production_lattice_freeze.json`;
+- decision visualization:
+  `results/direction_b/figures/b4_production_lattice_freeze.png`;
+- production factory: `build_direction_b_production_configuration` in
+  `p1b_4D/direction_b_discretization.py`.
+
+The manifest passed every acceptance gate and has SHA-256
+`62b573c6a029067fb68d52dde471bd93cf2c990e5f539665ec797f5e3685da44`.
+Forty-five related configuration, geometry, successor-grid, replay,
+Direction-B, B2/B3/B4, and visualization regression tests passed.
+
+## 22. Direction B technical core — COMPLETED (2026-07-29)
+
+Direction B의 technical core를 다음 범위로 종료한다.
+
+1. B0/B1은 nested spatial/action/speed/switching family와 common evaluator를
+   고정하고 regression으로 검증했다.
+2. B2/B3는 two-hill, single-hill, goal-in-valley에서 계획된 54개 case를
+   모두 실행했다.
+3. B4는 C-lite가 사용할
+   `direction_b_l2_enriched_v9_q9_e1025` production lattice를 고정했다.
+4. `discrete_optimality_proposition.md`는 current physical-successor DAG,
+   virtual switching edge, finite Bellman optimality 및 계산복잡도를 기준으로
+   재작성했다.
+5. Final response selector는 absolute minimum planning cost를 반드시
+   선택하며, exact-equal cost에서만 smallest switching-z와 seed index로
+   tie-break하도록 수정했다.
+6. Near-tie가 absolute minimum을 대체하지 못하는 regression, exact-tie
+   deterministic selection regression 및 final response cost equality check를
+   추가했다.
+
+Tie-rule 수정 후 B2의 18개 case와 B3의 36개 case를 모두 재실행했다.
+수정 전후의 planning cost, switching point, path-node count 및 high-fidelity
+objective를 case별로 비교한 결과 변경된 case는 `0/54`였다. B4 manifest도
+모든 acceptance gate를 다시 통과했고 SHA-256은 기존과 동일한
+`62b573c6a029067fb68d52dde471bd93cf2c990e5f539665ec797f5e3685da44`였다.
+
+Continuous optimal lower bound는 Section 15.9의 결정대로 제외한다. 따라서
+B의 최종 claim은 finite discretized follower optimality, physical-edge
+execution consistency 및 nested-grid numerical consistency이며, continuous
+trajectory-space global optimality는 포함하지 않는다.
+
+이 시점 이후 다음 technical stage는 C-lite finite defender-set exhaustive
+solve이다. ACC manuscript에 B theorem, tables 및 figures를 옮기는 작업은
+전체 paper-writing 단계에서 별도로 수행한다.
+
+## 23. 2026-07-30 Update — Current ACC Reinforcement Plan
+
+> **STATUS: CURRENT LATEST PLAN AS OF 2026-07-30.** This is the present
+> working plan for the ACC submission and may be revised when formal analysis,
+> numerical evidence, verified literature, or advisor feedback changes the
+> appropriate scope.
+
+Direction B remains complete in the finite-discretized scope stated in
+Section 22. The next work does not repeat B2--B4. It strengthens the paper by
+adding a continuous edge-feasibility certificate, graph-level mathematical
+results, counterexamples to intuitive follower heuristics, an exhaustive
+finite leader solve, and a terrain-to-strategy mechanism study. The 3D result
+is limited to one qualitative figure and is not part of the formal guarantee.
+
+### P0 — Freeze the paper claims — COMPLETED (2026-07-30)
+
+The paper is organized around four claims:
+
+1. a terrain-dependent powered-to-glide hybrid Stackelberg formulation;
+2. an LOS-derived virtual-switch and physical-successor finite reduction;
+3. soundness/completeness properties of that reduction and exact Bellman
+   optimality over the explicitly defined finite follower graph; and
+4. a strategic mechanism in which terrain changes the hybrid reachable
+   structure and thereby changes defender placement.
+
+The paper does not claim a continuous trajectory-space global optimum, a
+continuous defender optimum, a new Bellman algorithm, or a formal 3D result.
+The strongest technical framing is the execution-consistent graph structure
+that makes exact finite dynamic programming possible, not the novelty of the
+Bellman recursion itself.
+
+The normative claim contract is
+`p1b_4D/acc_claim_scope_0730.md`. It fixes allowed exactness terminology,
+explicit non-claims, the formal-result contract, numerical-evidence gates, and
+change control for P1--P7. P0 is complete; subsequent evidence may narrow or
+explicitly revise the contract but cannot silently broaden it.
+
+### P1 — Continuous segment-feasibility certificate — COMPLETED (2026-07-30)
+
+Replace sampled terrain/LOS admissibility as the formal feasibility basis for
+each straight physical edge with an all-segment geometry check under the
+implemented geometry model.
+
+- Terrain clearance is minimized over segment endpoints, crossed cubic-spline
+  knots, and real stationary points inside every crossed spline interval.
+- LOS clearance is checked at segment endpoints and every crossed breakpoint
+  of the piecewise-linear swept LOS boundary.
+- Constant edge controls and exact endpoint reconstruction retain their current
+  checks.
+- Detection hazard remains the configured finite quadrature objective; an
+  exact continuous hazard integral is not claimed.
+- Dense high-fidelity replay remains an independent numerical validation and
+  objective reevaluation, rather than the formal feasibility certificate.
+
+Acceptance requires multi-hill support, near-contact regression cases,
+agreement with independent dense replay, and no endpoint snapping or state
+reset.
+
+P1 is implemented in `p1b_4D/segment_feasibility.py` and documented in
+`p1b_4D/p1_exact_segment_feasibility.md`. The checker enumerates cubic-spline
+stationary points and LOS-boundary breakpoints, handles exact terminal-edge
+truncation, and is connected to powered, virtual, and regular physical edges.
+The full `p1b_4D` suite passed 101 tests. A stored-policy audit certified all
+42 feasible B2/B3 selected policies; 0 failed, while the other 12 of 54 cases
+were already infeasible and had no selected path. Because admissibility was
+strengthened without changing finite costs and every stored optimum remains
+admitted, the prior B2/B3 optimum values are preserved. P1 is complete and P2
+is the next stage.
+
+### P2 — Mathematical proof package
+
+P2 means a mathematical proof, not another numerical convergence experiment.
+The finite admissible trajectory class must be defined before proving:
+
+1. **path soundness:** every admitted DAG path concatenates into a
+   kinematically continuous powered-to-switch-to-glide trajectory satisfying
+   the P1 all-segment terrain/LOS conditions and terminating in the finite goal
+   set;
+2. **completeness relative to the stated discretization:** every admissible
+   trajectory constructed from the declared switching seeds, physical target
+   set, action offsets, speed set, terminal rule, and feasibility rules is
+   represented in the DAG; and
+3. **finite exactness:** exhaustive switching/virtual-edge evaluation and one
+   backward Bellman sweep return the global minimum over that finite graph.
+
+Completeness is not claimed for arbitrary continuous trajectories. Regression
+tests separately verify that the implementation satisfies the definitions and
+hypotheses used by the proof; tests are supporting evidence, not a substitute
+for the proof.
+
+### P3 — Intuitive-heuristic counterexample study
+
+Before running the optimal solver, the researcher and Codex will brainstorm
+physically plausible terrain intuitions and use them to define randomized
+terrain families. To avoid selecting only favorable examples, the terrain
+generator, parameter ranges, random seeds, sample count, baseline rules, and
+failure metrics must be frozen before comparing solutions. A discovery set may
+locate informative regimes, followed by a separately seeded confirmation set.
+
+The planned follower comparisons are:
+
+- nearest LOS-tangent switching;
+- highest feasible switching;
+- sequential switch-then-glide optimization;
+- the legacy snapped/fixed-time transition as an execution-consistency
+  ablation; and
+- the full virtual-switch physical-successor solver.
+
+The existing legacy case in which the discretely accepted snapped path
+violates continuous LOS at step 11 is a candidate controlled ablation, but it
+must be regenerated under a frozen configuration. Primary reporting uses a
+two-hill or randomized multi-hill counterexample, with a single-hill case as a
+control where simple intuition may succeed.
+
+Reported outcomes include goal reachability, all-segment feasibility, attacker
+objective gap, switching displacement, and whether an incorrect follower model
+changes the selected finite defender position. A strong result requires at
+least one reproducible infeasibility, goal failure, material objective gap, or
+defender-choice change; otherwise the paper must not claim heuristic failure.
+
+### P4 — C-lite exhaustive finite leader solve
+
+**C-lite is embedded in P4.** It is not a separate stage outside this update.
+For each declared finite sensor set, every candidate is evaluated with the B4
+production follower configuration
+`direction_b_l2_enriched_v9_q9_e1025`, the common evaluator, and deterministic
+tie rules. The finite leader solution is
+
+$$
+s_\Delta^* = \arg\max_{s\in\mathcal S_{D,\Delta}}
+J_D\!\left(s,\operatorname{BR}_\Delta(s)\right).
+$$
+
+The sensor candidates, spacing, bounds, endpoint treatment, feasibility
+handling, and defender tie rule are fixed before execution. If computationally
+practical, nested defender sets are used to report leader-grid sensitivity.
+The primary exact finite-game case is two hill; single hill and goal in valley
+serve as supporting cases unless their ranking sensitivity becomes sufficiently
+resolved. P4 does not produce a continuous Stackelberg certificate.
+
+### P5 — Terrain-induced strategic-mechanism study
+
+Use a controlled terrain-parameter continuation, initially the second-hill
+height or spacing in a two-hill family, to measure the chain
+
+$$
+\text{terrain parameter}
+\rightarrow \text{LOS-boundary topology}
+\rightarrow \text{feasible switching/successor set}
+\rightarrow \text{follower cost-to-go and response}
+\rightarrow \text{finite optimal sensor placement}.
+$$
+
+At each frozen parameter value, record active LOS-boundary structure,
+switching-seed and admissible-virtual-edge counts, goal-reachable structure,
+attacker switching/cost, and the P4-style finite defender optimum. A placement
+jump or structural transition is reported only if observed and reproducible;
+otherwise the result is presented as a sensitivity study without a phase-change
+claim.
+
+### P6 — Verified literature positioning
+
+Verify primary sources for terrain/LOS surveillance or pursuit-evasion games,
+hybrid powered-to-glide optimization, finite graph reductions, and exact finite
+Stackelberg follower computation. Build a comparison table covering geometry,
+endogenous switching, execution consistency, and the precise optimality scope.
+No `first`, novelty, or literature-gap claim is used until the cited sources
+have been opened and checked against the stated comparison.
+
+### P7 — One-figure qualitative 3D example
+
+The 3D extension is limited to one paper-facing qualitative figure showing a
+representative terrain, sensor geometry, and attacker trajectory. It is used
+only to illustrate broader geometric applicability. It carries no 3D
+optimality, convergence, execution-certificate, or Stackelberg-equilibrium
+claim. If schedule or page limits require reduction, P7 is reduced or removed
+before P1--P6.
+
+### Execution priority after the 2026-07-30 update
+
+1. P1 continuous edge-feasibility certificate;
+2. P2 mathematical proof package;
+3. P3 frozen randomized-terrain and heuristic-counterexample study;
+4. P4 C-lite exhaustive finite leader solve;
+5. P5 terrain-induced strategic mechanism;
+6. P6 verified literature positioning and manuscript framing; and
+7. P7 one-figure qualitative 3D example.
+
+### Stage review notebook index — 2026-07-30
+
+B1–B4와 P1–P7은 각각 한 파일에서 목적, 실행 진입점, 표·그림 output을 검토할 수 있도록
+`p1b_4D/stage_notebooks/` 아래의 독립 노트북으로 정리했다. 전체 사용법과 상태표는
+`p1b_4D/stage_notebooks/README.md`에 둔다.
+
+- B1–B4와 P1은 `COMPLETED`이며 저장된 output을 포함한다.
+- B2/B3/B4는 기본적으로 기존 검증 결과를 즉시 표시한다. 원자료부터 다시 계산하려면
+  각 노트북의 `RERUN = True`로 변경한다.
+- P1은 Run All 시 exact geometry audit와 핵심 regression을 다시 수행한다.
+- P2–P7은 아직 구현 전이므로 `PENDING`을 명시하고, 완료 조건과 향후 module/result
+  entry point만 출력한다. 완료되지 않은 결과를 notebook이 대신 주장하지 않는다.
+- 생성 원본은 `p1b_4D/build_stage_review_notebooks.py`이며, 생성기를 실행하면 11개
+  노트북의 설명과 실행 구조를 일관되게 재생성할 수 있다.

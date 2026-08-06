@@ -10,12 +10,25 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
+from matplotlib.colors import LogNorm
 
 
 REQUIRED_BUNDLES = (
     "geometry", "detection", "projected_cost", "bellman",
     "bellman_response", "stackelberg",
 )
+
+# PoD cost-to-go is bounded in [0, 1] and saturates near both ends (a large
+# share of cells sit at exactly 1.0 or within noise of 0.0), which flattens a
+# linear colormap into two solid blocks. Below this floor, detection
+# probability is negligible regardless of exact value, so log-scaling from
+# here to 1.0 trades that dead range for gradient across the three decades
+# that actually separate flight regimes.
+POD_LOG_FLOOR = 1.0e-3
+
+
+def _pod_color_norm():
+    return LogNorm(vmin=POD_LOG_FLOOR, vmax=1.0, clip=True)
 
 
 def generate_project_visualizations(
@@ -130,7 +143,7 @@ def _figure_projected_cost(bundles: dict[str, Any], config: dict[str, Any]):
 
 def _figure_cost_to_go(bundles: dict[str, Any], config: dict[str, Any], paths: bool):
     figure, axis = plt.subplots(figsize=config["default_figure_size"], constrained_layout=True)
-    image = _draw_heatmap(axis, bundles["bellman"]["arrays"]["pod_to_go"], bundles, config["colormaps"]["projected_cost_to_go"], config, vmin=0.0, vmax=1.0)
+    image = _draw_heatmap(axis, bundles["bellman"]["arrays"]["pod_to_go"], bundles, config["colormaps"]["projected_cost_to_go"], config, norm=_pod_color_norm())
     _draw_zones(axis, bundles, config)
     if paths:
         _draw_all_paths(axis, bundles, config)
@@ -148,6 +161,11 @@ def _figure_cost_to_go(bundles: dict[str, Any], config: dict[str, Any], paths: b
 def _figure_stackelberg(bundles: dict[str, Any], config: dict[str, Any]):
     figure, axis = plt.subplots(figsize=config["default_figure_size"], constrained_layout=True)
     stack = bundles["stackelberg"]["arrays"]
+    stack_metadata = bundles["stackelberg"]["manifest"].get("metadata", {})
+    optimizer_algorithm = str(
+        stack_metadata.get("outer_optimizer_algorithm", "")
+    )
+    fixed_sensor_replay = optimizer_algorithm.startswith("fixed_")
     z = stack["final_terrain_z"]
     h_grid = stack["final_terrain_h_grid"]
     extent = _pixel_extent(z, h_grid)
@@ -158,7 +176,7 @@ def _figure_stackelberg(bundles: dict[str, Any], config: dict[str, Any]):
     image = axis.imshow(
         pod_to_go.T, origin="lower", aspect="auto", extent=extent,
         cmap=config["colormaps"]["projected_cost_to_go"],
-        alpha=config["heatmap_alpha"], vmin=0.0, vmax=1.0, zorder=1,
+        alpha=config["heatmap_alpha"], norm=_pod_color_norm(), zorder=1,
     )
     axis.imshow(
         stack["final_los_mask"].T, origin="lower", aspect="auto",
@@ -177,7 +195,8 @@ def _figure_stackelberg(bundles: dict[str, Any], config: dict[str, Any]):
     switching = stack["optimal_switching_point"]
     full_path = np.vstack((stack["optimal_powered_path"], trajectory))
     axis.plot(full_path[:, 0], full_path[:, 1], color=config["colors"]["stackelberg"], linewidth=2.8, label="Bellman-optimal path", zorder=40)
-    axis.scatter(sensor[0], sensor[1], marker=config["marker_styles"]["defender"], color=config["colors"]["stackelberg"], edgecolor="black", s=90, label="Optimal Defender", zorder=50)
+    sensor_label = "Fixed sensor" if fixed_sensor_replay else "Optimal Defender"
+    axis.scatter(sensor[0], sensor[1], marker=config["marker_styles"]["defender"], color=config["colors"]["stackelberg"], edgecolor="black", s=90, label=sensor_label, zorder=50)
     axis.scatter(switching[0], switching[1], marker=config["marker_styles"]["switching_point"], color=config["colors"]["stackelberg"], s=55, label="Optimal switch", zorder=50)
     axis.plot(z, stack["final_tangent_line_height"], linestyle=config["line_styles"]["los_tangent"], color="dimgray", linewidth=config["line_width"], label="LOS tangent", zorder=30)
     goal = stack["final_goal_position"]
@@ -187,7 +206,11 @@ def _figure_stackelberg(bundles: dict[str, Any], config: dict[str, Any]):
     axis.fill_between(z, 0.0, terrain, color=config["colors"]["terrain_fill"], zorder=terrain_zorder, label="Terrain")
     axis.plot(z, terrain, color=config["colors"]["terrain_outline"], linestyle=config["line_styles"]["terrain"], linewidth=config["line_width"], zorder=terrain_zorder + 1)
     figure.colorbar(image, ax=axis, label="Probability of detection (PoD) cost-to-go")
-    axis.set_title("Final Stackelberg Solution")
+    axis.set_title(
+        "Fixed-Sensor Attacker Best Response"
+        if fixed_sensor_replay
+        else "Final Stackelberg Solution"
+    )
     axis.set_xlabel("Horizontal position z [m]")
     axis.set_ylabel("Altitude h [m]")
     axis.set_xlim(z[0], z[-1])
@@ -457,12 +480,12 @@ def _pixel_extent(z, h):
     return (z[0] - dz, z[-1] + dz, h[0] - dh, h[-1] + dh)
 
 
-def _draw_heatmap(axis, values, bundles, cmap, config, vmin=None, vmax=None):
+def _draw_heatmap(axis, values, bundles, cmap, config, vmin=None, vmax=None, norm=None):
     geometry = bundles["geometry"]["arrays"]
     z = geometry["terrain_z"]
     h = geometry["terrain_h_grid"]
     masked = np.ma.masked_invalid(np.ma.masked_where(~np.isfinite(values), values))
-    return axis.imshow(masked.T, origin="lower", aspect="auto", extent=_pixel_extent(z, h), cmap=cmap, alpha=config["heatmap_alpha"], vmin=vmin, vmax=vmax, zorder=1)
+    return axis.imshow(masked.T, origin="lower", aspect="auto", extent=_pixel_extent(z, h), cmap=cmap, alpha=config["heatmap_alpha"], vmin=vmin, vmax=vmax, norm=norm, zorder=1)
 
 
 def _draw_zones(axis, bundles, config):

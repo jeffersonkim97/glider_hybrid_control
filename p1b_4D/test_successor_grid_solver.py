@@ -48,6 +48,10 @@ class SuccessorGridSolverTests(unittest.TestCase):
         )
         self.assertTrue(best["metadata"]["virtual_switching_state"])
         self.assertFalse(best["metadata"]["endpoint_snapping"])
+        self.assertTrue(best["metadata"]["all_segment_geometry_certificate"])
+        self.assertTrue(best["validation"]["checks"]["terrain_clearance"])
+        self.assertTrue(best["validation"]["checks"]["los_feasibility"])
+        self.assertTrue(best["validation"]["checks"]["airspace_feasibility"])
         self.assertTrue(best["continuous_replay_validation"]["feasible"])
         self.assertTrue(best["validation"]["checks"]["physical_edge_endpoint_alignment"])
         self.assertLessEqual(
@@ -63,6 +67,10 @@ class SuccessorGridSolverTests(unittest.TestCase):
         candidates = result["primary_result"]["bellman_candidate_bundle"][
             "primary_result"
         ]["candidates"]
+        graph_metadata = result["primary_result"]["bellman_candidate_bundle"][
+            "metadata"
+        ]["graph_metadata"]
+        self.assertTrue(graph_metadata["all_segment_geometry_certificate"])
         self.assertEqual(
             float(best["mission_cost"]),
             min(float(candidate["mission_cost"]) for candidate in candidates),

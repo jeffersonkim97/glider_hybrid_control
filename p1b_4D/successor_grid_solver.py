@@ -14,7 +14,11 @@ from typing import Any
 import numpy as np
 
 from .bellman import evaluate_powered_segment, generate_switching_point_seeds
-from .geometry import los_boundary_height, terrain_height
+from .segment_feasibility import (
+    certify_straight_segment_geometry,
+    minimum_los_margin_on_segment,
+    minimum_terrain_margin_on_segment,
+)
 from .stage_cost import construct_state_grids
 
 
@@ -170,6 +174,7 @@ def build_successor_grid_graph(
     goal = np.asarray(geometry["goal_position"], dtype=float)
     goal_radius = float(validation["goal_radius"])
     fractions = np.linspace(0.0, 1.0, options["edge_quadrature_count"])
+    exact_geometry_cache: dict[tuple[int, int], np.ndarray] = {}
 
     for action_index, action in enumerate(actions):
         fi, dj = action["forward_cells"], action["descent_cells"]
@@ -192,25 +197,27 @@ def build_successor_grid_graph(
         )
         fraction_map = np.where(action_terminal, intersection, 1.0)
 
-        segment_valid = np.ones(mesh_z.shape, dtype=bool)
+        offset_key = (fi, dj)
+        if offset_key not in exact_geometry_cache:
+            exact_geometry_cache[offset_key] = _exact_regular_edge_validity(
+                mesh_z,
+                mesh_h,
+                z_grid,
+                h_grid,
+                edge_dz,
+                edge_dh,
+                action_terminal,
+                fraction_map,
+                spatial_valid,
+                configuration_bundle,
+                geometry_bundle,
+            )
+        exact_segment_valid = exact_geometry_cache[offset_key]
         rate_samples: list[np.ndarray] = []
         for fraction in fractions:
             effective = fraction * fraction_map
             sample_z = mesh_z + effective * edge_dz
             sample_h = mesh_h + effective * edge_dh
-            in_domain = (
-                (sample_z >= z_grid[0]) & (sample_z <= z_grid[-1])
-                & (sample_h >= h_grid[0]) & (sample_h <= h_grid[-1])
-            )
-            terrain_clear = sample_h >= terrain_height(
-                geometry["terrain_model"], np.clip(sample_z, z_grid[0], z_grid[-1])
-            ) - validation["terrain_tolerance"]
-            visible = (sample_z >= geometry["sensor_position"][0]) | (
-                sample_h >= los_boundary_height(
-                    geometry["los_geometry"], np.clip(sample_z, z_grid[0], z_grid[-1])
-                )
-            )
-            segment_valid &= in_domain & terrain_clear & visible
             rate_samples.append(_glide_rate_numpy(
                 sample_z, sample_h, action["speed"], action["gamma"],
                 geometry["sensor_position"], configs["sensor_config"]["detection"],
@@ -222,7 +229,7 @@ def build_successor_grid_graph(
         action_cost = _incremental_objective(
             action_hazard, duration_map, configs["cost_config"]["attacker"]
         )
-        action_valid = spatial_valid & segment_valid & (
+        action_valid = spatial_valid & exact_segment_valid & (
             action_terminal | (successor_in_bounds & successor_valid)
         )
         valid[:, :, action_index] = action_valid
@@ -247,12 +254,113 @@ def build_successor_grid_graph(
             "state_action_count": int(np.prod(shape)),
             "endpoint_snapping": False,
             "multi_hill_geometry_api": True,
+            "all_segment_geometry_certificate": True,
+            "geometry_certificate": (
+                "piecewise_cubic_terrain_and_piecewise_linear_los_global_minimum"
+            ),
             "action_family": options.get("action_family", "enriched"),
             "virtual_switch_target_family": options.get(
                 "virtual_switch_target_family", "legacy_cell_window"
             ),
         },
     }
+
+
+def _exact_regular_edge_validity(
+    mesh_z: np.ndarray,
+    mesh_h: np.ndarray,
+    z_grid: np.ndarray,
+    h_grid: np.ndarray,
+    edge_dz: float,
+    edge_dh: float,
+    action_terminal: np.ndarray,
+    fraction_map: np.ndarray,
+    spatial_valid: np.ndarray,
+    configuration_bundle: dict[str, Any],
+    geometry_bundle: dict[str, Any],
+) -> np.ndarray:
+    """Certify every start state for one spatial successor offset.
+
+    For a fixed offset, the derivative of terrain/LOS clearance is independent
+    of the start altitude.  We therefore compute one exact reference clearance
+    per z row and broadcast it across the altitude grid.  Sparse goal-terminal
+    truncations are then certified individually at their actual endpoint.
+    """
+    configs = configuration_bundle["primary_result"]
+    environment = configs["environment_config"]
+    validation = configs["validation_config"]
+    geometry = geometry_bundle["primary_result"]
+    terrain_model = geometry["terrain_model"]
+    los_geometry = geometry["los_geometry"]
+    sensor_z = float(geometry["sensor_position"][0])
+    terrain_tolerance = float(validation["terrain_tolerance"])
+    airspace = environment["airspace"]
+    z_min, z_max = float(airspace["z_min"]), float(airspace["z_max"])
+    h_min, h_max = float(airspace["h_min"]), float(airspace["h_max"])
+    terrain_reference = np.full(z_grid.shape, -np.inf, dtype=float)
+    los_reference = np.full(z_grid.shape, -np.inf, dtype=float)
+    row_domain = np.zeros(z_grid.shape, dtype=bool)
+    coordinate_scale = max(1.0, abs(z_min), abs(z_max), abs(edge_dz))
+    coordinate_tolerance = 128.0 * np.finfo(float).eps * coordinate_scale
+
+    for zi, z_start in enumerate(np.asarray(z_grid, dtype=float)):
+        z_end = float(z_start + edge_dz)
+        if z_start < z_min - coordinate_tolerance or z_end > z_max + coordinate_tolerance:
+            continue
+        reference_start = np.array([z_start, 0.0])
+        reference_end = np.array([z_end, edge_dh])
+        terrain = minimum_terrain_margin_on_segment(
+            reference_start, reference_end, terrain_model
+        )
+        los = minimum_los_margin_on_segment(
+            reference_start,
+            reference_end,
+            los_geometry,
+            sensor_z,
+            "visible",
+        )
+        terrain_reference[zi] = float(terrain["minimum_margin"])
+        los_reference[zi] = float(los["minimum_margin"])
+        row_domain[zi] = True
+
+    terrain_margin = terrain_reference[:, None] + mesh_h
+    los_margin = los_reference[:, None] + mesh_h
+    end_h = mesh_h + edge_dh
+    full_domain = (
+        row_domain[:, None]
+        & (mesh_z >= z_min - coordinate_tolerance)
+        & (mesh_h >= h_min - coordinate_tolerance)
+        & (mesh_h <= h_max + coordinate_tolerance)
+        & (end_h >= h_min - coordinate_tolerance)
+        & (end_h <= h_max + coordinate_tolerance)
+    )
+    exact_valid = (
+        full_domain
+        & (terrain_margin >= -terrain_tolerance)
+        & (los_margin >= 0.0)
+    )
+
+    # The goal intersection can truncate an otherwise out-of-domain or
+    # obstructed full action.  Its geometry must therefore be evaluated at the
+    # actual terminal endpoint instead of inheriting the full-edge result.
+    terminal_starts = np.argwhere(action_terminal & spatial_valid)
+    for zi, hi in terminal_starts:
+        fraction = float(fraction_map[zi, hi])
+        start = np.array([z_grid[zi], h_grid[hi]], dtype=float)
+        end = start + fraction * np.array([edge_dz, edge_dh], dtype=float)
+        certificate = certify_straight_segment_geometry(
+            start,
+            end,
+            terrain_model,
+            los_geometry,
+            sensor_z,
+            airspace,
+            terrain_tolerance=terrain_tolerance,
+            los_requirement="visible",
+        )
+        exact_valid[zi, hi] = bool(certificate["passed"])
+    exact_valid.setflags(write=False)
+    return exact_valid
 
 
 def regular_action_offsets(options: dict[str, Any]) -> tuple[tuple[int, int], ...]:
@@ -546,11 +654,55 @@ def _extract_candidate(
     node_residual = _maximum_edge_endpoint_residual(
         trajectory_array, speed_array, gamma_array, duration_array
     )
+    geometry = geometry_bundle["primary_result"]
+    glide_certificates = tuple(
+        certify_straight_segment_geometry(
+            trajectory_array[index],
+            trajectory_array[index + 1],
+            geometry["terrain_model"],
+            geometry["los_geometry"],
+            float(geometry["sensor_position"][0]),
+            configs["environment_config"]["airspace"],
+            terrain_tolerance=float(
+                configs["validation_config"]["terrain_tolerance"]
+            ),
+            los_requirement="visible",
+        )
+        for index in range(trajectory_array.shape[0] - 1)
+    )
+    glide_terrain_clear = all(
+        certificate["terrain_clear"] for certificate in glide_certificates
+    )
+    glide_los_clear = all(
+        certificate["los_clear"] for certificate in glide_certificates
+    )
+    glide_domain_clear = all(
+        certificate["domain_clear"] for certificate in glide_certificates
+    )
+    minimum_glide_terrain_margin = min(
+        certificate["minimum_terrain_margin"]
+        for certificate in glide_certificates
+    )
+    minimum_glide_los_margin = min(
+        certificate["minimum_los_margin"]
+        for certificate in glide_certificates
+    )
+    minimum_mission_terrain_margin = min(
+        float(powered["validation"]["minimum_terrain_margin"]),
+        float(minimum_glide_terrain_margin),
+    )
     checks = {
         "objective_consistency": objective_residual <= configs["validation_config"]["objective_tolerance"],
         "goal_reached": reached_goal and np.linalg.norm(goal_error) <= configs["validation_config"]["goal_radius"] + configs["validation_config"]["solver_tolerance"],
-        "terrain_clearance": True,
-        "los_feasibility": True,
+        "terrain_clearance": bool(
+            powered["validation"]["terrain_clear"] and glide_terrain_clear
+        ),
+        "los_feasibility": bool(
+            powered["validation"]["occlusion_valid"] and glide_los_clear
+        ),
+        "airspace_feasibility": bool(
+            powered["validation"]["domain_clear"] and glide_domain_clear
+        ),
         "physical_edge_endpoint_alignment": node_residual <= configs["validation_config"]["solver_tolerance"],
         "strictly_forward_trajectory": bool(np.all(np.diff(trajectory_array[:, 0]) > 0.0)),
     }
@@ -562,6 +714,8 @@ def _extract_candidate(
             "goal_distance": float(np.linalg.norm(goal_error)),
             "objective_residual": float(objective_residual),
             "maximum_edge_endpoint_residual": node_residual,
+            "minimum_mission_terrain_margin": minimum_mission_terrain_margin,
+            "minimum_glide_los_margin": float(minimum_glide_los_margin),
             "path_node_count": int(trajectory_array.shape[0]),
         },
         "failed_checks": failed,
@@ -597,13 +751,21 @@ def _extract_candidate(
         "constraint_residuals": {
             "goal_error": _readonly(goal_error),
             "goal_error_norm": float(np.linalg.norm(goal_error)),
-            "minimum_terrain_margin": 0.0,
+            "minimum_terrain_margin": minimum_mission_terrain_margin,
+            "minimum_glide_los_margin": float(minimum_glide_los_margin),
+            "minimum_powered_occlusion_margin": powered["validation"][
+                "minimum_occlusion_margin"
+            ],
             "maximum_edge_endpoint_residual": node_residual,
         },
         "metadata": {
             "transition_model": "successor_grid_physical_edge",
             "virtual_switching_state": True,
             "endpoint_snapping": False,
+            "all_segment_geometry_certificate": True,
+            "geometry_certificate": (
+                "piecewise_cubic_terrain_and_piecewise_linear_los_global_minimum"
+            ),
             "edge_ids": tuple(edge_ids),
             "coarse": False,
             "warm_start_only": False,
@@ -629,12 +791,17 @@ def _physical_edge_metrics(
     gamma = math.atan2(float(delta[1]), float(delta[0]))
     duration = length / speed
     path = start[None, :] + fractions[:, None] * delta[None, :]
-    terrain_margin = path[:, 1] - terrain_height(geometry["terrain_model"], path[:, 0])
-    los_margin = path[:, 1] - los_boundary_height(geometry["los_geometry"], path[:, 0])
-    visible = (path[:, 0] >= geometry["sensor_position"][0]) | (los_margin >= 0.0)
-    valid = bool(
-        np.all(terrain_margin >= -configs["validation_config"]["terrain_tolerance"])
-        and np.all(visible)
+    certificate = certify_straight_segment_geometry(
+        np.asarray(start, dtype=float),
+        np.asarray(end, dtype=float),
+        geometry["terrain_model"],
+        geometry["los_geometry"],
+        float(geometry["sensor_position"][0]),
+        configs["environment_config"]["airspace"],
+        terrain_tolerance=float(
+            configs["validation_config"]["terrain_tolerance"]
+        ),
+        los_requirement="visible",
     )
     rates = _glide_rate_numpy(
         path[:, 0], path[:, 1], speed, gamma, geometry["sensor_position"],
@@ -645,12 +812,15 @@ def _physical_edge_metrics(
         hazard, duration, configs["cost_config"]["attacker"]
     ))
     return {
-        "valid": valid,
+        "valid": bool(certificate["passed"]),
         "duration": duration,
         "hazard": hazard,
         "cost": cost,
-        "minimum_terrain_margin": float(np.min(terrain_margin)),
-        "minimum_los_margin": float(np.min(los_margin)),
+        "minimum_terrain_margin": certificate["minimum_terrain_margin"],
+        "minimum_los_margin": certificate["minimum_los_margin"],
+        "terrain_argmin_z": certificate["terrain_argmin_z"],
+        "los_argmin_z": certificate["los_argmin_z"],
+        "geometry_certificate": certificate["certificate"],
     }
 
 
