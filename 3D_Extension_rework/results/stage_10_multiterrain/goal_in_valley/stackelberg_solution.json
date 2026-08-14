@@ -1,0 +1,630 @@
+{
+  "optimal_sensor_position_m": [
+    1825.0,
+    125.0,
+    0.0004495201785261944
+  ],
+  "defender_objective": 0.12442616187126475,
+  "final_attacker_summary": {
+    "sensor_position_m": [
+      1825.0,
+      125.0,
+      0.0004495201785261944
+    ],
+    "defender_objective": 0.12442616187126475,
+    "defender_pod_normalized": 0.038503295594531965,
+    "coverage_volume_normalized": 0.8977319583618597,
+    "coverage_volume_m3": 721192968.75,
+    "mission_pod": 0.039253955329724755,
+    "mission_hazard": 0.04004516646444544,
+    "attacker_objective": 0.5497781495490239,
+    "mission_time_s": 117.20255891964628,
+    "switching_point_m": [
+      1625.0,
+      700.0,
+      25.016960418993868
+    ],
+    "goal_distance_m": 14.999999999999872,
+    "validation_passed": true
+  },
+  "final_objective_breakdown": {
+    "pod_normalized": 0.038503295594531965,
+    "coverage_volume_normalized": 0.8977319583618597,
+    "weighted_pod": 0.03465296603507877,
+    "weighted_coverage": 0.08977319583618598,
+    "total": 0.12442616187126475
+  },
+  "search": {
+    "best_summary": {
+      "sensor_position_m": [
+        1825.0,
+        125.0,
+        0.0004495201785261944
+      ],
+      "defender_objective": 0.12442616187126475,
+      "defender_pod_normalized": 0.038503295594531965,
+      "coverage_volume_normalized": 0.8977319583618597,
+      "coverage_volume_m3": 721192968.75,
+      "mission_pod": 0.039253955329724755,
+      "mission_hazard": 0.04004516646444544,
+      "attacker_objective": 0.5497781495490239,
+      "mission_time_s": 117.20255891964628,
+      "switching_point_m": [
+        1625.0,
+        700.0,
+        25.016960418993868
+      ],
+      "goal_distance_m": 14.999999999999872,
+      "validation_passed": true,
+      "feasible": true,
+      "error": null
+    },
+    "evaluations": [
+      {
+        "sensor_position_m": [
+          1700.0,
+          0.0,
+          NaN
+        ],
+        "defender_objective": -Infinity,
+        "defender_pod_normalized": NaN,
+        "coverage_volume_normalized": NaN,
+        "coverage_volume_m3": NaN,
+        "mission_pod": NaN,
+        "mission_hazard": NaN,
+        "attacker_objective": NaN,
+        "mission_time_s": NaN,
+        "switching_point_m": [
+          NaN,
+          NaN,
+          NaN
+        ],
+        "goal_distance_m": NaN,
+        "validation_passed": false,
+        "feasible": false,
+        "error": "RuntimeError: No tangent-manifold switching candidate reaches the Bellman policy"
+      },
+      {
+        "sensor_position_m": [
+          1700.0,
+          125.0,
+          NaN
+        ],
+        "defender_objective": -Infinity,
+        "defender_pod_normalized": NaN,
+        "coverage_volume_normalized": NaN,
+        "coverage_volume_m3": NaN,
+        "mission_pod": NaN,
+        "mission_hazard": NaN,
+        "attacker_objective": NaN,
+        "mission_time_s": NaN,
+        "switching_point_m": [
+          NaN,
+          NaN,
+          NaN
+        ],
+        "goal_distance_m": NaN,
+        "validation_passed": false,
+        "feasible": false,
+        "error": "RuntimeError: No tangent-manifold switching candidate reaches the Bellman policy"
+      },
+      {
+        "sensor_position_m": [
+          1700.0,
+          250.0,
+          0.5946217356472094
+        ],
+        "defender_objective": 0.11145430284701331,
+        "defender_pod_normalized": 0.034440332070770505,
+        "coverage_volume_normalized": 0.8045800398331985,
+        "coverage_volume_m3": 646359375.0,
+        "mission_pod": 0.035040142161344656,
+        "mission_hazard": 0.03566877660303354,
+        "attacker_objective": 0.542218002599613,
+        "mission_time_s": 116.0140739597558,
+        "switching_point_m": [
+          625.0,
+          700.0,
+          135.3810854625548
+        ],
+        "goal_distance_m": 15.000000000000018,
+        "validation_passed": true,
+        "feasible": true,
+        "error": null
+      },
+      {
+        "sensor_position_m": [
+          1700.0,
+          375.0,
+          6.196100769053198
+        ],
+        "defender_objective": 0.1044465074888466,
+        "defender_pod_normalized": 0.043631842757293995,
+        "coverage_volume_normalized": 0.6517784900728201,
+        "coverage_volume_m3": 523606250.0,
+        "mission_pod": 0.04459737795252772,
+        "mission_hazard": 0.045622433580102,
+        "attacker_objective": 0.5516861114084315,
+        "mission_time_s": 117.00772004831425,
+        "switching_point_m": [
+          1000.0,
+          400.0,
+          178.70772559492727
+        ],
+        "goal_distance_m": 14.999999999999819,
+        "validation_passed": true,
+        "feasible": true,
+        "error": null
+      },
+      {
+        "sensor_position_m": [
+          1700.0,
+          500.0,
+          13.53352832366127
+        ],
+        "defender_objective": 0.10249223186730955,
+        "defender_pod_normalized": 0.04473339518627294,
+        "coverage_volume_normalized": 0.622321761996639,
+        "coverage_volume_m3": 499942187.5,
+        "mission_pod": 0.04574865569102393,
+        "mission_hazard": 0.046828178598056394,
+        "attacker_objective": 0.5641777212103732,
+        "mission_time_s": 119.63797166180198,
+        "switching_point_m": [
+          1250.0,
+          200.0,
+          174.90894707973268
+        ],
+        "goal_distance_m": 15.000000000000016,
+        "validation_passed": true,
+        "feasible": true,
+        "error": null
+      },
+      {
+        "sensor_position_m": [
+          1700.0,
+          750.0,
+          0.5946217356472094
+        ],
+        "defender_objective": 0.11145430284701331,
+        "defender_pod_normalized": 0.034440332070770505,
+        "coverage_volume_normalized": 0.8045800398331985,
+        "coverage_volume_m3": 646359375.0,
+        "mission_pod": 0.035040142161344656,
+        "mission_hazard": 0.03566877660303354,
+        "attacker_objective": 0.542218002599613,
+        "mission_time_s": 116.0140739597558,
+        "switching_point_m": [
+          625.0,
+          300.0,
+          135.3810854625548
+        ],
+        "goal_distance_m": 15.000000000000018,
+        "validation_passed": true,
+        "feasible": true,
+        "error": null,
+        "symmetry_source_y_m": 250.0
+      },
+      {
+        "sensor_position_m": [
+          1700.0,
+          1000.0,
+          NaN
+        ],
+        "defender_objective": -Infinity,
+        "defender_pod_normalized": NaN,
+        "coverage_volume_normalized": NaN,
+        "coverage_volume_m3": NaN,
+        "mission_pod": NaN,
+        "mission_hazard": NaN,
+        "attacker_objective": NaN,
+        "mission_time_s": NaN,
+        "switching_point_m": [
+          NaN,
+          NaN,
+          NaN
+        ],
+        "goal_distance_m": NaN,
+        "validation_passed": false,
+        "feasible": false,
+        "error": "RuntimeError: No tangent-manifold switching candidate reaches the Bellman policy",
+        "symmetry_source_y_m": 0.0
+      },
+      {
+        "sensor_position_m": [
+          1825.0,
+          125.0,
+          0.0004495201785261944
+        ],
+        "defender_objective": 0.12442616187126475,
+        "defender_pod_normalized": 0.038503295594531965,
+        "coverage_volume_normalized": 0.8977319583618597,
+        "coverage_volume_m3": 721192968.75,
+        "mission_pod": 0.039253955329724755,
+        "mission_hazard": 0.04004516646444544,
+        "attacker_objective": 0.5497781495490239,
+        "mission_time_s": 117.20255891964628,
+        "switching_point_m": [
+          1625.0,
+          700.0,
+          25.016960418993868
+        ],
+        "goal_distance_m": 14.999999999999872,
+        "validation_passed": true,
+        "feasible": true,
+        "error": null
+      },
+      {
+        "sensor_position_m": [
+          1825.0,
+          250.0,
+          0.022346628620705983
+        ],
+        "defender_objective": 0.102552786650243,
+        "defender_pod_normalized": 0.023516973929272177,
+        "coverage_volume_normalized": 0.8138751011389805,
+        "coverage_volume_m3": 653826562.5,
+        "mission_pod": 0.023795651739267565,
+        "mission_hazard": 0.024083341266594255,
+        "attacker_objective": 0.534702844777805,
+        "mission_time_s": 115.63300312931592,
+        "switching_point_m": [
+          875.0,
+          600.0,
+          126.82819357931406
+        ],
+        "goal_distance_m": 14.99999999999999,
+        "validation_passed": true,
+        "feasible": true,
+        "error": null
+      },
+      {
+        "sensor_position_m": [
+          1825.0,
+          375.0,
+          0.23285721742377138
+        ],
+        "defender_objective": 0.09965154262107286,
+        "defender_pod_normalized": 0.03164513947101911,
+        "coverage_volume_normalized": 0.7117091709715566,
+        "coverage_volume_m3": 571751562.5,
+        "mission_pod": 0.03215108157718338,
+        "mission_hazard": 0.032679279896174834,
+        "attacker_objective": 0.5422487059279909,
+        "mission_time_s": 116.35156326989015,
+        "switching_point_m": [
+          625.0,
+          400.0,
+          191.18918226933783
+        ],
+        "goal_distance_m": 15.000000000000034,
+        "validation_passed": true,
+        "feasible": true,
+        "error": null
+      },
+      {
+        "sensor_position_m": [
+          1950.0,
+          0.0,
+          NaN
+        ],
+        "defender_objective": -Infinity,
+        "defender_pod_normalized": NaN,
+        "coverage_volume_normalized": NaN,
+        "coverage_volume_m3": NaN,
+        "mission_pod": NaN,
+        "mission_hazard": NaN,
+        "attacker_objective": NaN,
+        "mission_time_s": NaN,
+        "switching_point_m": [
+          NaN,
+          NaN,
+          NaN
+        ],
+        "goal_distance_m": NaN,
+        "validation_passed": false,
+        "feasible": false,
+        "error": "RuntimeError: No tangent-manifold switching candidate reaches the Bellman policy"
+      },
+      {
+        "sensor_position_m": [
+          1950.0,
+          250.0,
+          0.00017603463121561693
+        ],
+        "defender_objective": 0.09758035019941787,
+        "defender_pod_normalized": 0.017235123002568888,
+        "coverage_volume_normalized": 0.8206873949710587,
+        "coverage_volume_m3": 659299218.75,
+        "mission_pod": 0.017384497049045322,
+        "mission_hazard": 0.01753738189296146,
+        "attacker_objective": 0.5302728707081366,
+        "mission_time_s": 115.37703092072033,
+        "switching_point_m": [
+          750.0,
+          600.0,
+          132.67141237602857
+        ],
+        "goal_distance_m": 14.999999999999988,
+        "validation_passed": true,
+        "feasible": true,
+        "error": null
+      },
+      {
+        "sensor_position_m": [
+          1950.0,
+          500.0,
+          NaN
+        ],
+        "defender_objective": -Infinity,
+        "defender_pod_normalized": NaN,
+        "coverage_volume_normalized": NaN,
+        "coverage_volume_m3": NaN,
+        "mission_pod": NaN,
+        "mission_hazard": NaN,
+        "attacker_objective": NaN,
+        "mission_time_s": NaN,
+        "switching_point_m": [
+          NaN,
+          NaN,
+          NaN
+        ],
+        "goal_distance_m": NaN,
+        "validation_passed": false,
+        "feasible": false,
+        "error": "ValueError: trajectory result must pass validation"
+      },
+      {
+        "sensor_position_m": [
+          1950.0,
+          750.0,
+          0.00017603463121561693
+        ],
+        "defender_objective": 0.09758035019941787,
+        "defender_pod_normalized": 0.017235123002568888,
+        "coverage_volume_normalized": 0.8206873949710587,
+        "coverage_volume_m3": 659299218.75,
+        "mission_pod": 0.017384497049045322,
+        "mission_hazard": 0.01753738189296146,
+        "attacker_objective": 0.5302728707081366,
+        "mission_time_s": 115.37703092072033,
+        "switching_point_m": [
+          750.0,
+          400.0,
+          132.67141237602857
+        ],
+        "goal_distance_m": 14.999999999999988,
+        "validation_passed": true,
+        "feasible": true,
+        "error": null,
+        "symmetry_source_y_m": 250.0
+      },
+      {
+        "sensor_position_m": [
+          1950.0,
+          1000.0,
+          NaN
+        ],
+        "defender_objective": -Infinity,
+        "defender_pod_normalized": NaN,
+        "coverage_volume_normalized": NaN,
+        "coverage_volume_m3": NaN,
+        "mission_pod": NaN,
+        "mission_hazard": NaN,
+        "attacker_objective": NaN,
+        "mission_time_s": NaN,
+        "switching_point_m": [
+          NaN,
+          NaN,
+          NaN
+        ],
+        "goal_distance_m": NaN,
+        "validation_passed": false,
+        "feasible": false,
+        "error": "RuntimeError: No tangent-manifold switching candidate reaches the Bellman policy",
+        "symmetry_source_y_m": 0.0
+      },
+      {
+        "sensor_position_m": [
+          2200.0,
+          0.0,
+          NaN
+        ],
+        "defender_objective": -Infinity,
+        "defender_pod_normalized": NaN,
+        "coverage_volume_normalized": NaN,
+        "coverage_volume_m3": NaN,
+        "mission_pod": NaN,
+        "mission_hazard": NaN,
+        "attacker_objective": NaN,
+        "mission_time_s": NaN,
+        "switching_point_m": [
+          NaN,
+          NaN,
+          NaN
+        ],
+        "goal_distance_m": NaN,
+        "validation_passed": false,
+        "feasible": false,
+        "error": "RuntimeError: No tangent-manifold switching candidate reaches the Bellman policy"
+      },
+      {
+        "sensor_position_m": [
+          2200.0,
+          250.0,
+          1.0060392792833169e-10
+        ],
+        "defender_objective": 0.09544321429096539,
+        "defender_pod_normalized": 0.01352713543376976,
+        "coverage_volume_normalized": 0.832687924005726,
+        "coverage_volume_m3": 668939843.75,
+        "mission_pod": 0.013619038378192894,
+        "mission_hazard": 0.013712628188291975,
+        "attacker_objective": 0.5267402841851458,
+        "mission_time_s": 115.01857745376103,
+        "switching_point_m": [
+          500.0,
+          600.0,
+          138.88340667866052
+        ],
+        "goal_distance_m": 14.999999999999977,
+        "validation_passed": true,
+        "feasible": true,
+        "error": null
+      },
+      {
+        "sensor_position_m": [
+          2200.0,
+          500.0,
+          2.289734845645553e-09
+        ],
+        "defender_objective": 0.10329613961182763,
+        "defender_pod_normalized": 0.027780566457351104,
+        "coverage_volume_normalized": 0.7829362980021162,
+        "coverage_volume_m3": 628971875.0,
+        "mission_pod": 0.028169992058118987,
+        "mission_hazard": 0.028574378765235532,
+        "attacker_objective": 0.5608372320383209,
+        "mission_time_s": 120.91815103002281,
+        "switching_point_m": [
+          750.0,
+          300.0,
+          135.00635842153142
+        ],
+        "goal_distance_m": 14.99999999999982,
+        "validation_passed": true,
+        "feasible": true,
+        "error": null
+      },
+      {
+        "sensor_position_m": [
+          2200.0,
+          750.0,
+          1.0060392792833169e-10
+        ],
+        "defender_objective": 0.09544321429096539,
+        "defender_pod_normalized": 0.01352713543376976,
+        "coverage_volume_normalized": 0.832687924005726,
+        "coverage_volume_m3": 668939843.75,
+        "mission_pod": 0.013619038378192894,
+        "mission_hazard": 0.013712628188291975,
+        "attacker_objective": 0.5267402841851458,
+        "mission_time_s": 115.01857745376103,
+        "switching_point_m": [
+          500.0,
+          400.0,
+          138.88340667866052
+        ],
+        "goal_distance_m": 14.999999999999977,
+        "validation_passed": true,
+        "feasible": true,
+        "error": null,
+        "symmetry_source_y_m": 250.0
+      },
+      {
+        "sensor_position_m": [
+          2200.0,
+          1000.0,
+          NaN
+        ],
+        "defender_objective": -Infinity,
+        "defender_pod_normalized": NaN,
+        "coverage_volume_normalized": NaN,
+        "coverage_volume_m3": NaN,
+        "mission_pod": NaN,
+        "mission_hazard": NaN,
+        "attacker_objective": NaN,
+        "mission_time_s": NaN,
+        "switching_point_m": [
+          NaN,
+          NaN,
+          NaN
+        ],
+        "goal_distance_m": NaN,
+        "validation_passed": false,
+        "feasible": false,
+        "error": "RuntimeError: No tangent-manifold switching candidate reaches the Bellman policy",
+        "symmetry_source_y_m": 0.0
+      }
+    ],
+    "levels": [
+      {
+        "level": 0,
+        "x_values_m": [
+          1700.0,
+          1950.0,
+          2200.0
+        ],
+        "y_values_m": [
+          0.0,
+          250.0,
+          500.0,
+          750.0,
+          1000.0
+        ],
+        "new_candidate_count": 13,
+        "best_sensor_position_m": [
+          1700.0,
+          250.0,
+          0.5946217356472094
+        ],
+        "best_defender_objective": 0.11145430284701331
+      },
+      {
+        "level": 1,
+        "x_values_m": [
+          1700.0,
+          1825.0
+        ],
+        "y_values_m": [
+          125.0,
+          250.0,
+          375.0
+        ],
+        "new_candidate_count": 5,
+        "best_sensor_position_m": [
+          1825.0,
+          125.0,
+          0.0004495201785261944
+        ],
+        "best_defender_objective": 0.12442616187126475
+      }
+    ],
+    "metadata": {
+      "algorithm": "deterministic_2d_hierarchical_candidate_search",
+      "symmetry_requested": true,
+      "symmetry_verified": true,
+      "candidate_count": 20,
+      "fresh_unique_geometry_count": 14
+    }
+  },
+  "cache_stats": {
+    "fresh_evaluations": 15,
+    "cache_hits": 0
+  },
+  "metadata": {
+    "game": "3D terrain-following sensor Stackelberg",
+    "leader_decision_dimension": 2,
+    "leader_decision_axes": [
+      "x_sensor",
+      "y_sensor"
+    ],
+    "follower": "authoritative physical Bellman Attacker response",
+    "continuous_nlp_applied": false
+  },
+  "validation": {
+    "passed": true,
+    "checks": {
+      "final_nested_pipeline_passed": true,
+      "selected_candidate_matches_search_maximum": true,
+      "sensor_within_configured_region": true,
+      "sensor_height_terrain_following": true,
+      "final_attacker_continuous_replay_passed": true
+    },
+    "failed_checks": []
+  },
+  "status": {
+    "success": true,
+    "message": "3D Stackelberg solve passed"
+  }
+}

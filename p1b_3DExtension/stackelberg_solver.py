@@ -2,7 +2,7 @@
 
 Mirrors p1b_4D.stackelberg_solver's role exactly, extended from a 1D
 z_sensor search to a 2D (x_sensor, y_sensor) search. scipy.optimize.direct
-already supports N-D bounds, so the certified-global search generalizes
+already supports N-D bounds, so the asymptotically-global search generalizes
 without algorithmic changes -- only the decision variable's dimension
 grows. p1b_4D's `hierarchical_coarse_to_fine_optimizer` is a 1D bounded
 -Brent technique specific to a single ordered decision variable and has
@@ -18,13 +18,13 @@ from typing import Any, Callable, Protocol
 import numpy as np
 from scipy.optimize import direct
 
-from .bellman import generate_bellman_candidates, select_authoritative_bellman_response
 from .detection import build_symbolic_detection_bundle
 from .geometry import build_geometry_bundle, terrain_height
 from .stage_cost import construct_stage_cost_6d
+from .successor_grid_solver import solve_physical_successor_grid_attacker
 
-# See p1b_4D.stackelberg_solver's identical constant: a certified-global
-# search samples the whole bounded region, including geometrically
+# See p1b_4D.stackelberg_solver's identical constant: an asymptotically-
+# global search samples the whole bounded region, including geometrically
 # degenerate sensor positions where no Attacker path can reach the goal at
 # all. That is a real, valid search-space outcome, not a bug, so it must be
 # scored as "far worse than any real objective" rather than crashing the
@@ -113,10 +113,9 @@ def solve_attacker_best_response(
     geometry = build_geometry_bundle(nested_configuration)
     detection = build_symbolic_detection_bundle(nested_configuration, geometry)
     stage = construct_stage_cost_6d(nested_configuration, geometry, detection)
-    bellman = generate_bellman_candidates(
-        nested_configuration, geometry, detection, stage, None
+    bellman, attacker = solve_physical_successor_grid_attacker(
+        nested_configuration, geometry, detection,
     )
-    attacker = select_authoritative_bellman_response(bellman, nested_configuration)
     if not attacker["status"]["success"]:
         raise RuntimeError(attacker["status"]["message"])
     return {
@@ -448,11 +447,16 @@ def direct_global_optimizer(
     bounds: tuple[tuple[float, float], tuple[float, float]],
     options: dict[str, Any],
 ) -> dict[str, Any]:
-    """Certified-global search over (x_sensor, y_sensor) using SciPy's DIRECT.
+    """Asymptotically-global search over (x_sensor, y_sensor) using SciPy's DIRECT.
 
     Direct 2D generalization of p1b_4D's `direct_global_optimizer`:
     `scipy.optimize.direct` natively supports N-D bounds, so no algorithmic
     change is needed beyond passing both bounds.
+
+    As in p1b_4D: DIRECT's global-convergence guarantee is asymptotic
+    (budget -> infinity), not a finite-sample certificate -- this
+    function's return value is always a best-found result within the
+    configured budget, never a certified global optimum.
     """
     evaluation_history: list[dict[str, Any]] = []
 
@@ -478,13 +482,20 @@ def direct_global_optimizer(
         # See p1b_4D's identical field: DIRECT's own `success` flag means
         # only "reached len_tol/vol_tol before exhausting the evaluation
         # budget." Terminating on maxfun for an expensive per-evaluation
-        # objective (a full Bellman solve) is normal and still a valid,
-        # certified-search result.
-        "converged": True,
+        # objective (a full Bellman solve) is normal and still a valid
+        # best-found result, not a failure -- but it is honestly a
+        # different outcome than reaching DIRECT's own tolerance, so this
+        # reflects the real signal rather than a constant.
+        "converged": bool(result.success),
         "metadata": {
             "algorithm": "scipy_direct_global",
             "objective_direction": "maximize_via_negative_minimization",
-            "certified_global": True,
+            # DIRECT's global-convergence guarantee is asymptotic; no
+            # finite run constitutes a certificate of global optimality
+            # regardless of `converged` above. Describes the algorithm's
+            # theoretical class, not a claim about this particular result.
+            "algorithm_class": "direct_asymptotically_global",
+            "terminated_via": "length_tolerance" if result.success else "evaluation_budget",
             "locally_biased": False,
             "function_evaluations": int(result.nfev),
             "iterations": int(result.nit),
@@ -599,7 +610,11 @@ def validate_stackelberg_solution(
     pre_final_summaries = summaries[:-1] or summaries
     evaluated_maximum = max(item["defender_objective"] for item in pre_final_summaries)
     checks = {
-        "outer_optimizer_convergence": bool(optimizer_result["converged"]),
+        # Not a hard pass/fail gate: DIRECT terminating via evaluation-
+        # budget exhaustion rather than its own length-tolerance criterion
+        # is normal and expected for an expensive per-evaluation objective
+        # (see direct_global_optimizer's docstring/comments) -- it is
+        # surfaced as a warning below, not treated as a validation failure.
         "objective_consistency": abs(solution["defender_objective"] - final_primary["defender_objective"]) <= tolerance,
         "attacker_convergence": solution["optimal_attacker_strategy"]["validation"]["passed"],
         "authoritative_attacker_solver_used": attacker_pipeline["metadata"][
@@ -617,8 +632,12 @@ def validate_stackelberg_solution(
         "figure_arrays_consistent": payload["cost_to_go"].shape == payload["pod_to_go"].shape == payload["los_mask"].shape == payload["occlusion_mask"].shape == payload["terrain_mask"].shape,
     }
     failed = [name for name, passed in checks.items() if not passed]
-    warnings = [] if optimizer_result["converged"] else ["Injected outer optimizer did not report convergence"]
-    return {"passed": not failed, "checks": checks, "metrics": {"outer_evaluation_count": len(summaries), "optimal_x_sensor": solution["optimal_x_sensor"], "optimal_y_sensor": solution["optimal_y_sensor"], "defender_objective": solution["defender_objective"], "maximum_pre_final_evaluation_objective": evaluated_maximum, "figure_evaluation_id": payload["evaluation_id"]}, "warnings": warnings, "failed_checks": failed, "summary": "Phase 9 Stackelberg solution validation passed" if not failed else f"Stackelberg solution failed checks: {failed}"}
+    warnings = [] if optimizer_result["converged"] else [
+        "Outer optimizer terminated via evaluation-budget exhaustion, not "
+        "its own length-tolerance criterion -- a valid best-found result, "
+        "not a certified global optimum for this run."
+    ]
+    return {"passed": not failed, "checks": checks, "metrics": {"outer_evaluation_count": len(summaries), "optimal_x_sensor": solution["optimal_x_sensor"], "optimal_y_sensor": solution["optimal_y_sensor"], "defender_objective": solution["defender_objective"], "maximum_pre_final_evaluation_objective": evaluated_maximum, "figure_evaluation_id": payload["evaluation_id"], "outer_optimizer_converged": bool(optimizer_result["converged"])}, "warnings": warnings, "failed_checks": failed, "summary": "Phase 9 Stackelberg solution validation passed" if not failed else f"Stackelberg solution failed checks: {failed}"}
 
 
 def _configuration_for_sensor(bundle: dict[str, Any], x_sensor: float, y_sensor: float) -> dict[str, Any]:

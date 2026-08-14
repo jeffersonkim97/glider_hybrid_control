@@ -1,8 +1,10 @@
 # P1b CasADi Environment Setup
 
 Sets up everything needed to open and run `p1b/p1b_casadi_symbolic.ipynb`
-(and the rest of the `p1b_4d_dp.py` / `p1b_main.ipynb` pipeline) on a fresh
-clone of this repo. Run this once per machine, from the repo root.
+(and the rest of the `p1b_4d_dp.py` / `p1b_main.ipynb` pipeline), the
+`p1b_4D`/`p1b_3DExtension` Stackelberg packages, and the `p1b_rl` RL
+groundwork on a fresh clone of this repo. Run this once per machine, from
+the repo root.
 
 **Instructions for Claude Code**: detect the current OS from your own
 environment info (already stated in your system prompt — no need to probe
@@ -16,12 +18,23 @@ for it) and run only the matching block below. Do not run both.
    `.python-version` (pinned to `3.14.6`) automatically and downloads that
    exact Python interpreter if it isn't already available on the machine —
    no separate "install Python" step is needed.
-3. Installs the pinned dependencies from `p1b/requirements.txt` (casadi,
-   numpy, scipy, matplotlib, nbformat/nbclient/ipykernel) into that venv.
-4. Prints a final check importing `casadi`/`numpy`/`scipy` to confirm the
-   environment is actually usable before declaring success.
+3. Installs the pinned dependencies from `p1b/requirements.txt` into that
+   venv: the core symbolic/notebook stack (casadi, numpy, scipy,
+   matplotlib, nbformat/nbclient/ipykernel, plotly) plus the RL groundwork
+   stack (torch, gymnasium, stable-baselines3) used by `p1b_rl`. One
+   `uv pip install -r` call installs everything -- there is no separate RL
+   install step.
+4. Prints a final check importing `casadi`/`numpy`/`scipy`/`torch`/
+   `gymnasium`/`stable_baselines3` to confirm the environment is actually
+   usable before declaring success.
 
 Safe to re-run: each step checks whether it's already done before acting.
+
+**GPU note**: `torch==2.13.0` here is pinned to the CPU-only build (this
+project's own state-space is small enough that CPU training is fine, and
+CPU wheels are the same across every OS/machine). If a target machine has
+a CUDA GPU you want to use, install a CUDA build of the *same* torch
+version separately after this setup instead of changing the pin here.
 
 ---
 
@@ -43,7 +56,7 @@ uv venv .venv_p1b
 uv pip install --python .venv_p1b\Scripts\python.exe -r p1b\requirements.txt
 
 # 4. Sanity check
-.venv_p1b\Scripts\python.exe -c "import casadi, numpy, scipy, matplotlib, nbformat, nbclient; print('OK:', casadi.__version__, numpy.__version__, scipy.__version__)"
+.venv_p1b\Scripts\python.exe -c "import casadi, numpy, scipy, matplotlib, nbformat, nbclient, torch, gymnasium, stable_baselines3; print('OK:', casadi.__version__, numpy.__version__, scipy.__version__, torch.__version__, gymnasium.__version__, stable_baselines3.__version__)"
 ```
 
 To run the notebook headlessly afterward: `.venv_p1b\Scripts\python.exe execute_casadi_nb.py`
@@ -71,7 +84,7 @@ uv venv .venv_p1b
 uv pip install --python .venv_p1b/bin/python -r p1b/requirements.txt
 
 # 4. Sanity check
-.venv_p1b/bin/python -c "import casadi, numpy, scipy, matplotlib, nbformat, nbclient; print('OK:', casadi.__version__, numpy.__version__, scipy.__version__)"
+.venv_p1b/bin/python -c "import casadi, numpy, scipy, matplotlib, nbformat, nbclient, torch, gymnasium, stable_baselines3; print('OK:', casadi.__version__, numpy.__version__, scipy.__version__, torch.__version__, gymnasium.__version__, stable_baselines3.__version__)"
 ```
 
 To run the notebook headlessly afterward: `.venv_p1b/bin/python execute_casadi_nb.py`

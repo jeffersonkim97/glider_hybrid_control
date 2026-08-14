@@ -9,8 +9,8 @@ glide phase -- a redundant hard gate on top of the hazard-rate formula,
 which already zeroes detection rate when occluded (see detection.py's
 `los_visible` multiplier). That redundant gate is what makes 2D's
 "hide again mid-glide" maneuver structurally impossible regardless of
-heading freedom. Since this 3D extension's whole point is to let a free
-heading actually exploit terrain masking (including re-hiding, e.g. a
+course freedom. Since this 3D extension's whole point is to let lateral
+motion exploit terrain masking (including re-hiding, e.g. a
 helical descent inside the hill's shadow), spatial_glide_valid here only
 requires being above terrain -- not also visible. The powered phase keeps
 p1b_4D's non_visible requirement unchanged: it has no radar hazard term
@@ -220,7 +220,7 @@ def construct_state_grids(
             np.linspace(vehicle["gamma_min_deg"], vehicle["gamma_max_deg"], vehicle["gamma_count"])
         ),
         # heading is periodic (-180 deg == +180 deg): endpoint=False avoids
-        # duplicating one heading action at both ends of the grid, unlike
+        # duplicating one course/state heading at both ends of the grid, unlike
         # the other, non-periodic axes above.
         "heading": np.deg2rad(
             np.linspace(
@@ -270,7 +270,8 @@ def construct_state_validity_masks(
     control_valid_2d = velocity_valid & gamma_valid & dynamic_valid  # (v, gamma)
     control_valid = np.broadcast_to(
         control_valid_2d[:, :, None], (v_grid.size, gamma_grid.size, heading_grid.size),
-    )  # (v, gamma, heading) -- heading is unconstrained, so it broadcasts freely
+    )  # Local validity is heading-independent. Bellman separately enforces
+       # the inter-segment turn-rate constraint using heading as a state.
 
     # See module docstring: glide feasibility requires only "above terrain",
     # not also "visible" -- the hazard-rate formula's own los_visible gate

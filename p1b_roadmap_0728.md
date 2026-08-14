@@ -145,7 +145,45 @@ The production API must continue to require goal arrival by default. If `require
 
 ## Tier 2 — Stale results and numerical reliability
 
-### 1. Regenerate the single-hill baseline
+### Mesh-adequacy preflight before baseline regeneration — COMPLETED (2026-07-28)
+
+Before launching the full multi-terrain baseline optimization, the native P2
+grid was compared against a grid with both spatial intervals halved.  The
+experiment fixed the same physical `fixed`, `coverage_only`, and prior/current
+`stackelberg` sensor candidates at both resolutions; it did not reuse stale
+objective values as evidence.  The successor-cell offsets and speed grid were
+held fixed, and proportional refinement preserved the geometric successor
+direction set.
+
+- Native spacing: approximately `(dz, dh) = (17.2 m, 2.0 m)`.
+- Refined spacing: approximately `(dz, dh) = (8.6 m, 1.0 m)`.
+- All 18 native/refined continuous replays were feasible.
+- Single hill: the Stackelberg-minus-coverage margin changed from
+  `+5.375e-4` to `-2.686e-4`; the candidate ordering reversed and is an
+  unresolved numerical tie.
+- Two hill: the same margin changed from `-7.153e-5` to `+1.417e-3`, while
+  the maximum per-candidate resolution shift was `3.407e-3`; this ordering is
+  also unresolved at the native grid.
+- Goal in valley: coverage remained above the prior Stackelberg candidate by
+  `1.876e-2` and `2.146e-2`; this particular ordering was resolution-stable.
+- Across resolutions, glide-path altitude RMSE remained approximately
+  `0.44--3.07 m`, but switching-point displacement reached approximately
+  `34.6 m` in the most sensitive single-hill case.
+
+**Decision:** the native grid is adequate for broad path structure and
+continuous-feasibility screening, but not for a precise ordering of close
+paper-critical candidates.  Use the proportionally refined spatial grid for
+the authoritative Tier 2 baseline regeneration and report near-equal
+coverage/Stackelberg candidates as numerical ties unless a later local
+convergence study resolves them.  This two-level preflight detects native-grid
+inadequacy; it does not by itself prove asymptotic convergence of the refined
+grid.
+
+Reproducible runner:
+`p1b_4D/experiment_mesh_adequacy_preflight.py`.  Local checkpoint and analysis
+artifacts are written under `results/mesh_adequacy_preflight/`.
+
+### 1. Regenerate the corrected multi-terrain baseline — COMPLETED (2026-07-28)
 
 The existing conclusion that coverage-only and Stackelberg placement are effectively identical was generated before the medium-to-fine grid correction and is stale.
 
@@ -156,7 +194,63 @@ After Tier 1 is complete:
 - mark or remove the prior artifact from paper-facing results; and
 - retain the conclusion only if the corrected run supports it.
 
-### 2. Perform cross-resolution ranking-stability checks
+#### Refined P2 execution
+
+The authoritative rerun used `successor_grid_physical_edge`, the preflight-
+selected proportional spatial refinement, five speeds, and the implementation-
+defined successor directions:
+
+| Terrain | Spatial grid | `fixed` \(z_s,J_D\) | `coverage` \(z_s,J_D\) | `nominal` \(z_s,J_D\) | `Stackelberg` \(z_s,J_D\) |
+|---|---:|---:|---:|---:|---:|
+| Single hill | `641 x 401` | `4000.00, 0.320885` | `4499.87, 0.339932` | `4499.96, 0.339939` | `4499.96, 0.339939` |
+| Two hill | `321 x 201` | `1750.00, 0.439813` | `1966.46, 0.859416` | `2016.99, 0.647851` | `1982.92, 0.867878` |
+| Goal in valley | `467 x 201` | `1950.00, 0.381072` | `2199.66, 0.401485` | `2199.99, 0.401488` | `2197.83, 0.402467` |
+
+All 12 final responses passed continuous replay and reached the goal.  Within
+each terrain all four summaries share one configuration hash, and all use
+`(dz, dh) approximately (8.6 m, 1.0 m)`, `segment_check_count = 9`, and the
+same follower solver.
+
+The nominal-path baseline was corrected before the rerun: each stored glide
+edge is now integrated with its physical `duration_profile` and the same
+9-sample trapezoidal quadrature used by the successor solver.  It no longer
+assigns one fixed `vehicle.time_step` to every edge.
+
+The Stackelberg candidate set now includes the explicit fixed, coverage, and
+nominal candidates in addition to DIRECT's candidates.  On single hill the
+nominal candidate exceeded DIRECT's selected candidate by only `7.300e-6` and
+was promoted, ensuring that the reported Stackelberg result weakly dominates
+every explicitly evaluated baseline.  This is a numerical tie, not evidence
+of strategic value.
+
+#### P2 interpretation
+
+- **Single hill:** Stackelberg minus coverage is `7.300e-6`; the corrected
+  result supports the conclusion that strategic placement adds no resolved
+  value on this terrain.
+- **Two hill:** Stackelberg minus coverage is `8.462e-3`; this is the only
+  substantial refined-grid strategic margin.  The identical newly selected
+  physical candidates still require the formal native/refined ranking check
+  in the next resolution-stability item before this becomes a paper claim.
+- **Goal in valley:** Stackelberg minus coverage is `9.825e-4`, smaller than
+  the `3.313e-3` per-candidate shift observed in the preflight.  Treat this as
+  unresolved numerical improvement pending the correct identical-candidate
+  cross-resolution check.  The stale `z_s approximately 1706 m` result is
+  superseded by the refined successor-grid result near `2198 m`.
+
+DIRECT evaluated 63, 67, and 69 Stackelberg sensor positions for single hill,
+two hill, and goal-in-valley, respectively.  The three outer searches took
+approximately `9658.9 s`, `1592.6 s`, and `2320.1 s`; the complete run took
+about four hours.  Candidate-level checkpointing and objective caching permit
+exact resumption without recomputing completed follower solves.
+
+Artifacts:
+
+- `results/multiterrain_strategic_baselines_refined/multiterrain_baseline_results.json`
+- `results/multiterrain_strategic_baselines_refined/multiterrain_baseline_analysis.json`
+- `results/multiterrain_strategic_baselines_refined/multiterrain_baseline_checkpoint.json`
+
+### 2. Perform cross-resolution ranking-stability checks — COMPLETED (2026-07-29)
 
 Do not compare optima or objective values produced for different candidates by different-resolution oracles as though they were the same numerical quantity.
 
@@ -187,7 +281,48 @@ Assess:
 - instability is reported as numerical uncertainty or a tie.
 - Any claimed Stackelberg improvement exceeds discretization uncertainty when measured with the same quantity.
 
-### 3. Separate spatial- and action-grid error
+#### P3 execution on the final P2 candidates
+
+The final physical coverage-only and Stackelberg sensor positions selected by
+P2 were held fixed.  The follower best response was recomputed at coarse and
+native resolution; the authoritative refined evaluations were reused from P2.
+No outer sensor optimization was repeated.
+
+| Terrain | Coarse margin | Native margin | Refined margin | Max native-to-refined candidate shift | Classification |
+|---|---:|---:|---:|---:|---|
+| Single hill | `8.681e-7` | `9.419e-6` | `7.300e-6` | `5.356e-4` | co-located numerical tie |
+| Two hill | `1.363e-2` | `7.728e-3` | `8.462e-3` | `1.757e-3` | stable resolved Stackelberg advantage |
+| Goal in valley | `3.942e-6` | `-8.668e-4` | `9.825e-4` | `1.568e-3` | ranking reversal within resolution uncertainty |
+
+Here each margin is `J_D(Stackelberg) - J_D(coverage-only)` evaluated at the
+same two physical sensor positions for every resolution.
+
+- **Single hill:** the two selected positions are separated by only `0.089 m`.
+  The margin is approximately two orders of magnitude smaller than the
+  native-to-refined objective shift.  Report no resolved strategic value.
+- **Two hill:** Stackelberg ranks above coverage at all three resolutions.
+  The refined margin is approximately `4.82` times the maximum native-to-
+  refined per-candidate shift.  This passes the ranking-stability gate and is
+  the terrain on which a resolution-supported strategic-placement claim can
+  be based.
+- **Goal in valley:** the ordering changes from Stackelberg at coarse, to
+  coverage at native, and back to Stackelberg at refined.  The refined margin
+  remains below the measured resolution shift.  Report a numerical tie or
+  unresolved ordering, not a strategic advantage.
+
+All 18 records in the common comparison table (six reused refined P2 records
+and 12 new coarse/native evaluations) are continuous-replay feasible and reach
+the goal.  Native and refined grids preserve the successor direction ratios;
+the valley coarse tier is used only as a trend check because its odd native
+z-interval count prevents an exactly nested 2:1 coarse grid.
+
+Artifacts:
+
+- `results/p2_selected_ranking_stability/ranking_stability_results.json`
+- `results/p2_selected_ranking_stability/ranking_stability_analysis.json`
+- `results/p2_selected_ranking_stability/ranking_stability_checkpoint.json`
+
+### 3. Separate spatial- and action-grid error — COMPLETED (2026-07-29)
 
 Run the spatial/action-resolution factorial experiment to distinguish:
 
@@ -196,7 +331,76 @@ Run the spatial/action-resolution factorial experiment to distinguish:
 - their interaction; and
 - if needed, sensitivity to `segment_check_count`.
 
-Report effects on objective value, PoD, switching point, path topology, and feasibility.
+#### P4 factorial protocol
+
+The two physical P2 two-hill candidates were held fixed at
+`z_coverage = 1966.4609 m` and `z_stackelberg = 1982.9218 m`.  The follower
+was evaluated in a `2 x 2 x 2` design:
+
+- spatial grid: native `161 x 101` or refined `321 x 201`;
+- nested speed grid: 5 or 9 speeds; and
+- nested successor stencil: `(max_forward_cells, max_descent_cells)` equal to
+  `(3, 8)` or `(6, 16)`.
+
+The successor solver does not use `gamma_count` as its physical direction
+count.  Flight-path angles are induced by successor offsets, so the stencil
+factor is the implemented directional/action-set factor.  Expanding the
+stencil is a nested action-set expansion, but it also increases the maximum
+physical edge span at a fixed spatial grid; the reported stencil effect
+therefore includes both added offset directions and added edge reach.
+
+The four standard-action native/refined records were reused from P3 and 12
+new follower evaluations completed the 16-record candidate table.
+
+#### P4 numerical results
+
+| Factor cell | Coverage `J_D` | Stackelberg `J_D` | Difference |
+|---|---:|---:|---:|
+| native, v5, 3x8 | `0.861173` | `0.868901` | `0.007728` |
+| native, v9, 3x8 | `0.861171` | `0.868898` | `0.007727` |
+| native, v5, 6x16 | `0.701241` | `0.724146` | `0.022905` |
+| native, v9, 6x16 | `0.701241` | `0.724146` | `0.022905` |
+| refined, v5, 3x8 | `0.859416` | `0.867878` | `0.008462` |
+| refined, v9, 3x8 | `0.859412` | `0.867874` | `0.008462` |
+| refined, v5, 6x16 | `0.694677` | `0.718568` | `0.023891` |
+| refined, v9, 6x16 | `0.694677` | `0.718568` | `0.023891` |
+
+Observed effect magnitudes:
+
+- maximum absolute speed effect: approximately `3.307e-6`;
+- spatial effect: approximately `-1.024e-3` to `-6.564e-3`, depending on
+  candidate and stencil;
+- stencil effect: approximately `-0.145` to `-0.165`;
+- spatial-stencil interaction: approximately `-4.555e-3` to `-4.807e-3`;
+- speed-related two-way and three-way interactions: at most approximately
+  `3.307e-6`.
+
+The candidate difference remained positive in all eight factor cells, ranging
+from `0.007727` to `0.023891`.  All 16 records were continuous-replay feasible
+and reached the goal.  The standard stencil has 120 edges at five speeds and
+216 at nine speeds; the enriched stencil produced 477 and 861 feasible control
+edges, respectively.
+
+For the standard stencil, mission PoD was numerically near one in all factor
+cells.  For the enriched stencil it was `0.816127` (native) and `0.800254`
+(refined) for the coverage candidate, and `0.881493` (native) and `0.870132`
+(refined) for the Stackelberg candidate.  The v5 and v9 values were identical
+at the displayed precision for the enriched stencil and differed by less than
+`2.2e-8` for the standard stencil.
+
+The enriched stencil selected `switching_z = 0 m` in all eight associated
+candidate records.  With the standard stencil, the selected switching point
+was `(17.1875, 153.1861) m` for native coverage, `(0, 151.1830) m` for native
+Stackelberg, `(25.78125, 153.4587) m` for refined coverage, and
+`(25.78125, 150.5406) m` for refined Stackelberg.  Changing v5 to v9 did not
+change these switching points.  Full trajectory polylines were not persisted
+in the compact P4 records, so no separate path-topology statistic is reported.
+
+Artifacts:
+
+- `results/spatial_action_factorial/factorial_results.json`
+- `results/spatial_action_factorial/factorial_analysis.json`
+- `results/spatial_action_factorial/factorial_checkpoint.json`
 
 ### 4. Strengthen result provenance — RESOLVED (2026-07-28)
 

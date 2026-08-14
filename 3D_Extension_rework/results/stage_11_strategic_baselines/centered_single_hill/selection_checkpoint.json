@@ -1,0 +1,112 @@
+{
+  "scenario_id": "centered_single_hill",
+  "selection_rules": {
+    "fixed": {
+      "information": "preconfigured sensor only"
+    },
+    "coverage_only": {
+      "information": "geometry-only normalized LOS volume",
+      "sensor_xy_m": [
+        2486.1111111111113,
+        993.8271604938271
+      ],
+      "selection_score": 0.6503824837847436,
+      "evaluation_count": 91,
+      "optimizer_success": false,
+      "optimizer_message": "Number of function evaluations done is larger than maxfun=80"
+    },
+    "nominal_path": {
+      "information": "hazard against one fixed time-only Bellman path",
+      "reference_sensor_xy_m": [
+        2125.0,
+        500.0
+      ],
+      "nominal_mission_time_s": 138.85477273574847,
+      "nominal_switching_point_m": [
+        1500.0,
+        500.0,
+        235.85680904409222
+      ],
+      "sensor_xy_m": [
+        1754.6296296296296,
+        500.0
+      ],
+      "selection_score": 38.450775893717775,
+      "evaluation_count": 87,
+      "optimizer_success": false,
+      "optimizer_message": "Number of function evaluations done is larger than maxfun=80"
+    },
+    "stackelberg": {
+      "information": "adaptive physical Bellman best response",
+      "search_metadata": {
+        "algorithm": "deterministic_2d_hierarchical_candidate_search",
+        "symmetry_requested": true,
+        "symmetry_verified": true,
+        "candidate_count": 23,
+        "fresh_unique_geometry_count": 14
+      },
+      "search_levels": [
+        {
+          "level": 0,
+          "x_values_m": [
+            1750.0,
+            2125.0,
+            2500.0
+          ],
+          "y_values_m": [
+            0.0,
+            250.0,
+            500.0,
+            750.0,
+            1000.0
+          ],
+          "new_candidate_count": 13,
+          "best_sensor_position_m": [
+            2125.0,
+            500.0,
+            59.00453123488857
+          ],
+          "best_defender_objective": 0.08011668845189344
+        },
+        {
+          "level": 1,
+          "x_values_m": [
+            1937.5,
+            2125.0,
+            2312.5
+          ],
+          "y_values_m": [
+            375.0,
+            500.0,
+            625.0
+          ],
+          "new_candidate_count": 8,
+          "best_sensor_position_m": [
+            2125.0,
+            500.0,
+            59.00453123488857
+          ],
+          "best_defender_objective": 0.08011668845189344
+        }
+      ]
+    }
+  },
+  "selected_sensor_xy_m": {
+    "fixed": [
+      2125.0,
+      500.0
+    ],
+    "coverage_only": [
+      2486.1111111111113,
+      993.8271604938271
+    ],
+    "nominal_path": [
+      1754.6296296296296,
+      500.0
+    ],
+    "stackelberg": [
+      2125.0,
+      500.0
+    ]
+  }
+}

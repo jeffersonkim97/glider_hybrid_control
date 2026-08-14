@@ -1,0 +1,104 @@
+{
+  "process_chain": [
+    "J6D local objective contract",
+    "exact physical successor Bellman V4D(x,y,h,psi_in)",
+    "projected cost-to-go V3D(x,y,h)"
+  ],
+  "graph_metadata": {
+    "transition_model": "exact_physical_successor_grid",
+    "endpoint_snapping": false,
+    "edge_quadrature_count": 9,
+    "action_count": 503,
+    "heading_state_count": 15,
+    "state_action_count": 3601983,
+    "local_objective_contract": "StageCost6DResult",
+    "segment_feasibility": "terrain_clear_and_los_visible"
+  },
+  "graph_validation": {
+    "passed": true,
+    "checks": {
+      "actions_exist": true,
+      "strict_altitude_descent": true,
+      "exact_node_offsets": true,
+      "valid_edges_start_in_glide_domain": true,
+      "finite_valid_cost": true,
+      "infinite_invalid_cost": true,
+      "terminal_edges_exist": true
+    },
+    "failed_checks": [],
+    "metrics": {
+      "valid_edge_count": 1029883,
+      "terminal_edge_count": 733,
+      "action_count": 503
+    },
+    "summary": "physical successor graph validation passed"
+  },
+  "policy_metadata": {
+    "state_axis_order": [
+      "x",
+      "y",
+      "h",
+      "psi_in"
+    ],
+    "source_local_cost_axes": [
+      "x",
+      "y",
+      "h",
+      "v",
+      "gamma",
+      "psi_action"
+    ],
+    "sweep_axis": "h_ascending",
+    "acyclic": true,
+    "updated_state_count": 420934,
+    "is_cost_to_go": true
+  },
+  "policy_validation": {
+    "passed": true,
+    "checks": {
+      "goal_value_zero": true,
+      "finite_states_exist": true,
+      "finite_states_have_policy": true,
+      "unreachable_states_have_no_policy": true,
+      "finite_hazard_for_finite_value": true,
+      "acyclic_graph": true
+    },
+    "failed_checks": [],
+    "metrics": {
+      "finite_heading_state_count": 47192,
+      "finite_non_goal_state_count": 47177,
+      "total_heading_state_count": 107415
+    },
+    "summary": "Bellman cost-to-go validation passed"
+  },
+  "projection_metadata": {
+    "source_axis_order": [
+      "x",
+      "y",
+      "h",
+      "psi_in"
+    ],
+    "projected_axis_order": [
+      "x",
+      "y",
+      "h"
+    ],
+    "projection_rule": "minimum_bellman_cost_over_incoming_heading",
+    "pod_projection_rule": "PoD_along_cost_minimizing_heading_policy",
+    "is_cost_to_go": true,
+    "local_stage_cost_projection": false
+  },
+  "projection_validation": {
+    "passed": true,
+    "minimum_selection_residual": 0.0
+  },
+  "finite_projected_cell_count": 3150,
+  "positive_cost_to_go_range": [
+    0.010182720700678296,
+    3.224837541591007
+  ],
+  "pod_to_go_range": [
+    0.0,
+    0.9981054124406257
+  ]
+}

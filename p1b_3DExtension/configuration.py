@@ -1,12 +1,12 @@
 """Central Phase 1 configuration for the 3D Stackelberg security project.
 
 Mirrors p1b_4D.configuration's structure and validation philosophy exactly,
-extended from (z, h) to (x, y, h): h keeps its 2D role (the Bellman DP's
-monotonic sweep axis, since gamma stays negative-only regardless of
-heading), x and y are the two free position dimensions (replacing z's
-single free-along-track role), and heading is a third, unconstrained
-action dimension alongside v and gamma. See p1b_3DExtension.ipynb's first
-cell for the full design rationale.
+extended from (z, h) to (x, y, h, heading): h keeps its 2D role (the
+Bellman DP's monotonic sweep axis, since gamma stays negative-only), x and
+y are the two free position dimensions, and heading is a periodic dynamic
+state.  The selected course may change only at the configured maximum turn
+rate; this prevents the instantaneous corners admitted by the original 3D
+prototype.
 """
 
 from __future__ import annotations
@@ -20,7 +20,7 @@ from .phase_logging import close_phase_logger, create_phase_logger, log_phase
 from .project_paths import ProjectPaths, create_project_paths
 
 GLOBAL_RANDOM_SEED = 20260722
-CONFIG_SCHEMA_VERSION = "1.0.0"
+CONFIG_SCHEMA_VERSION = "1.1.0"
 
 environment_config: dict[str, Any] = {
     "x_start": 0.0,
@@ -97,12 +97,18 @@ vehicle_config: dict[str, Any] = {
     "gamma_min_deg": -90.0,
     "gamma_max_deg": -1.0,
     "gamma_count": 6,
-    # Heading is a free, unconstrained third action dimension (see the
-    # notebook's design-rationale cell): no turn-rate limit, so helical
-    # paths are legal and heading never needs to become part of the state.
+    # Heading is discretized on a periodic grid and carried by the Bellman
+    # state.  A 5 deg/s limit gives a minimum horizontal turn radius of
+    # roughly 230 m at 20 m/s.  The coarse trajectory remains polygonal,
+    # but adjacent segments can no longer change direction instantaneously.
     "heading_min_deg": -180.0,
     "heading_max_deg": 180.0,
     "heading_count": 36,
+    "turn_dynamics": {
+        "model": "bounded_heading_increment",
+        "max_turn_rate_deg_s": 5.0,
+        "initial_heading_rule": "powered_segment_azimuth",
+    },
     "switching_constraints": {
         "terrain_clearance": 1.0,
         "tangent_tolerance": 3.0,
@@ -153,6 +159,16 @@ sensor_config: dict[str, Any] = {
         "radar_rate_scale": 1.0,
         "radial_velocity_rate_scale": 1.0,
         "acoustic_rate_scale": 1.0,
+        # Powered flight is no longer granted radar immunity whenever it
+        # leaves terrain shadow.  Visible powered segments use the same
+        # radar/Doppler geometry as glide, in addition to acoustic hazard.
+        "powered_visible_radar_rate_scale": 1.0,
+        "powered_visible_doppler_rate_scale": 1.0,
+        # Terrain does not eliminate acoustic propagation completely, but
+        # diffraction/absorption makes an occluded source substantially
+        # quieter.  The LOS interpolant blends continuously between this
+        # residual fraction and the full visible acoustic rate.
+        "acoustic_occluded_rate_scale": 0.05,
     },
 }
 
@@ -210,8 +226,23 @@ bellman_config: dict[str, Any] = {
         "preserve_trajectory_profiles": True,
     },
     "search_options": {
-        "mode": "multi_start_coarse_bellman",
+        "mode": "physical_successor_grid_heading_state",
+        "powered_visibility_handling": "hazard_penalty",
+        # Grid-independent physical action domain.  Every grid keeps only
+        # exact node-to-node edges inside this metre-valued envelope; finer
+        # grids therefore sample the same domain more densely instead of
+        # silently changing the permitted maneuver size.
+        "physical_action_envelope": {
+            "forward_min_m": 50.0,
+            "forward_max_m": 170.0,
+            "lateral_max_m": 225.0,
+            "descent_min_m": 4.0,
+            "descent_max_m": 32.0,
+        },
+        # Legacy fallback retained for old serialized configurations that do
+        # not contain physical_action_envelope.
         "max_forward_cells": 3,
+        "max_lateral_cells": 3,
         "max_descent_cells": 8,
         "segment_check_count": 9,
         # Tie-break orderings for the (v, gamma, heading) action loop --
@@ -231,7 +262,7 @@ bellman_config: dict[str, Any] = {
 defender_config: dict[str, Any] = {
     # 2D continuous search bounds (z_sensor) become a 2D (x_sensor,
     # y_sensor) bounded region -- scipy.optimize.direct already supports
-    # N-D bounds, so the certified-global search generalizes directly.
+    # N-D bounds, so the asymptotically-global search generalizes directly.
     "continuous_search_bounds": {
         "x_sensor_min": 1000.0,
         "x_sensor_max": 2600.0,
@@ -313,7 +344,7 @@ _REQUIRED_KEYS: dict[str, set[str]] = {
     "vehicle_config": {
         "powered_speed", "glide_speed_min", "glide_speed_max", "gamma_min_deg",
         "gamma_max_deg", "heading_min_deg", "heading_max_deg", "time_step",
-        "mass", "wing_area", "dynamic_limits",
+        "mass", "wing_area", "dynamic_limits", "turn_dynamics",
     },
     "sensor_config": {"default_x_sensor", "default_y_sensor", "mount_height", "los", "detection"},
     "cost_config": {"attacker", "defender", "local_stage_cost"},
@@ -376,6 +407,7 @@ def validate_configuration(
 
     env = configs.get("environment_config", {})
     vehicle = configs.get("vehicle_config", {})
+    sensor = configs.get("sensor_config", {})
     costs = configs.get("cost_config", {})
     bellman = configs.get("bellman_config", {})
     defender = configs.get("defender_config", {})
@@ -401,6 +433,20 @@ def validate_configuration(
     checks["vehicle.heading_full_range"] = (
         vehicle.get("heading_min_deg", 1.0) < vehicle.get("heading_max_deg", -1.0)
         and vehicle.get("heading_max_deg", 0.0) - vehicle.get("heading_min_deg", 0.0) <= 360.0
+    )
+    turn_dynamics = vehicle.get("turn_dynamics", {})
+    checks["vehicle.turn_dynamics"] = (
+        turn_dynamics.get("model") == "bounded_heading_increment"
+        and isfinite(turn_dynamics.get("max_turn_rate_deg_s", 0.0))
+        and 0.0 < turn_dynamics.get("max_turn_rate_deg_s", 0.0) <= 180.0
+        and turn_dynamics.get("initial_heading_rule") == "powered_segment_azimuth"
+    )
+    acoustic_occluded_rate_scale = sensor.get("detection", {}).get(
+        "acoustic_occluded_rate_scale", float("nan")
+    )
+    checks["sensor.acoustic_occlusion_attenuation"] = (
+        isfinite(acoustic_occluded_rate_scale)
+        and 0.0 <= acoustic_occluded_rate_scale <= 1.0
     )
     attacker = costs.get("attacker", {})
     defender_cost = costs.get("defender", {})

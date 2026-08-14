@@ -1,0 +1,45 @@
+{
+  "state_axis_order": [
+    "x",
+    "y",
+    "h",
+    "v",
+    "gamma",
+    "psi"
+  ],
+  "fixed_state": {
+    "speed_mps": 18.0,
+    "gamma_deg": -10.0,
+    "heading_deg": 0.0,
+    "horizontal_slice_height_m": 150.0
+  },
+  "maximum_powered_detection_rate_per_s": 0.012634390093815043,
+  "maximum_glide_detection_rate_per_s": 0.014996051320554898,
+  "validation": {
+    "passed": true,
+    "checks": {
+      "nine_symbolic_functions": true,
+      "six_dimensional_state_contract": true,
+      "range_vector_matches_3d_geometry": true,
+      "range_floor_reused": true,
+      "radial_velocity_is_3d_dot_product": true,
+      "los_gate_matches_visible_voxel": true,
+      "los_gate_matches_occluded_voxel": true,
+      "los_surface_lookup_matches_geometry_grid": true,
+      "mission_probability_bounds": true,
+      "mission_additive_hazard": true,
+      "attacker_objective_unchanged": true
+    },
+    "failed_checks": [],
+    "metrics": {
+      "sample_slant_range_m": 740.394168536671,
+      "sample_radial_velocity_mps": 16.26002743778499,
+      "sample_powered_rate_per_s": 0.0008514564536897467,
+      "sample_glide_rate_per_s": 7.232355872426526e-05,
+      "sample_mission_pod": 0.0009233534590156189,
+      "sample_attacker_objective": 0.0049818900062070055,
+      "maximum_los_boundary_lookup_error_m": 0.0
+    },
+    "summary": "3D symbolic detection validation passed"
+  }
+}

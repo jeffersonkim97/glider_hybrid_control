@@ -1,0 +1,73 @@
+{
+  "scenario": "single Gaussian hill Stage 1 geometry",
+  "environment": {
+    "x_bounds_m": [
+      0.0,
+      3000.0
+    ],
+    "y_bounds_m": [
+      0.0,
+      1000.0
+    ],
+    "h_bounds_m": [
+      0.0,
+      400.0
+    ],
+    "terrain": {
+      "hill_center_xy_m": [
+        1500.0,
+        500.0
+      ],
+      "hill_height_m": 200.0,
+      "hill_width_x_m": 400.0,
+      "hill_width_y_m": 400.0
+    },
+    "sensor_xy_m": [
+      2500.0,
+      500.0
+    ],
+    "goal_xy_m": [
+      3000.0,
+      500.0
+    ],
+    "sensor_mount_height_m": 0.0
+  },
+  "grid": {
+    "x_count": 151,
+    "y_count": 81,
+    "h_count": 81,
+    "los_ray_sample_count": 161,
+    "tangent_azimuth_count": 721
+  },
+  "sensor_position_xyz_m": [
+    2500.0,
+    500.0,
+    8.787386724681484
+  ],
+  "goal_position_xyz_m": [
+    3000.0,
+    500.0,
+    0.17676526138701
+  ],
+  "sampled_terrain_peak_m": 200.0,
+  "tangent_contact_count": 266,
+  "maximum_tangent_residual": 1.0492437085840578e-08,
+  "normalized_los_volume": 0.592751733677265,
+  "validation": {
+    "passed": true,
+    "checks": {
+      "terrain_peak": true,
+      "mask_partition": true,
+      "airspace_partition": true,
+      "boundary_above_terrain": true,
+      "tangent_manifold_nonempty": true,
+      "tangent_residual": true,
+      "tangent_rays_clear_terrain": true,
+      "sensor_on_terrain": true,
+      "goal_on_terrain": true
+    },
+    "maximum_tangent_residual": 1.0492437085840578e-08,
+    "minimum_tangent_ray_clearance_m": -3.552713678800501e-15,
+    "tangent_contact_count": 266
+  }
+}

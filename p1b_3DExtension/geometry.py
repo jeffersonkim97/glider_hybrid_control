@@ -2,7 +2,8 @@
 
 Mirrors p1b_4D.geometry's role and bundle shape, generalized from a 1D
 terrain profile h(z) to a 2D terrain surface h(x, y), and from the 1D
-"single outward sweep" LOS boundary trick to a genuine 3D viewshed:
+"single outward sweep" LOS boundary trick to a genuine 3D viewshed and
+its corresponding two-dimensional LOS boundary surface:
 for every (x, y, h) grid point, ray-march the straight line from the
 sensor to that point and check it never dips below the terrain surface.
 """
@@ -217,6 +218,10 @@ def compute_los_geometry(
         terrain_model, position, mesh_x, mesh_y, mesh_h,
         terrain_tolerance, ray_sample_count,
     )
+    los_boundary_height = _ray_march_boundary_height(
+        terrain_model, position, x_values, y_values,
+        terrain_tolerance, ray_sample_count,
+    )
 
     non_visible_airspace = ~visible & ~terrain_mask
     occlusion_mask = terrain_mask | non_visible_airspace
@@ -240,6 +245,7 @@ def compute_los_geometry(
         "los_mask": _readonly(los_mask),
         "occlusion_mask": _readonly(occlusion_mask),
         "non_visible_airspace_mask": _readonly(non_visible_airspace),
+        "los_boundary_height": _readonly(los_boundary_height),
         "cell_volume": cell_volume,
         "admissible_airspace_volume": admissible_volume,
         "coverage_volume": coverage_volume,
@@ -276,6 +282,40 @@ def _ray_march_visibility(
         sample_terrain = terrain_height(terrain_model, sample_x, sample_y)
         visible &= sample_h_line >= sample_terrain - terrain_tolerance
     return visible
+
+
+def _ray_march_boundary_height(
+    terrain_model: TerrainModel,
+    sensor_position: np.ndarray,
+    x_grid: np.ndarray,
+    y_grid: np.ndarray,
+    terrain_tolerance: float,
+    sample_count: int,
+) -> np.ndarray:
+    """Return the 3D analogue of p1b_4D's LOS tangent boundary.
+
+    For every horizontal target coordinate ``(x, y)``, the returned value
+    is the minimum target altitude whose sensor-to-target ray clears every
+    interior terrain sample used by :func:`_ray_march_visibility`.  Hence
+    ``h == boundary[x, y]`` is the two-dimensional switching surface that
+    replaces p1b_4D's one-dimensional tangent/boundary line without changing
+    the underlying ray-march LOS definition.
+    """
+    x_sensor, y_sensor, h_sensor = np.asarray(sensor_position, dtype=float)
+    mesh_x, mesh_y = np.meshgrid(x_grid, y_grid, indexing="ij")
+    boundary = np.full(mesh_x.shape, -np.inf, dtype=float)
+    fractions = np.linspace(0.0, 1.0, sample_count)[1:-1]
+    for fraction in fractions:
+        sample_x = x_sensor + fraction * (mesh_x - x_sensor)
+        sample_y = y_sensor + fraction * (mesh_y - y_sensor)
+        sample_terrain = terrain_height(terrain_model, sample_x, sample_y)
+        required_target_height = h_sensor + (
+            sample_terrain - terrain_tolerance - h_sensor
+        ) / fraction
+        boundary = np.maximum(boundary, required_target_height)
+    if not np.all(np.isfinite(boundary)):
+        raise ValueError("LOS boundary surface contains non-finite heights")
+    return boundary
 
 
 def build_geometry_bundle(configuration_bundle: dict[str, Any]) -> dict[str, Any]:
@@ -337,6 +377,7 @@ def build_geometry_bundle(configuration_bundle: dict[str, Any]) -> dict[str, Any
             key: los[key]
             for key in (
                 "los_mask", "occlusion_mask", "terrain_mask", "non_visible_airspace_mask",
+                "los_boundary_height",
             )
         },
         "coverage": {
@@ -401,9 +442,20 @@ def validate_geometry(
         terrain_height(terrain_model, environment["x_goal"], environment["y_goal"])
     )
     terrain_tolerance = float(validation["terrain_tolerance"])
+    nearest_x_index = int(np.argmin(np.abs(terrain_model.x_grid - sensor_position[0])))
+    nearest_y_index = int(np.argmin(np.abs(terrain_model.y_grid - sensor_position[1])))
+    sensor_is_grid_aligned = bool(
+        abs(terrain_model.x_grid[nearest_x_index] - sensor_position[0])
+        <= terrain_tolerance
+        and abs(terrain_model.y_grid[nearest_y_index] - sensor_position[1])
+        <= terrain_tolerance
+    )
     checks = {
         "los_mask_dimensions": los["los_mask"].shape == expected_shape,
         "occlusion_mask_dimensions": los["occlusion_mask"].shape == expected_shape,
+        "los_boundary_surface_dimensions": (
+            los["los_boundary_height"].shape == expected_shape[:2]
+        ),
         "mask_partition": np.array_equal(los["los_mask"], ~los["occlusion_mask"]),
         "sensor_position": (
             sensor_position.shape == (3,)
@@ -420,9 +472,16 @@ def validate_geometry(
             and 0.0 <= los["normalized_coverage_volume"] <= 1.0
         ),
         "sensor_own_cell_visible": bool(
-            los["los_mask"][
-                np.argmin(np.abs(terrain_model.x_grid - sensor_position[0])),
-                np.argmin(np.abs(terrain_model.y_grid - sensor_position[1])),
+            # A continuous Defender position generally has no grid-owned
+            # cell.  The old nearest-column test could mark a valid sensor
+            # invisible merely because the neighboring terrain sample was
+            # higher.  Apply the discrete own-cell invariant only when the
+            # sensor is actually grid aligned; its exact continuous height
+            # is already checked by `sensor_position` above.
+            not sensor_is_grid_aligned
+            or los["los_mask"][
+                nearest_x_index,
+                nearest_y_index,
                 min(
                     np.searchsorted(
                         np.linspace(
@@ -446,6 +505,7 @@ def validate_geometry(
             "normalized_coverage_volume": los["normalized_coverage_volume"],
             "visible_cell_count": int(np.count_nonzero(los["los_mask"])),
             "occluded_cell_count": int(np.count_nonzero(los["occlusion_mask"])),
+            "sensor_is_grid_aligned": sensor_is_grid_aligned,
         },
         "tolerances": {"terrain": terrain_tolerance},
         "warnings": [],
@@ -470,10 +530,24 @@ def _sum_of_hills(x_grid: np.ndarray, y_grid: np.ndarray, hills: Any) -> np.ndar
     mesh_x, mesh_y = np.meshgrid(x_grid, y_grid, indexing="ij")
     sampled_height = np.zeros_like(mesh_x, dtype=float)
     for hill in hills:
+        isotropic_width = hill.get("width")
+        width_x = hill.get("width_x", isotropic_width)
+        width_y = hill.get("width_y", isotropic_width)
+        if width_x is None or width_y is None:
+            raise ValueError(
+                "Each hill requires width or both width_x and width_y"
+            )
+        width_x = float(width_x)
+        width_y = float(width_y)
+        if not (
+            np.isfinite(width_x) and np.isfinite(width_y)
+            and width_x > 0.0 and width_y > 0.0
+        ):
+            raise ValueError("Hill widths must be finite and positive")
         sampled_height = sampled_height + hill["h_ridge"] * np.exp(
             -0.5 * (
-                ((mesh_x - hill["x_ridge"]) / hill["width"]) ** 2
-                + ((mesh_y - hill["y_ridge"]) / hill["width"]) ** 2
+                ((mesh_x - hill["x_ridge"]) / width_x) ** 2
+                + ((mesh_y - hill["y_ridge"]) / width_y) ** 2
             )
         )
     return sampled_height

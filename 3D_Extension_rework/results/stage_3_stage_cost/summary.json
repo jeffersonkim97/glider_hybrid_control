@@ -1,0 +1,64 @@
+{
+  "axis_order": [
+    "x",
+    "y",
+    "h",
+    "v",
+    "gamma",
+    "psi"
+  ],
+  "shape": [
+    31,
+    11,
+    21,
+    3,
+    6,
+    36
+  ],
+  "state_count": 4640328,
+  "fixed_diagnostic_control": {
+    "v_mps": 16.3,
+    "gamma_deg": -18.799999999999997,
+    "psi_deg": 0.0
+  },
+  "metadata": {
+    "schema_name": "StageCost6DResult",
+    "source_process": "p1b_4D.stage_cost direct 3D extension",
+    "j6d_mode": "glide",
+    "invalid_cost": "positive_infinity",
+    "powered_cost_role": "pre_switch_local_component",
+    "glide_feasibility_rule": "airspace_and_not_terrain_and_los",
+    "powered_feasibility_rule": "airspace_and_not_terrain_and_occluded",
+    "is_value_function": false,
+    "is_cost_to_go": false
+  },
+  "validation": {
+    "passed": true,
+    "checks": {
+      "grid_dimensions": true,
+      "axis_order": true,
+      "component_dimensions": true,
+      "feasible_states_exist": true,
+      "powered_feasible_states_exist": true,
+      "finite_feasible_cost": true,
+      "infinite_invalid_cost": true,
+      "finite_powered_feasible_cost": true,
+      "infinite_invalid_powered_cost": true,
+      "stage_pod_consistency": true,
+      "objective_consistency": true,
+      "spatial_phase_partition": true,
+      "psi_periodic_endpoint_not_duplicated": true,
+      "nested_geometry_grid": true
+    },
+    "failed_checks": [],
+    "metrics": {
+      "minimum_cost": 0.0022600335284222325,
+      "maximum_cost": 640.988898643987,
+      "feasible_state_count": 1838088,
+      "powered_feasible_state_count": 1593432,
+      "total_state_count": 4640328,
+      "objective_maximum_residual": 0.0
+    },
+    "summary": "6D local stage-cost validation passed"
+  }
+}

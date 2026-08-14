@@ -25,6 +25,7 @@ final evaluation.
 from __future__ import annotations
 
 from copy import deepcopy
+from collections.abc import Callable
 from typing import Any
 
 import numpy as np
@@ -92,7 +93,6 @@ def hazard_against_fixed_path(
     detection = build_symbolic_detection_bundle(cb, geometry)
     functions = detection["primary_result"]["functions"]
     vehicle = cb["primary_result"]["vehicle_config"]
-    time_step = vehicle["time_step"]
 
     # Powered segment: straight line, fixed shape, re-evaluate acoustic
     # rate at the new sensor position along the SAME stored path.
@@ -113,26 +113,79 @@ def hazard_against_fixed_path(
         sample_times = np.linspace(0.0, powered_time, len(rates))
         powered_hazard = float(np.trapezoid(rates, sample_times)) if powered_time > 0.0 else 0.0
 
-    # Glide segment: use the trajectory/speed/gamma profiles already
-    # stored on the nominal response (one action per step already
-    # resolved), re-evaluate glide_detection_rate at the new sensor.
+    # Glide segment: reproduce the successor solver's implementation-defined
+    # edge quadrature.  In particular, physical successor edges do not all
+    # last ``vehicle.time_step`` seconds and the terminal edge may be a
+    # fraction of a full edge.
     trajectory = np.asarray(nominal_response["trajectory"])
     speed_profile = np.asarray(nominal_response["speed_profile"])
     gamma_profile = np.asarray(nominal_response["gamma_profile"])
-    glide_hazard = 0.0
-    step_count = min(trajectory.shape[0] - 1, speed_profile.shape[0], gamma_profile.shape[0])
-    for index in range(step_count):
-        z_point, h_point = trajectory[index]
-        v_point = float(speed_profile[index])
-        gamma_point = float(gamma_profile[index])
-        outputs = functions["glide_detection_components"](
-            float(z_point), float(h_point), v_point, gamma_point,
-            float(sensor_position[0]), float(sensor_position[1]),
+    duration_profile = nominal_response.get("duration_profile")
+    if duration_profile is None:
+        duration_profile = np.full(
+            speed_profile.shape,
+            float(vehicle["time_step"]),
+            dtype=float,
         )
-        glide_rate = float(outputs[-1])
-        glide_hazard += glide_rate * time_step
+    duration_profile = np.asarray(duration_profile, dtype=float)
+    quadrature_count = int(
+        cb["primary_result"]["attacker_solver_config"]["successor_grid"][
+            "edge_quadrature_count"
+        ]
+    )
+    glide_hazard = _integrate_fixed_glide_edges(
+        trajectory,
+        speed_profile,
+        gamma_profile,
+        duration_profile,
+        functions["glide_detection_components"],
+        sensor_position,
+        quadrature_count,
+    )
 
     return powered_hazard + glide_hazard
+
+
+def _integrate_fixed_glide_edges(
+    trajectory: np.ndarray,
+    speed_profile: np.ndarray,
+    gamma_profile: np.ndarray,
+    duration_profile: np.ndarray,
+    glide_detection_components: Callable[..., Any],
+    sensor_position: np.ndarray,
+    quadrature_count: int,
+) -> float:
+    """Integrate detection hazard over stored physical successor edges."""
+    if quadrature_count < 2:
+        raise ValueError("quadrature_count must be at least 2")
+    step_count = min(
+        trajectory.shape[0] - 1,
+        speed_profile.shape[0],
+        gamma_profile.shape[0],
+        duration_profile.shape[0],
+    )
+    fractions = np.linspace(0.0, 1.0, quadrature_count)
+    hazard = 0.0
+    for index in range(step_count):
+        start = trajectory[index]
+        delta = trajectory[index + 1] - start
+        speed = float(speed_profile[index])
+        gamma = float(gamma_profile[index])
+        duration = float(duration_profile[index])
+        rates = []
+        for fraction in fractions:
+            point = start + fraction * delta
+            outputs = glide_detection_components(
+                float(point[0]),
+                float(point[1]),
+                speed,
+                gamma,
+                float(sensor_position[0]),
+                float(sensor_position[1]),
+            )
+            rates.append(float(outputs[-1]))
+        hazard += float(np.trapezoid(rates, fractions)) * duration
+    return hazard
 
 
 def select_nominal_path_optimal_sensor(
@@ -147,11 +200,36 @@ def select_nominal_path_optimal_sensor(
     return float(result.x[0])
 
 
-def select_stackelberg_optimal_sensor(configuration_bundle: dict, bounds: tuple[float, float]) -> float:
+def select_stackelberg_optimal_sensor(
+    configuration_bundle: dict,
+    bounds: tuple[float, float],
+    *,
+    evaluation_cache: dict[str, float] | None = None,
+    on_evaluation: Callable[[float, float], None] | None = None,
+    additional_candidates: tuple[float, ...] = (),
+) -> float:
+    cache = evaluation_cache if evaluation_cache is not None else {}
+
     def negative_defender_objective(x: np.ndarray) -> float:
         z_sensor = float(x[0])
+        cache_key = f"{z_sensor:.12g}"
+        if cache_key in cache:
+            return -float(cache[cache_key])
         evaluation = evaluate_defender_position(z_sensor, configuration_bundle, "baseline-selection")
-        return -evaluation["primary_result"]["defender_objective"]
+        objective = float(evaluation["primary_result"]["defender_objective"])
+        cache[cache_key] = objective
+        if on_evaluation is not None:
+            on_evaluation(z_sensor, objective)
+        return -objective
 
     result = direct(negative_defender_objective, bounds=[bounds], maxfun=60, locally_biased=False)
-    return float(result.x[0])
+    selected_z = float(result.x[0])
+    selected_objective = -float(result.fun)
+    for candidate_z in additional_candidates:
+        candidate_objective = -negative_defender_objective(
+            np.asarray([candidate_z], dtype=float)
+        )
+        if candidate_objective > selected_objective:
+            selected_z = float(candidate_z)
+            selected_objective = float(candidate_objective)
+    return selected_z

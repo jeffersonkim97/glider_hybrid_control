@@ -1,0 +1,46 @@
+{
+  "metadata": {
+    "source_process": "p1b_4D continuous replay validation",
+    "state_reset": false,
+    "continuous_nlp_applied": false,
+    "action_sequence_changed": false,
+    "hazard_integration": "same per-edge trapezoidal quadrature as 3D planner"
+  },
+  "status": {
+    "success": true,
+    "message": "3D continuous replay validation passed"
+  },
+  "feasible": true,
+  "violation": null,
+  "reached_goal": true,
+  "continuous_glide_time_s": 96.91017928067248,
+  "continuous_glide_hazard": 0.019664817915513014,
+  "continuous_mission_time_s": 143.59153994691977,
+  "continuous_mission_hazard": 0.025013601092540024,
+  "continuous_mission_pod": 0.02470335316182526,
+  "continuous_mission_cost": 0.3370236808263087,
+  "validation": {
+    "passed": true,
+    "checks": {
+      "continuous_replay_feasible": true,
+      "goal_reached": true,
+      "reference_endpoint_drift_small": true,
+      "hazard_replay_matches_planning": true,
+      "objective_replay_matches_planning": true,
+      "all_actions_replayed": true,
+      "continuous_nlp_absent": true,
+      "state_reset_absent": true
+    },
+    "failed_checks": [],
+    "metrics": {
+      "step_count_used": 8,
+      "goal_distance_m": 15.00000000000042,
+      "maximum_endpoint_drift_m": 2.842170943040401e-14,
+      "maximum_hazard_edge_residual": 1.4486591266849036e-10,
+      "total_glide_hazard_residual": 3.384593300070904e-11,
+      "mission_objective_residual": 1.6922963030907567e-11,
+      "minimum_terrain_margin_m": 7.812730697776518,
+      "minimum_los_margin_m": 0.0
+    }
+  }
+}

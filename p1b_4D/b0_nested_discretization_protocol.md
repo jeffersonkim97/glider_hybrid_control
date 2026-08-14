@@ -265,8 +265,8 @@ qualification, not an analytic all-time feasibility proof.
 The finite follower selection order is frozen as:
 
 1. minimum planning-time mission cost;
-2. ties within `objective_tolerance = 1e-8` choose the smallest switching-z
-   seed, because seeds are enumerated in increasing z;
+2. only exact-equal minimum costs are treated as ties, and those ties choose
+   the smallest switching-z seed, followed by seed index;
 3. within a Bellman state, equal-cost actions use lexicographic construction
    order `(forward_cells, descent_cells, speed_index)`;
 4. terminal goal intersections use the first positive segment-circle
@@ -389,3 +389,170 @@ B0 is complete when:
 B1 must implement regression tests for node subset relations, physical-edge
 embedding, action/speed/switching nestedness, endpoint residual, and evaluator
 qualification before B2 production experiments begin.
+
+## 14. Post-freeze B1 audit note — 2026-07-29
+
+B1 implemented and passed all structural entry gates. The implementation also
+identified a feasibility obstruction that was not visible in the B0
+arithmetic audit: for the fixed two-hill Stackelberg sensor candidate, the
+frozen enriched L0 and L1 families produce no switching response that reaches
+the goal; L2 is feasible. The minimum available descent angles are `6.6373`,
+`3.3298`, and `1.6663` degrees at L0/L1/L2, respectively. The physical virtual
+target box of every L0/L1 LOS switching seed is disjoint from the regular
+DAG's finite goal-reachable states.
+
+This note records a failed B2 precondition; it does not silently alter the
+frozen protocol. B2 production runs are blocked until a revised exactly
+nested family is selected and documented.
+
+The L2 evaluator pilot also triggered the prescribed sampling fallback:
+129/257 gave `|delta J_A| = 3.84864e-6`, while 257/513 passed with
+`|delta J_A| = 9.62142e-7` and `|delta PoD| = 5.02816e-9`. Final evaluator
+qualification still applies to all B2 selected policies.
+
+## 15. B1.5 revised feasible family — 2026-07-29
+
+The pre-B2 revision preserves the original local enriched rectangle and adds
+one exactly transported shallow backbone to the enriched family:
+
+\[
+(4,1)_{L0}\mapsto(8,2)_{L1}\mapsto(16,4)_{L2}.
+\]
+
+For single- and two-hill domains this is the same physical vector
+`(137.5,-4.0) m` at every level, with descent angle `1.6663 deg`. It is the
+smallest tested augmentation that both:
+
+1. makes enriched L0 and L1 feasible at both fixed B2 sensor candidates; and
+2. gives every level the same shallowest direction already present locally at
+   L2 through offset `(4,1)`.
+
+The rejected `(2,1)` L0 backbone remained infeasible at L0/L1. `(3,1)` made
+the cases feasible but retained a coarser minimum angle than L2. The `(4,1)`
+choice is therefore based on angle matching, not on post-hoc objective tuning.
+
+The revised enriched offset counts are `3`, `9`, and `33`, giving V5 regular
+action counts `15`, `45`, and `165`. The original local rectangular envelope
+remains `34.375 m x 8 m`; the supplemental backbone extends maximum forward
+reach to `137.5 m`. The enriched virtual-switch target box uses that revised
+maximum physical reach. Transported-family ablations retain their original
+two physical vectors and original virtual-target reach.
+
+All node, action, speed, geometry, switching-target, and endpoint nesting
+tests were rerun after this revision. Two additional feasibility regressions
+cover enriched L0/L1 at both fixed B2 sensors.
+
+## 16. B2 execution record — 2026-07-29
+
+The complete two-sensor, nine-case-per-sensor matrix was executed with the
+revised B1.5 family. Twelve enriched cases were feasible. All six transported
+ablation cases were infeasible, which is an admissible outcome under Section
+9 and was recorded without changing their action set.
+
+The original 129/257 and 257/513 evaluator pairs did not satisfy the absolute
+`1e-6` attacker-objective gate, although every feasibility and goal
+classification agreed. The same endpoint-inclusive trapezoidal rule was
+therefore continued by sample-count doubling. All twelve feasible policies
+passed 1025/2049; the largest objective difference was `8.74272e-7`. The B2
+common evaluator is consequently 1025 points per physical edge. This is an
+extension of the numerical qualification sequence, not an analytic
+continuous-time certificate.
+
+The enriched V5/Q9 common-evaluator objectives were:
+
+| Sensor | L0 | L1 | L2 |
+|---|---:|---:|---:|
+| coverage | 2.409797807 | 2.398538133 | 2.254588383 |
+| Stackelberg | 3.469798211 | 3.171011091 | 3.001366624 |
+
+Successive absolute shifts were:
+
+- coverage: `0.011259673` and `0.143949750`;
+- Stackelberg: `0.298787120` and `0.169644467`.
+
+Thus the three-level objective shifts are not monotonically decreasing for
+the coverage candidate. This numerical observation is retained explicitly;
+no additional level is inferred or fabricated.
+
+The common L2-reference defender margins were positive at every level:
+`0.023949998`, `0.018420070`, and `0.019997874`. The L1-to-L2 defender
+resolution shift was `0.005443445`; the frozen two-times diagnostic classified
+the ordering as resolved. Maximum V9-minus-V5 sensitivity was `0.001869241`,
+larger than `tau_B = 0.000544344`, so the production speed family is V9.
+Q17 and Q9 selected policies had identical common-evaluator objectives for
+both sensors, so production planning quadrature remains Q9.
+
+The machine-readable result is
+`results/direction_b/b2_two_hill_nested_consistency.json`.
+
+## 17. B3 multi-terrain execution record — 2026-07-29
+
+The frozen B2 matrix was extended to the final P2 fixed candidates for single
+hill and goal in valley. The outer defender search was not repeated. The full
+36-case run completed in `1034.48 s`: 30 cases were feasible. Single hill had
+12 feasible enriched cases and 6 infeasible transported ablations; goal in
+valley had 18 feasible cases, including all transported ablations.
+
+All feasible policies passed the Direction-B common 1025/2049 evaluator
+qualification pair. The maximum attacker-objective difference was
+`5.18120e-8`, the maximum PoD difference was `2.86160e-8`, and the maximum
+physical endpoint residual was `4.54748e-13 m`.
+
+The common-evaluator enriched-V5/Q9 objectives were:
+
+| Terrain | Sensor | L0 | L1 | L2 |
+|---|---|---:|---:|---:|
+| single hill | coverage | 0.674388957 | 0.544707020 | 0.535539594 |
+| single hill | Stackelberg | 0.674465576 | 0.544718126 | 0.535540156 |
+| goal in valley | coverage | 0.913991916 | 0.369200570 | 0.323638614 |
+| goal in valley | Stackelberg | 0.903246377 | 0.367479675 | 0.323403740 |
+
+Single-hill defender margins were positive but unresolved:
+`5.07757e-5`, `1.67218e-5`, and `7.36917e-6`, against an L1-to-L2 resolution
+shift of `0.011579167`. Goal-in-valley margins were negative but also
+unresolved: `-0.002088802`, `-0.001230536`, and `-0.000224653`, against a
+resolution shift of `0.034359843`. The valley result records sensitivity of
+the fixed P2 candidates to the B grid family; it is not a resolved continuous
+ranking reversal.
+
+For both added terrains, V5/V9 and Q9/Q17 selected-policy objectives were
+identical under the common evaluator. The B4 global choice must still combine
+these terrain-specific sensitivities with B2, which selected V9/Q9.
+
+The machine-readable result is
+`results/direction_b/b3_multiterrain_nested_consistency.json`. The associated
+trajectory, consistency, and evaluator figures are stored under
+`results/direction_b/figures/b3_*.png`.
+
+## 18. B4 production-lattice freeze — 2026-07-29
+
+B4 freezes one follower configuration for every finite C-lite leader
+candidate. The machine-readable configuration ID is
+`direction_b_l2_enriched_v9_q9_e1025`:
+
+- L2 position grid for each terrain;
+- enriched 33-direction physical movement set;
+- V9 speed set, giving 297 regular direction/speed choices per state;
+- Q9 planning-time edge quadrature;
+- 1025-sample common continuous replay;
+- `successor_grid_physical_edge` with no endpoint snapping.
+
+V9 is retained globally because the two-hill speed sensitivity exceeded its
+terrain tolerance by a factor of about `3.43`; single hill and goal in valley
+did not require the extra speeds individually. Q9 is retained because Q17 did
+not alter any selected policy or common-evaluator objective. The common replay
+count remains 1025 because it is the maximum requirement across B2 and B3.
+
+The production factory is
+`build_direction_b_production_configuration`. It marks the configuration as
+frozen, records the intended finite-C-lite use, and explicitly sets both
+continuous-optimum claims to false.
+
+C-lite must re-enumerate its complete stated finite sensor set. The P2 sensor
+positions used for B2/B3 diagnostics are not reused as C-lite optima.
+
+The freeze manifest is
+`results/direction_b/b4_production_lattice_freeze.json`; its SHA-256 is
+`62b573c6a029067fb68d52dde471bd93cf2c990e5f539665ec797f5e3685da44`.
+The decision visualization is
+`results/direction_b/figures/b4_production_lattice_freeze.png`.

@@ -1,0 +1,114 @@
+{
+  "metadata": {
+    "source_process": "p1b_4D successor_grid _extract_candidate",
+    "trajectory_type": "physical virtual edge plus heading-state Bellman policy",
+    "endpoint_snapping": false,
+    "continuous_nlp_applied": false,
+    "continuous_replay_applied": false
+  },
+  "mission": {
+    "cost": 0.3370236808093857,
+    "hazard": 0.02501360105869409,
+    "pod": 0.024703353128815442,
+    "time_s": 143.59153994691977,
+    "powered_time_s": 46.68136066624728,
+    "glide_time_s": 96.91017928067248
+  },
+  "validation": {
+    "passed": true,
+    "checks": {
+      "goal_reached": true,
+      "strictly_forward_x": true,
+      "all_glide_segments_terrain_clear": true,
+      "all_glide_segments_los_visible": true,
+      "all_glide_segments_in_domain": true,
+      "turn_rate_feasible": true,
+      "stored_policy_followed": true,
+      "mission_objective_reconstructed": true,
+      "additive_edge_cost_consistent": true,
+      "downstream_bellman_cost_reconstructed": true,
+      "downstream_hazard_reconstructed": true,
+      "endpoint_snapping_absent": true,
+      "continuous_nlp_absent": true
+    },
+    "failed_checks": [],
+    "metrics": {
+      "glide_edge_count": 8,
+      "bellman_edge_count": 7,
+      "glide_node_count": 9,
+      "goal_distance_m": 15.000000000000403,
+      "minimum_terrain_margin_m": 7.812730697776489,
+      "minimum_los_margin_m": 0.0,
+      "maximum_turn_rate_residual_rad": -0.4533717092600201,
+      "objective_residual": 1.6922963030907567e-11,
+      "downstream_cost_residual": 2.7755575615628914e-17
+    }
+  },
+  "switching_point_m": [
+    900.0,
+    300.0,
+    333.35074419828754
+  ],
+  "bellman_entry_point_m": [
+    1200.0,
+    300.0,
+    320.0
+  ],
+  "glide_trajectory_nodes_m": [
+    [
+      900.0,
+      300.0,
+      333.35074419828754
+    ],
+    [
+      1200.0,
+      300.0,
+      320.0
+    ],
+    [
+      1500.0,
+      300.0,
+      300.0
+    ],
+    [
+      1800.0,
+      300.0,
+      280.0
+    ],
+    [
+      2100.0,
+      300.0,
+      260.0
+    ],
+    [
+      2400.0,
+      300.0,
+      240.0
+    ],
+    [
+      2600.0,
+      300.0,
+      220.0
+    ],
+    [
+      2800.0,
+      400.0,
+      140.0
+    ],
+    [
+      2988.557984128377,
+      494.2789920641886,
+      8.009411110135915
+    ]
+  ],
+  "edge_kinds": [
+    "virtual_switch_edge",
+    "bellman_grid_edge",
+    "bellman_grid_edge",
+    "bellman_grid_edge",
+    "bellman_grid_edge",
+    "bellman_grid_edge",
+    "bellman_grid_edge",
+    "bellman_terminal_edge"
+  ]
+}

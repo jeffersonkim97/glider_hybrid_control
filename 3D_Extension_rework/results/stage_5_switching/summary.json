@@ -1,0 +1,53 @@
+{
+  "metadata": {
+    "source_process": "p1b_4D physical virtual switching state",
+    "candidate_geometry": "Bellman horizontal lattice sampled on H_LOS tangent boundary surface",
+    "terrain_contact_role": "generates tangent rays; not itself the switching locus",
+    "candidate_count_evaluated": 210,
+    "feasible_candidate_count": 111,
+    "exact_minimum_tie_count": 2,
+    "selection_rule": "minimum mission cost, then smallest manifold index for exact ties",
+    "selection_value_source": "heading-state Bellman V4D through physical virtual edge",
+    "projected_v3d_role": "visualization_only",
+    "endpoint_snapping": false,
+    "continuous_refinement_applied": false
+  },
+  "validation": {
+    "passed": true,
+    "checks": {
+      "feasible_candidates_exist": true,
+      "selected_point_is_exact_manifold_sample": true,
+      "selected_point_is_on_los_boundary_surface": true,
+      "selected_powered_segment_is_occluded": true,
+      "selected_virtual_edge_is_visible": true,
+      "selected_cost_is_exact_sampled_minimum": true,
+      "projected_v3d_not_used_for_selection": true
+    },
+    "failed_checks": [],
+    "metrics": {
+      "selected_manifold_index": 37,
+      "selected_mission_cost": 0.3370236808263087,
+      "selected_mission_pod": 0.024703353128815442,
+      "exact_minimum_tie_count": 2,
+      "manifold_point_residual_m": 0.0,
+      "los_boundary_residual_m": 0.0
+    }
+  },
+  "selected": {
+    "switching_point_m": [
+      900.0,
+      300.0,
+      333.35074419828754
+    ],
+    "bellman_entry_node_m": [
+      1200.0,
+      300.0,
+      320.0
+    ],
+    "mission_cost": 0.3370236808263087,
+    "mission_pod": 0.024703353128815442,
+    "powered_duration_s": 46.68136066624728,
+    "powered_minimum_occlusion_margin_m": 0.0,
+    "virtual_minimum_los_margin_m": 0.0
+  }
+}

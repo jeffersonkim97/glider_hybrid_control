@@ -114,11 +114,19 @@ def build_symbolic_detection_bundle(
         detection["rcs_max"] - detection["rcs_min"]
     ) * cos_aspect**2
 
-    acoustic_rate = (
+    acoustic_rate_raw = (
         detection["acoustic_coefficient"]
         * v ** detection["acoustic_speed_exponent"]
         / sensor_range**2
     )
+    acoustic_occluded_rate_scale = detection[
+        "acoustic_occluded_rate_scale"
+    ]
+    acoustic_terrain_attenuation = (
+        acoustic_occluded_rate_scale
+        + (1.0 - acoustic_occluded_rate_scale) * los_visible
+    )
+    acoustic_rate = acoustic_terrain_attenuation * acoustic_rate_raw
     radar_rate_raw = detection["radar_coefficient"] * rcs / sensor_range**4
     radial_velocity_rate_raw = (
         detection["doppler_coefficient"] * radial_velocity**2 / sensor_range**4
@@ -131,6 +139,18 @@ def build_symbolic_detection_bundle(
     )
     glide_detection_rate = radar_rate + radial_velocity_rate
     powered_detection_rate = detection["acoustic_rate_scale"] * acoustic_rate
+    powered_radar_rate = (
+        detection["powered_visible_radar_rate_scale"] * radar_rate
+    )
+    powered_radial_velocity_rate = (
+        detection["powered_visible_doppler_rate_scale"]
+        * radial_velocity_rate
+    )
+    powered_total_detection_rate = (
+        powered_detection_rate
+        + powered_radar_rate
+        + powered_radial_velocity_rate
+    )
 
     mission_hazard = powered_hazard + glide_hazard
     powered_pod = 1.0 - ca.exp(-powered_hazard)
@@ -201,8 +221,13 @@ def build_symbolic_detection_bundle(
             "sensor_range": sensor_range,
             "los_visible": los_visible,
             "occlusion_indicator": 1.0 - los_visible,
+            "acoustic_rate_raw": acoustic_rate_raw,
+            "acoustic_terrain_attenuation": acoustic_terrain_attenuation,
             "acoustic_rate": acoustic_rate,
             "powered_detection_rate": powered_detection_rate,
+            "powered_radar_rate": powered_radar_rate,
+            "powered_radial_velocity_rate": powered_radial_velocity_rate,
+            "powered_total_detection_rate": powered_total_detection_rate,
             "cos_aspect": cos_aspect,
             "rcs": rcs,
             "radar_rate_raw": radar_rate_raw,
@@ -234,8 +259,13 @@ def build_symbolic_detection_bundle(
         },
         "los": {"visible": los_visible, "occlusion": 1.0 - los_visible},
         "powered_detection": {
+            "acoustic_rate_raw": acoustic_rate_raw,
+            "terrain_attenuation": acoustic_terrain_attenuation,
             "acoustic_rate": acoustic_rate,
             "detection_rate": powered_detection_rate,
+            "visible_radar_rate": powered_radar_rate,
+            "visible_radial_velocity_rate": powered_radial_velocity_rate,
+            "total_detection_rate": powered_total_detection_rate,
         },
         "glide_detection": {
             "cos_aspect": cos_aspect,
@@ -279,7 +309,7 @@ def build_symbolic_detection_bundle(
             "functions": functions,
             "function_metadata": function_metadata,
             "detection_components": {
-                "powered": ("acoustic",),
+                "powered": ("acoustic", "visible_radar", "visible_doppler"),
                 "glide": ("radar", "radial_velocity", "rcs"),
                 "mission_fusion": "additive_hazard",
             },
@@ -307,6 +337,7 @@ def build_symbolic_detection_bundle(
                 float(v) for v in geometry["goal_position"]
             ),
             "powered_speed": vehicle["powered_speed"],
+            "acoustic_occluded_rate_scale": acoustic_occluded_rate_scale,
         },
         "status": {
             "success": validation["passed"],
@@ -351,6 +382,9 @@ def validate_symbolic_detection(
         functions["powered_detection_components"],
         state[0], state[1], state[2], state[3], state[6], state[7], state[8],
     )
+    powered_total_outputs = _numeric_outputs(
+        functions["powered_total_detection_components"], *state,
+    )
     glide_outputs = _numeric_outputs(functions["glide_detection_components"], *state)
     powered_hazard = powered_outputs[-1] * vehicle["time_step"]
     glide_hazard = glide_outputs[-1] * vehicle["time_step"]
@@ -368,7 +402,8 @@ def validate_symbolic_detection(
         functions["defender_objective"], powered_hazard, glide_hazard, coverage,
     )
     all_outputs = np.asarray(
-        range_outputs + powered_outputs + glide_outputs + mission_outputs
+        range_outputs + powered_outputs + powered_total_outputs
+        + glide_outputs + mission_outputs
         + time_outputs + objective_outputs + defender_outputs,
         dtype=float,
     )
@@ -391,6 +426,14 @@ def validate_symbolic_detection(
         "mission_detection_dimensions": (
             functions["mission_detection"].n_in() == 2
             and functions["mission_detection"].n_out() == 4
+        ),
+        "powered_total_detection_dimensions": (
+            functions["powered_total_detection_components"].n_in() == 9
+            and functions["powered_total_detection_components"].n_out() == 4
+        ),
+        "powered_total_includes_acoustic_and_visible_radar": (
+            powered_total_outputs[-1] + validation_config["objective_tolerance"]
+            >= powered_outputs[-1]
         ),
         "attacker_objective_dimensions": (
             functions["attacker_objective"].n_in() == 4
@@ -504,6 +547,18 @@ def _build_functions(
             [expression["acoustic_rate"], expression["powered_detection_rate"]],
             ["x", "y", "h", "v", "x_sensor", "y_sensor", "h_sensor"],
             ["acoustic_rate", "powered_detection_rate"],
+        ),
+        "powered_total_detection_components": ca.Function(
+            "PoweredTotalDetectionComponentsFunction3D",
+            [x, y, h, v, gamma, heading, x_sensor, y_sensor, h_sensor],
+            [
+                expression["acoustic_rate"],
+                expression["powered_radar_rate"],
+                expression["powered_radial_velocity_rate"],
+                expression["powered_total_detection_rate"],
+            ],
+            ["x", "y", "h", "v", "gamma", "heading", "x_sensor", "y_sensor", "h_sensor"],
+            ["acoustic_rate", "radar_rate", "radial_velocity_rate", "powered_total_detection_rate"],
         ),
         "glide_detection_components": ca.Function(
             "GlideDetectionComponentsFunction3D",

@@ -1,0 +1,581 @@
+{
+  "optimal_sensor_position_m": [
+    2500.0,
+    0.0,
+    4.023158805348178
+  ],
+  "defender_objective": 0.33068683195395476,
+  "final_attacker_summary": {
+    "sensor_position_m": [
+      2500.0,
+      0.0,
+      4.023158805348178
+    ],
+    "defender_objective": 0.33068683195395476,
+    "defender_pod_normalized": 0.007467749778673463,
+    "coverage_volume_normalized": 0.653905914129236,
+    "coverage_volume_m3": 699666250.0,
+    "mission_pod": 0.007495702716496133,
+    "mission_hazard": 0.007523936673486025,
+    "attacker_objective": 0.3165664828332485,
+    "mission_time_s": 138.40907721084312,
+    "switching_point_m": [
+      800.0,
+      500.0,
+      304.4190753801827
+    ],
+    "goal_distance_m": 15.000000000000108,
+    "validation_passed": true
+  },
+  "final_objective_breakdown": {
+    "pod_normalized": 0.007467749778673463,
+    "coverage_volume_normalized": 0.653905914129236,
+    "weighted_pod": 0.0037338748893367313,
+    "weighted_coverage": 0.326952957064618,
+    "total": 0.33068683195395476
+  },
+  "search": {
+    "best_summary": {
+      "sensor_position_m": [
+        2500.0,
+        0.0,
+        4.023158805348178
+      ],
+      "defender_objective": 0.33068683195395476,
+      "defender_pod_normalized": 0.007467749778673463,
+      "coverage_volume_normalized": 0.653905914129236,
+      "coverage_volume_m3": 699666250.0,
+      "mission_pod": 0.007495702716496133,
+      "mission_hazard": 0.007523936673486025,
+      "attacker_objective": 0.3165664828332485,
+      "mission_time_s": 138.40907721084312,
+      "switching_point_m": [
+        800.0,
+        500.0,
+        304.4190753801827
+      ],
+      "goal_distance_m": 15.000000000000108,
+      "validation_passed": true,
+      "feasible": true,
+      "error": null
+    },
+    "evaluations": [
+      {
+        "sensor_position_m": [
+          1750.0,
+          0.0,
+          NaN
+        ],
+        "defender_objective": -Infinity,
+        "defender_pod_normalized": NaN,
+        "coverage_volume_normalized": NaN,
+        "coverage_volume_m3": NaN,
+        "mission_pod": NaN,
+        "mission_hazard": NaN,
+        "attacker_objective": NaN,
+        "mission_time_s": NaN,
+        "switching_point_m": [
+          NaN,
+          NaN,
+          NaN
+        ],
+        "goal_distance_m": NaN,
+        "validation_passed": false,
+        "feasible": false,
+        "error": "ValueError: successor graph must pass validation"
+      },
+      {
+        "sensor_position_m": [
+          1750.0,
+          250.0,
+          NaN
+        ],
+        "defender_objective": -Infinity,
+        "defender_pod_normalized": NaN,
+        "coverage_volume_normalized": NaN,
+        "coverage_volume_m3": NaN,
+        "mission_pod": NaN,
+        "mission_hazard": NaN,
+        "attacker_objective": NaN,
+        "mission_time_s": NaN,
+        "switching_point_m": [
+          NaN,
+          NaN,
+          NaN
+        ],
+        "goal_distance_m": NaN,
+        "validation_passed": false,
+        "feasible": false,
+        "error": "RuntimeError: No sensor-ray/terrain tangent contacts were found"
+      },
+      {
+        "sensor_position_m": [
+          1750.0,
+          500.0,
+          NaN
+        ],
+        "defender_objective": -Infinity,
+        "defender_pod_normalized": NaN,
+        "coverage_volume_normalized": NaN,
+        "coverage_volume_m3": NaN,
+        "mission_pod": NaN,
+        "mission_hazard": NaN,
+        "attacker_objective": NaN,
+        "mission_time_s": NaN,
+        "switching_point_m": [
+          NaN,
+          NaN,
+          NaN
+        ],
+        "goal_distance_m": NaN,
+        "validation_passed": false,
+        "feasible": false,
+        "error": "RuntimeError: No sensor-ray/terrain tangent contacts were found"
+      },
+      {
+        "sensor_position_m": [
+          1750.0,
+          750.0,
+          NaN
+        ],
+        "defender_objective": -Infinity,
+        "defender_pod_normalized": NaN,
+        "coverage_volume_normalized": NaN,
+        "coverage_volume_m3": NaN,
+        "mission_pod": NaN,
+        "mission_hazard": NaN,
+        "attacker_objective": NaN,
+        "mission_time_s": NaN,
+        "switching_point_m": [
+          NaN,
+          NaN,
+          NaN
+        ],
+        "goal_distance_m": NaN,
+        "validation_passed": false,
+        "feasible": false,
+        "error": "RuntimeError: No sensor-ray/terrain tangent contacts were found",
+        "symmetry_source_y_m": 250.0
+      },
+      {
+        "sensor_position_m": [
+          1750.0,
+          1000.0,
+          NaN
+        ],
+        "defender_objective": -Infinity,
+        "defender_pod_normalized": NaN,
+        "coverage_volume_normalized": NaN,
+        "coverage_volume_m3": NaN,
+        "mission_pod": NaN,
+        "mission_hazard": NaN,
+        "attacker_objective": NaN,
+        "mission_time_s": NaN,
+        "switching_point_m": [
+          NaN,
+          NaN,
+          NaN
+        ],
+        "goal_distance_m": NaN,
+        "validation_passed": false,
+        "feasible": false,
+        "error": "ValueError: successor graph must pass validation",
+        "symmetry_source_y_m": 0.0
+      },
+      {
+        "sensor_position_m": [
+          2125.0,
+          0.0,
+          27.01424289502725
+        ],
+        "defender_objective": 0.30019222713856253,
+        "defender_pod_normalized": 0.009763601550905866,
+        "coverage_volume_normalized": 0.5906208527262192,
+        "coverage_volume_m3": 631952500.0,
+        "mission_pod": 0.009811420249338787,
+        "mission_hazard": 0.009859869396761178,
+        "attacker_objective": 0.3190516573103686,
+        "mission_time_s": 138.9919126601717,
+        "switching_point_m": [
+          800.0,
+          500.0,
+          328.69300029316855
+        ],
+        "goal_distance_m": 15.000000000000108,
+        "validation_passed": true,
+        "feasible": true,
+        "error": null
+      },
+      {
+        "sensor_position_m": [
+          2125.0,
+          250.0,
+          48.535803473670505
+        ],
+        "defender_objective": 0.2814931808412433,
+        "defender_pod_normalized": 0.018986707483342802,
+        "coverage_volume_normalized": 0.5439996541991439,
+        "coverage_volume_m3": 582068750.0,
+        "mission_pod": 0.019168089922647624,
+        "mission_hazard": 0.01935417958498773,
+        "attacker_objective": 0.3280063465837107,
+        "mission_time_s": 140.85365344744108,
+        "switching_point_m": [
+          1100.0,
+          600.0,
+          345.14654056105593
+        ],
+        "goal_distance_m": 15.00000000000001,
+        "validation_passed": true,
+        "feasible": true,
+        "error": null
+      },
+      {
+        "sensor_position_m": [
+          2125.0,
+          500.0,
+          59.00453123488857
+        ],
+        "defender_objective": 0.2790481742594523,
+        "defender_pod_normalized": 0.022126050008652018,
+        "coverage_volume_normalized": 0.5359702985102526,
+        "coverage_volume_m3": 573477500.0,
+        "mission_pod": 0.022372625579386907,
+        "mission_hazard": 0.022626689299098668,
+        "attacker_objective": 0.33722894519119606,
+        "mission_time_s": 144.21044271754278,
+        "switching_point_m": [
+          1100.0,
+          300.0,
+          343.40407557465664
+        ],
+        "goal_distance_m": 14.999999999999607,
+        "validation_passed": true,
+        "feasible": true,
+        "error": null
+      },
+      {
+        "sensor_position_m": [
+          2125.0,
+          750.0,
+          48.535803473670505
+        ],
+        "defender_objective": 0.2814931808412433,
+        "defender_pod_normalized": 0.018986707483342802,
+        "coverage_volume_normalized": 0.5439996541991439,
+        "coverage_volume_m3": 582068750.0,
+        "mission_pod": 0.019168089922647624,
+        "mission_hazard": 0.01935417958498773,
+        "attacker_objective": 0.3280063465837107,
+        "mission_time_s": 140.85365344744108,
+        "switching_point_m": [
+          1100.0,
+          400.0,
+          345.14654056105593
+        ],
+        "goal_distance_m": 15.00000000000001,
+        "validation_passed": true,
+        "feasible": true,
+        "error": null,
+        "symmetry_source_y_m": 250.0
+      },
+      {
+        "sensor_position_m": [
+          2125.0,
+          1000.0,
+          27.01424289502725
+        ],
+        "defender_objective": 0.30019222713856253,
+        "defender_pod_normalized": 0.009763601550905866,
+        "coverage_volume_normalized": 0.5906208527262192,
+        "coverage_volume_m3": 631952500.0,
+        "mission_pod": 0.009811420249338787,
+        "mission_hazard": 0.009859869396761178,
+        "attacker_objective": 0.3190516573103686,
+        "mission_time_s": 138.9919126601717,
+        "switching_point_m": [
+          800.0,
+          500.0,
+          328.69300029316855
+        ],
+        "goal_distance_m": 15.000000000000108,
+        "validation_passed": true,
+        "feasible": true,
+        "error": null,
+        "symmetry_source_y_m": 0.0
+      },
+      {
+        "sensor_position_m": [
+          2312.5,
+          0.0,
+          11.635713114059538
+        ],
+        "defender_objective": 0.31643605653728246,
+        "defender_pod_normalized": 0.008547359340850255,
+        "coverage_volume_normalized": 0.6243247537337147,
+        "coverage_volume_m3": 668015000.0,
+        "mission_pod": 0.008583991853595374,
+        "mission_hazard": 0.00862104651532844,
+        "attacker_objective": 0.31785398801261555,
+        "mission_time_s": 138.73604635174837,
+        "switching_point_m": [
+          800.0,
+          500.0,
+          318.1575108725108
+        ],
+        "goal_distance_m": 15.000000000000108,
+        "validation_passed": true,
+        "feasible": true,
+        "error": null
+      },
+      {
+        "sensor_position_m": [
+          2312.5,
+          125.0,
+          16.3769680457251
+        ],
+        "defender_objective": 0.3042822534143948,
+        "defender_pod_normalized": 0.014645695262218312,
+        "coverage_volume_normalized": 0.5939188115665713,
+        "coverage_volume_m3": 635481250.0,
+        "mission_pod": 0.01475346504149333,
+        "mission_hazard": 0.014863379829212714,
+        "attacker_objective": 0.3217858983600109,
+        "mission_time_s": 139.09478249796663,
+        "switching_point_m": [
+          1000.0,
+          500.0,
+          315.80248224230706
+        ],
+        "goal_distance_m": 15.00000000000021,
+        "validation_passed": true,
+        "feasible": true,
+        "error": null
+      },
+      {
+        "sensor_position_m": [
+          2500.0,
+          0.0,
+          4.023158805348178
+        ],
+        "defender_objective": 0.33068683195395476,
+        "defender_pod_normalized": 0.007467749778673463,
+        "coverage_volume_normalized": 0.653905914129236,
+        "coverage_volume_m3": 699666250.0,
+        "mission_pod": 0.007495702716496133,
+        "mission_hazard": 0.007523936673486025,
+        "attacker_objective": 0.3165664828332485,
+        "mission_time_s": 138.40907721084312,
+        "switching_point_m": [
+          800.0,
+          500.0,
+          304.4190753801827
+        ],
+        "goal_distance_m": 15.000000000000108,
+        "validation_passed": true,
+        "feasible": true,
+        "error": null
+      },
+      {
+        "sensor_position_m": [
+          2500.0,
+          125.0,
+          5.662492926063351
+        ],
+        "defender_objective": 0.31996867705025306,
+        "defender_pod_normalized": 0.013297136526345938,
+        "coverage_volume_normalized": 0.6266402175741602,
+        "coverage_volume_m3": 670492500.0,
+        "mission_pod": 0.013385933787448012,
+        "mission_hazard": 0.013476333024299233,
+        "attacker_objective": 0.32021243617678974,
+        "mission_time_s": 138.70542905515052,
+        "switching_point_m": [
+          900.0,
+          500.0,
+          313.71351444358555
+        ],
+        "goal_distance_m": 15.000000000000108,
+        "validation_passed": true,
+        "feasible": true,
+        "error": null
+      },
+      {
+        "sensor_position_m": [
+          2500.0,
+          250.0,
+          7.2283071518428805
+        ],
+        "defender_objective": 0.311312787705958,
+        "defender_pod_normalized": 0.015760260172378714,
+        "coverage_volume_normalized": 0.6068653152395372,
+        "coverage_volume_m3": 649333750.0,
+        "mission_pod": 0.015885102729502276,
+        "mission_hazard": 0.016012623227647668,
+        "attacker_objective": 0.3239088645380566,
+        "mission_time_s": 139.7798906744393,
+        "switching_point_m": [
+          1100.0,
+          600.0,
+          301.537633223081
+        ],
+        "goal_distance_m": 15.000000000000114,
+        "validation_passed": true,
+        "feasible": true,
+        "error": null
+      },
+      {
+        "sensor_position_m": [
+          2500.0,
+          500.0,
+          8.787386724681484
+        ],
+        "defender_objective": 0.30857746154569715,
+        "defender_pod_normalized": 0.024403189414129313,
+        "coverage_volume_normalized": 0.592751733677265,
+        "coverage_volume_m3": 634232500.0,
+        "mission_pod": 0.02470335316182526,
+        "mission_hazard": 0.025013601092540024,
+        "attacker_objective": 0.3370236808263087,
+        "mission_time_s": 143.59153994691977,
+        "switching_point_m": [
+          900.0,
+          300.0,
+          333.35074419828754
+        ],
+        "goal_distance_m": 15.00000000000042,
+        "validation_passed": true,
+        "feasible": true,
+        "error": null
+      },
+      {
+        "sensor_position_m": [
+          2500.0,
+          750.0,
+          7.2283071518428805
+        ],
+        "defender_objective": 0.311312787705958,
+        "defender_pod_normalized": 0.015760260172378714,
+        "coverage_volume_normalized": 0.6068653152395372,
+        "coverage_volume_m3": 649333750.0,
+        "mission_pod": 0.015885102729502276,
+        "mission_hazard": 0.016012623227647668,
+        "attacker_objective": 0.3239088645380566,
+        "mission_time_s": 139.7798906744393,
+        "switching_point_m": [
+          1100.0,
+          400.0,
+          301.537633223081
+        ],
+        "goal_distance_m": 15.000000000000114,
+        "validation_passed": true,
+        "feasible": true,
+        "error": null,
+        "symmetry_source_y_m": 250.0
+      },
+      {
+        "sensor_position_m": [
+          2500.0,
+          1000.0,
+          4.023158805348178
+        ],
+        "defender_objective": 0.33068683195395476,
+        "defender_pod_normalized": 0.007467749778673463,
+        "coverage_volume_normalized": 0.653905914129236,
+        "coverage_volume_m3": 699666250.0,
+        "mission_pod": 0.007495702716496133,
+        "mission_hazard": 0.007523936673486025,
+        "attacker_objective": 0.3165664828332485,
+        "mission_time_s": 138.40907721084312,
+        "switching_point_m": [
+          800.0,
+          500.0,
+          304.4190753801827
+        ],
+        "goal_distance_m": 15.000000000000108,
+        "validation_passed": true,
+        "feasible": true,
+        "error": null,
+        "symmetry_source_y_m": 0.0
+      }
+    ],
+    "levels": [
+      {
+        "level": 0,
+        "x_values_m": [
+          1750.0,
+          2125.0,
+          2500.0
+        ],
+        "y_values_m": [
+          0.0,
+          250.0,
+          500.0,
+          750.0,
+          1000.0
+        ],
+        "new_candidate_count": 13,
+        "best_sensor_position_m": [
+          2500.0,
+          0.0,
+          4.023158805348178
+        ],
+        "best_defender_objective": 0.33068683195395476
+      },
+      {
+        "level": 1,
+        "x_values_m": [
+          2312.5,
+          2500.0
+        ],
+        "y_values_m": [
+          0.0,
+          125.0
+        ],
+        "new_candidate_count": 3,
+        "best_sensor_position_m": [
+          2500.0,
+          0.0,
+          4.023158805348178
+        ],
+        "best_defender_objective": 0.33068683195395476
+      }
+    ],
+    "metadata": {
+      "algorithm": "deterministic_2d_hierarchical_candidate_search",
+      "symmetry_requested": true,
+      "symmetry_verified": true,
+      "candidate_count": 18,
+      "fresh_unique_geometry_count": 12
+    }
+  },
+  "cache_stats": {
+    "fresh_evaluations": 0,
+    "cache_hits": 13
+  },
+  "metadata": {
+    "game": "3D terrain-following sensor Stackelberg",
+    "leader_decision_dimension": 2,
+    "leader_decision_axes": [
+      "x_sensor",
+      "y_sensor"
+    ],
+    "follower": "authoritative physical Bellman Attacker response",
+    "continuous_nlp_applied": false
+  },
+  "validation": {
+    "passed": true,
+    "checks": {
+      "final_nested_pipeline_passed": true,
+      "selected_candidate_matches_search_maximum": true,
+      "sensor_within_configured_region": true,
+      "sensor_height_terrain_following": true,
+      "final_attacker_continuous_replay_passed": true
+    },
+    "failed_checks": []
+  },
+  "status": {
+    "success": true,
+    "message": "3D Stackelberg solve passed"
+  }
+}

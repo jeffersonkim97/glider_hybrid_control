@@ -1,4 +1,4 @@
-"""Multi-start coarse Bellman candidate generator using authoritative J6D.
+"""Turn-limited multi-start coarse Bellman generator using authoritative J6D.
 
 Mirrors p1b_4D.bellman's role exactly, with the primary sweep axis
 switched from z to h (see stage_cost.py's module docstring and the
@@ -9,7 +9,13 @@ zero), so backward induction sweeps h ascending from the goal's altitude
 up to h_max, with (x, y) free inside every h-slice -- the direct 3D
 analog of p1b_4D's "sweep z descending, h free inside each z-slice".
 
-The per-h-slice update is vectorized over the full (x, y) spatial slice
+Heading is now a periodic Bellman state, so the dynamic-programming state
+is (x, y, h, psi). J6D remains the local spatial/action cost map over
+(x, y, h, v, gamma, selected_course); a transition may select only a
+course within the configured turn-rate envelope of psi, and the selected
+course becomes the successor heading state.
+
+The per-h-slice update is vectorized over the full (x, y, psi) slice
 instead of using nested Python loops over every spatial index (as
 p1b_4D's much smaller z*h grid could afford): no cell in an h-slice can
 ever be a valid non-terminal successor of another cell in the *same*
@@ -26,6 +32,12 @@ import casadi as ca
 import numpy as np
 
 from .geometry import terrain_height
+from .turn_dynamics import (
+    heading_change_metrics,
+    heading_transition_mask,
+    nearest_heading_index,
+    powered_segment_heading,
+)
 
 
 def generate_bellman_candidates(
@@ -59,9 +71,9 @@ def generate_bellman_candidates(
 
     Assumptions
     -----------
-    Coarse transitions use constant speed, gamma, and heading for one
-    configured time step. The resulting candidates are NLP warm-start
-    material, not final Attacker responses.
+    Coarse transitions use constant speed, gamma, and selected course over
+    each coarse interval. Heading is carried between intervals and the
+    course increment is turn-rate limited.
 
     Notes
     -----
@@ -104,6 +116,7 @@ def generate_bellman_candidates(
             validation_config,
             ordering,
             bellman_config,
+            vehicle,
         )
         for ordering in orderings
     }
@@ -118,17 +131,34 @@ def generate_bellman_candidates(
     }
     seeds = generate_switching_point_seeds(
         geometry_bundle, grids["x"], grids["y"], grids["h"],
+        include_visible=(
+            bellman_config["search_options"].get(
+                "powered_visibility_handling", "hard_hidden",
+            ) == "hazard_penalty"
+        ),
+        candidate_mask=np.any(np.stack([
+            np.any(np.isfinite(policy["value"]), axis=3)
+            for policy in policies.values()
+        ]), axis=0),
+        boundary_only=(
+            bellman_config["search_options"].get(
+                "switching_candidate_mode", "admissible_volume",
+            ) == "los_boundary_surface"
+        ),
+        boundary_tolerance_m=float(
+            vehicle["switching_constraints"]["tangent_tolerance"]
+        ),
     )
     candidates: list[dict[str, Any]] = []
     start_attempts: list[dict[str, Any]] = []
     for seed_index, switching_point in enumerate(seeds):
         ordering = orderings[seed_index % len(orderings)]
-        start_index = _switching_grid_index(switching_point, grids)
+        spatial_start_index = _switching_grid_index(switching_point, grids)
         attempt = {
             "start_id": f"switch-seed-{seed_index:04d}",
             "seed_index": seed_index,
             "switching_point": switching_point,
-            "grid_start_index": start_index,
+            "grid_start_index": spatial_start_index,
             "exploration_ordering": ordering,
             "success": False,
             "diagnostic": None,
@@ -144,6 +174,13 @@ def generate_bellman_candidates(
             attempt["diagnostic"] = powered["validation"]["summary"]
             start_attempts.append(attempt)
             continue
+        initial_heading = powered_segment_heading(powered["path"], goal_position)
+        initial_heading_index = nearest_heading_index(
+            initial_heading, grids["heading"],
+        )
+        start_index = (*spatial_start_index, initial_heading_index)
+        attempt["initial_heading"] = initial_heading
+        attempt["initial_heading_index"] = initial_heading_index
         extracted = extract_coarse_candidate(
             switching_point,
             start_index,
@@ -166,7 +203,8 @@ def generate_bellman_candidates(
             {
                 "seed_index": seed_index,
                 "exploration_ordering": ordering,
-                "grid_start_index": start_index,
+                "grid_start_index": spatial_start_index,
+                "heading_state_start_index": initial_heading_index,
             }
         )
         attempt["success"] = True
@@ -186,7 +224,8 @@ def generate_bellman_candidates(
     )
 
     primary_ordering = orderings[0]
-    primary_cost_to_go = policies[primary_ordering]["value"]
+    primary_cost_to_go_state = policies[primary_ordering]["value"]
+    primary_cost_to_go = np.min(primary_cost_to_go_state, axis=3)
     finite_cost_to_go_mask = np.isfinite(primary_cost_to_go)
 
     return {
@@ -199,9 +238,17 @@ def generate_bellman_candidates(
                 for ordering, policy in policies.items()
             },
             "cost_to_go_maps": {
+                ordering: _readonly(np.min(policy["value"], axis=3))
+                for ordering, policy in policies.items()
+            },
+            "cost_to_go_heading_state_maps": {
                 ordering: policy["value"] for ordering, policy in policies.items()
             },
             "pod_to_go_maps": {
+                ordering: _readonly(_finite_minimum(values, axis=3))
+                for ordering, values in pod_to_go_maps.items()
+            },
+            "pod_to_go_heading_state_maps": {
                 ordering: _readonly(values)
                 for ordering, values in pod_to_go_maps.items()
             },
@@ -215,7 +262,7 @@ def generate_bellman_candidates(
         "validation": validation,
         "metadata": {
             "schema_name": "BellmanCandidateSet3D",
-            "schema_version": "1.0.0",
+            "schema_version": "1.1.0",
             "producer_phase": 6,
             "producer_module": "p1b_3DExtension.bellman",
             "candidate_role": "coarse_topology_and_nlp_warm_start",
@@ -242,6 +289,9 @@ def generate_bellman_candidates(
             "random_seed": bellman_config["random_seed"],
             "filtering_applied": False,
             "primary_sweep_axis": "h_ascending",
+            "state_axis_order": ("x", "y", "h", "heading"),
+            "turn_dynamics_model": vehicle["turn_dynamics"]["model"],
+            "max_turn_rate_deg_s": vehicle["turn_dynamics"]["max_turn_rate_deg_s"],
             "goal_position": (
                 float(goal_position[0]), float(goal_position[1]), float(goal_position[2]),
             ),
@@ -261,8 +311,12 @@ def generate_switching_point_seeds(
     x_grid: np.ndarray,
     y_grid: np.ndarray,
     h_grid: np.ndarray,
+    include_visible: bool = False,
+    candidate_mask: np.ndarray | None = None,
+    boundary_only: bool = False,
+    boundary_tolerance_m: float | None = None,
 ) -> np.ndarray:
-    """Enumerate every occluded grid cell as a candidate powered switch point.
+    """Enumerate reachable airspace cells as powered switch candidates.
 
     Direct 3D analog of p1b_4D's exhaustive z-grid-node enumeration along
     its single LOS boundary curve: there is no single boundary curve here
@@ -274,21 +328,74 @@ def generate_switching_point_seeds(
     powered line from launch can actually reach it without first clipping
     the hill (an empirically confirmed failure mode: picking only the
     ceiling made every one of a first attempt's ~1000 seeds fail terrain
-    clearance). Every occluded (x, y, h) cell is therefore its own
-    candidate; `evaluate_powered_segment`'s existing terrain/hidden check
-    in the caller's seed loop is exactly what filters this down to the
-    ones actually reachable, the same division of labor p1b_4D already
-    uses (enumerate broadly here, filter for real feasibility there).
+    clearance). In hard-hidden mode every occluded (x, y, h) cell is its
+    own candidate.  In hazard-penalty mode visible powered flight is legal,
+    so every non-terrain cell allowed by `candidate_mask` is eligible;
+    otherwise the seed generator would silently reintroduce the obsolete
+    hard-LOS constraint.  `candidate_mask` normally retains only cells with
+    a finite glide policy to the goal, avoiding pointless powered checks.
     """
-    non_visible = geometry_bundle["primary_result"]["los_masks"][
-        "non_visible_airspace_mask"
-    ]
+    masks = geometry_bundle["primary_result"]["los_masks"]
+    non_visible = masks["non_visible_airspace_mask"]
     expected_shape = (x_grid.size, y_grid.size, h_grid.size)
     if non_visible.shape != expected_shape:
         raise ValueError("non_visible_airspace_mask does not match the Bellman grid")
-    x_indices, y_indices, h_indices = np.nonzero(non_visible)
+    if candidate_mask is not None:
+        candidate_mask = np.asarray(candidate_mask, dtype=bool)
+        if candidate_mask.shape != expected_shape:
+            raise ValueError("candidate_mask does not match the Bellman grid")
+    if boundary_only:
+        if boundary_tolerance_m is not None and boundary_tolerance_m < 0.0:
+            raise ValueError("boundary_tolerance_m must be nonnegative")
+        boundary = np.asarray(masks["los_boundary_height"], dtype=float)
+        if boundary.shape != expected_shape[:2]:
+            raise ValueError("los_boundary_height does not match the horizontal grid")
+        sensor_x = float(
+            geometry_bundle["primary_result"]["sensor_position"][0]
+        )
+        seeds: list[tuple[float, float, float]] = []
+        for x_index, x_value in enumerate(x_grid):
+            if x_value >= sensor_x:
+                continue
+            for y_index, y_value in enumerate(y_grid):
+                height = float(boundary[x_index, y_index])
+                # As in p1b_4D's final switching-consistency check, a true
+                # boundary lying above the ceiling is not silently accepted
+                # as an on-boundary switch after clipping.
+                if height < h_grid[0] or height > h_grid[-1]:
+                    continue
+                h_index = int(np.argmin(np.abs(h_grid - height)))
+                if (
+                    boundary_tolerance_m is not None
+                    and abs(float(h_grid[h_index]) - height)
+                    > boundary_tolerance_m
+                ):
+                    continue
+                if masks["terrain_mask"][x_index, y_index, h_index]:
+                    continue
+                if candidate_mask is not None and not candidate_mask[
+                    x_index, y_index, h_index
+                ]:
+                    continue
+                # The physical successor graph is node-to-node exact.  Use
+                # its nearest altitude node only for the discrete initializer;
+                # the continuous refinement below enforces the unsnapped
+                # equality h_switch = H_LOS(x_switch, y_switch).
+                seeds.append((
+                    float(x_value), float(y_value), float(h_grid[h_index]),
+                ))
+        if not seeds:
+            raise ValueError("No LOS-boundary switching seed is glide-feasible")
+        return np.asarray(seeds, dtype=float)
+    if include_visible:
+        admissible = ~np.asarray(masks["terrain_mask"], dtype=bool)
+    else:
+        admissible = np.asarray(non_visible, dtype=bool).copy()
+    if candidate_mask is not None:
+        admissible &= candidate_mask
+    x_indices, y_indices, h_indices = np.nonzero(admissible)
     if x_indices.size == 0:
-        raise ValueError("No occluded airspace cell exists for a powered switch")
+        raise ValueError("No admissible airspace cell exists for a powered switch")
     # Lower switching altitude first within each column: a straight line
     # from ground-level launch to a lower target has a gentler climb and
     # is geometrically more likely to clear the hill, so ordering seeds
@@ -486,19 +593,26 @@ def solve_coarse_bellman(
     validation_config: dict[str, Any],
     exploration_ordering: str,
     bellman_config: dict[str, Any],
+    vehicle_config: dict[str, Any],
 ) -> dict[str, Any]:
-    """Solve the forward-acyclic coarse Bellman recursion for one tie ordering.
+    """Solve the heading-state, forward-acyclic Bellman recursion.
 
     Sweeps h ascending (successors of an h-slice always live at strictly
-    smaller h, by construction of `transitions`), vectorizing the update
-    over the full (x, y) slice for each candidate action instead of a
-    per-cell Python loop -- see the module docstring.
+    smaller h), vectorizing the update over (x, y) for each candidate
+    action and the compatible incoming heading states.
     """
     x_grid, y_grid, h_grid, v_grid, gamma_grid, heading_grid = (
         grids[name] for name in ("x", "y", "h", "v", "gamma", "heading")
     )
     coarse_step_count = transitions["coarse_step_count"]
-    shape = (x_grid.size, y_grid.size, h_grid.size)
+    transition_duration = coarse_step_count * vehicle_config["time_step"]
+    max_turn_rate = np.deg2rad(
+        vehicle_config["turn_dynamics"]["max_turn_rate_deg_s"]
+    )
+    turn_mask = heading_transition_mask(
+        heading_grid, max_turn_rate, transition_duration,
+    )
+    shape = (x_grid.size, y_grid.size, h_grid.size, heading_grid.size)
     value = np.full(shape, np.inf)
     policy_velocity = np.full(shape, -1, dtype=np.int32)
     policy_gamma = np.full(shape, -1, dtype=np.int32)
@@ -514,12 +628,14 @@ def solve_coarse_bellman(
         + (mesh_h - goal_position[2]) ** 2
         <= validation_config["goal_radius"] ** 2
     )
-    value[goal_mask] = 0.0
+    value[goal_mask, :] = 0.0
     actions = _ordered_actions(v_grid, gamma_grid, heading_grid, exploration_ordering)
     updated_state_count = 0
-    slice_shape = (x_grid.size, y_grid.size)
+    slice_shape = (x_grid.size, y_grid.size, heading_grid.size)
     for h_index in range(h_grid.size):
-        active = ~goal_mask[:, :, h_index]
+        active = np.broadcast_to(
+            (~goal_mask[:, :, h_index])[:, :, None], slice_shape,
+        )
         if not np.any(active):
             continue
         best_cost = np.full(slice_shape, np.inf)
@@ -531,11 +647,14 @@ def solve_coarse_bellman(
         best_next_h = np.full(slice_shape, -1, dtype=np.int32)
         best_terminal = np.zeros(slice_shape, dtype=bool)
         for velocity_index, gamma_index, heading_index in actions:
+            compatible_heading_indices = np.flatnonzero(turn_mask[:, heading_index])
+            if compatible_heading_indices.size == 0:
+                continue
             action_index = (
                 slice(None), slice(None), h_index, velocity_index, gamma_index, heading_index,
             )
             valid_slice = transitions["transition_valid"][action_index]
-            if not np.any(active & valid_slice):
+            if not np.any(valid_slice):
                 continue
             terminal_slice = transitions["terminal_transition"][action_index]
             next_x_slice = transitions["next_x_index"][action_index]
@@ -546,7 +665,9 @@ def solve_coarse_bellman(
             safe_next_y = np.clip(next_y_slice, 0, y_grid.size - 1)
             safe_next_h = np.clip(next_h_slice, 0, h_grid.size - 1)
             downstream = np.where(
-                terminal_slice, 0.0, value[safe_next_x, safe_next_y, safe_next_h],
+                terminal_slice,
+                0.0,
+                value[safe_next_x, safe_next_y, safe_next_h, heading_index],
             )
             local_fraction = np.where(terminal_slice, fraction_slice, 1.0)
             # A non-terminal transition covers coarse_step_count physical
@@ -558,24 +679,60 @@ def solve_coarse_bellman(
                 :, :, h_index, velocity_index, gamma_index, heading_index
             ]
             candidate_cost = local_fraction * local_cost + downstream
-            improve = active & valid_slice & (candidate_cost < best_cost)
-            best_cost = np.where(improve, candidate_cost, best_cost)
-            best_velocity = np.where(improve, velocity_index, best_velocity)
-            best_gamma = np.where(improve, gamma_index, best_gamma)
-            best_heading = np.where(improve, heading_index, best_heading)
-            best_next_x = np.where(improve, next_x_slice, best_next_x)
-            best_next_y = np.where(improve, next_y_slice, best_next_y)
-            best_next_h = np.where(improve, next_h_slice, best_next_h)
-            best_terminal = np.where(improve, terminal_slice, best_terminal)
+            active_subset = active[:, :, compatible_heading_indices]
+            best_subset = best_cost[:, :, compatible_heading_indices]
+            improve = (
+                active_subset
+                & valid_slice[:, :, None]
+                & (candidate_cost[:, :, None] < best_subset)
+            )
+            best_cost[:, :, compatible_heading_indices] = np.where(
+                improve, candidate_cost[:, :, None], best_subset,
+            )
+            for policy_array, selected_value in (
+                (best_velocity, velocity_index),
+                (best_gamma, gamma_index),
+                (best_heading, heading_index),
+            ):
+                subset = policy_array[:, :, compatible_heading_indices]
+                policy_array[:, :, compatible_heading_indices] = np.where(
+                    improve, selected_value, subset,
+                )
+            for policy_array, selected_value in (
+                (best_next_x, next_x_slice),
+                (best_next_y, next_y_slice),
+                (best_next_h, next_h_slice),
+                (best_terminal, terminal_slice),
+            ):
+                subset = policy_array[:, :, compatible_heading_indices]
+                policy_array[:, :, compatible_heading_indices] = np.where(
+                    improve, selected_value[:, :, None], subset,
+                )
         finalize = active & np.isfinite(best_cost)
-        value[:, :, h_index] = np.where(finalize, best_cost, value[:, :, h_index])
-        policy_velocity[:, :, h_index] = np.where(finalize, best_velocity, policy_velocity[:, :, h_index])
-        policy_gamma[:, :, h_index] = np.where(finalize, best_gamma, policy_gamma[:, :, h_index])
-        policy_heading[:, :, h_index] = np.where(finalize, best_heading, policy_heading[:, :, h_index])
-        policy_next_x[:, :, h_index] = np.where(finalize, best_next_x, policy_next_x[:, :, h_index])
-        policy_next_y[:, :, h_index] = np.where(finalize, best_next_y, policy_next_y[:, :, h_index])
-        policy_next_h[:, :, h_index] = np.where(finalize, best_next_h, policy_next_h[:, :, h_index])
-        policy_terminal[:, :, h_index] = np.where(finalize, best_terminal, policy_terminal[:, :, h_index])
+        value[:, :, h_index, :] = np.where(
+            finalize, best_cost, value[:, :, h_index, :],
+        )
+        policy_velocity[:, :, h_index, :] = np.where(
+            finalize, best_velocity, policy_velocity[:, :, h_index, :],
+        )
+        policy_gamma[:, :, h_index, :] = np.where(
+            finalize, best_gamma, policy_gamma[:, :, h_index, :],
+        )
+        policy_heading[:, :, h_index, :] = np.where(
+            finalize, best_heading, policy_heading[:, :, h_index, :],
+        )
+        policy_next_x[:, :, h_index, :] = np.where(
+            finalize, best_next_x, policy_next_x[:, :, h_index, :],
+        )
+        policy_next_y[:, :, h_index, :] = np.where(
+            finalize, best_next_y, policy_next_y[:, :, h_index, :],
+        )
+        policy_next_h[:, :, h_index, :] = np.where(
+            finalize, best_next_h, policy_next_h[:, :, h_index, :],
+        )
+        policy_terminal[:, :, h_index, :] = np.where(
+            finalize, best_terminal, policy_terminal[:, :, h_index, :],
+        )
         updated_state_count += int(np.count_nonzero(finalize))
     return {
         "value": _readonly(value),
@@ -598,6 +755,14 @@ def solve_coarse_bellman(
             "primary_sweep_axis": "h_ascending",
             "local_cost_source": "j6d",
             "coarse_step_count": coarse_step_count,
+            "state_axis_order": ("x", "y", "h", "heading"),
+            "max_turn_rate_deg_s": vehicle_config["turn_dynamics"][
+                "max_turn_rate_deg_s"
+            ],
+            "maximum_heading_change_per_transition_deg": float(
+                np.rad2deg(max_turn_rate * transition_duration)
+            ),
+            "allowed_heading_transition_count": int(np.count_nonzero(turn_mask)),
         },
     }
 
@@ -616,20 +781,36 @@ def _compute_glide_pod_to_go(
     pointers already computed there.
     """
     value = policy["value"]
-    x_size, y_size, h_size = value.shape
+    x_size, y_size, h_size, heading_state_size = value.shape
     hazard_to_go = np.full(value.shape, np.nan, dtype=float)
-    x_idx, y_idx = np.meshgrid(np.arange(x_size), np.arange(y_size), indexing="ij")
+    x_idx, y_idx, _ = np.meshgrid(
+        np.arange(x_size),
+        np.arange(y_size),
+        np.arange(heading_state_size),
+        indexing="ij",
+    )
     v_size, g_size, hd_size = glide_detection_rate.shape[3:]
     for h_index in range(h_size):
         goal_slice = policy["goal_mask"][:, :, h_index]
-        hazard_to_go[:, :, h_index] = np.where(goal_slice, 0.0, hazard_to_go[:, :, h_index])
-        finite_slice = np.isfinite(value[:, :, h_index]) & ~goal_slice
+        goal_state_slice = goal_slice[:, :, None]
+        hazard_to_go[:, :, h_index, :] = np.where(
+            goal_state_slice, 0.0, hazard_to_go[:, :, h_index, :],
+        )
+        finite_slice = (
+            np.isfinite(value[:, :, h_index, :]) & ~goal_state_slice
+        )
         if not np.any(finite_slice):
             continue
-        velocity_index = np.clip(policy["policy_velocity_index"][:, :, h_index], 0, v_size - 1)
-        gamma_index = np.clip(policy["policy_gamma_index"][:, :, h_index], 0, g_size - 1)
-        heading_index = np.clip(policy["policy_heading_index"][:, :, h_index], 0, hd_size - 1)
-        terminal_slice = policy["policy_terminal"][:, :, h_index]
+        velocity_index = np.clip(
+            policy["policy_velocity_index"][:, :, h_index, :], 0, v_size - 1,
+        )
+        gamma_index = np.clip(
+            policy["policy_gamma_index"][:, :, h_index, :], 0, g_size - 1,
+        )
+        heading_index = np.clip(
+            policy["policy_heading_index"][:, :, h_index, :], 0, hd_size - 1,
+        )
+        terminal_slice = policy["policy_terminal"][:, :, h_index, :]
         rate_slice = glide_detection_rate[
             x_idx, y_idx, h_index, velocity_index, gamma_index, heading_index
         ]
@@ -641,15 +822,23 @@ def _compute_glide_pod_to_go(
             1.0,
         )
         local_hazard = rate_slice * coarse_step_count * time_step * fraction_slice
-        next_x = np.clip(policy["policy_next_x_index"][:, :, h_index], 0, x_size - 1)
-        next_y = np.clip(policy["policy_next_y_index"][:, :, h_index], 0, y_size - 1)
-        next_h = np.clip(policy["policy_next_h_index"][:, :, h_index], 0, h_size - 1)
+        next_x = np.clip(
+            policy["policy_next_x_index"][:, :, h_index, :], 0, x_size - 1,
+        )
+        next_y = np.clip(
+            policy["policy_next_y_index"][:, :, h_index, :], 0, y_size - 1,
+        )
+        next_h = np.clip(
+            policy["policy_next_h_index"][:, :, h_index, :], 0, h_size - 1,
+        )
         downstream = np.where(
-            terminal_slice, 0.0, hazard_to_go[next_x, next_y, next_h],
+            terminal_slice,
+            0.0,
+            hazard_to_go[next_x, next_y, next_h, heading_index],
         )
         computed = local_hazard + downstream
-        hazard_to_go[:, :, h_index] = np.where(
-            finite_slice, computed, hazard_to_go[:, :, h_index]
+        hazard_to_go[:, :, h_index, :] = np.where(
+            finite_slice, computed, hazard_to_go[:, :, h_index, :]
         )
     return 1.0 - np.exp(-hazard_to_go)
 
@@ -696,11 +885,10 @@ def evaluate_powered_segment(
     path = launch[None, :] + fractions[:, None] * delta[None, :]
     terrain_model = geometry["terrain_model"]
     terrain_margin = path[:, 2] - terrain_height(terrain_model, path[:, 0], path[:, 1])
-    # Powered flight must stay hidden and above terrain the whole way --
-    # unchanged from p1b_4D: it has no radar hazard term at all (acoustic
-    # only), so it must stay in shadow to avoid a "radar-free while
-    # visible" modeling loophole. This is unrelated to the glide-phase
-    # re-hiding question (see construct_coarse_transitions's docstring).
+    # LOS remains a diagnostic, but the default model no longer hard-rejects
+    # visible powered flight.  Its visible radar/Doppler exposure is included
+    # in powered hazard below, so shadowed and non-shadowed switch candidates
+    # can compete on the same physical objective without a radar-free loophole.
     hidden = _grid_lookup(
         geometry["los_masks"]["non_visible_airspace_mask"],
         path[:, 0], path[:, 1], path[:, 2], grids,
@@ -710,17 +898,44 @@ def evaluate_powered_segment(
         path[:, 0], path[:, 1], path[:, 2], grids,
     )
     sensor_position = geometry["sensor_position"]
-    powered_function = functions["powered_detection_components"].map(sample_count)
-    outputs = _mapped_outputs(
-        powered_function,
-        path[:, 0].reshape(1, sample_count),
-        path[:, 1].reshape(1, sample_count),
-        path[:, 2].reshape(1, sample_count),
-        np.full((1, sample_count), vehicle["powered_speed"]),
-        np.full((1, sample_count), sensor_position[0]),
-        np.full((1, sample_count), sensor_position[1]),
-        np.full((1, sample_count), sensor_position[2]),
+    horizontal = float(np.hypot(delta[0], delta[1]))
+    powered_gamma = float(np.arctan2(delta[2], horizontal))
+    powered_heading = float(np.arctan2(delta[1], delta[0]))
+    visibility_handling = bellman["search_options"].get(
+        "powered_visibility_handling", "hard_hidden",
     )
+    if visibility_handling == "hazard_penalty":
+        powered_function = functions[
+            "powered_total_detection_components"
+        ].map(sample_count)
+        outputs = _mapped_outputs(
+            powered_function,
+            path[:, 0].reshape(1, sample_count),
+            path[:, 1].reshape(1, sample_count),
+            path[:, 2].reshape(1, sample_count),
+            np.full((1, sample_count), vehicle["powered_speed"]),
+            np.full((1, sample_count), powered_gamma),
+            np.full((1, sample_count), powered_heading),
+            np.full((1, sample_count), sensor_position[0]),
+            np.full((1, sample_count), sensor_position[1]),
+            np.full((1, sample_count), sensor_position[2]),
+        )
+    elif visibility_handling == "hard_hidden":
+        powered_function = functions["powered_detection_components"].map(sample_count)
+        outputs = _mapped_outputs(
+            powered_function,
+            path[:, 0].reshape(1, sample_count),
+            path[:, 1].reshape(1, sample_count),
+            path[:, 2].reshape(1, sample_count),
+            np.full((1, sample_count), vehicle["powered_speed"]),
+            np.full((1, sample_count), sensor_position[0]),
+            np.full((1, sample_count), sensor_position[1]),
+            np.full((1, sample_count), sensor_position[2]),
+        )
+    else:
+        raise ValueError(
+            "powered_visibility_handling must be 'hazard_penalty' or 'hard_hidden'"
+        )
     powered_detection_rate = outputs[1].reshape(sample_count)
     sample_times = fractions * powered_time
     powered_hazard = (
@@ -733,7 +948,9 @@ def evaluate_powered_segment(
     )
     terrain_clear = bool(np.all(terrain_margin >= -validation_config["terrain_tolerance"]))
     hidden_valid = bool(np.all(hidden[1:] & ~embedded[1:]))
-    passed = terrain_clear and hidden_valid
+    passed = terrain_clear and (
+        hidden_valid if visibility_handling == "hard_hidden" else True
+    )
     return {
         "path": _readonly(path),
         "powered_time": powered_time,
@@ -744,6 +961,9 @@ def evaluate_powered_segment(
             "passed": passed,
             "terrain_clear": terrain_clear,
             "hidden_valid": hidden_valid,
+            "visibility_handling": visibility_handling,
+            "powered_gamma": powered_gamma,
+            "powered_heading": powered_heading,
             "minimum_terrain_margin": float(np.min(terrain_margin)),
             "summary": (
                 "Powered segment feasible"
@@ -756,7 +976,7 @@ def evaluate_powered_segment(
 
 def extract_coarse_candidate(
     switching_point: np.ndarray,
-    start_index: tuple[int, int, int],
+    start_index: tuple[int, int, int, int],
     policy: dict[str, Any],
     transitions: dict[str, np.ndarray],
     stage_cost_6d_bundle: dict[str, Any],
@@ -775,8 +995,11 @@ def extract_coarse_candidate(
     effective_dt = coarse_step_count * time_step
     simulation = configuration_bundle["primary_result"]["environment_config"]["simulation"]
     functions = detection_bundle["primary_result"]["functions"]
-    x_index, y_index, h_index = start_index
-    if not np.isfinite(policy["value"][x_index, y_index, h_index]):
+    x_index, y_index, h_index, heading_state_index = start_index
+    initial_heading_state = float(grids["heading"][heading_state_index])
+    if not np.isfinite(
+        policy["value"][x_index, y_index, h_index, heading_state_index]
+    ):
         return {"success": False, "diagnostic": "no_finite_bellman_value"}
 
     trajectory = [np.asarray(switching_point, dtype=float)]
@@ -787,10 +1010,10 @@ def extract_coarse_candidate(
     glide_stage_costs: list[float] = []
     segment_fractions: list[float] = []
     glide_hazard = 0.0
-    visited: set[tuple[int, int, int]] = set()
+    visited: set[tuple[int, int, int, int]] = set()
     reached_goal = False
     for _ in range(simulation["max_path_steps"]):
-        state_index = (x_index, y_index, h_index)
+        state_index = (x_index, y_index, h_index, heading_state_index)
         if state_index in visited:
             return {"success": False, "diagnostic": "policy_cycle_detected"}
         visited.add(state_index)
@@ -842,6 +1065,7 @@ def extract_coarse_candidate(
             np.array([grids["x"][next_x], grids["y"][next_y], grids["h"][next_h]])
         )
         x_index, y_index, h_index = next_x, next_y, next_h
+        heading_state_index = heading_index
     if not reached_goal:
         return {"success": False, "diagnostic": "goal_not_reached"}
 
@@ -865,6 +1089,8 @@ def extract_coarse_candidate(
         speed_array,
         gamma_array,
         heading_array,
+        initial_heading_state,
+        effective_dt,
         mission_cost,
         powered,
         glide_topology_cost,
@@ -885,6 +1111,7 @@ def extract_coarse_candidate(
             "speed_profile": _readonly(speed_array),
             "gamma_profile": _readonly(gamma_array),
             "heading_profile": _readonly(heading_array),
+            "initial_heading_state": initial_heading_state,
             "mission_cost": mission_cost,
             "objective_breakdown": {
                 "powered_cost_diagnostic": powered["powered_cost"],
@@ -916,6 +1143,10 @@ def extract_coarse_candidate(
                 "goal_region_radius": configuration_bundle["primary_result"][
                     "validation_config"
                 ]["goal_radius"],
+                "heading_state_axis_added": True,
+                "turn_dynamics_model": configuration_bundle["primary_result"][
+                    "vehicle_config"
+                ]["turn_dynamics"]["model"],
             },
             "validation": validation,
         },
@@ -928,6 +1159,8 @@ def validate_bellman_candidate(
     speed_profile: np.ndarray,
     gamma_profile: np.ndarray,
     heading_profile: np.ndarray,
+    initial_heading_state: float,
+    transition_duration: float,
     mission_cost: float,
     powered: dict[str, Any],
     glide_topology_cost: float,
@@ -950,6 +1183,11 @@ def validate_bellman_candidate(
     )
     goal_distance = float(np.linalg.norm(trajectory[-1] - goal_position))
     delta_h = np.diff(trajectory[:, 2])
+    vehicle = configuration_bundle["primary_result"]["vehicle_config"]
+    max_turn_rate = vehicle["turn_dynamics"]["max_turn_rate_deg_s"]
+    turn_metrics = heading_change_metrics(
+        initial_heading_state, heading_profile, transition_duration,
+    )
     checks = {
         "goal_reached": (
             reached_goal
@@ -967,6 +1205,10 @@ def validate_bellman_candidate(
         "profile_dimensions": (
             speed_profile.size == gamma_profile.size == heading_profile.size
             == trajectory.shape[0] - 1
+        ),
+        "turn_rate_limit": (
+            turn_metrics["maximum_turn_rate_deg_s"]
+            <= max_turn_rate + 1.0e-10
         ),
         "objective_consistency": (
             objective_residual <= validation["objective_tolerance"]
@@ -989,6 +1231,9 @@ def validate_bellman_candidate(
             "combined_local_objective_residual": float(combined_local_residual),
             "glide_value_residual": float(abs(glide_topology_cost - bellman_value)),
             "path_node_count": int(trajectory.shape[0]),
+            **turn_metrics,
+            "configured_max_turn_rate_deg_s": max_turn_rate,
+            "transition_duration_s": transition_duration,
         },
         "failed_checks": failed_checks,
         "summary": (
@@ -1135,9 +1380,9 @@ def select_authoritative_bellman_response(
     member of the already-converged, already-validated `generate_bellman_
     candidates` output and re-exposes its fields under a stable schema.
 
-    Optimality is scoped to the discretized switching-point seed grid and
-    the discretized (velocity, gamma, heading) state-action grid used by
-    Bellman; no continuous global optimum is claimed.
+    Optimality is scoped to the discretized switching-point seed grid,
+    heading-state grid, and (velocity, gamma, selected-course) action grid
+    used by Bellman; no continuous global optimum is claimed.
     """
     _require_successful_bundle(bellman_candidate_bundle, "bellman_candidate_bundle")
     _require_successful_bundle(configuration_bundle, "configuration_bundle")
@@ -1174,6 +1419,7 @@ def select_authoritative_bellman_response(
         "speed_profile": best["speed_profile"],
         "gamma_profile": best["gamma_profile"],
         "heading_profile": best["heading_profile"],
+        "initial_heading_state": best["initial_heading_state"],
         "mission_cost": best["mission_cost"],
         "mission_objective": best["mission_cost"],
         "objective_breakdown": best["objective_breakdown"],
@@ -1190,6 +1436,12 @@ def select_authoritative_bellman_response(
             "goal_error_norm": float(np.linalg.norm(goal_error)),
             "minimum_terrain_margin": best["validation"]["metrics"][
                 "minimum_terrain_margin"
+            ],
+            "maximum_turn_rate_deg_s": best["validation"]["metrics"][
+                "maximum_turn_rate_deg_s"
+            ],
+            "configured_max_turn_rate_deg_s": best["validation"]["metrics"][
+                "configured_max_turn_rate_deg_s"
             ],
         },
         "metadata": {
@@ -1208,11 +1460,13 @@ def select_authoritative_bellman_response(
         "validation": validation,
         "metadata": {
             "schema_name": "AuthoritativeBellmanAttackerResponse3D",
-            "schema_version": "1.0.0",
+            "schema_version": "1.1.0",
             "producer_phase": 8,
             "producer_module": "p1b_3DExtension.bellman",
             "solution_method": "bellman_dynamic_programming",
-            "optimality_scope": "discretized_switching_point_and_state_action_grid",
+            "optimality_scope": (
+                "discretized_switching_point_heading_state_and_action_grid"
+            ),
             "attacker_objective_id": configuration_bundle["primary_result"][
                 "cost_config"
             ]["attacker"]["objective_id"],
@@ -1250,6 +1504,7 @@ def validate_authoritative_bellman_response(
         ],
         "goal_reached": best["validation"]["checks"]["goal_reached"],
         "terrain_clearance": best["validation"]["checks"]["terrain_clearance"],
+        "turn_rate_limit": best["validation"]["checks"]["turn_rate_limit"],
     }
     failed_checks = [name for name, passed in checks.items() if not passed]
     warnings = (
@@ -1357,3 +1612,11 @@ def _readonly(array: np.ndarray) -> np.ndarray:
     result = np.asarray(array)
     result.setflags(write=False)
     return result
+
+
+def _finite_minimum(values: np.ndarray, axis: int) -> np.ndarray:
+    """Minimize finite entries without all-NaN slice warnings."""
+    array = np.asarray(values, dtype=float)
+    finite = np.isfinite(array)
+    result = np.min(np.where(finite, array, np.inf), axis=axis)
+    return np.where(np.any(finite, axis=axis), result, np.nan)
