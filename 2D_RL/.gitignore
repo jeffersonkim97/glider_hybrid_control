@@ -1,8 +1,0 @@
-# Generated RL artifacts are reproducible and stay local.
-results/
-figures/
-
-# Python caches are never source artifacts.
-__pycache__/
-*.py[cod]
-

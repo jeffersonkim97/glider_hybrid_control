@@ -1,6 +1,0 @@
-2026-07-24 13:08:36,751 | INFO | stackelberg | phase=Phase 1: Configuration status=started
-2026-07-24 13:08:36,751 | WARNING | stackelberg | phase=Phase 1: Configuration warning=Vehicle segment_length is deferred to the future transcription contract instead of fabricating a Phase 1 value
-2026-07-24 13:08:36,751 | INFO | stackelberg | phase=Phase 1: Configuration status=success elapsed_seconds=0.000337
-2026-07-29 19:14:11,936 | INFO | stackelberg | phase=Phase 1: Configuration status=started
-2026-07-29 19:14:11,936 | WARNING | stackelberg | phase=Phase 1: Configuration warning=Vehicle segment_length is deferred to the future transcription contract instead of fabricating a Phase 1 value
-2026-07-29 19:14:11,937 | INFO | stackelberg | phase=Phase 1: Configuration status=success elapsed_seconds=0.000335

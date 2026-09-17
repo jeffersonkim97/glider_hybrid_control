@@ -1,3 +1,0 @@
-2026-07-28 13:01:08,976 | INFO | stackelberg_3d | phase=Phase 1: Configuration status=started
-2026-07-28 13:01:08,977 | WARNING | stackelberg_3d | phase=Phase 1: Configuration warning=Vehicle segment_length is deferred to the future transcription contract instead of fabricating a Phase 1 value
-2026-07-28 13:01:08,977 | INFO | stackelberg_3d | phase=Phase 1: Configuration status=success elapsed_seconds=0.000379

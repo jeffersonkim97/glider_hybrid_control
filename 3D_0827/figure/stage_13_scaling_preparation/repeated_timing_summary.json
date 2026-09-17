@@ -1,9 +1,0 @@
-{
-  "deterministic": true,
-  "repeat_count": 2,
-  "run_id": "baseline_repeat",
-  "runtime_max_s": 57.01301120000426,
-  "runtime_median_s": 56.5087782000046,
-  "runtime_min_s": 56.00454520000494,
-  "runtime_spread_s": 1.0084659999993164
-}
