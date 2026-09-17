@@ -1,0 +1,59 @@
+[
+  {
+    "T_SSE_statistics_s": {
+      "count": 1,
+      "individual": [
+        60.95260539999799
+      ],
+      "maximum": 60.95260539999799,
+      "mean": 60.95260539999799,
+      "median": 60.95260539999799,
+      "minimum": 60.95260539999799,
+      "standard_deviation_sample": 0.0
+    },
+    "attempted_count": 1,
+    "case_id": "canonical-centered-cube-25m-25m-5deg-final-smoke-d6a356d48dd1",
+    "configuration": {
+      "experiment_type": "stage14_8_final_gate",
+      "memory_limit_bytes": null,
+      "name": "canonical_centered_cube_25m_25m_5deg_final_smoke",
+      "parameters": {
+        "altitude_spacing_m": 25.0,
+        "heading_spacing_deg": 5.0,
+        "horizontal_spacing_m": 25.0,
+        "terrain_category": "centered_cube"
+      },
+      "process_semantics": "fresh cold process per repetition",
+      "sampling_interval_s": 0.02,
+      "sweep_variable": "horizontal_spacing_m",
+      "timeout_s": 300.0,
+      "worker_mode": "canonical"
+    },
+    "exact_solution_identities": [
+      {
+        "J_A": 0.944086144839464,
+        "J_D": 0.7814861193516704,
+        "independent_replay_passed": true,
+        "repetition_id": "canonical-centered-cube-25m-25m-5deg-final-smoke-d6a356d48dd1-r000",
+        "selected_attacker_candidate_id": 26,
+        "selected_defender_action_id": 2,
+        "trajectory_sha256": "827fe8228491a0469c901aed676fd640afac5870b094f2d62494678cd8acfb03"
+      }
+    ],
+    "experiment_type": "stage14_8_final_gate",
+    "status_counts": {
+      "completed": 1
+    },
+    "worker_wall_statistics_s": {
+      "count": 1,
+      "individual": [
+        61.39776189999975
+      ],
+      "maximum": 61.39776189999975,
+      "mean": 61.39776189999975,
+      "median": 61.39776189999975,
+      "minimum": 61.39776189999975,
+      "standard_deviation_sample": 0.0
+    }
+  }
+]

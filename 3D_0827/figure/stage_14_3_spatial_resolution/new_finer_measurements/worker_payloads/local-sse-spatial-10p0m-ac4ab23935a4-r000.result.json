@@ -1,0 +1,984 @@
+{
+  "algorithm_variant": "local_sse",
+  "complete_configuration": {
+    "case_id": "local-sse-spatial-10p0m-ac4ab23935a4",
+    "experiment_type": "stage14_3_local_sse_spatial",
+    "memory_limit_bytes": 4294967296,
+    "name": "local_sse_spatial_10p0m",
+    "parameters": {
+      "approximate_planner": false,
+      "baseline_anchor": 0,
+      "defender_action_count": 6,
+      "defender_domain_x_max": 10.0,
+      "defender_domain_x_min": 5.0,
+      "defender_grid_policy": "canonical_six",
+      "heading_spacing_deg": 5.0,
+      "initial_defender_action_id": 0,
+      "multi_start": false,
+      "r_neighbor": 1,
+      "reinforcement_learning": false,
+      "spatial_resolution_m": 10.0,
+      "switching_contour_sample_count": 12,
+      "switching_radial_sample_count": 8,
+      "terrain_category": "centered_cube"
+    },
+    "process_semantics": "fresh cold process per repetition",
+    "repetition_id": "local-sse-spatial-10p0m-ac4ab23935a4-r000",
+    "sampling_interval_s": 0.02,
+    "sweep_variable": "spatial_resolution_m",
+    "timeout_s": 600.0,
+    "worker_mode": "local_sse"
+  },
+  "exactness": {
+    "all_evaluated_attacker_responses_exact": true,
+    "all_required_final_neighbors_evaluated": true,
+    "local_sse_verified": true,
+    "strong_follower_tie_break_verified": true
+  },
+  "independent_replay": {
+    "energy_valid": true,
+    "goal_error_m": 0.0,
+    "goal_valid": true,
+    "hazard_consistent": true,
+    "hazard_error": 0.0,
+    "los_phase_valid": true,
+    "max_turn_violation": 0.0,
+    "messages": [
+      "independent replay passed all checks"
+    ],
+    "min_terrain_clearance": null,
+    "passed": true,
+    "terrain_clear": true,
+    "time_consistent": true,
+    "time_error_s": 0.0,
+    "turn_constraints_valid": true
+  },
+  "local_search": {
+    "attacker_exactness_verified": true,
+    "cached_evaluation_reuses": 3,
+    "evaluated_defender_actions": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "exact_evaluation_records": [
+      {
+        "action_id": 0,
+        "attacker_br_runtime_s": 5.807735700000194,
+        "attacker_cooptimal_candidate_ids": [],
+        "candidate_count": 96,
+        "exact_exhaustive_minimum_verified": true,
+        "local_evaluation": {
+          "action_id": 0,
+          "attacker_objective": null,
+          "defender_value": null,
+          "diagnostic": "Defender action has no feasible Attacker response",
+          "exact_attacker_best_response_verified": true,
+          "selected_attacker_response_id": null,
+          "status": "model_infeasible",
+          "strong_tie_break_verified": false
+        },
+        "selected_candidate_id": null,
+        "sensor_position_map": [
+          5.0,
+          0.0,
+          0.0
+        ],
+        "strong_follower_tie_audit_passed": false
+      },
+      {
+        "action_id": 1,
+        "attacker_br_runtime_s": 214.55822170000465,
+        "attacker_cooptimal_candidate_ids": [
+          25,
+          34
+        ],
+        "candidate_count": 96,
+        "exact_exhaustive_minimum_verified": true,
+        "local_evaluation": {
+          "action_id": 1,
+          "attacker_objective": 0.19764236122771575,
+          "defender_value": 0.03027738203497664,
+          "diagnostic": null,
+          "exact_attacker_best_response_verified": true,
+          "selected_attacker_response_id": 25,
+          "status": "feasible",
+          "strong_tie_break_verified": true
+        },
+        "selected_candidate_id": 25,
+        "sensor_position_map": [
+          6.0,
+          0.0,
+          0.0
+        ],
+        "strong_follower_tie_audit_passed": true
+      },
+      {
+        "action_id": 2,
+        "attacker_br_runtime_s": 26.736440200002107,
+        "attacker_cooptimal_candidate_ids": [
+          25,
+          34
+        ],
+        "candidate_count": 96,
+        "exact_exhaustive_minimum_verified": true,
+        "local_evaluation": {
+          "action_id": 2,
+          "attacker_objective": 0.28817767289340535,
+          "defender_value": 0.1926998964176631,
+          "diagnostic": null,
+          "exact_attacker_best_response_verified": true,
+          "selected_attacker_response_id": 25,
+          "status": "feasible",
+          "strong_tie_break_verified": true
+        },
+        "selected_candidate_id": 25,
+        "sensor_position_map": [
+          7.0,
+          0.0,
+          0.0
+        ],
+        "strong_follower_tie_audit_passed": true
+      },
+      {
+        "action_id": 3,
+        "attacker_br_runtime_s": 6.364340599997377,
+        "attacker_cooptimal_candidate_ids": [],
+        "candidate_count": 96,
+        "exact_exhaustive_minimum_verified": true,
+        "local_evaluation": {
+          "action_id": 3,
+          "attacker_objective": null,
+          "defender_value": null,
+          "diagnostic": "Defender action has no feasible Attacker response",
+          "exact_attacker_best_response_verified": true,
+          "selected_attacker_response_id": null,
+          "status": "model_infeasible",
+          "strong_tie_break_verified": false
+        },
+        "selected_candidate_id": null,
+        "sensor_position_map": [
+          8.0,
+          0.0,
+          0.0
+        ],
+        "strong_follower_tie_audit_passed": false
+      }
+    ],
+    "feasible_neighbor_comparisons": 2,
+    "feasible_neighbor_count_per_iteration": [
+      1,
+      1
+    ],
+    "final_J_A": 0.28817767289340535,
+    "final_J_D": 0.1926998964176631,
+    "final_attacker_response_id": 25,
+    "final_local_sse_action_id": 2,
+    "global_optimal": null,
+    "global_optimality_evaluated": false,
+    "independent_replay_status": true,
+    "infeasible_neighbor_diagnostics": [
+      {
+        "action_id": 0,
+        "diagnostic": "Defender action has no feasible Attacker response",
+        "status": "model_infeasible"
+      },
+      {
+        "action_id": 3,
+        "diagnostic": "Defender action has no feasible Attacker response",
+        "status": "model_infeasible"
+      }
+    ],
+    "initial_defender_action_id": 0,
+    "initialization_dependent_solution_concept": true,
+    "initialization_feasible_neighbor_ids": [
+      1
+    ],
+    "initialization_infeasible_neighbor_ids": [],
+    "initialization_neighbor_action_ids": [
+      1
+    ],
+    "initialization_recovery_action_id": 1,
+    "initialization_recovery_attempted": true,
+    "initialization_unknown_neighbor_ids": [],
+    "isolated_feasible_local_solution": false,
+    "iterations": [
+      {
+        "chosen_next_action_id": 2,
+        "current_action_id": 1,
+        "current_defender_value": 0.03027738203497664,
+        "feasible_neighbor_ids": [
+          2
+        ],
+        "infeasible_neighbor_ids": [
+          0
+        ],
+        "iteration": 0,
+        "local_verification": {
+          "best_feasible_neighbor_value": 0.1926998964176631,
+          "candidate_action_id": 1,
+          "candidate_defender_value": 0.03027738203497664,
+          "comparison_scope": "local Strong Stackelberg equilibrium over an explicit finite Defender grid neighborhood; not a global or continuous-space optimality claim",
+          "equal_payoff_neighbor_ids": [],
+          "exact_attacker_responses_verified": true,
+          "feasible_neighbor_ids": [
+            2
+          ],
+          "global_condition_equivalent": false,
+          "improving_neighbor_ids": [
+            2
+          ],
+          "infeasible_neighbor_diagnostics": [
+            [
+              0,
+              "Defender action has no feasible Attacker response"
+            ]
+          ],
+          "isolated_feasible_local_solution": false,
+          "local_optimality_margin": -0.16242251438268646,
+          "local_sse_verified": false,
+          "neighbor_action_ids": [
+            0,
+            2
+          ],
+          "neighborhood_metadata": {
+            "configuration": {
+              "boundary_rule": "clip to explicitly configured grid actions",
+              "metric": "chebyshev_grid_index",
+              "one_dimensional_rule": "0 < abs(j-i) <= r_neighbor",
+              "r_neighbor": 1,
+              "radius_units": "integer Defender grid-index lengths",
+              "two_dimensional_rule": "0 < max(abs(p-i), abs(q-j)) <= r_neighbor"
+            },
+            "topology": {
+              "dimension": 1,
+              "ordered_action_grid_indices": [
+                {
+                  "action_id": 0,
+                  "grid_index": [
+                    0
+                  ]
+                },
+                {
+                  "action_id": 1,
+                  "grid_index": [
+                    1
+                  ]
+                },
+                {
+                  "action_id": 2,
+                  "grid_index": [
+                    2
+                  ]
+                },
+                {
+                  "action_id": 3,
+                  "grid_index": [
+                    3
+                  ]
+                },
+                {
+                  "action_id": 4,
+                  "grid_index": [
+                    4
+                  ]
+                },
+                {
+                  "action_id": 5,
+                  "grid_index": [
+                    5
+                  ]
+                }
+              ]
+            }
+          },
+          "strong_tie_breaking_verified": true,
+          "unknown_neighbor_diagnostics": []
+        },
+        "neighbor_action_ids": [
+          0,
+          2
+        ],
+        "payoff_improvement": 0.16242251438268646,
+        "unknown_neighbor_ids": []
+      },
+      {
+        "chosen_next_action_id": null,
+        "current_action_id": 2,
+        "current_defender_value": 0.1926998964176631,
+        "feasible_neighbor_ids": [
+          1
+        ],
+        "infeasible_neighbor_ids": [
+          3
+        ],
+        "iteration": 1,
+        "local_verification": {
+          "best_feasible_neighbor_value": 0.03027738203497664,
+          "candidate_action_id": 2,
+          "candidate_defender_value": 0.1926998964176631,
+          "comparison_scope": "local Strong Stackelberg equilibrium over an explicit finite Defender grid neighborhood; not a global or continuous-space optimality claim",
+          "equal_payoff_neighbor_ids": [],
+          "exact_attacker_responses_verified": true,
+          "feasible_neighbor_ids": [
+            1
+          ],
+          "global_condition_equivalent": false,
+          "improving_neighbor_ids": [],
+          "infeasible_neighbor_diagnostics": [
+            [
+              3,
+              "Defender action has no feasible Attacker response"
+            ]
+          ],
+          "isolated_feasible_local_solution": false,
+          "local_optimality_margin": 0.16242251438268646,
+          "local_sse_verified": true,
+          "neighbor_action_ids": [
+            1,
+            3
+          ],
+          "neighborhood_metadata": {
+            "configuration": {
+              "boundary_rule": "clip to explicitly configured grid actions",
+              "metric": "chebyshev_grid_index",
+              "one_dimensional_rule": "0 < abs(j-i) <= r_neighbor",
+              "r_neighbor": 1,
+              "radius_units": "integer Defender grid-index lengths",
+              "two_dimensional_rule": "0 < max(abs(p-i), abs(q-j)) <= r_neighbor"
+            },
+            "topology": {
+              "dimension": 1,
+              "ordered_action_grid_indices": [
+                {
+                  "action_id": 0,
+                  "grid_index": [
+                    0
+                  ]
+                },
+                {
+                  "action_id": 1,
+                  "grid_index": [
+                    1
+                  ]
+                },
+                {
+                  "action_id": 2,
+                  "grid_index": [
+                    2
+                  ]
+                },
+                {
+                  "action_id": 3,
+                  "grid_index": [
+                    3
+                  ]
+                },
+                {
+                  "action_id": 4,
+                  "grid_index": [
+                    4
+                  ]
+                },
+                {
+                  "action_id": 5,
+                  "grid_index": [
+                    5
+                  ]
+                }
+              ]
+            }
+          },
+          "strong_tie_breaking_verified": true,
+          "unknown_neighbor_diagnostics": []
+        },
+        "neighbor_action_ids": [
+          1,
+          3
+        ],
+        "payoff_improvement": 0.0,
+        "unknown_neighbor_ids": []
+      }
+    ],
+    "local_optimality_margin": 0.16242251438268646,
+    "local_search_iterations": 2,
+    "local_sse_verified": true,
+    "max_neighborhood_size": 2,
+    "mean_neighborhood_size": 2.0,
+    "neighbor_count_per_iteration": [
+      2,
+      2
+    ],
+    "neighborhood_metadata": {
+      "configuration": {
+        "boundary_rule": "clip to explicitly configured grid actions",
+        "metric": "chebyshev_grid_index",
+        "one_dimensional_rule": "0 < abs(j-i) <= r_neighbor",
+        "r_neighbor": 1,
+        "radius_units": "integer Defender grid-index lengths",
+        "two_dimensional_rule": "0 < max(abs(p-i), abs(q-j)) <= r_neighbor"
+      },
+      "topology": {
+        "dimension": 1,
+        "ordered_action_grid_indices": [
+          {
+            "action_id": 0,
+            "grid_index": [
+              0
+            ]
+          },
+          {
+            "action_id": 1,
+            "grid_index": [
+              1
+            ]
+          },
+          {
+            "action_id": 2,
+            "grid_index": [
+              2
+            ]
+          },
+          {
+            "action_id": 3,
+            "grid_index": [
+              3
+            ]
+          },
+          {
+            "action_id": 4,
+            "grid_index": [
+              4
+            ]
+          },
+          {
+            "action_id": 5,
+            "grid_index": [
+              5
+            ]
+          }
+        ]
+      }
+    },
+    "payoff_improvement_per_iteration": [
+      0.16242251438268646,
+      0.0
+    ],
+    "peak_memory": null,
+    "runtime_decomposition_s": {
+      "T_Bellman_s": 136.3573131000012,
+      "T_LOS_s": 15.77927610000188,
+      "T_accounted_s": 285.94851339997695,
+      "T_attacker_residual_s": 0.0,
+      "T_graph_s": 30.440629400000034,
+      "T_hazard_s": 101.53634169996076,
+      "T_local_s": 283.926175099994,
+      "T_local_search_control_s": 0.0002415000053588301,
+      "T_reconciliation_error_s": -2.0223382999829482,
+      "T_switch_s": 1.817234300011478,
+      "T_validation_s": 0.017477299996244255,
+      "T_wrapper_residual_s": 0.0
+    },
+    "search_path_length": 3,
+    "solution_scope": "local Strong Stackelberg equilibrium over an explicit finite Defender grid neighborhood; not a global or continuous-space optimality claim",
+    "strong_tie_break_verified": true,
+    "termination_status": "certified_local_sse",
+    "unique_defender_evaluations": 4,
+    "unique_feasible_neighbor_evaluations": 3,
+    "unknown_neighbor_diagnostics": [],
+    "visited_defender_actions": [
+      0,
+      1,
+      2
+    ]
+  },
+  "realized_grid": {
+    "altitude": {
+      "coordinates_map": [
+        0.0,
+        0.1,
+        0.2,
+        0.30000000000000004,
+        0.4,
+        0.5,
+        0.6000000000000001,
+        0.7000000000000001,
+        0.8,
+        0.9,
+        1.0,
+        1.1,
+        1.2000000000000002,
+        1.3,
+        1.4000000000000001,
+        1.5,
+        1.6,
+        1.7000000000000002,
+        1.8,
+        1.9000000000000001,
+        2.0,
+        2.1,
+        2.2,
+        2.3000000000000003,
+        2.4000000000000004,
+        2.5,
+        2.6,
+        2.7,
+        2.8000000000000003,
+        2.9000000000000004,
+        3.0,
+        3.1,
+        3.2,
+        3.3000000000000003,
+        3.4000000000000004,
+        3.5,
+        3.6,
+        3.7,
+        3.8000000000000003,
+        3.9000000000000004,
+        4.0,
+        4.1000000000000005,
+        4.2,
+        4.3,
+        4.4,
+        4.5,
+        4.6000000000000005,
+        4.7,
+        4.800000000000001,
+        4.9,
+        5.0
+      ],
+      "count": 51,
+      "maximum_map": 5.0,
+      "minimum_map": 0.0,
+      "realized_spacing_map": 0.1,
+      "requested_spacing_map": 0.1
+    },
+    "heading_bin_count": 72,
+    "heading_spacing_deg": 5.0,
+    "meters_per_map_unit": 100.0,
+    "motion_primitive_radius": 8,
+    "motion_primitive_step_cells": 1,
+    "requested_spatial_resolution_m": 10.0,
+    "x": {
+      "coordinates_map": [
+        -8.0,
+        -7.9,
+        -7.8,
+        -7.7,
+        -7.6,
+        -7.5,
+        -7.4,
+        -7.3,
+        -7.2,
+        -7.1,
+        -7.0,
+        -6.9,
+        -6.8,
+        -6.7,
+        -6.6,
+        -6.5,
+        -6.4,
+        -6.3,
+        -6.2,
+        -6.1,
+        -6.0,
+        -5.9,
+        -5.8,
+        -5.699999999999999,
+        -5.6,
+        -5.5,
+        -5.4,
+        -5.3,
+        -5.199999999999999,
+        -5.1,
+        -5.0,
+        -4.9,
+        -4.8,
+        -4.699999999999999,
+        -4.6,
+        -4.5,
+        -4.4,
+        -4.3,
+        -4.199999999999999,
+        -4.1,
+        -4.0,
+        -3.8999999999999995,
+        -3.8,
+        -3.7,
+        -3.5999999999999996,
+        -3.5,
+        -3.3999999999999995,
+        -3.3,
+        -3.1999999999999993,
+        -3.0999999999999996,
+        -3.0,
+        -2.8999999999999995,
+        -2.8,
+        -2.6999999999999993,
+        -2.5999999999999996,
+        -2.5,
+        -2.3999999999999995,
+        -2.3,
+        -2.1999999999999993,
+        -2.0999999999999996,
+        -2.0,
+        -1.8999999999999995,
+        -1.7999999999999998,
+        -1.6999999999999993,
+        -1.5999999999999996,
+        -1.5,
+        -1.3999999999999995,
+        -1.2999999999999998,
+        -1.1999999999999993,
+        -1.0999999999999996,
+        -1.0,
+        -0.8999999999999995,
+        -0.7999999999999998,
+        -0.6999999999999993,
+        -0.5999999999999996,
+        -0.5,
+        -0.39999999999999947,
+        -0.2999999999999998,
+        -0.1999999999999993,
+        -0.09999999999999964,
+        0.0,
+        0.09999999999999964,
+        0.20000000000000107,
+        0.3000000000000007,
+        0.40000000000000036,
+        0.5,
+        0.5999999999999996,
+        0.7000000000000011,
+        0.8000000000000007,
+        0.9000000000000004,
+        1.0,
+        1.0999999999999996,
+        1.200000000000001,
+        1.3000000000000007,
+        1.4000000000000004,
+        1.5,
+        1.6000000000000014,
+        1.700000000000001,
+        1.8000000000000007,
+        1.9000000000000004,
+        2.0,
+        2.1000000000000014,
+        2.200000000000001,
+        2.3000000000000007,
+        2.4000000000000004,
+        2.5,
+        2.6000000000000014,
+        2.700000000000001,
+        2.8000000000000007,
+        2.9000000000000004,
+        3.0,
+        3.1000000000000014,
+        3.200000000000001,
+        3.3000000000000007,
+        3.4000000000000004,
+        3.5,
+        3.6000000000000014,
+        3.700000000000001,
+        3.8000000000000007,
+        3.9000000000000004,
+        4.0,
+        4.100000000000001,
+        4.200000000000001,
+        4.300000000000001,
+        4.4,
+        4.5,
+        4.600000000000001,
+        4.700000000000001,
+        4.800000000000001,
+        4.9,
+        5.0,
+        5.100000000000001,
+        5.200000000000001,
+        5.300000000000001,
+        5.4,
+        5.5,
+        5.600000000000001,
+        5.700000000000001,
+        5.800000000000001,
+        5.9,
+        6.0,
+        6.100000000000001,
+        6.200000000000001,
+        6.300000000000001,
+        6.4,
+        6.5,
+        6.600000000000001,
+        6.700000000000001,
+        6.800000000000001,
+        6.9,
+        7.0,
+        7.100000000000001,
+        7.200000000000001,
+        7.300000000000001,
+        7.4,
+        7.5,
+        7.600000000000001,
+        7.700000000000001,
+        7.800000000000001,
+        7.9,
+        8.0
+      ],
+      "count": 161,
+      "maximum_map": 8.0,
+      "minimum_map": -8.0,
+      "realized_spacing_map": 0.09999999999999964,
+      "requested_spacing_map": 0.1
+    },
+    "y": {
+      "coordinates_map": [
+        -4.0,
+        -3.9,
+        -3.8,
+        -3.7,
+        -3.6,
+        -3.5,
+        -3.4,
+        -3.3,
+        -3.2,
+        -3.1,
+        -3.0,
+        -2.9,
+        -2.8,
+        -2.7,
+        -2.5999999999999996,
+        -2.5,
+        -2.4,
+        -2.3,
+        -2.2,
+        -2.0999999999999996,
+        -2.0,
+        -1.9,
+        -1.7999999999999998,
+        -1.6999999999999997,
+        -1.5999999999999996,
+        -1.5,
+        -1.4,
+        -1.2999999999999998,
+        -1.1999999999999997,
+        -1.0999999999999996,
+        -1.0,
+        -0.8999999999999999,
+        -0.7999999999999998,
+        -0.6999999999999997,
+        -0.5999999999999996,
+        -0.5,
+        -0.3999999999999999,
+        -0.2999999999999998,
+        -0.19999999999999973,
+        -0.09999999999999964,
+        0.0,
+        0.10000000000000053,
+        0.20000000000000018,
+        0.2999999999999998,
+        0.40000000000000036,
+        0.5,
+        0.6000000000000005,
+        0.7000000000000002,
+        0.8000000000000007,
+        0.9000000000000004,
+        1.0,
+        1.1000000000000005,
+        1.2000000000000002,
+        1.3000000000000007,
+        1.4000000000000004,
+        1.5,
+        1.6000000000000005,
+        1.7000000000000002,
+        1.8000000000000007,
+        1.9000000000000004,
+        2.0,
+        2.1000000000000005,
+        2.2,
+        2.3000000000000007,
+        2.4000000000000004,
+        2.5,
+        2.6000000000000005,
+        2.7,
+        2.8000000000000007,
+        2.9000000000000004,
+        3.0,
+        3.1000000000000005,
+        3.2,
+        3.3000000000000007,
+        3.4000000000000004,
+        3.5,
+        3.6000000000000005,
+        3.7,
+        3.8000000000000007,
+        3.9000000000000004,
+        4.0
+      ],
+      "count": 81,
+      "maximum_map": 4.0,
+      "minimum_map": -4.0,
+      "realized_spacing_map": 0.10000000000000009,
+      "requested_spacing_map": 0.1
+    }
+  },
+  "schema_version": "stage14.2C-v2",
+  "solution_identity": {
+    "attacker_objective": 0.28817767289340535,
+    "attacker_objective_cooptimal_candidate_ids": [
+      25,
+      34
+    ],
+    "cumulative_hazard": 0.2140598042740568,
+    "defender_objective_pod": 0.1926998964176631,
+    "detection_probability": 0.1926998964176631,
+    "equilibrium_scope": "local Strong Stackelberg equilibrium over an explicit finite Defender grid neighborhood; not a global or continuous-space optimality claim",
+    "feasible": true,
+    "leader_cooptimal_action_ids": null,
+    "mission_time_s": 80.15388086565352,
+    "selected_attacker_candidate_id": 25,
+    "selected_defender_action_id": 2,
+    "selected_sensor_position_map": [
+      7.0,
+      0.0,
+      0.0
+    ],
+    "sse_selected_follower_candidate_id": 25,
+    "tie_break_convention": {
+      "follower": "maximize Defender PoD among Attacker-objective co-optima, then lowest candidate ID",
+      "leader": "strict-improvement local search with deterministic topology order"
+    },
+    "trajectory_identity": {
+      "bellman_state_ids": [
+        14855322,
+        13882172,
+        12920541,
+        11958909,
+        11008798,
+        10058686,
+        9108574,
+        8158462,
+        7231609,
+        6304825,
+        5343261,
+        4346776,
+        3396303,
+        2445831,
+        1437392
+      ],
+      "sha256": "e2f9e283bb26da7fedd283e66b027e1a8c0d36c5edd32de0ff97584eefd9f6c2",
+      "switching_position_map": [
+        -0.5,
+        2.9999999992586286,
+        1.6751506654071169
+      ],
+      "virtual_target_state_id": 14855322
+    }
+  },
+  "solver_source_fingerprint": "decfe0664e1b8ed0ba4daf7e45642be9d3d263301e3119a8135e96f62735866d",
+  "stage14_2c_case_id": "local-sse-spatial-10p0m-ac4ab23935a4",
+  "stage14_2c_repetition_id": "local-sse-spatial-10p0m-ac4ab23935a4-r000",
+  "stage14_3_schema_version": "stage14.3-v2",
+  "state_and_game_size": {
+    "B": 72,
+    "B_effective": 11.42820667804491,
+    "N_C": 96,
+    "N_C_energy_feasible": 60,
+    "N_C_feasible": 4,
+    "N_C_goal_reachable": 4,
+    "N_C_powered_feasible": 72,
+    "N_C_raw": 96,
+    "N_C_unique": 96,
+    "N_C_unique_definition": "unique physical switching positions after rounding map coordinates to 12 decimal places; diagnostic count only, no solver deduplication",
+    "N_C_virtual_feasible": 4,
+    "N_D": 6,
+    "N_E": 15012298,
+    "N_E_goal_reachable": 463108124,
+    "N_S_active": 1313618,
+    "N_S_admissible": 43615584,
+    "N_S_cart": 47886552,
+    "N_S_goal_reachable": 32156176,
+    "N_eval": 4,
+    "N_h": 51,
+    "N_position_admissible": 605772,
+    "N_position_cart": 665091,
+    "N_psi": 72,
+    "N_x": 161,
+    "N_y": 81,
+    "Q": 8,
+    "per_evaluated_action": [
+      {
+        "N_C": 96,
+        "N_C_energy_feasible": 60,
+        "N_C_feasible": 0,
+        "N_C_goal_reachable": 0,
+        "N_C_powered_feasible": 72,
+        "N_C_raw": 96,
+        "N_C_unique": 96,
+        "N_C_virtual_feasible": 0,
+        "N_E": 0,
+        "N_S_active": 0,
+        "action_id": 0
+      },
+      {
+        "N_C": 96,
+        "N_C_energy_feasible": 60,
+        "N_C_feasible": 10,
+        "N_C_goal_reachable": 10,
+        "N_C_powered_feasible": 72,
+        "N_C_raw": 96,
+        "N_C_unique": 96,
+        "N_C_virtual_feasible": 10,
+        "N_E": 235232768,
+        "N_S_active": 17204102,
+        "action_id": 1
+      },
+      {
+        "N_C": 96,
+        "N_C_energy_feasible": 60,
+        "N_C_feasible": 0,
+        "N_C_goal_reachable": 0,
+        "N_C_powered_feasible": 72,
+        "N_C_raw": 96,
+        "N_C_unique": 96,
+        "N_C_virtual_feasible": 0,
+        "N_E": 0,
+        "N_S_active": 0,
+        "action_id": 3
+      },
+      {
+        "N_C": 96,
+        "N_C_energy_feasible": 60,
+        "N_C_feasible": 4,
+        "N_C_goal_reachable": 4,
+        "N_C_powered_feasible": 72,
+        "N_C_raw": 96,
+        "N_C_unique": 96,
+        "N_C_virtual_feasible": 4,
+        "N_E": 15012298,
+        "N_S_active": 1313618,
+        "action_id": 2
+      }
+    ]
+  },
+  "status": "completed",
+  "terrain_category": "centered_cube",
+  "timing": {
+    "schema_version": "stage14.2C-v2",
+    "totals": {
+      "T_Bellman_s": 136.3573131000012,
+      "T_LOS_s": 15.77927610000188,
+      "T_SSE_s": 283.926175099994,
+      "T_accounted_s": 285.94851339997695,
+      "T_attacker_BR_s": 253.46673820000433,
+      "T_attacker_residual_s": 0.0,
+      "T_graph_s": 30.440629400000034,
+      "T_hazard_s": 101.53634169996076,
+      "T_local_s": 283.926175099994,
+      "T_local_search_control_s": 0.0002415000053588301,
+      "T_reconciliation_error_s": -2.0223382999829482,
+      "T_switch_s": 1.817234300011478,
+      "T_validation_s": 0.017477299996244255,
+      "T_wrapper_residual_s": 0.0
+    }
+  }
+}

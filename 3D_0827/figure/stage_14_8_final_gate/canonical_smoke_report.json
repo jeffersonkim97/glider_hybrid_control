@@ -1,0 +1,45 @@
+{
+  "attempted_repetition_ids": [],
+  "canonical_identity_regression": {
+    "checks": {
+      "attacker_objective": true,
+      "completed": true,
+      "defender_objective": true,
+      "feasible": true,
+      "follower_tie_set": true,
+      "independent_replay": true,
+      "leader_tie_set": true,
+      "selected_attacker_candidate": true,
+      "selected_defender_action": true,
+      "solver_source_fingerprint": true,
+      "tie_convention": true,
+      "trajectory_identity": true
+    },
+    "passed": true
+  },
+  "case_configuration": {
+    "experiment_type": "stage14_8_final_gate",
+    "memory_limit_bytes": null,
+    "name": "canonical_centered_cube_25m_25m_5deg_final_smoke",
+    "parameters": {
+      "altitude_spacing_m": 25.0,
+      "heading_spacing_deg": 5.0,
+      "horizontal_spacing_m": 25.0,
+      "terrain_category": "centered_cube"
+    },
+    "process_semantics": "fresh cold process per repetition",
+    "sampling_interval_s": 0.02,
+    "sweep_variable": "horizontal_spacing_m",
+    "timeout_s": 300.0,
+    "worker_mode": "canonical"
+  },
+  "clean_smoke_was_executed": true,
+  "fresh_output_absent_at_this_invocation": false,
+  "initial_attempted_repetition_ids": [
+    "canonical-centered-cube-25m-25m-5deg-final-smoke-d6a356d48dd1-r000"
+  ],
+  "passed": true,
+  "skipped_repetition_ids": [
+    "canonical-centered-cube-25m-25m-5deg-final-smoke-d6a356d48dd1-r000"
+  ]
+}

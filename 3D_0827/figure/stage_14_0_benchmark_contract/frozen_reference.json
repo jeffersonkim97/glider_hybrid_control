@@ -1,0 +1,550 @@
+{
+  "configuration": {
+    "algorithm_policy": {
+      "alternative_solver_allowed": false,
+      "approximate_planning_allowed": false,
+      "reinforcement_learning_allowed": false,
+      "solver": "exact finite Strong Stackelberg enumeration with exact Bellman BR",
+      "strong_stackelberg_tie_break_preserved": true
+    },
+    "benchmark_purpose": "freeze exact finite-SSE benchmark contract",
+    "benchmark_stage": "14.0",
+    "canonical_resolution": {
+      "altitude_step_m": 25.0,
+      "heading_step_deg": 5.0,
+      "horizontal_step_m": 25.0
+    },
+    "defender_action_set": {
+      "ordered_and_deterministic": true,
+      "x_map": [
+        5.0,
+        6.0,
+        7.0,
+        8.0,
+        9.0,
+        10.0
+      ],
+      "y_map": 0.0,
+      "z_map": 0.0
+    },
+    "mission_and_model": {
+      "attacker_objective": {
+        "hazard_reference": 1.0,
+        "hazard_weight": 0.5,
+        "objective_id": "attacker_hazard_time_v2",
+        "time_reference_s": 221.23893805309734,
+        "time_weight": 0.5
+      },
+      "detection": {
+        "doppler_coefficient": 33250.0,
+        "radar_coefficient": 13000000.0,
+        "radar_rate_scale": 1.0,
+        "radial_velocity_rate_scale": 1.0,
+        "range_floor_m": 10.0,
+        "rcs_max": 1.0,
+        "rcs_min": 0.1
+      },
+      "deterministic_single_candidate_id": 25,
+      "discretization": {
+        "altitude_spacing_map": 0.25,
+        "hazard_quadrature_resolution": 8,
+        "heading_bin_count": 72,
+        "horizontal_spacing_map": 0.25,
+        "los_boundary_refinement_steps": 24,
+        "los_display_extension_factor": 4.0,
+        "los_probe_grid_size": 101,
+        "maximum_altitude_map": 5.0,
+        "minimum_altitude_map": 0.0,
+        "motion_primitive_radius": 8,
+        "motion_primitive_step_cells": 1,
+        "switching_contour_sample_count": 12,
+        "switching_radial_max": 4.0,
+        "switching_radial_min": 0.5,
+        "switching_radial_sample_count": 8,
+        "switching_radial_scales": [
+          0.5,
+          1.0,
+          1.5,
+          2.0,
+          2.5,
+          3.0,
+          3.5,
+          4.0
+        ],
+        "visualization_ray_count": 10
+      },
+      "glider": {
+        "aircraft_name": "Schleicher Ka 6 CR",
+        "best_glide_ratio": 10.0,
+        "best_glide_speed_mps": 22.22222222222222,
+        "goal_tolerance_m": 25.0,
+        "gravity_mps2": 9.81,
+        "mass_kg": 304.0,
+        "maximum_bank_deg": 30.0,
+        "powered_speed_mps": 22.22222222222222,
+        "source_url": "https://mobilit.belgium.be/sites/default/files/domain/Aviation/Veiligheid/Verslagen%20voorvallen/2010/2010_5.pdf",
+        "switch_energy_loss_height_m": 10.0
+      },
+      "goal_map": [
+        8.0,
+        0.0,
+        0.0
+      ],
+      "graph_bounds": {
+        "x_max": 8.0,
+        "x_min": -8.0,
+        "y_max": 4.0,
+        "y_min": -4.0
+      },
+      "physical_scale": {
+        "meters_per_map_unit": 100.0
+      },
+      "random_seed": 0,
+      "sensor_map": [
+        5.0,
+        0.0,
+        0.0
+      ],
+      "start_map": [
+        -8.0,
+        0.0,
+        0.0
+      ],
+      "terrain_category": "centered_cube"
+    },
+    "regression_tolerances": {
+      "attacker_objective_abs": 1e-12,
+      "cumulative_hazard_abs": 1e-10,
+      "defender_objective_abs": 1e-12,
+      "detection_probability_abs": 1e-12,
+      "mission_time_s_abs": 1e-09,
+      "replay_hazard_abs": 1e-10,
+      "replay_time_s_abs": 1e-09,
+      "sensor_position_map_abs": 1e-12
+    },
+    "schema_version": "stage14.0-v2",
+    "terrain_policy": {
+      "category": "centered_cube",
+      "fixed_for_all_stage14_sweeps": true,
+      "terrain_complexity_sweep_allowed": false
+    }
+  },
+  "defender_action_results": [
+    {
+      "N_E": 28797135,
+      "N_S_active": 1098590,
+      "attacker_objective": 0.18906376619883056,
+      "attacker_objective_cooptimal_candidate_ids": [
+        25,
+        34
+      ],
+      "candidate_counts": {
+        "N_C_energy_feasible": 60,
+        "N_C_feasible": 4,
+        "N_C_goal_reachable": 4,
+        "N_C_powered_feasible": 72,
+        "N_C_raw": 96,
+        "N_C_virtual_feasible": 4
+      },
+      "cumulative_hazard": 0.015157874403134961,
+      "defender_action_id": 0,
+      "defender_objective_pod": 0.015043572080443185,
+      "feasible": true,
+      "mission_time_s": 80.30302168020489,
+      "sensor_position_map": [
+        5.0,
+        0.0,
+        0.0
+      ],
+      "sse_follower_candidate_id": 34
+    },
+    {
+      "N_E": 28906433,
+      "N_S_active": 1102270,
+      "attacker_objective": 0.2009672691192693,
+      "attacker_objective_cooptimal_candidate_ids": [
+        25,
+        34
+      ],
+      "candidate_counts": {
+        "N_C_energy_feasible": 60,
+        "N_C_feasible": 10,
+        "N_C_goal_reachable": 10,
+        "N_C_powered_feasible": 72,
+        "N_C_raw": 96,
+        "N_C_virtual_feasible": 10
+      },
+      "cumulative_hazard": 0.03828398501435054,
+      "defender_action_id": 1,
+      "defender_objective_pod": 0.03756041634061908,
+      "feasible": true,
+      "mission_time_s": 80.45366221774071,
+      "sensor_position_map": [
+        6.0,
+        0.0,
+        0.0
+      ],
+      "sse_follower_candidate_id": 25
+    },
+    {
+      "N_E": 29025861,
+      "N_S_active": 1106522,
+      "attacker_objective": 0.30508429044799057,
+      "attacker_objective_cooptimal_candidate_ids": [
+        25,
+        34
+      ],
+      "candidate_counts": {
+        "N_C_energy_feasible": 60,
+        "N_C_feasible": 6,
+        "N_C_goal_reachable": 6,
+        "N_C_powered_feasible": 72,
+        "N_C_raw": 96,
+        "N_C_virtual_feasible": 6
+      },
+      "cumulative_hazard": 0.23497607999693024,
+      "defender_action_id": 2,
+      "defender_objective_pod": 0.2094102396879436,
+      "feasible": true,
+      "mission_time_s": 83.00719046439178,
+      "sensor_position_map": [
+        7.0,
+        0.0,
+        0.0
+      ],
+      "sse_follower_candidate_id": 25
+    },
+    {
+      "N_E": 29025128,
+      "N_S_active": 1106702,
+      "attacker_objective": 7.1945895064610585,
+      "attacker_objective_cooptimal_candidate_ids": [
+        27,
+        32
+      ],
+      "candidate_counts": {
+        "N_C_energy_feasible": 60,
+        "N_C_feasible": 2,
+        "N_C_goal_reachable": 2,
+        "N_C_powered_feasible": 72,
+        "N_C_raw": 96,
+        "N_C_virtual_feasible": 2
+      },
+      "cumulative_hazard": 14.00471017863201,
+      "defender_action_id": 3,
+      "defender_objective_pod": 0.9999991723787202,
+      "feasible": true,
+      "mission_time_s": 85.0594766128556,
+      "sensor_position_map": [
+        8.0,
+        0.0,
+        0.0
+      ],
+      "sse_follower_candidate_id": 27
+    },
+    {
+      "N_E": 10204169,
+      "N_S_active": 452500,
+      "attacker_objective": 0.26243164590739426,
+      "attacker_objective_cooptimal_candidate_ids": [
+        26,
+        33
+      ],
+      "candidate_counts": {
+        "N_C_energy_feasible": 60,
+        "N_C_feasible": 2,
+        "N_C_goal_reachable": 2,
+        "N_C_powered_feasible": 72,
+        "N_C_raw": 96,
+        "N_C_virtual_feasible": 2
+      },
+      "cumulative_hazard": 0.14667368219173124,
+      "defender_action_id": 4,
+      "defender_objective_pod": 0.13642426841687755,
+      "feasible": true,
+      "mission_time_s": 83.67026761572063,
+      "sensor_position_map": [
+        9.0,
+        0.0,
+        0.0
+      ],
+      "sse_follower_candidate_id": 26
+    },
+    {
+      "N_E": 28845239,
+      "N_S_active": 1101191,
+      "attacker_objective": 0.20703795057332955,
+      "attacker_objective_cooptimal_candidate_ids": [
+        27
+      ],
+      "candidate_counts": {
+        "N_C_energy_feasible": 60,
+        "N_C_feasible": 2,
+        "N_C_goal_reachable": 2,
+        "N_C_powered_feasible": 72,
+        "N_C_raw": 96,
+        "N_C_virtual_feasible": 2
+      },
+      "cumulative_hazard": 0.03148423772942084,
+      "defender_action_id": 5,
+      "defender_objective_pod": 0.0309937699282428,
+      "feasible": true,
+      "mission_time_s": 84.64417332239785,
+      "sensor_position_map": [
+        10.0,
+        0.0,
+        0.0
+      ],
+      "sse_follower_candidate_id": 27
+    }
+  ],
+  "environment_manifest_id": "42cd4ab234c39ea1234afb001ad9b0cf3510376fe87f41c8e7a3cc538f481744",
+  "gate_passed": true,
+  "independent_replay": {
+    "cumulative_hazard": 14.00471017863201,
+    "detection_probability": 0.9999991723787202,
+    "energy_margin_m": 357.79229564034824,
+    "goal_distance_m": 25.0,
+    "hazard_error": 0.0,
+    "messages": [
+      "independent replay passed all checks"
+    ],
+    "mission_time_s": 85.05947661285562,
+    "passed": true,
+    "time_error_s": 1.4210854715202004e-14
+  },
+  "quantity_definitions": {
+    "B": {
+      "definition": "configured maximum target-heading motion primitives considered per source by forward transition generation; sparse-backward exact attempt counts require Stage-14.1 instrumentation",
+      "unit": "attempts per source state"
+    },
+    "B_effective": {
+      "definition": "N_E/N_S_active; descriptive edge density, not attempted branching factor",
+      "unit": "valid edges per active state"
+    },
+    "N_C_energy_feasible": {
+      "definition": "candidates passing powered switching-state total-energy feasibility",
+      "unit": "candidates per Defender action"
+    },
+    "N_C_feasible": {
+      "definition": "candidates with a complete feasible powered-virtual-glide mission",
+      "unit": "candidates per Defender action"
+    },
+    "N_C_goal_reachable": {
+      "definition": "candidates with a virtual connection to the exact goal-backward set",
+      "unit": "candidates per Defender action"
+    },
+    "N_C_powered_feasible": {
+      "definition": "raw switching candidates with a feasible powered segment",
+      "unit": "candidates per Defender action"
+    },
+    "N_C_raw": {
+      "definition": "switching candidates generated before powered/energy/connection/reachability filters",
+      "unit": "candidates per Defender action"
+    },
+    "N_C_virtual_feasible": {
+      "definition": "candidates with at least one admissible virtual lattice connection",
+      "unit": "candidates per Defender action"
+    },
+    "N_D": {
+      "definition": "finite Defender action-set cardinality",
+      "unit": "actions"
+    },
+    "N_E": {
+      "definition": "valid edges in the active corridor actually processed by hazard precomputation and additive Bellman",
+      "unit": "edges"
+    },
+    "N_E_goal_reachable": {
+      "definition": "valid transition edges in the complete goal-backward-reachable graph before active-corridor restriction",
+      "unit": "edges"
+    },
+    "N_S_active": {
+      "definition": "goal-reachable states in the forward descendant corridor of feasible virtual connections and processed by hazard/Bellman",
+      "unit": "states"
+    },
+    "N_S_admissible": {
+      "definition": "Cartesian lattice states whose position is not strictly inside terrain solid",
+      "unit": "states"
+    },
+    "N_S_cart": {
+      "definition": "full Cartesian count N_x*N_y*N_h*N_psi before terrain or reachability filtering",
+      "unit": "states"
+    },
+    "N_S_goal_reachable": {
+      "definition": "exact goal-backward-reachable finite states after terrain/dynamics filtering",
+      "unit": "states"
+    },
+    "N_h": {
+      "definition": "altitude lattice node count",
+      "unit": "count"
+    },
+    "N_psi": {
+      "definition": "heading-bin count",
+      "unit": "count"
+    },
+    "N_x": {
+      "definition": "x-axis lattice node count",
+      "unit": "count"
+    },
+    "N_y": {
+      "definition": "y-axis lattice node count",
+      "unit": "count"
+    },
+    "Q": {
+      "definition": "configured trapezoidal detection-hazard samples for each processed edge",
+      "unit": "quadrature samples per edge"
+    }
+  },
+  "regression": {
+    "frozen_pre_stage14": {
+      "checks": {
+        "attacker_objective": false,
+        "cumulative_hazard": false,
+        "defender_objective_pod": false,
+        "detection_probability": false,
+        "feasible": true,
+        "independent_replay": true,
+        "mission_time_s": false,
+        "replay_hazard": true,
+        "replay_time": true,
+        "selected_attacker_candidate_id": false,
+        "selected_defender_action_id": false,
+        "selected_sensor_position_map": false
+      },
+      "expected_pre_stage14_solution": {
+        "attacker_objective": 0.944086144839464,
+        "cumulative_hazard": 1.520905739469603,
+        "defender_objective_pod": 0.7814861193516704,
+        "detection_probability": 0.7814861193516704,
+        "feasible": true,
+        "mission_time_s": 81.25366155073556,
+        "selected_attacker_candidate_id": 26,
+        "selected_defender_action_id": 2,
+        "selected_sensor_position_map": [
+          7.5,
+          0.0,
+          0.0
+        ]
+      },
+      "passed": false,
+      "tolerances": {
+        "attacker_objective_abs": 1e-12,
+        "cumulative_hazard_abs": 1e-10,
+        "defender_objective_abs": 1e-12,
+        "detection_probability_abs": 1e-12,
+        "mission_time_s_abs": 1e-09,
+        "replay_hazard_abs": 1e-10,
+        "replay_time_s_abs": 1e-09,
+        "sensor_position_map_abs": 1e-12
+      }
+    },
+    "scenario_rebaseline_authorized": true,
+    "scenario_rebaseline_reason": "Defender grid changed from the legacy three-point prototype to the approved uniform six-point grid [5, 6, 7, 8, 9, 10].",
+    "solver_behavior_unchanged": false,
+    "solver_source_fingerprint_matches_manifest": true,
+    "validated_notebook": {
+      "checks": {
+        "active_edges": false,
+        "active_states": false,
+        "attacker_objective": false,
+        "cartesian_states": true,
+        "cumulative_hazard": false,
+        "defender_objective": false,
+        "detection_probability": false,
+        "goal_reachable_states": true,
+        "mission_time": false,
+        "selected_attacker_candidate_id": false,
+        "selected_defender_action_id": false,
+        "sensor_position": false,
+        "validated_notebook_gate": true
+      },
+      "passed": false,
+      "stage12_summary": "figure\\stage_12_integrated_notebook\\stage12_integrated_summary.json",
+      "time_history_summary": "figure\\stage_12_integrated_notebook\\cell_14_trajectory_time_history_summary.json"
+    }
+  },
+  "schema_version": "stage14.0-v2",
+  "solution_identity": {
+    "attacker_objective": 7.1945895064610585,
+    "attacker_objective_cooptimal_candidate_ids": [
+      27,
+      32
+    ],
+    "cumulative_hazard": 14.00471017863201,
+    "defender_objective_pod": 0.9999991723787202,
+    "detection_probability": 0.9999991723787202,
+    "equilibrium_scope": "exact exhaustive Stackelberg solution over the configured finite Defender actions, switching candidates, and Bellman lattice",
+    "feasible": true,
+    "leader_cooptimal_action_ids": [
+      3
+    ],
+    "mission_time_s": 85.0594766128556,
+    "selected_attacker_candidate_id": 27,
+    "selected_defender_action_id": 3,
+    "selected_leader_tie_break_action_id": 3,
+    "selected_sensor_position_map": [
+      8.0,
+      0.0,
+      0.0
+    ],
+    "sse_selected_follower_candidate_id": 27,
+    "tie_break_convention": {
+      "follower": "maximize Defender PoD among Attacker-objective co-optima, then lowest candidate ID",
+      "leader": "stable Defender action order among payoff ties"
+    },
+    "trajectory_identity": {
+      "bellman_state_ids": [
+        2894826,
+        2735775,
+        2572485,
+        2418048,
+        2263680,
+        2109312,
+        1954944,
+        1800576,
+        1646208,
+        1491840,
+        1337472,
+        1183104,
+        1028736,
+        874368,
+        720000,
+        565632,
+        411264,
+        233993
+      ],
+      "sha256": "643ae13a425fd1b38793af57bb9e4db94aa6538532a31aa712f58ce26636f3e8",
+      "switching_position_map": [
+        -1.0,
+        2.9999999976595366,
+        4.911895617962234
+      ],
+      "virtual_target_state_id": 2894826
+    }
+  },
+  "solver_source_fingerprint": "decfe0664e1b8ed0ba4daf7e45642be9d3d263301e3119a8135e96f62735866d",
+  "state_and_game_size": {
+    "B": 72,
+    "B_effective": 26.226687943095794,
+    "N_C_energy_feasible": 60,
+    "N_C_feasible": 2,
+    "N_C_goal_reachable": 2,
+    "N_C_powered_feasible": 72,
+    "N_C_raw": 96,
+    "N_C_virtual_feasible": 2,
+    "N_D": 6,
+    "N_E": 29025128,
+    "N_E_goal_reachable": 64893102,
+    "N_S_active": 1106702,
+    "N_S_admissible": 3000240,
+    "N_S_cart": 3243240,
+    "N_S_goal_reachable": 2316566,
+    "N_h": 21,
+    "N_position_admissible": 41670,
+    "N_position_cart": 45045,
+    "N_psi": 72,
+    "N_x": 65,
+    "N_y": 33,
+    "Q": 8
+  }
+}

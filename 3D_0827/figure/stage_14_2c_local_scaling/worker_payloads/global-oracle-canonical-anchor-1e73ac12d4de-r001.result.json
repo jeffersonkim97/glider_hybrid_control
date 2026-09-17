@@ -1,0 +1,244 @@
+{
+  "algorithm_variant": "global_oracle",
+  "complete_configuration": {
+    "case_id": "global-oracle-canonical-anchor-1e73ac12d4de",
+    "experiment_type": "stage14_2c_global_oracle_baseline",
+    "memory_limit_bytes": 4294967296,
+    "name": "global_oracle_canonical_anchor",
+    "parameters": {
+      "approximate_planner": false,
+      "baseline_anchor": 0,
+      "defender_action_count": 3,
+      "defender_domain_x_max": 7.5,
+      "defender_domain_x_min": 5.0,
+      "defender_grid_policy": "canonical_three",
+      "heading_spacing_deg": 5.0,
+      "initial_defender_action_id": 0,
+      "multi_start": false,
+      "r_neighbor": 1,
+      "reinforcement_learning": false,
+      "spatial_resolution_m": 25.0,
+      "switching_contour_sample_count": 12,
+      "switching_radial_sample_count": 8,
+      "terrain_category": "centered_cube"
+    },
+    "process_semantics": "fresh cold process per repetition",
+    "repetition_id": "global-oracle-canonical-anchor-1e73ac12d4de-r001",
+    "sampling_interval_s": 0.02,
+    "sweep_variable": "baseline_anchor",
+    "timeout_s": 300.0,
+    "worker_mode": "global_oracle"
+  },
+  "exactness": {
+    "all_evaluated_attacker_responses_exact": true,
+    "global_defender_enumeration_complete": true,
+    "independent_replay_passed": true,
+    "strong_follower_tie_break_verified": true
+  },
+  "independent_replay": {
+    "passed": true
+  },
+  "local_search": null,
+  "oracle_metadata": {
+    "global_optimality_scope": "exact exhaustive Stackelberg solution over the configured finite Defender actions, switching candidates, and Bellman lattice",
+    "role": "tractable finite global oracle/reference only"
+  },
+  "schema_version": "stage14.2C-v1",
+  "solution_identity": {
+    "attacker_objective": 0.944086144839464,
+    "attacker_objective_cooptimal_candidate_ids": [
+      26,
+      33
+    ],
+    "cumulative_hazard": 1.520905739469603,
+    "defender_objective_pod": 0.7814861193516704,
+    "detection_probability": 0.7814861193516704,
+    "equilibrium_scope": "exact exhaustive Stackelberg solution over the configured finite Defender actions, switching candidates, and Bellman lattice",
+    "feasible": true,
+    "leader_cooptimal_action_ids": [
+      2
+    ],
+    "mission_time_s": 81.25366155073556,
+    "selected_attacker_candidate_id": 26,
+    "selected_defender_action_id": 2,
+    "selected_sensor_position_map": [
+      7.5,
+      0.0,
+      0.0
+    ],
+    "sse_selected_follower_candidate_id": 26,
+    "tie_break_convention": {
+      "follower": "maximize Defender PoD among Attacker-objective co-optima, then lowest candidate ID",
+      "leader": "stable configured action order"
+    },
+    "trajectory_identity": {
+      "bellman_state_ids": [
+        1982230,
+        1827792,
+        1668883,
+        1509831,
+        1351150,
+        1196712,
+        1042344,
+        883726,
+        729288,
+        574920,
+        420552,
+        247962,
+        84227
+      ],
+      "sha256": "827fe8228491a0469c901aed676fd640afac5870b094f2d62494678cd8acfb03",
+      "switching_position_map": [
+        -0.75,
+        2.9999999984959196,
+        3.287708153215382
+      ],
+      "virtual_target_state_id": 1982230
+    }
+  },
+  "solver_source_fingerprint": "3c70e0017f33fd017d4b36c3e688f7385e3c83a822d7d97cd5df8a80037e8d13",
+  "stage14_2c_case_id": "global-oracle-canonical-anchor-1e73ac12d4de",
+  "stage14_2c_repetition_id": "global-oracle-canonical-anchor-1e73ac12d4de-r001",
+  "state_and_game_size": {
+    "B": 72,
+    "B_effective": 26.23060488318709,
+    "N_C": 96,
+    "N_C_feasible": 6,
+    "N_D": 3,
+    "N_E": 29035732,
+    "N_E_goal_reachable": 64893102,
+    "N_S_active": 1106941,
+    "N_S_admissible": 3000240,
+    "N_S_cart": 3243240,
+    "N_S_goal_reachable": 2316566,
+    "N_eval": 3,
+    "N_h": 21,
+    "N_position_admissible": 41670,
+    "N_position_cart": 45045,
+    "N_psi": 72,
+    "N_x": 65,
+    "N_y": 33,
+    "Q": 8,
+    "per_evaluated_action": [
+      {
+        "N_C": 96,
+        "N_C_feasible": 4,
+        "N_E": 28797135,
+        "N_S_active": 1098590,
+        "action_id": 0
+      },
+      {
+        "N_C": 96,
+        "N_C_feasible": 6,
+        "N_E": 29025861,
+        "N_S_active": 1106522,
+        "action_id": 1
+      },
+      {
+        "N_C": 96,
+        "N_C_feasible": 6,
+        "N_E": 29035732,
+        "N_S_active": 1106941,
+        "action_id": 2
+      }
+    ]
+  },
+  "status": "completed",
+  "terrain_category": "centered_cube",
+  "timing": {
+    "T_SSE_accounted_s": 58.409136999998736,
+    "T_SSE_reconciliation_error_s": 0.0,
+    "coupling_notes": {
+      "T_attacker_unclassified_s": "The current solver couples forward-corridor restriction, objective-edge assembly, candidate replay, and final selection. Stage 14.1 does not invent a finer split.",
+      "T_defender_overhead_s": "Derived from T_SSE minus shared graph and exact Attacker-BR wall times; it includes SSE follower tie-breaking and final leader comparison.",
+      "T_graph_s": "The canonical solver reuses one exact goal-backward graph. The shared build is timed once; tiny per-action prebuilt-graph access checks remain in the Attacker graph timer and are retained rather than reassigned.",
+      "T_switch_s": "Reported both as a reliable aggregate and as candidate-generation, energy-filter, and virtual-connection subcomponents."
+    },
+    "nonoverlapping_T_SSE_component_keys": [
+      "T_graph_s",
+      "T_LOS_s",
+      "T_switch_s",
+      "T_hazard_s",
+      "T_Bellman_s",
+      "T_attacker_unclassified_s",
+      "T_defender_overhead_s"
+    ],
+    "per_defender_action": [
+      {
+        "T_BR_accounted_s": 16.08664990000034,
+        "T_BR_s": 16.08664990000034,
+        "T_Bellman_s": 4.153881600001114,
+        "T_LOS_s": 0.980880299999626,
+        "T_attacker_unclassified_s": 8.682173900000635,
+        "T_graph_access_or_build_s": 4.899999112240039e-06,
+        "T_hazard_s": 2.1400932999968063,
+        "T_switch_candidate_generation_s": 0.03486140000131854,
+        "T_switch_energy_filter_s": 0.05863060000046971,
+        "T_switch_s": 0.12961590000304568,
+        "T_switch_virtual_connection_s": 0.036123900001257425,
+        "defender_action_id": 0,
+        "feasible": true
+      },
+      {
+        "T_BR_accounted_s": 18.32850369999869,
+        "T_BR_s": 18.32850369999869,
+        "T_Bellman_s": 3.81788620000043,
+        "T_LOS_s": 0.949540599998727,
+        "T_attacker_unclassified_s": 11.623880800032566,
+        "T_graph_access_or_build_s": 4.100000296602957e-06,
+        "T_hazard_s": 1.7950009999658505,
+        "T_switch_candidate_generation_s": 0.03409019999890006,
+        "T_switch_energy_filter_s": 0.06004680000114604,
+        "T_switch_s": 0.14219100000082108,
+        "T_switch_virtual_connection_s": 0.04805400000077498,
+        "defender_action_id": 1,
+        "feasible": true
+      },
+      {
+        "T_BR_accounted_s": 22.427572799999325,
+        "T_BR_s": 22.427572799999325,
+        "T_Bellman_s": 3.4342782000003353,
+        "T_LOS_s": 0.9315428000008978,
+        "T_attacker_unclassified_s": 16.370998299977146,
+        "T_graph_access_or_build_s": 3.300001480965875e-06,
+        "T_hazard_s": 1.555208500018125,
+        "T_switch_candidate_generation_s": 0.03321049999976822,
+        "T_switch_energy_filter_s": 0.057386700000279234,
+        "T_switch_s": 0.13554170000134036,
+        "T_switch_virtual_connection_s": 0.04494450000129291,
+        "defender_action_id": 2,
+        "feasible": true
+      }
+    ],
+    "schema_version": "stage14.1-v1",
+    "timing_definitions": {
+      "T_Bellman_s": "sum of additive Bellman numerical solve time",
+      "T_LOS_s": "sum of LOS/tangent geometry time over Defender actions",
+      "T_SSE_s": "wall time inside run_finite_stackelberg for the complete finite leader solve",
+      "T_attacker_unclassified_s": "exact Attacker-BR residual: corridor setup, option replay/objective evaluation, selection, and other glue",
+      "T_defender_overhead_s": "leader/follower tie selection and loop overhead outside shared graph and Attacker-BR calls",
+      "T_graph_s": "shared goal-backward graph construction plus per-action graph access/build time",
+      "T_hazard_s": "sum of active-edge detection-hazard precomputation time",
+      "T_switch_s": "candidate generation + powered/energy filtering + virtual-connection processing",
+      "T_validation_s": "independent replay after T_SSE; excluded from T_SSE accounting"
+    },
+    "totals": {
+      "T_Bellman_s": 11.40604600000188,
+      "T_LOS_s": 2.861963699999251,
+      "T_SSE_s": 58.409136999998736,
+      "T_attacker_BR_s": 56.85119300000042,
+      "T_attacker_unclassified_s": 36.677053000010346,
+      "T_defender_overhead_s": 0.008816800002023228,
+      "T_graph_per_action_s": 1.2300000889808871e-05,
+      "T_graph_s": 1.5576060999992478,
+      "T_graph_shared_s": 1.557593799998358,
+      "T_hazard_s": 5.490302799980782,
+      "T_switch_candidate_generation_s": 0.10216209999998682,
+      "T_switch_energy_filter_s": 0.17606410000189499,
+      "T_switch_s": 0.4073486000052071,
+      "T_switch_virtual_connection_s": 0.1291224000033253,
+      "T_validation_s": 0.005383899999287678
+    },
+    "validation_included_in_T_SSE": false
+  }
+}

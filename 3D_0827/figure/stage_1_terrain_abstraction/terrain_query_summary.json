@@ -1,0 +1,542 @@
+{
+  "centered_cube": {
+    "rays": [
+      {
+        "direction": [
+          -9.0,
+          0.0,
+          0.0
+        ],
+        "hit": {
+          "distance": 7.0,
+          "mesh_index": 1,
+          "point": [
+            2.0,
+            0.0,
+            2.0
+          ],
+          "triangle_index": 6
+        },
+        "include_ground": true,
+        "name": "obstacle first hit",
+        "origin": [
+          9.0,
+          0.0,
+          2.0
+        ]
+      },
+      {
+        "direction": [
+          0.0,
+          0.0,
+          -1.0
+        ],
+        "hit": {
+          "distance": 5.0,
+          "mesh_index": 0,
+          "point": [
+            8.0,
+            -6.0,
+            0.0
+          ],
+          "triangle_index": 0
+        },
+        "include_ground": true,
+        "name": "ground first hit",
+        "origin": [
+          8.0,
+          -6.0,
+          5.0
+        ]
+      },
+      {
+        "direction": [
+          -3.0,
+          0.0,
+          0.0
+        ],
+        "hit": {
+          "distance": 3.0,
+          "mesh_index": 0,
+          "point": [
+            2.0,
+            2.0,
+            4.0
+          ],
+          "triangle_index": 6
+        },
+        "include_ground": false,
+        "name": "terrain-edge grazing hit",
+        "origin": [
+          5.0,
+          2.0,
+          4.0
+        ]
+      }
+    ],
+    "segments": [
+      {
+        "end": [
+          9.0,
+          0.0,
+          2.0
+        ],
+        "intersects_solid": true,
+        "name": "through terrain center",
+        "start": [
+          -9.0,
+          0.0,
+          2.0
+        ]
+      },
+      {
+        "end": [
+          9.0,
+          0.0,
+          2.0
+        ],
+        "intersects_solid": true,
+        "name": "begins inside terrain",
+        "start": [
+          0.0,
+          0.0,
+          2.0
+        ]
+      },
+      {
+        "end": [
+          9.0,
+          7.5,
+          2.0
+        ],
+        "intersects_solid": false,
+        "name": "outside terrain",
+        "start": [
+          -9.0,
+          7.5,
+          2.0
+        ]
+      },
+      {
+        "end": [
+          9.0,
+          0.0,
+          4.0
+        ],
+        "intersects_solid": false,
+        "name": "top-surface tangent",
+        "start": [
+          -9.0,
+          0.0,
+          4.0
+        ]
+      }
+    ],
+    "terrain": "centered_cube"
+  },
+  "offset_cube_left": {
+    "rays": [
+      {
+        "direction": [
+          -9.0,
+          0.0,
+          0.0
+        ],
+        "hit": {
+          "distance": 7.0,
+          "mesh_index": 1,
+          "point": [
+            2.0,
+            -3.0,
+            2.0
+          ],
+          "triangle_index": 6
+        },
+        "include_ground": true,
+        "name": "obstacle first hit",
+        "origin": [
+          9.0,
+          -3.0,
+          2.0
+        ]
+      },
+      {
+        "direction": [
+          0.0,
+          0.0,
+          -1.0
+        ],
+        "hit": {
+          "distance": 5.0,
+          "mesh_index": 0,
+          "point": [
+            8.0,
+            -6.0,
+            0.0
+          ],
+          "triangle_index": 0
+        },
+        "include_ground": true,
+        "name": "ground first hit",
+        "origin": [
+          8.0,
+          -6.0,
+          5.0
+        ]
+      },
+      {
+        "direction": [
+          -3.0,
+          0.0,
+          0.0
+        ],
+        "hit": {
+          "distance": 3.0,
+          "mesh_index": 0,
+          "point": [
+            2.0,
+            -1.0,
+            4.0
+          ],
+          "triangle_index": 6
+        },
+        "include_ground": false,
+        "name": "terrain-edge grazing hit",
+        "origin": [
+          5.0,
+          -1.0,
+          4.0
+        ]
+      }
+    ],
+    "segments": [
+      {
+        "end": [
+          9.0,
+          -3.0,
+          2.0
+        ],
+        "intersects_solid": true,
+        "name": "through terrain center",
+        "start": [
+          -9.0,
+          -3.0,
+          2.0
+        ]
+      },
+      {
+        "end": [
+          9.0,
+          -3.0,
+          2.0
+        ],
+        "intersects_solid": true,
+        "name": "begins inside terrain",
+        "start": [
+          0.0,
+          -3.0,
+          2.0
+        ]
+      },
+      {
+        "end": [
+          9.0,
+          7.5,
+          2.0
+        ],
+        "intersects_solid": false,
+        "name": "outside terrain",
+        "start": [
+          -9.0,
+          7.5,
+          2.0
+        ]
+      },
+      {
+        "end": [
+          9.0,
+          -3.0,
+          4.0
+        ],
+        "intersects_solid": false,
+        "name": "top-surface tangent",
+        "start": [
+          -9.0,
+          -3.0,
+          4.0
+        ]
+      }
+    ],
+    "terrain": "offset_cube_left"
+  },
+  "offset_cube_right": {
+    "rays": [
+      {
+        "direction": [
+          -9.0,
+          0.0,
+          0.0
+        ],
+        "hit": {
+          "distance": 7.0,
+          "mesh_index": 1,
+          "point": [
+            2.0,
+            3.0,
+            2.0
+          ],
+          "triangle_index": 6
+        },
+        "include_ground": true,
+        "name": "obstacle first hit",
+        "origin": [
+          9.0,
+          3.0,
+          2.0
+        ]
+      },
+      {
+        "direction": [
+          0.0,
+          0.0,
+          -1.0
+        ],
+        "hit": {
+          "distance": 5.0,
+          "mesh_index": 0,
+          "point": [
+            8.0,
+            -6.0,
+            0.0
+          ],
+          "triangle_index": 0
+        },
+        "include_ground": true,
+        "name": "ground first hit",
+        "origin": [
+          8.0,
+          -6.0,
+          5.0
+        ]
+      },
+      {
+        "direction": [
+          -3.0,
+          0.0,
+          0.0
+        ],
+        "hit": {
+          "distance": 3.0,
+          "mesh_index": 0,
+          "point": [
+            2.0,
+            5.0,
+            4.0
+          ],
+          "triangle_index": 6
+        },
+        "include_ground": false,
+        "name": "terrain-edge grazing hit",
+        "origin": [
+          5.0,
+          5.0,
+          4.0
+        ]
+      }
+    ],
+    "segments": [
+      {
+        "end": [
+          9.0,
+          3.0,
+          2.0
+        ],
+        "intersects_solid": true,
+        "name": "through terrain center",
+        "start": [
+          -9.0,
+          3.0,
+          2.0
+        ]
+      },
+      {
+        "end": [
+          9.0,
+          3.0,
+          2.0
+        ],
+        "intersects_solid": true,
+        "name": "begins inside terrain",
+        "start": [
+          0.0,
+          3.0,
+          2.0
+        ]
+      },
+      {
+        "end": [
+          9.0,
+          7.5,
+          2.0
+        ],
+        "intersects_solid": false,
+        "name": "outside terrain",
+        "start": [
+          -9.0,
+          7.5,
+          2.0
+        ]
+      },
+      {
+        "end": [
+          9.0,
+          3.0,
+          4.0
+        ],
+        "intersects_solid": false,
+        "name": "top-surface tangent",
+        "start": [
+          -9.0,
+          3.0,
+          4.0
+        ]
+      }
+    ],
+    "terrain": "offset_cube_right"
+  },
+  "stepped_pyramid": {
+    "rays": [
+      {
+        "direction": [
+          -9.0,
+          0.0,
+          0.0
+        ],
+        "hit": {
+          "distance": 6.75,
+          "mesh_index": 1,
+          "point": [
+            2.25,
+            0.0,
+            2.0
+          ],
+          "triangle_index": 19
+        },
+        "include_ground": true,
+        "name": "obstacle first hit",
+        "origin": [
+          9.0,
+          0.0,
+          2.0
+        ]
+      },
+      {
+        "direction": [
+          0.0,
+          0.0,
+          -1.0
+        ],
+        "hit": {
+          "distance": 5.0,
+          "mesh_index": 0,
+          "point": [
+            8.0,
+            -6.0,
+            0.0
+          ],
+          "triangle_index": 0
+        },
+        "include_ground": true,
+        "name": "ground first hit",
+        "origin": [
+          8.0,
+          -6.0,
+          5.0
+        ]
+      },
+      {
+        "direction": [
+          -3.0,
+          0.0,
+          0.0
+        ],
+        "hit": {
+          "distance": 3.0,
+          "mesh_index": 0,
+          "point": [
+            1.5,
+            1.5,
+            4.0
+          ],
+          "triangle_index": 30
+        },
+        "include_ground": false,
+        "name": "terrain-edge grazing hit",
+        "origin": [
+          4.5,
+          1.5,
+          4.0
+        ]
+      }
+    ],
+    "segments": [
+      {
+        "end": [
+          9.0,
+          0.0,
+          2.0
+        ],
+        "intersects_solid": true,
+        "name": "through terrain center",
+        "start": [
+          -9.0,
+          0.0,
+          2.0
+        ]
+      },
+      {
+        "end": [
+          9.0,
+          0.0,
+          2.0
+        ],
+        "intersects_solid": true,
+        "name": "begins inside terrain",
+        "start": [
+          0.0,
+          0.0,
+          2.0
+        ]
+      },
+      {
+        "end": [
+          9.0,
+          7.5,
+          2.0
+        ],
+        "intersects_solid": false,
+        "name": "outside terrain",
+        "start": [
+          -9.0,
+          7.5,
+          2.0
+        ]
+      },
+      {
+        "end": [
+          9.0,
+          0.0,
+          4.0
+        ],
+        "intersects_solid": false,
+        "name": "top-surface tangent",
+        "start": [
+          -9.0,
+          0.0,
+          4.0
+        ]
+      }
+    ],
+    "terrain": "stepped_pyramid"
+  }
+}

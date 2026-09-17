@@ -1,0 +1,12 @@
+{
+  "checks": {
+    "frozen_solution_regression_passed": true,
+    "independent_replay_passed": true,
+    "instrumentation_gate_passed": true,
+    "profile_status_completed": true,
+    "profiled_vs_unprofiled_passed": true,
+    "solution_identity_exact_match": true,
+    "solver_source_fingerprint_match": true
+  },
+  "passed": true
+}

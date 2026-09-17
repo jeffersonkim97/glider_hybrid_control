@@ -1,0 +1,39 @@
+{
+  "T_SSE_attempt_s": 0.99892490000002,
+  "case_id": "explicit_infeasible_centered_cube_small",
+  "component_timing_available": false,
+  "component_timing_unavailable_reason": "The existing exact solver raises after confirming that all Defender actions have infeasible Attacker responses and does not return its partial FiniteStackelbergRun. Stage 14.1 preserves that behavior.",
+  "configuration": {
+    "defender_x_map": [
+      5.0
+    ],
+    "discretization": {
+      "altitude_spacing_map": 1.0,
+      "hazard_quadrature_resolution": 8,
+      "heading_bin_count": 8,
+      "horizontal_spacing_map": 4.0,
+      "los_boundary_refinement_steps": 24,
+      "los_display_extension_factor": 4.0,
+      "los_probe_grid_size": 101,
+      "maximum_altitude_map": 5.0,
+      "minimum_altitude_map": 0.0,
+      "motion_primitive_radius": 1,
+      "motion_primitive_step_cells": 1,
+      "switching_contour_sample_count": 2,
+      "switching_radial_max": 0.5,
+      "switching_radial_min": 0.5,
+      "switching_radial_sample_count": 1,
+      "switching_radial_scales": [
+        0.5
+      ],
+      "visualization_ray_count": 10
+    },
+    "terrain_category": "centered_cube",
+    "vehicle_and_objectives_unchanged": true
+  },
+  "failure_message": "no Defender action has a feasible Attacker response",
+  "failure_type": "RuntimeError",
+  "schema_version": "stage14.1-v1",
+  "status": "model_infeasible",
+  "terrain_category": "centered_cube"
+}

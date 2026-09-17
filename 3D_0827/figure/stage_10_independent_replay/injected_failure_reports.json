@@ -1,0 +1,162 @@
+{
+  "R2_injected_terrain_collision": {
+    "available_specific_height_m": 166.30045328951104,
+    "energy_margin_m": -29.54539701165217,
+    "first_failure_position_map": [
+      0.0,
+      0.0,
+      2.0
+    ],
+    "first_failure_segment_index": 1,
+    "goal_distance_m": 20.0,
+    "recomputed_cumulative_hazard": 0.01702889770873774,
+    "recomputed_detection_probability": 0.016884725554439626,
+    "recomputed_mission_time_s": 115.8776395246776,
+    "report": {
+      "energy_valid": false,
+      "goal_error_m": 0.0,
+      "goal_valid": true,
+      "hazard_consistent": false,
+      "hazard_error": 0.00021705273028556002,
+      "los_phase_valid": true,
+      "max_turn_violation": 0.0,
+      "messages": [
+        "trajectory intersects terrain",
+        "turn-rate or heading/chord constraint violated",
+        "energy or altitude budget violated",
+        "recomputed mission time differs from optimizer output",
+        "recomputed hazard differs from optimizer output"
+      ],
+      "min_terrain_clearance": null,
+      "passed": false,
+      "terrain_clear": false,
+      "time_consistent": false,
+      "time_error_s": 25.19686645144985,
+      "turn_constraints_valid": false
+    },
+    "required_specific_height_m": 195.8458503011632,
+    "switching_energy_error_j": 0.0,
+    "switching_heading_error_rad": 0.0,
+    "switching_speed_error_mps": 3.552713678800501e-15
+  },
+  "R3_injected_turn_violation": {
+    "available_specific_height_m": 166.30045328951104,
+    "energy_margin_m": 26.447639547125334,
+    "first_failure_position_map": [
+      1.0,
+      3.0,
+      1.6
+    ],
+    "first_failure_segment_index": 1,
+    "goal_distance_m": 20.0,
+    "recomputed_cumulative_hazard": 0.017245950439023303,
+    "recomputed_detection_probability": 0.01709809025241069,
+    "recomputed_mission_time_s": 90.68077307322774,
+    "report": {
+      "energy_valid": true,
+      "goal_error_m": 0.0,
+      "goal_valid": true,
+      "hazard_consistent": true,
+      "hazard_error": 3.469446951953614e-18,
+      "los_phase_valid": true,
+      "max_turn_violation": 2.2288396675860698,
+      "messages": [
+        "turn-rate or heading/chord constraint violated"
+      ],
+      "min_terrain_clearance": null,
+      "passed": false,
+      "terrain_clear": true,
+      "time_consistent": true,
+      "time_error_s": 1.4210854715202004e-14,
+      "turn_constraints_valid": false
+    },
+    "required_specific_height_m": 139.8528137423857,
+    "switching_energy_error_j": 0.0,
+    "switching_heading_error_rad": 0.0,
+    "switching_speed_error_mps": 3.552713678800501e-15
+  },
+  "R4_injected_time_inconsistency": {
+    "available_specific_height_m": 166.30045328951104,
+    "energy_margin_m": 26.447639547125334,
+    "first_failure_position_map": [
+      8.0,
+      0.0,
+      0.2
+    ],
+    "first_failure_segment_index": null,
+    "goal_distance_m": 20.0,
+    "recomputed_cumulative_hazard": 0.017245950439023303,
+    "recomputed_detection_probability": 0.01709809025241069,
+    "recomputed_mission_time_s": 90.68077307322774,
+    "report": {
+      "energy_valid": true,
+      "goal_error_m": 0.0,
+      "goal_valid": true,
+      "hazard_consistent": true,
+      "hazard_error": 3.469446951953614e-18,
+      "los_phase_valid": true,
+      "max_turn_violation": 0.0,
+      "messages": [
+        "recomputed mission time differs from optimizer output"
+      ],
+      "min_terrain_clearance": null,
+      "passed": false,
+      "terrain_clear": true,
+      "time_consistent": false,
+      "time_error_s": 0.00010000000001753051,
+      "turn_constraints_valid": true
+    },
+    "required_specific_height_m": 139.8528137423857,
+    "switching_energy_error_j": 0.0,
+    "switching_heading_error_rad": 0.0,
+    "switching_speed_error_mps": 3.552713678800501e-15
+  },
+  "R5_injected_hazard_inconsistency": {
+    "available_specific_height_m": 166.30045328951104,
+    "energy_margin_m": 26.447639547125334,
+    "first_failure_position_map": [
+      8.0,
+      0.0,
+      0.2
+    ],
+    "first_failure_segment_index": null,
+    "goal_distance_m": 20.0,
+    "recomputed_cumulative_hazard": 0.017245950439023303,
+    "recomputed_detection_probability": 0.01709809025241069,
+    "recomputed_mission_time_s": 90.68077307322774,
+    "report": {
+      "energy_valid": true,
+      "goal_error_m": 0.0,
+      "goal_valid": true,
+      "hazard_consistent": false,
+      "hazard_error": 9.999999999996123e-06,
+      "los_phase_valid": true,
+      "max_turn_violation": 0.0,
+      "messages": [
+        "recomputed hazard differs from optimizer output"
+      ],
+      "min_terrain_clearance": null,
+      "passed": false,
+      "terrain_clear": true,
+      "time_consistent": true,
+      "time_error_s": 1.4210854715202004e-14,
+      "turn_constraints_valid": true
+    },
+    "required_specific_height_m": 139.8528137423857,
+    "switching_energy_error_j": 0.0,
+    "switching_heading_error_rad": 0.0,
+    "switching_speed_error_mps": 3.552713678800501e-15
+  },
+  "R6_goal_boundary": {
+    "boundary": true,
+    "inside": true,
+    "outside": false,
+    "tolerance_edge": true
+  },
+  "R7_energy_boundary": {
+    "outside_margin_m": -2.0000015865662135e-08,
+    "outside_tolerance_valid": false,
+    "within_margin_m": -5.000003966415534e-09,
+    "within_tolerance_valid": true
+  }
+}

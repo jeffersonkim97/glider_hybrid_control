@@ -1,0 +1,479 @@
+{
+  "algorithm_variant": "global_oracle",
+  "complete_configuration": {
+    "case_id": "global-oracle-heading-3p0deg-231381d94715",
+    "experiment_type": "stage14_4_global_oracle_heading",
+    "memory_limit_bytes": 4294967296,
+    "name": "global_oracle_heading_3p0deg",
+    "parameters": {
+      "approximate_planner": false,
+      "baseline_anchor": 0,
+      "defender_action_count": 6,
+      "defender_domain_x_max": 10.0,
+      "defender_domain_x_min": 5.0,
+      "defender_grid_policy": "canonical_six",
+      "heading_spacing_deg": 3.0,
+      "initial_defender_action_id": 0,
+      "multi_start": false,
+      "r_neighbor": 1,
+      "reinforcement_learning": false,
+      "spatial_resolution_m": 25.0,
+      "switching_contour_sample_count": 12,
+      "switching_radial_sample_count": 8,
+      "terrain_category": "centered_cube"
+    },
+    "process_semantics": "fresh cold process per repetition",
+    "repetition_id": "global-oracle-heading-3p0deg-231381d94715-r000",
+    "sampling_interval_s": 0.02,
+    "sweep_variable": "heading_spacing_deg",
+    "timeout_s": 900.0,
+    "worker_mode": "global_oracle"
+  },
+  "exactness": {
+    "all_evaluated_attacker_responses_exact": true,
+    "global_defender_enumeration_complete": true,
+    "independent_replay_passed": true,
+    "strong_follower_tie_break_verified": true
+  },
+  "independent_replay": {
+    "passed": true
+  },
+  "local_search": null,
+  "oracle_metadata": {
+    "global_optimality_scope": "exact exhaustive Stackelberg solution over the configured finite Defender actions, switching candidates, and Bellman lattice",
+    "per_action_evaluation_records": [
+      {
+        "action_id": 0,
+        "attacker_br_runtime_s": 49.017852799996035,
+        "attacker_cooptimal_candidate_ids": [
+          25,
+          34
+        ],
+        "attacker_objective": 0.18968197847630047,
+        "defender_value": 0.012912188616855298,
+        "selected_attacker_response_id": 34,
+        "sensor_position_map": [
+          5.0,
+          0.0,
+          0.0
+        ],
+        "status": "feasible"
+      },
+      {
+        "action_id": 1,
+        "attacker_br_runtime_s": 74.46931040000345,
+        "attacker_cooptimal_candidate_ids": [
+          25,
+          34
+        ],
+        "attacker_objective": 0.19905625107693853,
+        "defender_value": 0.03172656049397107,
+        "selected_attacker_response_id": 34,
+        "sensor_position_map": [
+          6.0,
+          0.0,
+          0.0
+        ],
+        "status": "feasible"
+      },
+      {
+        "action_id": 2,
+        "attacker_br_runtime_s": 59.81015340000158,
+        "attacker_cooptimal_candidate_ids": [
+          25,
+          34
+        ],
+        "attacker_objective": 0.2952410347264229,
+        "defender_value": 0.20653486042534094,
+        "selected_attacker_response_id": 25,
+        "sensor_position_map": [
+          7.0,
+          0.0,
+          0.0
+        ],
+        "status": "feasible"
+      },
+      {
+        "action_id": 3,
+        "attacker_br_runtime_s": 48.488500399995246,
+        "attacker_cooptimal_candidate_ids": [
+          27,
+          32
+        ],
+        "attacker_objective": 5.321958196654877,
+        "defender_value": 0.9999643734014034,
+        "selected_attacker_response_id": 27,
+        "sensor_position_map": [
+          8.0,
+          0.0,
+          0.0
+        ],
+        "status": "feasible"
+      },
+      {
+        "action_id": 4,
+        "attacker_br_runtime_s": 14.647801499988418,
+        "attacker_cooptimal_candidate_ids": [
+          26,
+          33
+        ],
+        "attacker_objective": 0.2656785315188944,
+        "defender_value": 0.14535179603167506,
+        "selected_attacker_response_id": 26,
+        "sensor_position_map": [
+          9.0,
+          0.0,
+          0.0
+        ],
+        "status": "feasible"
+      },
+      {
+        "action_id": 5,
+        "attacker_br_runtime_s": 45.63291339999705,
+        "attacker_cooptimal_candidate_ids": [
+          27
+        ],
+        "attacker_objective": 0.20676213627388376,
+        "defender_value": 0.03146272883403399,
+        "selected_attacker_response_id": 27,
+        "sensor_position_map": [
+          10.0,
+          0.0,
+          0.0
+        ],
+        "status": "feasible"
+      }
+    ],
+    "role": "tractable finite global oracle/reference only"
+  },
+  "realized_grid": {
+    "heading": {
+      "heading_bin_count": 120,
+      "maximum_heading_quantization_error_deg": 1.5,
+      "period_deg": 360.0,
+      "realized_heading_spacing_deg": 3.0,
+      "requested_heading_spacing_deg": 3.0
+    }
+  },
+  "realized_heading_grid": {
+    "heading_bin_count": 120,
+    "maximum_heading_quantization_error_deg": 1.5,
+    "period_deg": 360.0,
+    "realized_heading_spacing_deg": 3.0,
+    "requested_heading_spacing_deg": 3.0
+  },
+  "schema_version": "stage14.2C-v2",
+  "solution_identity": {
+    "attacker_objective": 5.321958196654877,
+    "attacker_objective_cooptimal_candidate_ids": [
+      27,
+      32
+    ],
+    "cumulative_hazard": 10.24241804749444,
+    "defender_objective_pod": 0.9999643734014034,
+    "detection_probability": 0.9999643734014034,
+    "equilibrium_scope": "exact exhaustive Stackelberg solution over the configured finite Defender actions, switching candidates, and Bellman lattice",
+    "feasible": true,
+    "leader_cooptimal_action_ids": [
+      3
+    ],
+    "mission_time_s": 88.82706765825537,
+    "selected_attacker_candidate_id": 27,
+    "selected_defender_action_id": 3,
+    "selected_sensor_position_map": [
+      8.0,
+      0.0,
+      0.0
+    ],
+    "sse_selected_follower_candidate_id": 27,
+    "tie_break_convention": {
+      "follower": "maximize Defender PoD among Attacker-objective co-optima, then lowest candidate ID",
+      "leader": "stable configured action order"
+    },
+    "trajectory_identity": {
+      "bellman_state_ids": [
+        5120409,
+        4871049,
+        4606314,
+        4341351,
+        4076265,
+        3811185,
+        3546105,
+        3281025,
+        3015945,
+        2750865,
+        2485785,
+        2220705,
+        1955625,
+        1690545,
+        1425465,
+        1160385,
+        895305,
+        630225,
+        124681
+      ],
+      "sha256": "f4d3f533188fae46b0933e345997a2051c27d2049a2bf063dc95f71006d39096",
+      "switching_position_map": [
+        -1.0,
+        2.9999999976595366,
+        4.911895617962234
+      ],
+      "virtual_target_state_id": 5120409
+    }
+  },
+  "solver_source_fingerprint": "decfe0664e1b8ed0ba4daf7e45642be9d3d263301e3119a8135e96f62735866d",
+  "stage14_2c_case_id": "global-oracle-heading-3p0deg-231381d94715",
+  "stage14_2c_repetition_id": "global-oracle-heading-3p0deg-231381d94715-r000",
+  "stage14_4_schema_version": "stage14.4-v2",
+  "state_and_game_size": {
+    "B": 120,
+    "B_effective": 46.23274088857606,
+    "N_C": 96,
+    "N_C_energy_feasible": 60,
+    "N_C_feasible": 2,
+    "N_C_goal_reachable": 2,
+    "N_C_powered_feasible": 72,
+    "N_C_raw": 96,
+    "N_C_unique": 96,
+    "N_C_unique_definition": "unique physical switching positions after rounding map coordinates to 12 decimal places; diagnostic count only, no solver deduplication",
+    "N_C_virtual_feasible": 2,
+    "N_D": 6,
+    "N_E": 71071096,
+    "N_E_goal_reachable": 192057203,
+    "N_S_active": 1537246,
+    "N_S_admissible": 5000400,
+    "N_S_cart": 5405400,
+    "N_S_goal_reachable": 3933165,
+    "N_eval": 6,
+    "N_h": 21,
+    "N_position_admissible": 41670,
+    "N_position_cart": 45045,
+    "N_psi": 120,
+    "N_x": 65,
+    "N_y": 33,
+    "Q": 8,
+    "per_evaluated_action": [
+      {
+        "N_C": 96,
+        "N_C_energy_feasible": 60,
+        "N_C_feasible": 4,
+        "N_C_goal_reachable": 4,
+        "N_C_powered_feasible": 72,
+        "N_C_raw": 96,
+        "N_C_unique": 96,
+        "N_C_virtual_feasible": 4,
+        "N_E": 71025937,
+        "N_S_active": 1535895,
+        "action_id": 0
+      },
+      {
+        "N_C": 96,
+        "N_C_energy_feasible": 60,
+        "N_C_feasible": 10,
+        "N_C_goal_reachable": 10,
+        "N_C_powered_feasible": 72,
+        "N_C_raw": 96,
+        "N_C_unique": 96,
+        "N_C_virtual_feasible": 10,
+        "N_E": 71270239,
+        "N_S_active": 1540527,
+        "action_id": 1
+      },
+      {
+        "N_C": 96,
+        "N_C_energy_feasible": 60,
+        "N_C_feasible": 6,
+        "N_C_goal_reachable": 6,
+        "N_C_powered_feasible": 72,
+        "N_C_raw": 96,
+        "N_C_unique": 96,
+        "N_C_virtual_feasible": 6,
+        "N_E": 71269385,
+        "N_S_active": 1540786,
+        "action_id": 2
+      },
+      {
+        "N_C": 96,
+        "N_C_energy_feasible": 60,
+        "N_C_feasible": 2,
+        "N_C_goal_reachable": 2,
+        "N_C_powered_feasible": 72,
+        "N_C_raw": 96,
+        "N_C_unique": 96,
+        "N_C_virtual_feasible": 2,
+        "N_E": 22804887,
+        "N_S_active": 646026,
+        "action_id": 4
+      },
+      {
+        "N_C": 96,
+        "N_C_energy_feasible": 60,
+        "N_C_feasible": 2,
+        "N_C_goal_reachable": 2,
+        "N_C_powered_feasible": 72,
+        "N_C_raw": 96,
+        "N_C_unique": 96,
+        "N_C_virtual_feasible": 2,
+        "N_E": 70378201,
+        "N_S_active": 1524764,
+        "action_id": 5
+      },
+      {
+        "N_C": 96,
+        "N_C_energy_feasible": 60,
+        "N_C_feasible": 2,
+        "N_C_goal_reachable": 2,
+        "N_C_powered_feasible": 72,
+        "N_C_raw": 96,
+        "N_C_unique": 96,
+        "N_C_virtual_feasible": 2,
+        "N_E": 71071096,
+        "N_S_active": 1537246,
+        "action_id": 3
+      }
+    ]
+  },
+  "status": "completed",
+  "terrain_category": "centered_cube",
+  "timing": {
+    "T_SSE_accounted_s": 296.2014218999975,
+    "T_SSE_reconciliation_error_s": 0.0,
+    "coupling_notes": {
+      "T_attacker_unclassified_s": "The current solver couples forward-corridor restriction, objective-edge assembly, candidate replay, and final selection. Stage 14.1 does not invent a finer split.",
+      "T_defender_overhead_s": "Derived from T_SSE minus shared graph and exact Attacker-BR wall times; it includes SSE follower tie-breaking and final leader comparison.",
+      "T_graph_s": "The canonical solver reuses one exact goal-backward graph. The shared build is timed once; tiny per-action prebuilt-graph access checks remain in the Attacker graph timer and are retained rather than reassigned.",
+      "T_switch_s": "Reported both as a reliable aggregate and as candidate-generation, energy-filter, and virtual-connection subcomponents."
+    },
+    "nonoverlapping_T_SSE_component_keys": [
+      "T_graph_s",
+      "T_LOS_s",
+      "T_switch_s",
+      "T_hazard_s",
+      "T_Bellman_s",
+      "T_attacker_unclassified_s",
+      "T_defender_overhead_s"
+    ],
+    "per_defender_action": [
+      {
+        "T_BR_accounted_s": 49.013099900010275,
+        "T_BR_s": 49.013099900010275,
+        "T_Bellman_s": 8.31390459999966,
+        "T_LOS_s": 0.9565788000036264,
+        "T_attacker_unclassified_s": 36.885881199807045,
+        "T_graph_access_or_build_s": 3.7999998312443495e-06,
+        "T_hazard_s": 2.6896690001885872,
+        "T_switch_candidate_generation_s": 0.03445320000173524,
+        "T_switch_energy_filter_s": 0.05705260000831913,
+        "T_switch_s": 0.16706250001152512,
+        "T_switch_virtual_connection_s": 0.07555670000147074,
+        "defender_action_id": 0,
+        "feasible": true
+      },
+      {
+        "T_BR_accounted_s": 74.46384240000043,
+        "T_BR_s": 74.46384240000043,
+        "T_Bellman_s": 7.614030700002331,
+        "T_LOS_s": 0.9598510999931023,
+        "T_attacker_unclassified_s": 63.3872322999523,
+        "T_graph_access_or_build_s": 4.3000036384910345e-06,
+        "T_hazard_s": 2.2578387000539806,
+        "T_switch_candidate_generation_s": 0.032501900001079775,
+        "T_switch_energy_filter_s": 0.05682610000076238,
+        "T_switch_s": 0.2448852999950759,
+        "T_switch_virtual_connection_s": 0.15555729999323376,
+        "defender_action_id": 1,
+        "feasible": true
+      },
+      {
+        "T_BR_accounted_s": 59.80509090000123,
+        "T_BR_s": 59.80509090000123,
+        "T_Bellman_s": 7.597657400008757,
+        "T_LOS_s": 0.9714402999961749,
+        "T_attacker_unclassified_s": 48.82272589983768,
+        "T_graph_access_or_build_s": 2.3000029614195228e-06,
+        "T_hazard_s": 2.2231708001636434,
+        "T_switch_candidate_generation_s": 0.03386019999743439,
+        "T_switch_energy_filter_s": 0.057664899999508634,
+        "T_switch_s": 0.19009419999201782,
+        "T_switch_virtual_connection_s": 0.0985690999950748,
+        "defender_action_id": 2,
+        "feasible": true
+      },
+      {
+        "T_BR_accounted_s": 48.48292780001066,
+        "T_BR_s": 48.48292780001066,
+        "T_Bellman_s": 7.5696472999989055,
+        "T_LOS_s": 0.9625133000081405,
+        "T_attacker_unclassified_s": 37.615029300272,
+        "T_graph_access_or_build_s": 2.1000014385208488e-06,
+        "T_hazard_s": 2.200901999734924,
+        "T_switch_candidate_generation_s": 0.03240609999920707,
+        "T_switch_energy_filter_s": 0.05824169999687001,
+        "T_switch_s": 0.13483379999524914,
+        "T_switch_virtual_connection_s": 0.044185999999172054,
+        "defender_action_id": 3,
+        "feasible": true
+      },
+      {
+        "T_BR_accounted_s": 14.643130600001314,
+        "T_BR_s": 14.643130600001314,
+        "T_Bellman_s": 3.6414837000047555,
+        "T_LOS_s": 0.956510400006664,
+        "T_attacker_unclassified_s": 8.947578000093927,
+        "T_graph_access_or_build_s": 2.6000052457675338e-06,
+        "T_hazard_s": 0.9648571998986881,
+        "T_switch_candidate_generation_s": 0.03288250000332482,
+        "T_switch_energy_filter_s": 0.05625789999612607,
+        "T_switch_s": 0.13269869999203365,
+        "T_switch_virtual_connection_s": 0.04355829999258276,
+        "defender_action_id": 4,
+        "feasible": true
+      },
+      {
+        "T_BR_accounted_s": 45.62790029999451,
+        "T_BR_s": 45.62790029999451,
+        "T_Bellman_s": 7.520861800003331,
+        "T_LOS_s": 1.0014665000053355,
+        "T_attacker_unclassified_s": 34.77529289970698,
+        "T_graph_access_or_build_s": 2.9999937396496534e-06,
+        "T_hazard_s": 2.1928957002819516,
+        "T_switch_candidate_generation_s": 0.03348280000500381,
+        "T_switch_energy_filter_s": 0.05742499999178108,
+        "T_switch_s": 0.13738040000316687,
+        "T_switch_virtual_connection_s": 0.04647260000638198,
+        "defender_action_id": 5,
+        "feasible": true
+      }
+    ],
+    "schema_version": "stage14.1-v1",
+    "timing_definitions": {
+      "T_Bellman_s": "sum of additive Bellman numerical solve time",
+      "T_LOS_s": "sum of LOS/tangent geometry time over Defender actions",
+      "T_SSE_s": "wall time inside run_finite_stackelberg for the complete finite leader solve",
+      "T_attacker_unclassified_s": "exact Attacker-BR residual: corridor setup, option replay/objective evaluation, selection, and other glue",
+      "T_defender_overhead_s": "leader/follower tie selection and loop overhead outside shared graph and Attacker-BR calls",
+      "T_graph_s": "shared goal-backward graph construction plus per-action graph access/build time",
+      "T_hazard_s": "sum of active-edge detection-hazard precomputation time",
+      "T_switch_s": "candidate generation + powered/energy filtering + virtual-connection processing",
+      "T_validation_s": "independent replay after T_SSE; excluded from T_SSE accounting"
+    },
+    "totals": {
+      "T_Bellman_s": 42.25758550001774,
+      "T_LOS_s": 5.8083604000130435,
+      "T_SSE_s": 296.2014218999975,
+      "T_attacker_BR_s": 292.0665318999818,
+      "T_attacker_unclassified_s": 230.43373959966993,
+      "T_defender_overhead_s": 0.031148599984589964,
+      "T_graph_per_action_s": 1.8100006855092943e-05,
+      "T_graph_s": 4.134299500001362,
+      "T_graph_shared_s": 4.1342813999945065,
+      "T_hazard_s": 12.529333400321775,
+      "T_switch_candidate_generation_s": 0.1995867000077851,
+      "T_switch_energy_filter_s": 0.3434681999933673,
+      "T_switch_s": 1.0069548999890685,
+      "T_switch_virtual_connection_s": 0.4638999999879161,
+      "T_validation_s": 0.00805920000129845
+    },
+    "validation_included_in_T_SSE": false
+  }
+}

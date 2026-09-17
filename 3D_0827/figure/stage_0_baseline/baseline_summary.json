@@ -1,0 +1,197 @@
+{
+  "case_a": {
+    "bounds": [
+      -10.0,
+      10.0,
+      -8.0,
+      8.0
+    ],
+    "contour_closed": false,
+    "discarded_ground_candidate_count": 71,
+    "los_surface_panel_count": 212,
+    "maximum_height": 4.0,
+    "minimum_tangent_altitude": 0.026178010471204157,
+    "obstacle_box_count": 1,
+    "obstacle_triangle_count": 12,
+    "powered_infeasible_vertex_count": 768,
+    "reachable_face_count": 2938,
+    "reachable_vertex_count": 1396,
+    "representative_reachable_margin_j": 4299444.516554748,
+    "representative_reachable_point": [
+      -7.0,
+      0.25068228335537784,
+      15.999999985376993
+    ],
+    "representative_unreachable_margin_j": -542906.1737779398,
+    "representative_unreachable_point": [
+      -7.0,
+      7.99999999325937,
+      0.10471204188481663
+    ],
+    "sensor": [
+      5.0,
+      0.0,
+      0.0
+    ],
+    "tangent_ray_count": 213,
+    "terrain": "centered_cube",
+    "unreachable_face_count": 1997,
+    "unreachable_vertex_count": 909
+  },
+  "case_b": {
+    "bounds": [
+      -10.0,
+      10.0,
+      -8.0,
+      8.0
+    ],
+    "contour_closed": false,
+    "discarded_ground_candidate_count": 71,
+    "los_surface_panel_count": 212,
+    "maximum_height": 4.0,
+    "minimum_tangent_altitude": 0.03433476394849782,
+    "obstacle_box_count": 1,
+    "obstacle_triangle_count": 12,
+    "powered_infeasible_vertex_count": 750,
+    "reachable_face_count": 2983,
+    "reachable_vertex_count": 1361,
+    "representative_reachable_margin_j": 3930579.532856119,
+    "representative_reachable_point": [
+      -15.999999999999996,
+      3.2516316561480583,
+      15.9999999888738
+    ],
+    "representative_unreachable_margin_j": -819341.7807836838,
+    "representative_unreachable_point": [
+      -16.0,
+      7.999999995906978,
+      0.13733905579399128
+    ],
+    "sensor": [
+      8.0,
+      0.0,
+      0.0
+    ],
+    "tangent_ray_count": 213,
+    "terrain": "centered_cube",
+    "unreachable_face_count": 2083,
+    "unreachable_vertex_count": 944
+  },
+  "case_c": {
+    "bounds": [
+      -10.0,
+      10.0,
+      -8.0,
+      8.0
+    ],
+    "contour_closed": false,
+    "discarded_ground_candidate_count": 71,
+    "los_surface_panel_count": 212,
+    "maximum_height": 4.0,
+    "minimum_tangent_altitude": 0.046296296276994824,
+    "obstacle_box_count": 1,
+    "obstacle_triangle_count": 12,
+    "powered_infeasible_vertex_count": 314,
+    "reachable_face_count": 3725,
+    "reachable_vertex_count": 1730,
+    "representative_reachable_margin_j": 4249935.955819707,
+    "representative_reachable_point": [
+      -7.0,
+      -4.475195835459102,
+      15.999999998335426
+    ],
+    "representative_unreachable_margin_j": -987539.5079464513,
+    "representative_unreachable_point": [
+      -22.99999991622162,
+      -4.0,
+      0.23456790058812965
+    ],
+    "sensor": [
+      5.0,
+      0.0,
+      0.0
+    ],
+    "tangent_ray_count": 213,
+    "terrain": "offset_cube_left",
+    "unreachable_face_count": 1442,
+    "unreachable_vertex_count": 575
+  },
+  "case_d": {
+    "bounds": [
+      -10.0,
+      10.0,
+      -8.0,
+      8.0
+    ],
+    "contour_closed": false,
+    "discarded_ground_candidate_count": 71,
+    "los_surface_panel_count": 212,
+    "maximum_height": 4.0,
+    "minimum_tangent_altitude": 0.046296296276994824,
+    "obstacle_box_count": 1,
+    "obstacle_triangle_count": 12,
+    "powered_infeasible_vertex_count": 314,
+    "reachable_face_count": 3705,
+    "reachable_vertex_count": 1730,
+    "representative_reachable_margin_j": 4249935.955819707,
+    "representative_reachable_point": [
+      -7.000000000000002,
+      4.475195835459109,
+      15.999999998335428
+    ],
+    "representative_unreachable_margin_j": -987539.5079464274,
+    "representative_unreachable_point": [
+      -22.99999991622164,
+      4.0,
+      0.23456790058821214
+    ],
+    "sensor": [
+      5.0,
+      0.0,
+      0.0
+    ],
+    "tangent_ray_count": 213,
+    "terrain": "offset_cube_right",
+    "unreachable_face_count": 1422,
+    "unreachable_vertex_count": 575
+  },
+  "case_e": {
+    "bounds": [
+      -10.0,
+      10.0,
+      -8.0,
+      8.0
+    ],
+    "contour_closed": false,
+    "discarded_ground_candidate_count": 71,
+    "los_surface_panel_count": 212,
+    "maximum_height": 4.0,
+    "minimum_tangent_altitude": 0.015942606616181708,
+    "obstacle_box_count": 3,
+    "obstacle_triangle_count": 36,
+    "powered_infeasible_vertex_count": 876,
+    "reachable_face_count": 2850,
+    "reachable_vertex_count": 1350,
+    "representative_reachable_margin_j": 4184042.244129398,
+    "representative_reachable_point": [
+      -9.0,
+      2.562698152424864,
+      15.999999986285253
+    ],
+    "representative_unreachable_margin_j": -536961.743358558,
+    "representative_unreachable_point": [
+      -3.0,
+      11.99999999980995,
+      0.06377042646472683
+    ],
+    "sensor": [
+      5.0,
+      0.0,
+      0.0
+    ],
+    "tangent_ray_count": 213,
+    "terrain": "stepped_pyramid",
+    "unreachable_face_count": 2097,
+    "unreachable_vertex_count": 955
+  }
+}

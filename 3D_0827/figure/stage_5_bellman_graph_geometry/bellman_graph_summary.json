@@ -1,0 +1,94 @@
+{
+  "configuration": {
+    "altitude_range_map": [
+      0.0,
+      5.0
+    ],
+    "altitude_spacing_map": 0.1,
+    "bounds": [
+      -8.0,
+      8.0,
+      -4.0,
+      4.0
+    ],
+    "goal_map": [
+      8.0,
+      0.0,
+      0.0
+    ],
+    "goal_tolerance_m": 25.0,
+    "heading_bin_count": 8,
+    "horizontal_spacing_map": 1.0,
+    "unit_edge_cost": 1.0
+  },
+  "goal_reachable_state_count": 43136,
+  "graph_statistics": {
+    "cartesian_state_count": 62424,
+    "rejected_by_altitude": 6591,
+    "rejected_by_bounds": 61944,
+    "rejected_by_terrain": 7508,
+    "rejected_by_turn": 209841,
+    "state_count": 59616,
+    "terminal_state_count": 24,
+    "terrain_excluded_state_count": 2808,
+    "valid_edge_count": 190852
+  },
+  "independent_reachability_equal": true,
+  "maximum_finite_unit_cost": 25.0,
+  "obstacle_free_policy": {
+    "path_positions_map": [
+      [
+        0.0,
+        0.0,
+        0.30000000000000004
+      ],
+      [
+        1.0,
+        0.0,
+        0.2
+      ],
+      [
+        2.0,
+        0.0,
+        0.1
+      ],
+      [
+        3.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "path_state_ids": [
+      320,
+      232,
+      144,
+      56
+    ],
+    "start_state_id": 320,
+    "unit_cost_value": 3.0
+  },
+  "selected_state": {
+    "heading_rad": 2.356194490192345,
+    "position_map": [
+      -2.0,
+      0.0,
+      2.0
+    ],
+    "rejection_reasons": [
+      "terrain collision",
+      "turn constraint"
+    ],
+    "state_id": 25075,
+    "statistics": {
+      "considered": 8,
+      "rejected_by_altitude": 0,
+      "rejected_by_bounds": 0,
+      "rejected_by_terrain": 1,
+      "rejected_by_turn": 3,
+      "valid": 4
+    },
+    "valid_successor_count": 4
+  },
+  "strict_altitude_decrease": true,
+  "topological_state_count": 59616
+}

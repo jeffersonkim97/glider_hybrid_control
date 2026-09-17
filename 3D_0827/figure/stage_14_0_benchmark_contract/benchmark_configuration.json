@@ -1,0 +1,130 @@
+{
+  "algorithm_policy": {
+    "alternative_solver_allowed": false,
+    "approximate_planning_allowed": false,
+    "reinforcement_learning_allowed": false,
+    "solver": "exact finite Strong Stackelberg enumeration with exact Bellman BR",
+    "strong_stackelberg_tie_break_preserved": true
+  },
+  "benchmark_purpose": "freeze exact finite-SSE benchmark contract",
+  "benchmark_stage": "14.0",
+  "canonical_resolution": {
+    "altitude_step_m": 25.0,
+    "heading_step_deg": 5.0,
+    "horizontal_step_m": 25.0
+  },
+  "defender_action_set": {
+    "ordered_and_deterministic": true,
+    "x_map": [
+      5.0,
+      6.0,
+      7.0,
+      8.0,
+      9.0,
+      10.0
+    ],
+    "y_map": 0.0,
+    "z_map": 0.0
+  },
+  "mission_and_model": {
+    "attacker_objective": {
+      "hazard_reference": 1.0,
+      "hazard_weight": 0.5,
+      "objective_id": "attacker_hazard_time_v2",
+      "time_reference_s": 221.23893805309734,
+      "time_weight": 0.5
+    },
+    "detection": {
+      "doppler_coefficient": 33250.0,
+      "radar_coefficient": 13000000.0,
+      "radar_rate_scale": 1.0,
+      "radial_velocity_rate_scale": 1.0,
+      "range_floor_m": 10.0,
+      "rcs_max": 1.0,
+      "rcs_min": 0.1
+    },
+    "deterministic_single_candidate_id": 25,
+    "discretization": {
+      "altitude_spacing_map": 0.25,
+      "hazard_quadrature_resolution": 8,
+      "heading_bin_count": 72,
+      "horizontal_spacing_map": 0.25,
+      "los_boundary_refinement_steps": 24,
+      "los_display_extension_factor": 4.0,
+      "los_probe_grid_size": 101,
+      "maximum_altitude_map": 5.0,
+      "minimum_altitude_map": 0.0,
+      "motion_primitive_radius": 8,
+      "motion_primitive_step_cells": 1,
+      "switching_contour_sample_count": 12,
+      "switching_radial_max": 4.0,
+      "switching_radial_min": 0.5,
+      "switching_radial_sample_count": 8,
+      "switching_radial_scales": [
+        0.5,
+        1.0,
+        1.5,
+        2.0,
+        2.5,
+        3.0,
+        3.5,
+        4.0
+      ],
+      "visualization_ray_count": 10
+    },
+    "glider": {
+      "aircraft_name": "Schleicher Ka 6 CR",
+      "best_glide_ratio": 10.0,
+      "best_glide_speed_mps": 22.22222222222222,
+      "goal_tolerance_m": 25.0,
+      "gravity_mps2": 9.81,
+      "mass_kg": 304.0,
+      "maximum_bank_deg": 30.0,
+      "powered_speed_mps": 22.22222222222222,
+      "source_url": "https://mobilit.belgium.be/sites/default/files/domain/Aviation/Veiligheid/Verslagen%20voorvallen/2010/2010_5.pdf",
+      "switch_energy_loss_height_m": 10.0
+    },
+    "goal_map": [
+      8.0,
+      0.0,
+      0.0
+    ],
+    "graph_bounds": {
+      "x_max": 8.0,
+      "x_min": -8.0,
+      "y_max": 4.0,
+      "y_min": -4.0
+    },
+    "physical_scale": {
+      "meters_per_map_unit": 100.0
+    },
+    "random_seed": 0,
+    "sensor_map": [
+      5.0,
+      0.0,
+      0.0
+    ],
+    "start_map": [
+      -8.0,
+      0.0,
+      0.0
+    ],
+    "terrain_category": "centered_cube"
+  },
+  "regression_tolerances": {
+    "attacker_objective_abs": 1e-12,
+    "cumulative_hazard_abs": 1e-10,
+    "defender_objective_abs": 1e-12,
+    "detection_probability_abs": 1e-12,
+    "mission_time_s_abs": 1e-09,
+    "replay_hazard_abs": 1e-10,
+    "replay_time_s_abs": 1e-09,
+    "sensor_position_map_abs": 1e-12
+  },
+  "schema_version": "stage14.0-v2",
+  "terrain_policy": {
+    "category": "centered_cube",
+    "fixed_for_all_stage14_sweeps": true,
+    "terrain_complexity_sweep_allowed": false
+  }
+}

@@ -1,0 +1,718 @@
+"""Ray-traced LOS tangent-contour and tangent-surface construction.
+
+The angular search is independent of any cube dimensions. It identifies the
+boundary between rays whose first hit is the selected terrain mesh and rays
+whose first hit is something else. Ground-contact candidates are removed before
+the remaining upper/lateral horizon is opened into a surface generator. Only
+the final visualization samples are reduced to ten rays.
+"""
+
+from __future__ import annotations
+
+from dataclasses import dataclass
+
+import numpy as np
+from numpy.typing import NDArray
+
+from map_geometry import TerrainModel, TriangleMesh
+from ray_tracing import RayHit, TriangleRayTracer
+from scenario import Point3D
+
+
+FloatArray = NDArray[np.float64]
+
+
+def _point_array(point: Point3D | FloatArray, name: str) -> FloatArray:
+    values = point.as_array() if isinstance(point, Point3D) else np.asarray(point, dtype=float)
+    if values.shape != (3,) or not np.all(np.isfinite(values)):
+        raise ValueError(f"{name} must contain three finite coordinates")
+    return values
+
+
+@dataclass(frozen=True)
+class LOSRay:
+    """One infinite LOS ray whose terrain tangent point occurs at scale 1."""
+
+    origin: Point3D
+    tangent_point: Point3D
+    azimuth_rad: float
+
+    @property
+    def vector(self) -> FloatArray:
+        return self.tangent_point.as_array() - self.origin.as_array()
+
+    @property
+    def length(self) -> float:
+        return float(np.linalg.norm(self.vector))
+
+    @property
+    def unit_direction(self) -> FloatArray:
+        length = self.length
+        if length <= 0.0:
+            raise ValueError("an LOS ray must have positive length")
+        return self.vector / length
+
+    def point_at(self, scale: float) -> FloatArray:
+        """Evaluate ``origin + scale * (tangent_point - origin)`` for scale >= 0."""
+        if not np.isfinite(scale) or scale < 0.0:
+            raise ValueError("ray scale must be finite and nonnegative")
+        return self.origin.as_array() + float(scale) * self.vector
+
+
+@dataclass(frozen=True)
+class VisualizationRaySet:
+    """A small subset of tangent rays used only as visible figure overlays."""
+
+    origin: Point3D
+    rays: tuple[LOSRay, ...]
+    closed: bool = True
+
+    def __post_init__(self) -> None:
+        _validate_ray_sequence(self.origin, self.rays, self.closed)
+
+    @property
+    def tangent_points(self) -> FloatArray:
+        return np.vstack([ray.tangent_point.as_array() for ray in self.rays])
+
+
+@dataclass(frozen=True)
+class TangentContour:
+    """Dense ray-traced contour that defines the actual continuous surface."""
+
+    origin: Point3D
+    rays: tuple[LOSRay, ...]
+    probe_ray_count: int
+    boundary_candidate_count: int
+    closed: bool = True
+    discarded_ground_candidate_count: int = 0
+
+    def __post_init__(self) -> None:
+        minimum_count = 3 if self.closed else 2
+        if len(self.rays) < minimum_count:
+            raise ValueError(
+                f"a {'closed' if self.closed else 'open'} tangent contour requires "
+                f"at least {minimum_count} rays"
+            )
+        _validate_ray_sequence(self.origin, self.rays, closed=self.closed)
+        if self.boundary_candidate_count != len(self.rays):
+            raise ValueError("boundary_candidate_count must equal the retained ray count")
+        if self.discarded_ground_candidate_count < 0:
+            raise ValueError("discarded ground-candidate count cannot be negative")
+
+    @property
+    def tangent_points(self) -> FloatArray:
+        return np.vstack([ray.tangent_point.as_array() for ray in self.rays])
+
+    def sample_for_visualization(self, sample_count: int) -> VisualizationRaySet:
+        """Select display rays without changing the dense contour geometry."""
+        selected_indices = _sample_polyline_indices(
+            np.vstack([ray.unit_direction for ray in self.rays]),
+            sample_count,
+            closed=self.closed,
+        )
+        return VisualizationRaySet(
+            origin=self.origin,
+            rays=tuple(self.rays[index] for index in selected_indices),
+            closed=self.closed,
+        )
+
+    def tangent_vector_at(self, contour_fraction: float) -> FloatArray:
+        """Continuously interpolate the contour by normalized arc length."""
+        if not np.isfinite(contour_fraction):
+            raise ValueError("contour_fraction must be finite")
+        if not self.closed and not 0.0 <= contour_fraction <= 1.0:
+            raise ValueError("an open contour requires contour_fraction in [0, 1]")
+        vectors = np.vstack([ray.vector for ray in self.rays])
+        fraction = (
+            float(contour_fraction) % 1.0
+            if self.closed
+            else float(contour_fraction)
+        )
+        return _interpolate_polyline(vectors, fraction, closed=self.closed)
+
+
+@dataclass(frozen=True)
+class LOSTangentSurface:
+    """Continuous, unbounded ruled surface generated by the dense contour.
+
+    Mathematically, ``S(s, scale) = origin + scale * tangent_vector(s)`` with
+    unbounded ``scale >= 0``. ``s`` lies in ``[0, 1)`` for a closed contour or
+    ``[0, 1]`` for a ground-trimmed open horizon. The Plotly mesh and its finite
+    scale limit are visualization-only discretizations.
+    """
+
+    tangent_contour: TangentContour
+    display_extension_factor: float = 4.0
+
+    def __post_init__(self) -> None:
+        if (
+            not np.isfinite(self.display_extension_factor)
+            or self.display_extension_factor <= 1.0
+        ):
+            raise ValueError("display_extension_factor must be finite and greater than 1")
+
+        section = self.section_points(self.display_extension_factor)
+        origin = self.tangent_contour.origin.as_array()
+        for first_index, second_index in self._panel_index_pairs():
+            doubled_area = np.linalg.norm(
+                np.cross(
+                    section[first_index] - origin,
+                    section[second_index] - origin,
+                )
+            )
+            if doubled_area <= 1.0e-12:
+                raise ValueError("adjacent tangent rays must form a nondegenerate panel")
+
+    @property
+    def panel_count(self) -> int:
+        return len(self._panel_index_pairs())
+
+    def section_points(self, scale: float) -> FloatArray:
+        """Return the dense display cross-section at one nonnegative scale."""
+        return np.vstack([ray.point_at(scale) for ray in self.tangent_contour.rays])
+
+    def point_at(self, contour_fraction: float, scale: float) -> FloatArray:
+        """Evaluate the actual continuous and unbounded surface parameterization."""
+        if not np.isfinite(scale) or scale < 0.0:
+            raise ValueError("surface scale must be finite and nonnegative")
+        tangent_vector = self.tangent_contour.tangent_vector_at(contour_fraction)
+        return self.tangent_contour.origin.as_array() + float(scale) * tangent_vector
+
+    def display_mesh(self) -> TriangleMesh:
+        """Return the finite triangular fan used to display the infinite surface."""
+        origin = self.tangent_contour.origin.as_array()[None, :]
+        far_section = self.section_points(self.display_extension_factor)
+        vertices = np.vstack((origin, far_section))
+        triangles = np.array(
+            [
+                [0, first_index + 1, second_index + 1]
+                for first_index, second_index in self._panel_index_pairs()
+            ],
+            dtype=np.int64,
+        )
+        return TriangleMesh(vertices=vertices, triangles=triangles)
+
+    def _panel_index_pairs(self) -> tuple[tuple[int, int], ...]:
+        ray_count = len(self.tangent_contour.rays)
+        pairs = [(index, index + 1) for index in range(ray_count - 1)]
+        if self.tangent_contour.closed:
+            pairs.append((ray_count - 1, 0))
+        return tuple(pairs)
+
+
+@dataclass(frozen=True)
+class _BoundaryCandidate:
+    image_uv: FloatArray
+    direction: FloatArray
+    hit: RayHit
+
+
+class LOSModel:
+    """Terrain-independent public interface for LOS geometry operations.
+
+    The existing triangle ray tracer remains the low-level numerical engine.
+    This facade owns the translation from a ``TerrainModel`` to that engine so
+    callers never need mesh ordering or a concrete terrain implementation.
+    """
+
+    def __init__(self, terrain: TerrainModel) -> None:
+        if not isinstance(terrain, TerrainModel):
+            raise TypeError("terrain must satisfy the TerrainModel protocol")
+        self.terrain = terrain
+        self._surface_meshes = (terrain.ground_mesh(), terrain.obstacle_mesh())
+
+    def trace_tangent_contour(
+        self,
+        sensor: Point3D,
+        *,
+        probe_grid_size: int = 101,
+        boundary_refinement_steps: int = 24,
+        field_margin_fraction: float = 0.20,
+        ground_clearance: float = 1.0e-6,
+    ) -> TangentContour:
+        """Trace the elevated terrain-tangent horizon seen by ``sensor``."""
+        sensor_array = sensor.as_array()
+        self._validate_above_ground(sensor_array, "sensor", ground_clearance)
+        if self.terrain.contains_solid(sensor_array, tolerance=ground_clearance):
+            raise ValueError("sensor cannot lie inside terrain solid")
+        return trace_terrain_tangent_contour(
+            self._surface_meshes,
+            sensor,
+            target_mesh_index=1,
+            ground_height=self.terrain.ground_z,
+            probe_grid_size=probe_grid_size,
+            boundary_refinement_steps=boundary_refinement_steps,
+            field_margin_fraction=field_margin_fraction,
+            ground_clearance=ground_clearance,
+        )
+
+    def build_tangent_surface(
+        self,
+        tangent_contour: TangentContour,
+        *,
+        display_extension_factor: float = 4.0,
+    ) -> LOSTangentSurface:
+        """Build the ruled LOS surface from a contour traced by this model."""
+        return build_los_tangent_surface(
+            tangent_contour,
+            display_extension_factor=display_extension_factor,
+        )
+
+    def has_line_of_sight(
+        self,
+        observer: Point3D | FloatArray,
+        target: Point3D | FloatArray,
+        *,
+        tolerance: float = 1.0e-9,
+    ) -> bool:
+        """Return whether the closed segment avoids strict terrain interior.
+
+        Exact contact with the ground or an obstacle surface is admissible;
+        spending nonzero segment length inside terrain is not. Identical
+        admissible endpoints therefore have LOS to themselves.
+        """
+        tolerance_value = float(tolerance)
+        if not np.isfinite(tolerance_value) or tolerance_value < 0.0:
+            raise ValueError("tolerance must be finite and nonnegative")
+        observer_array = _point_array(observer, "observer")
+        target_array = _point_array(target, "target")
+        self._validate_above_ground(observer_array, "observer", tolerance_value)
+        self._validate_above_ground(target_array, "target", tolerance_value)
+        if self.terrain.contains_solid(
+            observer_array, tolerance=tolerance_value,
+        ) or self.terrain.contains_solid(target_array, tolerance=tolerance_value):
+            return False
+        if np.linalg.norm(target_array - observer_array) <= tolerance_value:
+            return True
+        return not self.terrain.segment_intersects_solid(
+            observer_array,
+            target_array,
+            tolerance=tolerance_value,
+        )
+
+    def _validate_above_ground(
+        self,
+        point: FloatArray,
+        name: str,
+        tolerance: float,
+    ) -> None:
+        if point.shape != (3,) or not np.all(np.isfinite(point)):
+            raise ValueError(f"{name} must contain three finite coordinates")
+        if point[2] < self.terrain.ground_z - tolerance:
+            raise ValueError(f"{name} cannot lie below the ground plane")
+
+
+def build_los_tangent_surface(
+    tangent_contour: TangentContour,
+    *,
+    display_extension_factor: float = 4.0,
+) -> LOSTangentSurface:
+    """Connect adjacent infinite tangent rays into a discretized ruled surface."""
+    return LOSTangentSurface(
+        tangent_contour=tangent_contour,
+        display_extension_factor=display_extension_factor,
+    )
+
+
+def trace_terrain_tangent_contour(
+    surface_meshes: tuple[TriangleMesh, ...],
+    sensor: Point3D,
+    *,
+    target_mesh_index: int,
+    ground_height: float,
+    probe_grid_size: int = 121,
+    boundary_refinement_steps: int = 24,
+    field_margin_fraction: float = 0.20,
+    ground_clearance: float = 1.0e-6,
+) -> TangentContour:
+    """Ray-trace a first-hit boundary and retain its elevated open horizon.
+
+    A dense perspective image plane is traced first. Boundary probes are then
+    refined between target-hit and non-target-hit directions. Ground-contact
+    candidates are removed without using obstacle-specific dimensions. No
+    visualization downsampling occurs in this function.
+    """
+    if not 0 <= target_mesh_index < len(surface_meshes):
+        raise ValueError("target_mesh_index is outside surface_meshes")
+    if probe_grid_size < 25 or probe_grid_size % 2 == 0:
+        raise ValueError("probe_grid_size must be an odd integer of at least 25")
+    if boundary_refinement_steps < 4:
+        raise ValueError("boundary_refinement_steps must be at least four")
+    if field_margin_fraction <= 0.0:
+        raise ValueError("field_margin_fraction must be positive")
+    if not np.isfinite(ground_height):
+        raise ValueError("ground_height must be finite")
+    if not np.isfinite(ground_clearance) or ground_clearance < 0.0:
+        raise ValueError("ground_clearance must be finite and nonnegative")
+
+    origin = sensor.as_array()
+    target_mesh = surface_meshes[target_mesh_index]
+    forward, right, up = _camera_basis(origin, target_mesh.vertices)
+    projected_vertices = _project_vertices(
+        origin,
+        target_mesh.vertices,
+        forward,
+        right,
+        up,
+    )
+    uv_min = np.min(projected_vertices, axis=0)
+    uv_max = np.max(projected_vertices, axis=0)
+    uv_span = uv_max - uv_min
+    margin = np.maximum(field_margin_fraction * uv_span, 0.05)
+    u_values = np.linspace(uv_min[0] - margin[0], uv_max[0] + margin[0], probe_grid_size)
+    v_values = np.linspace(uv_min[1] - margin[1], uv_max[1] + margin[1], probe_grid_size)
+
+    tracer = TriangleRayTracer(surface_meshes)
+    target_hit_mask = np.zeros((probe_grid_size, probe_grid_size), dtype=bool)
+    for row_index, v_value in enumerate(v_values):
+        for column_index, u_value in enumerate(u_values):
+            direction = _direction_from_uv(u_value, v_value, forward, right, up)
+            target_hit_mask[row_index, column_index] = tracer.first_hit_is_mesh(
+                origin,
+                direction,
+                target_mesh_index,
+            )
+
+    if not np.any(target_hit_mask):
+        raise RuntimeError("probe rays did not hit the selected terrain mesh")
+    if np.all(target_hit_mask):
+        raise RuntimeError("probe field does not extend beyond the selected terrain mesh")
+
+    candidates = _refine_hit_boundary(
+        tracer=tracer,
+        origin=origin,
+        target_mesh_index=target_mesh_index,
+        hit_mask=target_hit_mask,
+        u_values=u_values,
+        v_values=v_values,
+        forward=forward,
+        right=right,
+        up=up,
+        refinement_steps=boundary_refinement_steps,
+    )
+    ordered_candidates = _order_boundary_candidates(candidates)
+    elevated_candidates = _extract_elevated_open_chain(
+        ordered_candidates,
+        minimum_height=ground_height + ground_clearance,
+    )
+    discarded_ground_count = len(ordered_candidates) - len(elevated_candidates)
+
+    rays = tuple(
+        LOSRay(
+            origin=sensor,
+            tangent_point=Point3D(
+                x=float(candidate.hit.point[0]),
+                y=float(candidate.hit.point[1]),
+                z=float(candidate.hit.point[2]),
+            ),
+            azimuth_rad=float(
+                np.arctan2(candidate.direction[1], candidate.direction[0])
+            ),
+        )
+        for candidate in elevated_candidates
+    )
+    return TangentContour(
+        origin=sensor,
+        rays=rays,
+        probe_ray_count=probe_grid_size**2,
+        boundary_candidate_count=len(elevated_candidates),
+        closed=False,
+        discarded_ground_candidate_count=discarded_ground_count,
+    )
+
+
+def _camera_basis(
+    origin: FloatArray,
+    target_vertices: FloatArray,
+) -> tuple[FloatArray, FloatArray, FloatArray]:
+    target_center = np.mean(target_vertices, axis=0)
+    forward = target_center - origin
+    forward_norm = float(np.linalg.norm(forward))
+    if forward_norm <= 0.0:
+        raise ValueError("sensor cannot coincide with the target-mesh center")
+    forward = forward / forward_norm
+
+    up_reference = np.array([0.0, 0.0, 1.0], dtype=float)
+    if abs(float(np.dot(forward, up_reference))) > 0.95:
+        up_reference = np.array([0.0, 1.0, 0.0], dtype=float)
+    right = np.cross(forward, up_reference)
+    right = right / np.linalg.norm(right)
+    up = np.cross(right, forward)
+    up = up / np.linalg.norm(up)
+    return forward, right, up
+
+
+def _project_vertices(
+    origin: FloatArray,
+    vertices: FloatArray,
+    forward: FloatArray,
+    right: FloatArray,
+    up: FloatArray,
+) -> FloatArray:
+    relative_vertices = vertices - origin
+    depths = relative_vertices @ forward
+    if np.any(depths <= 0.0):
+        raise ValueError("all target-mesh vertices must lie in front of the sensor")
+    return np.column_stack(
+        ((relative_vertices @ right) / depths, (relative_vertices @ up) / depths)
+    )
+
+
+def _direction_from_uv(
+    u_value: float,
+    v_value: float,
+    forward: FloatArray,
+    right: FloatArray,
+    up: FloatArray,
+) -> FloatArray:
+    direction = forward + float(u_value) * right + float(v_value) * up
+    return direction / np.linalg.norm(direction)
+
+
+def _refine_hit_boundary(
+    *,
+    tracer: TriangleRayTracer,
+    origin: FloatArray,
+    target_mesh_index: int,
+    hit_mask: NDArray[np.bool_],
+    u_values: FloatArray,
+    v_values: FloatArray,
+    forward: FloatArray,
+    right: FloatArray,
+    up: FloatArray,
+    refinement_steps: int,
+) -> list[_BoundaryCandidate]:
+    candidates: list[_BoundaryCandidate] = []
+    row_count, column_count = hit_mask.shape
+    neighbor_offsets = ((-1, 0), (1, 0), (0, -1), (0, 1))
+
+    for row_index in range(row_count):
+        for column_index in range(column_count):
+            if not hit_mask[row_index, column_index]:
+                continue
+            inside_uv = np.array(
+                [u_values[column_index], v_values[row_index]], dtype=float
+            )
+            for row_offset, column_offset in neighbor_offsets:
+                neighbor_row = row_index + row_offset
+                neighbor_column = column_index + column_offset
+                if not (
+                    0 <= neighbor_row < row_count
+                    and 0 <= neighbor_column < column_count
+                ):
+                    continue
+                if hit_mask[neighbor_row, neighbor_column]:
+                    continue
+                outside_uv = np.array(
+                    [u_values[neighbor_column], v_values[neighbor_row]], dtype=float
+                )
+                candidates.append(
+                    _bisect_hit_transition(
+                        tracer=tracer,
+                        origin=origin,
+                        target_mesh_index=target_mesh_index,
+                        inside_uv=inside_uv,
+                        outside_uv=outside_uv,
+                        forward=forward,
+                        right=right,
+                        up=up,
+                        refinement_steps=refinement_steps,
+                    )
+                )
+    if len(candidates) < 3:
+        raise RuntimeError("fewer than three tangent-boundary candidates were found")
+    return candidates
+
+
+def _bisect_hit_transition(
+    *,
+    tracer: TriangleRayTracer,
+    origin: FloatArray,
+    target_mesh_index: int,
+    inside_uv: FloatArray,
+    outside_uv: FloatArray,
+    forward: FloatArray,
+    right: FloatArray,
+    up: FloatArray,
+    refinement_steps: int,
+) -> _BoundaryCandidate:
+    inside_uv = inside_uv.copy()
+    outside_uv = outside_uv.copy()
+    for _ in range(refinement_steps):
+        midpoint_uv = 0.5 * (inside_uv + outside_uv)
+        midpoint_direction = _direction_from_uv(
+            midpoint_uv[0], midpoint_uv[1], forward, right, up
+        )
+        if tracer.first_hit_is_mesh(origin, midpoint_direction, target_mesh_index):
+            inside_uv = midpoint_uv
+        else:
+            outside_uv = midpoint_uv
+
+    direction = _direction_from_uv(
+        inside_uv[0], inside_uv[1], forward, right, up
+    )
+    hit = tracer.first_hit(origin, direction)
+    if hit is None or hit.mesh_index != target_mesh_index:
+        raise RuntimeError("refined tangent direction lost its target-mesh hit")
+    return _BoundaryCandidate(image_uv=inside_uv, direction=direction, hit=hit)
+
+
+def _order_boundary_candidates(
+    candidates: list[_BoundaryCandidate],
+) -> tuple[_BoundaryCandidate, ...]:
+    image_points = np.vstack([candidate.image_uv for candidate in candidates])
+    center = np.mean(image_points, axis=0)
+    angles = np.arctan2(image_points[:, 1] - center[1], image_points[:, 0] - center[0])
+    order = np.argsort(angles)
+
+    ordered: list[_BoundaryCandidate] = []
+    for index in order:
+        candidate = candidates[int(index)]
+        if ordered and np.linalg.norm(candidate.image_uv - ordered[-1].image_uv) < 1.0e-9:
+            continue
+        ordered.append(candidate)
+    if len(ordered) >= 2 and np.linalg.norm(
+        ordered[0].image_uv - ordered[-1].image_uv
+    ) < 1.0e-9:
+        ordered.pop()
+    if len(ordered) < 3:
+        raise RuntimeError("tangent contour collapsed after candidate ordering")
+    return tuple(ordered)
+
+
+def _extract_elevated_open_chain(
+    candidates: tuple[_BoundaryCandidate, ...],
+    *,
+    minimum_height: float,
+) -> tuple[_BoundaryCandidate, ...]:
+    """Remove the ground-contact silhouette and retain the longest upper chain.
+
+    Boundary candidates arrive in circular image-plane order.  Removing every
+    candidate at ground height opens that loop; rotation keeps the remaining
+    upper/lateral horizon spatially consecutive without reconnecting its two
+    endpoints across the terrain base.
+    """
+    elevated = np.array(
+        [candidate.hit.point[2] > minimum_height for candidate in candidates],
+        dtype=bool,
+    )
+    if np.count_nonzero(elevated) < 2:
+        raise RuntimeError("ground filtering left fewer than two elevated tangent rays")
+    if np.all(elevated):
+        raise RuntimeError(
+            "the selected terrain silhouette has no ground-contact boundary to trim"
+        )
+
+    run_starts = np.flatnonzero(elevated & ~np.roll(elevated, shift=1))
+    runs: list[list[int]] = []
+    candidate_count = len(candidates)
+    for start in run_starts:
+        run: list[int] = []
+        index = int(start)
+        while elevated[index]:
+            run.append(index)
+            index = (index + 1) % candidate_count
+            if index == int(start):
+                break
+        runs.append(run)
+    longest_run = max(runs, key=len)
+    return tuple(candidates[index] for index in longest_run)
+
+
+def _validate_ray_sequence(
+    origin: Point3D,
+    rays: tuple[LOSRay, ...],
+    closed: bool,
+) -> None:
+    if len(rays) < 2:
+        raise ValueError("at least two tangent rays are required")
+    for ray in rays:
+        if not np.allclose(
+            ray.origin.as_array(),
+            origin.as_array(),
+            rtol=0.0,
+            atol=1.0e-12,
+        ):
+            raise ValueError("all tangent rays must share the sequence origin")
+
+    unit_directions = np.vstack([ray.unit_direction for ray in rays])
+    adjacent_dot_products = np.einsum(
+        "ij,ij->i", unit_directions[:-1], unit_directions[1:]
+    )
+    if np.any(adjacent_dot_products >= 1.0 - 1.0e-14):
+        raise ValueError("adjacent tangent rays must have distinct directions")
+    if closed and np.dot(unit_directions[-1], unit_directions[0]) >= 1.0 - 1.0e-14:
+        raise ValueError("a closed ray sequence cannot repeat its first direction")
+
+
+def _sample_polyline_indices(
+    points: FloatArray,
+    sample_count: int,
+    *,
+    closed: bool,
+) -> tuple[int, ...]:
+    minimum_count = 3 if closed else 2
+    if sample_count < minimum_count:
+        raise ValueError(
+            f"visualization sample_count must be at least {minimum_count}"
+        )
+    if sample_count > len(points):
+        raise ValueError("visualization sample_count exceeds dense contour size")
+
+    next_points = np.roll(points, shift=-1, axis=0) if closed else points[1:]
+    current_points = points if closed else points[:-1]
+    segment_lengths = np.linalg.norm(next_points - current_points, axis=1)
+    total_length = float(np.sum(segment_lengths))
+    if total_length <= 0.0:
+        raise RuntimeError("ray-traced tangent contour has zero length")
+
+    vertex_distances = np.concatenate(([0.0], np.cumsum(segment_lengths)))
+    if closed:
+        vertex_distances = vertex_distances[:-1]
+    target_distances = np.linspace(
+        0.0,
+        total_length,
+        sample_count,
+        endpoint=not closed,
+    )
+    selected_indices: list[int] = []
+    for target_distance in target_distances:
+        errors = np.abs(vertex_distances - target_distance)
+        if closed:
+            errors = np.minimum(errors, total_length - errors)
+        for candidate_index in np.argsort(errors):
+            index = int(candidate_index)
+            if index not in selected_indices:
+                selected_indices.append(index)
+                break
+    if len(selected_indices) != sample_count:
+        raise RuntimeError("could not select distinct tangent-ray visualization samples")
+    return tuple(selected_indices)
+
+
+def _interpolate_polyline(
+    points: FloatArray,
+    contour_fraction: float,
+    *,
+    closed: bool,
+) -> FloatArray:
+    next_points = np.roll(points, shift=-1, axis=0) if closed else points[1:]
+    current_points = points if closed else points[:-1]
+    segment_lengths = np.linalg.norm(next_points - current_points, axis=1)
+    total_length = float(np.sum(segment_lengths))
+    if total_length <= 0.0:
+        raise RuntimeError("cannot interpolate a zero-length contour")
+
+    target_distance = contour_fraction * total_length
+    cumulative_ends = np.cumsum(segment_lengths)
+    segment_index = int(np.searchsorted(cumulative_ends, target_distance, side="right"))
+    segment_index = min(segment_index, len(segment_lengths) - 1)
+    segment_start_distance = (
+        0.0 if segment_index == 0 else float(cumulative_ends[segment_index - 1])
+    )
+    segment_length = float(segment_lengths[segment_index])
+    local_fraction = (target_distance - segment_start_distance) / segment_length
+    return (
+        (1.0 - local_fraction) * current_points[segment_index]
+        + local_fraction * next_points[segment_index]
+    )

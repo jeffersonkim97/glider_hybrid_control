@@ -1,0 +1,68 @@
+{
+  "all_attempts_recorded": true,
+  "attempted_case_count": 3,
+  "attempted_repetition_count": 5,
+  "canonical_case_id": "canonical-centered-cube-25m-25m-5deg-533a50c86023",
+  "canonical_repetition_statistics": {
+    "count": 3,
+    "individual": [
+      61.73973879999994,
+      62.40206969999963,
+      62.98233179999988
+    ],
+    "maximum": 62.98233179999988,
+    "mean": 62.37471343333315,
+    "median": 62.40206969999963,
+    "minimum": 61.73973879999994,
+    "standard_deviation_sample": 0.6217480316870009
+  },
+  "environment_manifest_id": "4dff0b77a3003a78f30b51deef22f05c5fdba14be507b7f886d4eaa8748d9bf6",
+  "exact_solution_regression": {
+    "checks": [
+      {
+        "passed": true,
+        "repetition_id": "canonical-centered-cube-25m-25m-5deg-533a50c86023-r000"
+      },
+      {
+        "passed": true,
+        "repetition_id": "canonical-centered-cube-25m-25m-5deg-533a50c86023-r001"
+      },
+      {
+        "passed": true,
+        "repetition_id": "canonical-centered-cube-25m-25m-5deg-533a50c86023-r002"
+      }
+    ],
+    "passed": true
+  },
+  "full_scaling_sweep_performed": false,
+  "gate_passed": true,
+  "resume_behavior_deterministic": true,
+  "resume_report": {
+    "deterministic_resume_passed": true,
+    "first_invocation_attempted": [],
+    "first_invocation_skipped": [
+      "canonical-centered-cube-25m-25m-5deg-533a50c86023-r000",
+      "canonical-centered-cube-25m-25m-5deg-533a50c86023-r001",
+      "canonical-centered-cube-25m-25m-5deg-533a50c86023-r002",
+      "explicit-infeasible-centered-cube-small-76403510096e-r000",
+      "controlled-timeout-fixture-e320451e13a7-r000"
+    ],
+    "second_invocation_attempted": [],
+    "second_invocation_skipped": [
+      "canonical-centered-cube-25m-25m-5deg-533a50c86023-r000",
+      "canonical-centered-cube-25m-25m-5deg-533a50c86023-r001",
+      "canonical-centered-cube-25m-25m-5deg-533a50c86023-r002",
+      "explicit-infeasible-centered-cube-small-76403510096e-r000",
+      "controlled-timeout-fixture-e320451e13a7-r000"
+    ]
+  },
+  "scaling_law_fitted": false,
+  "schema_version": "stage14.2-v1",
+  "stage": "14.2",
+  "status_counts": {
+    "completed": 3,
+    "model_infeasible": 1,
+    "timeout": 1
+  },
+  "summary_statistics_reproduced": true
+}

@@ -1,0 +1,22 @@
+{
+  "acoustic_assumption": "acoustic hazard = 0 under the current LOS-tangent switching / post-switch acoustic-neutralization model",
+  "acoustic_pod": 0.0,
+  "component_pod_note": "Component PoDs are 1-exp(-H_i) diagnostics and do not add to total PoD; total PoD is 1-exp(-sum_i H_i).",
+  "cumulative_acoustic_hazard": 0.0,
+  "cumulative_hazard_error": 2.220446049250313e-16,
+  "cumulative_radial_velocity_doppler_hazard": 0.7720335186820784,
+  "cumulative_rcs_radar_hazard": 0.7488722207875249,
+  "cumulative_total_hazard": 1.5209057394696033,
+  "detection_probability_error": 0.0,
+  "mission_time_error_s": 0.0,
+  "mission_time_s": 81.25366155073556,
+  "powered_end_time_s": 38.28215483821165,
+  "radial_velocity_doppler_equivalent_pod": 0.5379275207364022,
+  "rcs_radar_equivalent_pod": 0.5271004215689847,
+  "sample_count": 112,
+  "stored_cumulative_hazard": 1.520905739469603,
+  "stored_detection_probability": 0.7814861193516704,
+  "stored_mission_time_s": 81.25366155073556,
+  "total_detection_probability": 0.7814861193516704,
+  "virtual_end_time_s": 45.12526268368444
+}

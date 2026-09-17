@@ -1,0 +1,177 @@
+{
+  "algorithm_variant": "local_sse",
+  "complete_configuration": {
+    "case_id": "local-sse-heading-30p0deg-2599ffa3c705",
+    "experiment_type": "stage14_4_local_sse_heading",
+    "memory_limit_bytes": 4294967296,
+    "name": "local_sse_heading_30p0deg",
+    "parameters": {
+      "approximate_planner": false,
+      "baseline_anchor": 0,
+      "defender_action_count": 6,
+      "defender_domain_x_max": 10.0,
+      "defender_domain_x_min": 5.0,
+      "defender_grid_policy": "canonical_six",
+      "heading_spacing_deg": 30.0,
+      "initial_defender_action_id": 0,
+      "multi_start": false,
+      "r_neighbor": 1,
+      "reinforcement_learning": false,
+      "spatial_resolution_m": 25.0,
+      "switching_contour_sample_count": 12,
+      "switching_radial_sample_count": 8,
+      "terrain_category": "centered_cube"
+    },
+    "process_semantics": "fresh cold process per repetition",
+    "repetition_id": "local-sse-heading-30p0deg-2599ffa3c705-r002",
+    "sampling_interval_s": 0.02,
+    "sweep_variable": "heading_spacing_deg",
+    "timeout_s": 900.0,
+    "worker_mode": "local_sse"
+  },
+  "failure_message": "local SSE was not certified",
+  "failure_type": "initial_neighborhood_infeasible",
+  "local_search": {
+    "attacker_exactness_verified": false,
+    "cached_evaluation_reuses": 0,
+    "evaluated_defender_actions": [
+      0,
+      1
+    ],
+    "feasible_neighbor_count_per_iteration": [],
+    "final_J_A": null,
+    "final_J_D": null,
+    "final_attacker_response_id": null,
+    "final_local_sse_action_id": null,
+    "global_optimal": null,
+    "global_optimality_evaluated": false,
+    "independent_replay_status": null,
+    "infeasible_neighbor_diagnostics": [
+      {
+        "action_id": 0,
+        "diagnostic": "Defender action has no feasible Attacker response",
+        "status": "model_infeasible"
+      },
+      {
+        "action_id": 1,
+        "diagnostic": "Defender action has no feasible Attacker response",
+        "status": "model_infeasible"
+      }
+    ],
+    "initial_defender_action_id": 0,
+    "initialization_dependent_solution_concept": true,
+    "initialization_feasible_neighbor_ids": [],
+    "initialization_infeasible_neighbor_ids": [
+      1
+    ],
+    "initialization_neighbor_action_ids": [
+      1
+    ],
+    "initialization_recovery_action_id": null,
+    "initialization_recovery_attempted": true,
+    "initialization_unknown_neighbor_ids": [],
+    "isolated_feasible_local_solution": false,
+    "iterations": [],
+    "local_optimality_margin": null,
+    "local_search_iterations": 0,
+    "local_sse_verified": false,
+    "neighbor_count_per_iteration": [],
+    "neighborhood_metadata": {
+      "configuration": {
+        "boundary_rule": "clip to explicitly configured grid actions",
+        "metric": "chebyshev_grid_index",
+        "one_dimensional_rule": "0 < abs(j-i) <= r_neighbor",
+        "r_neighbor": 1,
+        "radius_units": "integer Defender grid-index lengths",
+        "two_dimensional_rule": "0 < max(abs(p-i), abs(q-j)) <= r_neighbor"
+      },
+      "topology": {
+        "dimension": 1,
+        "ordered_action_grid_indices": [
+          {
+            "action_id": 0,
+            "grid_index": [
+              0
+            ]
+          },
+          {
+            "action_id": 1,
+            "grid_index": [
+              1
+            ]
+          },
+          {
+            "action_id": 2,
+            "grid_index": [
+              2
+            ]
+          },
+          {
+            "action_id": 3,
+            "grid_index": [
+              3
+            ]
+          },
+          {
+            "action_id": 4,
+            "grid_index": [
+              4
+            ]
+          },
+          {
+            "action_id": 5,
+            "grid_index": [
+              5
+            ]
+          }
+        ]
+      }
+    },
+    "payoff_improvement_per_iteration": [],
+    "peak_memory": null,
+    "runtime_decomposition_s": {
+      "T_Bellman_s": 0.007155099985538982,
+      "T_LOS_s": 1.9038582999928622,
+      "T_accounted_s": 2.1360727999999654,
+      "T_attacker_residual_s": 0.008098900027107447,
+      "T_graph_s": 0.013138900001649745,
+      "T_hazard_s": 0.0,
+      "T_local_s": 2.1360727999999654,
+      "T_local_search_control_s": 2.3800021153874695e-05,
+      "T_reconciliation_error_s": 0.0,
+      "T_switch_s": 0.20366120000835508,
+      "T_validation_s": 0.0,
+      "T_wrapper_residual_s": 0.00013659996329806745
+    },
+    "solution_scope": "local Strong Stackelberg equilibrium over an explicit finite Defender grid neighborhood; not a global or continuous-space optimality claim",
+    "strong_tie_break_verified": false,
+    "termination_status": "initial_neighborhood_infeasible",
+    "unique_defender_evaluations": 2,
+    "unknown_neighbor_diagnostics": [],
+    "visited_defender_actions": [
+      0
+    ]
+  },
+  "realized_grid": {
+    "heading": {
+      "heading_bin_count": 12,
+      "maximum_heading_quantization_error_deg": 15.0,
+      "period_deg": 360.0,
+      "realized_heading_spacing_deg": 30.0,
+      "requested_heading_spacing_deg": 30.0
+    }
+  },
+  "realized_heading_grid": {
+    "heading_bin_count": 12,
+    "maximum_heading_quantization_error_deg": 15.0,
+    "period_deg": 360.0,
+    "realized_heading_spacing_deg": 30.0,
+    "requested_heading_spacing_deg": 30.0
+  },
+  "schema_version": "stage14.2C-v2",
+  "solver_source_fingerprint": "decfe0664e1b8ed0ba4daf7e45642be9d3d263301e3119a8135e96f62735866d",
+  "stage14_2c_case_id": "local-sse-heading-30p0deg-2599ffa3c705",
+  "stage14_2c_repetition_id": "local-sse-heading-30p0deg-2599ffa3c705-r002",
+  "stage14_4_schema_version": "stage14.4-v2",
+  "status": "initial_neighborhood_infeasible"
+}

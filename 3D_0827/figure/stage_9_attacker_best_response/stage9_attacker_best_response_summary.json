@@ -1,0 +1,85 @@
+{
+  "architecture": {
+    "bellman": "one shared exact solve after literal equivalence proof",
+    "candidate_enumeration": "literal exhaustive result storage",
+    "shared_bellman_solve_count": 1,
+    "tie_break": "retain every objective-co-optimal candidate within tolerance; select the lowest candidate_id for the Attacker response"
+  },
+  "counts": {
+    "active_state_count": 17321,
+    "hazard_edge_count": 53735,
+    "number_energy_feasible": 60,
+    "number_feasible": 6,
+    "number_goal_reachable": 6,
+    "number_of_candidates": 96,
+    "number_virtual_feasible": 6,
+    "shared_bellman_solve_count": 1,
+    "status_categories": {
+      "energy_infeasible": 12,
+      "feasible": 6,
+      "powered_infeasible": 24,
+      "virtual_infeasible": 54
+    }
+  },
+  "exactness": {
+    "assertion_tolerance": 1e-12,
+    "minimum_stored_feasible_objective": 0.21356152236500636,
+    "selected_minus_minimum_absolute": 0.0
+  },
+  "objective_definition": {
+    "hazard_reference": 1.0,
+    "hazard_weight": 0.5,
+    "time_reference_s": 221.23893805309734,
+    "time_weight": 0.5
+  },
+  "resolution_sensitivity": [
+    {
+      "best_candidate_id": 25,
+      "best_objective": 0.21356152236500636,
+      "best_x_map": 0.5,
+      "best_y_map": 2.9999999980759777,
+      "best_z_map": 1.6630045328951102,
+      "candidate_count": 96,
+      "contour_sample_count": 12,
+      "number_feasible": 6,
+      "radial_scale_count": 8,
+      "total_runtime_s": 33.37054089998128
+    },
+    {
+      "best_candidate_id": 33,
+      "best_objective": 0.1948997209135999,
+      "best_x_map": 0.5,
+      "best_y_map": 2.999999997525016,
+      "best_z_map": 1.230007861644896,
+      "candidate_count": 128,
+      "contour_sample_count": 16,
+      "number_feasible": 8,
+      "radial_scale_count": 8,
+      "total_runtime_s": 32.99745990001247
+    }
+  ],
+  "runtime": {
+    "attacker_bellman_s": 32.27503749995958,
+    "candidate_generation_s": 0.04290910001145676,
+    "energy_filter_s": 0.05890810000710189,
+    "total_attacker_br_s": 33.37054089998128,
+    "virtual_connection_s": 0.0015666999970562756
+  },
+  "selected": {
+    "candidate_id": 25,
+    "cooptimal_candidate_ids": [
+      25,
+      34
+    ],
+    "cumulative_hazard": 0.0172459504390233,
+    "detection_probability": 0.017098090252410686,
+    "mission_time_s": 90.68077307322775,
+    "objective": 0.21356152236500636,
+    "position_map": [
+      0.5,
+      2.9999999980759777,
+      1.6630045328951102
+    ],
+    "virtual_target_state_id": 20608
+  }
+}

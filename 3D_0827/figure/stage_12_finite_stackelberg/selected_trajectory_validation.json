@@ -1,0 +1,25 @@
+{
+  "energy_margin_m": 22.83364368933519,
+  "goal_distance_m": 20.0,
+  "recomputed_cumulative_hazard": 1.7872996686988498,
+  "recomputed_detection_probability": 0.8325883732933018,
+  "recomputed_mission_time_s": 87.42862400860825,
+  "report": {
+    "energy_valid": true,
+    "goal_error_m": 0.0,
+    "goal_valid": true,
+    "hazard_consistent": true,
+    "hazard_error": 2.220446049250313e-16,
+    "los_phase_valid": true,
+    "max_turn_violation": 0.0,
+    "messages": [
+      "independent replay passed all checks"
+    ],
+    "min_terrain_clearance": null,
+    "passed": true,
+    "terrain_clear": true,
+    "time_consistent": true,
+    "time_error_s": 1.4210854715202004e-14,
+    "turn_constraints_valid": true
+  }
+}

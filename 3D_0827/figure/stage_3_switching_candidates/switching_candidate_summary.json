@@ -1,0 +1,130 @@
+{
+  "centered_cube": {
+    "all_coordinates_finite": true,
+    "candidate_count": 96,
+    "candidate_id_range": [
+      0,
+      95
+    ],
+    "contour_sample_count": 12,
+    "max_surface_residual": 8.648552211973499e-17,
+    "min_positive_direction_product": 6.500342640745799,
+    "position_max": [
+      3.5,
+      7.999999994869274,
+      15.999999985376995
+    ],
+    "position_min": [
+      -7.0,
+      -7.999999994869273,
+      0.013089005235602079
+    ],
+    "radial_sample_count": 8,
+    "radial_scales": [
+      0.5,
+      1.0,
+      1.5,
+      2.0,
+      2.5,
+      3.0,
+      3.5,
+      4.0
+    ]
+  },
+  "offset_cube_left": {
+    "all_coordinates_finite": true,
+    "candidate_count": 96,
+    "candidate_id_range": [
+      0,
+      95
+    ],
+    "contour_sample_count": 12,
+    "max_surface_residual": 6.928364739786118e-17,
+    "min_positive_direction_product": 14.038627377751732,
+    "position_max": [
+      3.500000000017507,
+      -0.4999999999308728,
+      15.999999998058843
+    ],
+    "position_min": [
+      -22.999999939526685,
+      -19.999999996237683,
+      0.023148148138501388
+    ],
+    "radial_sample_count": 8,
+    "radial_scales": [
+      0.5,
+      1.0,
+      1.5,
+      2.0,
+      2.5,
+      3.0,
+      3.5,
+      4.0
+    ]
+  },
+  "offset_cube_right": {
+    "all_coordinates_finite": true,
+    "candidate_count": 96,
+    "candidate_id_range": [
+      0,
+      95
+    ],
+    "contour_sample_count": 12,
+    "max_surface_residual": 9.419140790870525e-17,
+    "min_positive_direction_product": 14.038627377751737,
+    "position_max": [
+      3.500000000017507,
+      19.999999996237683,
+      15.999999998058842
+    ],
+    "position_min": [
+      -22.999999939526703,
+      0.4999999999308726,
+      0.023148148138497412
+    ],
+    "radial_sample_count": 8,
+    "radial_scales": [
+      0.5,
+      1.0,
+      1.5,
+      2.0,
+      2.5,
+      3.0,
+      3.5,
+      4.0
+    ]
+  },
+  "stepped_pyramid": {
+    "all_coordinates_finite": true,
+    "candidate_count": 96,
+    "candidate_id_range": [
+      0,
+      95
+    ],
+    "contour_sample_count": 12,
+    "max_surface_residual": 1.5880530610992004e-16,
+    "min_positive_direction_product": 6.121502689795859,
+    "position_max": [
+      4.000000000180064,
+      11.99999999980995,
+      15.999999986285252
+    ],
+    "position_min": [
+      -9.0,
+      -11.999999999809948,
+      0.007971303308090854
+    ],
+    "radial_sample_count": 8,
+    "radial_scales": [
+      0.5,
+      1.0,
+      1.5,
+      2.0,
+      2.5,
+      3.0,
+      3.5,
+      4.0
+    ]
+  }
+}

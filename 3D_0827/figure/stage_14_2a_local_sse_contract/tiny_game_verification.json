@@ -1,0 +1,475 @@
+{
+  "full_radius": 4,
+  "full_radius_equals_global": true,
+  "full_radius_local_action_ids": [
+    3
+  ],
+  "global_sse_action_ids": [
+    3
+  ],
+  "infeasible_neighbor_diagnostic": {
+    "best_feasible_neighbor_value": 3.0,
+    "candidate_action_id": 1,
+    "candidate_defender_value": 4.0,
+    "comparison_scope": "local Strong Stackelberg equilibrium over an explicit finite Defender grid neighborhood; not a global or continuous-space optimality claim",
+    "equal_payoff_neighbor_ids": [],
+    "exact_attacker_responses_verified": true,
+    "feasible_neighbor_ids": [
+      2
+    ],
+    "global_condition_equivalent": false,
+    "improving_neighbor_ids": [],
+    "infeasible_neighbor_diagnostics": [
+      [
+        0,
+        "no feasible exact finite Attacker response"
+      ]
+    ],
+    "isolated_feasible_local_solution": false,
+    "local_optimality_margin": 1.0,
+    "local_sse_verified": true,
+    "neighbor_action_ids": [
+      0,
+      2
+    ],
+    "neighborhood_metadata": {
+      "configuration": {
+        "boundary_rule": "clip to explicitly configured grid actions",
+        "metric": "chebyshev_grid_index",
+        "one_dimensional_rule": "0 < abs(j-i) <= r_neighbor",
+        "r_neighbor": 1,
+        "radius_units": "integer Defender grid-index lengths",
+        "two_dimensional_rule": "0 < max(abs(p-i), abs(q-j)) <= r_neighbor"
+      },
+      "topology": {
+        "dimension": 1,
+        "ordered_action_grid_indices": [
+          {
+            "action_id": 0,
+            "grid_index": [
+              0
+            ]
+          },
+          {
+            "action_id": 1,
+            "grid_index": [
+              1
+            ]
+          },
+          {
+            "action_id": 2,
+            "grid_index": [
+              2
+            ]
+          },
+          {
+            "action_id": 3,
+            "grid_index": [
+              3
+            ]
+          },
+          {
+            "action_id": 4,
+            "grid_index": [
+              4
+            ]
+          }
+        ]
+      }
+    },
+    "strong_tie_breaking_verified": true,
+    "unknown_neighbor_diagnostics": []
+  },
+  "local_but_not_global_action_ids": [
+    1
+  ],
+  "local_sse_action_ids": [
+    1,
+    3
+  ],
+  "payoff_line": [
+    {
+      "V_D": 1.0,
+      "action_id": 0
+    },
+    {
+      "V_D": 4.0,
+      "action_id": 1
+    },
+    {
+      "V_D": 3.0,
+      "action_id": 2
+    },
+    {
+      "V_D": 7.0,
+      "action_id": 3
+    },
+    {
+      "V_D": 6.0,
+      "action_id": 4
+    }
+  ],
+  "r_neighbor": 1,
+  "strong_follower_tie_audit": {
+    "attacker_best_response_ids": [
+      10,
+      11
+    ],
+    "defender_best_ids_within_attacker_tie": [
+      11
+    ],
+    "expected_selected_response_id": 11,
+    "passed": true,
+    "selected_response_id": 11
+  },
+  "verification_by_action": {
+    "0": {
+      "best_feasible_neighbor_value": 4.0,
+      "candidate_action_id": 0,
+      "candidate_defender_value": 1.0,
+      "comparison_scope": "local Strong Stackelberg equilibrium over an explicit finite Defender grid neighborhood; not a global or continuous-space optimality claim",
+      "equal_payoff_neighbor_ids": [],
+      "exact_attacker_responses_verified": true,
+      "feasible_neighbor_ids": [
+        1
+      ],
+      "global_condition_equivalent": false,
+      "improving_neighbor_ids": [
+        1
+      ],
+      "infeasible_neighbor_diagnostics": [],
+      "isolated_feasible_local_solution": false,
+      "local_optimality_margin": -3.0,
+      "local_sse_verified": false,
+      "neighbor_action_ids": [
+        1
+      ],
+      "neighborhood_metadata": {
+        "configuration": {
+          "boundary_rule": "clip to explicitly configured grid actions",
+          "metric": "chebyshev_grid_index",
+          "one_dimensional_rule": "0 < abs(j-i) <= r_neighbor",
+          "r_neighbor": 1,
+          "radius_units": "integer Defender grid-index lengths",
+          "two_dimensional_rule": "0 < max(abs(p-i), abs(q-j)) <= r_neighbor"
+        },
+        "topology": {
+          "dimension": 1,
+          "ordered_action_grid_indices": [
+            {
+              "action_id": 0,
+              "grid_index": [
+                0
+              ]
+            },
+            {
+              "action_id": 1,
+              "grid_index": [
+                1
+              ]
+            },
+            {
+              "action_id": 2,
+              "grid_index": [
+                2
+              ]
+            },
+            {
+              "action_id": 3,
+              "grid_index": [
+                3
+              ]
+            },
+            {
+              "action_id": 4,
+              "grid_index": [
+                4
+              ]
+            }
+          ]
+        }
+      },
+      "strong_tie_breaking_verified": true,
+      "unknown_neighbor_diagnostics": []
+    },
+    "1": {
+      "best_feasible_neighbor_value": 3.0,
+      "candidate_action_id": 1,
+      "candidate_defender_value": 4.0,
+      "comparison_scope": "local Strong Stackelberg equilibrium over an explicit finite Defender grid neighborhood; not a global or continuous-space optimality claim",
+      "equal_payoff_neighbor_ids": [],
+      "exact_attacker_responses_verified": true,
+      "feasible_neighbor_ids": [
+        0,
+        2
+      ],
+      "global_condition_equivalent": false,
+      "improving_neighbor_ids": [],
+      "infeasible_neighbor_diagnostics": [],
+      "isolated_feasible_local_solution": false,
+      "local_optimality_margin": 1.0,
+      "local_sse_verified": true,
+      "neighbor_action_ids": [
+        0,
+        2
+      ],
+      "neighborhood_metadata": {
+        "configuration": {
+          "boundary_rule": "clip to explicitly configured grid actions",
+          "metric": "chebyshev_grid_index",
+          "one_dimensional_rule": "0 < abs(j-i) <= r_neighbor",
+          "r_neighbor": 1,
+          "radius_units": "integer Defender grid-index lengths",
+          "two_dimensional_rule": "0 < max(abs(p-i), abs(q-j)) <= r_neighbor"
+        },
+        "topology": {
+          "dimension": 1,
+          "ordered_action_grid_indices": [
+            {
+              "action_id": 0,
+              "grid_index": [
+                0
+              ]
+            },
+            {
+              "action_id": 1,
+              "grid_index": [
+                1
+              ]
+            },
+            {
+              "action_id": 2,
+              "grid_index": [
+                2
+              ]
+            },
+            {
+              "action_id": 3,
+              "grid_index": [
+                3
+              ]
+            },
+            {
+              "action_id": 4,
+              "grid_index": [
+                4
+              ]
+            }
+          ]
+        }
+      },
+      "strong_tie_breaking_verified": true,
+      "unknown_neighbor_diagnostics": []
+    },
+    "2": {
+      "best_feasible_neighbor_value": 7.0,
+      "candidate_action_id": 2,
+      "candidate_defender_value": 3.0,
+      "comparison_scope": "local Strong Stackelberg equilibrium over an explicit finite Defender grid neighborhood; not a global or continuous-space optimality claim",
+      "equal_payoff_neighbor_ids": [],
+      "exact_attacker_responses_verified": true,
+      "feasible_neighbor_ids": [
+        1,
+        3
+      ],
+      "global_condition_equivalent": false,
+      "improving_neighbor_ids": [
+        1,
+        3
+      ],
+      "infeasible_neighbor_diagnostics": [],
+      "isolated_feasible_local_solution": false,
+      "local_optimality_margin": -4.0,
+      "local_sse_verified": false,
+      "neighbor_action_ids": [
+        1,
+        3
+      ],
+      "neighborhood_metadata": {
+        "configuration": {
+          "boundary_rule": "clip to explicitly configured grid actions",
+          "metric": "chebyshev_grid_index",
+          "one_dimensional_rule": "0 < abs(j-i) <= r_neighbor",
+          "r_neighbor": 1,
+          "radius_units": "integer Defender grid-index lengths",
+          "two_dimensional_rule": "0 < max(abs(p-i), abs(q-j)) <= r_neighbor"
+        },
+        "topology": {
+          "dimension": 1,
+          "ordered_action_grid_indices": [
+            {
+              "action_id": 0,
+              "grid_index": [
+                0
+              ]
+            },
+            {
+              "action_id": 1,
+              "grid_index": [
+                1
+              ]
+            },
+            {
+              "action_id": 2,
+              "grid_index": [
+                2
+              ]
+            },
+            {
+              "action_id": 3,
+              "grid_index": [
+                3
+              ]
+            },
+            {
+              "action_id": 4,
+              "grid_index": [
+                4
+              ]
+            }
+          ]
+        }
+      },
+      "strong_tie_breaking_verified": true,
+      "unknown_neighbor_diagnostics": []
+    },
+    "3": {
+      "best_feasible_neighbor_value": 6.0,
+      "candidate_action_id": 3,
+      "candidate_defender_value": 7.0,
+      "comparison_scope": "local Strong Stackelberg equilibrium over an explicit finite Defender grid neighborhood; not a global or continuous-space optimality claim",
+      "equal_payoff_neighbor_ids": [],
+      "exact_attacker_responses_verified": true,
+      "feasible_neighbor_ids": [
+        2,
+        4
+      ],
+      "global_condition_equivalent": false,
+      "improving_neighbor_ids": [],
+      "infeasible_neighbor_diagnostics": [],
+      "isolated_feasible_local_solution": false,
+      "local_optimality_margin": 1.0,
+      "local_sse_verified": true,
+      "neighbor_action_ids": [
+        2,
+        4
+      ],
+      "neighborhood_metadata": {
+        "configuration": {
+          "boundary_rule": "clip to explicitly configured grid actions",
+          "metric": "chebyshev_grid_index",
+          "one_dimensional_rule": "0 < abs(j-i) <= r_neighbor",
+          "r_neighbor": 1,
+          "radius_units": "integer Defender grid-index lengths",
+          "two_dimensional_rule": "0 < max(abs(p-i), abs(q-j)) <= r_neighbor"
+        },
+        "topology": {
+          "dimension": 1,
+          "ordered_action_grid_indices": [
+            {
+              "action_id": 0,
+              "grid_index": [
+                0
+              ]
+            },
+            {
+              "action_id": 1,
+              "grid_index": [
+                1
+              ]
+            },
+            {
+              "action_id": 2,
+              "grid_index": [
+                2
+              ]
+            },
+            {
+              "action_id": 3,
+              "grid_index": [
+                3
+              ]
+            },
+            {
+              "action_id": 4,
+              "grid_index": [
+                4
+              ]
+            }
+          ]
+        }
+      },
+      "strong_tie_breaking_verified": true,
+      "unknown_neighbor_diagnostics": []
+    },
+    "4": {
+      "best_feasible_neighbor_value": 7.0,
+      "candidate_action_id": 4,
+      "candidate_defender_value": 6.0,
+      "comparison_scope": "local Strong Stackelberg equilibrium over an explicit finite Defender grid neighborhood; not a global or continuous-space optimality claim",
+      "equal_payoff_neighbor_ids": [],
+      "exact_attacker_responses_verified": true,
+      "feasible_neighbor_ids": [
+        3
+      ],
+      "global_condition_equivalent": false,
+      "improving_neighbor_ids": [
+        3
+      ],
+      "infeasible_neighbor_diagnostics": [],
+      "isolated_feasible_local_solution": false,
+      "local_optimality_margin": -1.0,
+      "local_sse_verified": false,
+      "neighbor_action_ids": [
+        3
+      ],
+      "neighborhood_metadata": {
+        "configuration": {
+          "boundary_rule": "clip to explicitly configured grid actions",
+          "metric": "chebyshev_grid_index",
+          "one_dimensional_rule": "0 < abs(j-i) <= r_neighbor",
+          "r_neighbor": 1,
+          "radius_units": "integer Defender grid-index lengths",
+          "two_dimensional_rule": "0 < max(abs(p-i), abs(q-j)) <= r_neighbor"
+        },
+        "topology": {
+          "dimension": 1,
+          "ordered_action_grid_indices": [
+            {
+              "action_id": 0,
+              "grid_index": [
+                0
+              ]
+            },
+            {
+              "action_id": 1,
+              "grid_index": [
+                1
+              ]
+            },
+            {
+              "action_id": 2,
+              "grid_index": [
+                2
+              ]
+            },
+            {
+              "action_id": 3,
+              "grid_index": [
+                3
+              ]
+            },
+            {
+              "action_id": 4,
+              "grid_index": [
+                4
+              ]
+            }
+          ]
+        }
+      },
+      "strong_tie_breaking_verified": true,
+      "unknown_neighbor_diagnostics": []
+    }
+  }
+}

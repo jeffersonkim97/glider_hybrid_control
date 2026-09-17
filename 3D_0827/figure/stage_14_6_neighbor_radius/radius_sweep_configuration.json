@@ -1,0 +1,240 @@
+{
+  "cases": [
+    {
+      "case_id": "local-sse-r-neighbor-1-69d3ac42f283",
+      "experiment_type": "stage14_6_local_sse_neighbor_radius",
+      "memory_limit_bytes": 4294967296,
+      "name": "local_sse_r_neighbor_1",
+      "parameters": {
+        "approximate_planner": false,
+        "baseline_anchor": 0,
+        "defender_action_count": 9,
+        "defender_domain_x_max": 7.5,
+        "defender_domain_x_min": 5.0,
+        "defender_grid_policy": "uniform_fixed_domain",
+        "heading_spacing_deg": 5.0,
+        "initial_defender_action_id": 0,
+        "multi_start": false,
+        "r_neighbor": 1,
+        "reinforcement_learning": false,
+        "spatial_resolution_m": 25.0,
+        "switching_contour_sample_count": 12,
+        "switching_radial_sample_count": 8,
+        "terrain_category": "centered_cube"
+      },
+      "process_semantics": "fresh cold process per repetition",
+      "sampling_interval_s": 0.02,
+      "sweep_variable": "r_neighbor",
+      "timeout_s": 600.0,
+      "worker_mode": "local_sse"
+    },
+    {
+      "case_id": "local-sse-r-neighbor-2-f52214fd8f05",
+      "experiment_type": "stage14_6_local_sse_neighbor_radius",
+      "memory_limit_bytes": 4294967296,
+      "name": "local_sse_r_neighbor_2",
+      "parameters": {
+        "approximate_planner": false,
+        "baseline_anchor": 0,
+        "defender_action_count": 9,
+        "defender_domain_x_max": 7.5,
+        "defender_domain_x_min": 5.0,
+        "defender_grid_policy": "uniform_fixed_domain",
+        "heading_spacing_deg": 5.0,
+        "initial_defender_action_id": 0,
+        "multi_start": false,
+        "r_neighbor": 2,
+        "reinforcement_learning": false,
+        "spatial_resolution_m": 25.0,
+        "switching_contour_sample_count": 12,
+        "switching_radial_sample_count": 8,
+        "terrain_category": "centered_cube"
+      },
+      "process_semantics": "fresh cold process per repetition",
+      "sampling_interval_s": 0.02,
+      "sweep_variable": "r_neighbor",
+      "timeout_s": 600.0,
+      "worker_mode": "local_sse"
+    },
+    {
+      "case_id": "local-sse-r-neighbor-4-7c53a9d6272c",
+      "experiment_type": "stage14_6_local_sse_neighbor_radius",
+      "memory_limit_bytes": 4294967296,
+      "name": "local_sse_r_neighbor_4",
+      "parameters": {
+        "approximate_planner": false,
+        "baseline_anchor": 0,
+        "defender_action_count": 9,
+        "defender_domain_x_max": 7.5,
+        "defender_domain_x_min": 5.0,
+        "defender_grid_policy": "uniform_fixed_domain",
+        "heading_spacing_deg": 5.0,
+        "initial_defender_action_id": 0,
+        "multi_start": false,
+        "r_neighbor": 4,
+        "reinforcement_learning": false,
+        "spatial_resolution_m": 25.0,
+        "switching_contour_sample_count": 12,
+        "switching_radial_sample_count": 8,
+        "terrain_category": "centered_cube"
+      },
+      "process_semantics": "fresh cold process per repetition",
+      "sampling_interval_s": 0.02,
+      "sweep_variable": "r_neighbor",
+      "timeout_s": 600.0,
+      "worker_mode": "local_sse"
+    },
+    {
+      "case_id": "local-sse-r-neighbor-8-9dd871c09f65",
+      "experiment_type": "stage14_6_local_sse_neighbor_radius",
+      "memory_limit_bytes": 4294967296,
+      "name": "local_sse_r_neighbor_8",
+      "parameters": {
+        "approximate_planner": false,
+        "baseline_anchor": 0,
+        "defender_action_count": 9,
+        "defender_domain_x_max": 7.5,
+        "defender_domain_x_min": 5.0,
+        "defender_grid_policy": "uniform_fixed_domain",
+        "heading_spacing_deg": 5.0,
+        "initial_defender_action_id": 0,
+        "multi_start": false,
+        "r_neighbor": 8,
+        "reinforcement_learning": false,
+        "spatial_resolution_m": 25.0,
+        "switching_contour_sample_count": 12,
+        "switching_radial_sample_count": 8,
+        "terrain_category": "centered_cube"
+      },
+      "process_semantics": "fresh cold process per repetition",
+      "sampling_interval_s": 0.02,
+      "sweep_variable": "r_neighbor",
+      "timeout_s": 600.0,
+      "worker_mode": "local_sse"
+    },
+    {
+      "case_id": "global-oracle-r-neighbor-8-reference-825b789a73e4",
+      "experiment_type": "stage14_6_exact_global_full_radius_reference",
+      "memory_limit_bytes": 4294967296,
+      "name": "global_oracle_r_neighbor_8_reference",
+      "parameters": {
+        "approximate_planner": false,
+        "baseline_anchor": 0,
+        "defender_action_count": 9,
+        "defender_domain_x_max": 7.5,
+        "defender_domain_x_min": 5.0,
+        "defender_grid_policy": "uniform_fixed_domain",
+        "heading_spacing_deg": 5.0,
+        "initial_defender_action_id": 0,
+        "multi_start": false,
+        "r_neighbor": 8,
+        "reinforcement_learning": false,
+        "spatial_resolution_m": 25.0,
+        "switching_contour_sample_count": 12,
+        "switching_radial_sample_count": 8,
+        "terrain_category": "centered_cube"
+      },
+      "process_semantics": "fresh cold process per repetition",
+      "sampling_interval_s": 0.02,
+      "sweep_variable": "r_neighbor",
+      "timeout_s": 600.0,
+      "worker_mode": "global_oracle"
+    }
+  ],
+  "checks": {
+    "exact_non_rl_single_start": true,
+    "fixed_nine_action_uniform_grid": true,
+    "fixed_start_action_zero": true,
+    "four_declared_local_radii": true,
+    "full_radius_equals_n_d_minus_one": true,
+    "only_r_neighbor_varies_across_local_cases": true,
+    "single_matching_global_reference": true,
+    "three_isolated_process_repetitions": true
+  },
+  "defender_action_count": 9,
+  "defender_action_grid": [
+    {
+      "action_id": 0,
+      "sensor_position_map": [
+        5.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "action_id": 1,
+      "sensor_position_map": [
+        5.3125,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "action_id": 2,
+      "sensor_position_map": [
+        5.625,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "action_id": 3,
+      "sensor_position_map": [
+        5.9375,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "action_id": 4,
+      "sensor_position_map": [
+        6.25,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "action_id": 5,
+      "sensor_position_map": [
+        6.5625,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "action_id": 6,
+      "sensor_position_map": [
+        6.875,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "action_id": 7,
+      "sensor_position_map": [
+        7.1875,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "action_id": 8,
+      "sensor_position_map": [
+        7.5,
+        0.0,
+        0.0
+      ]
+    }
+  ],
+  "full_radius": 8,
+  "initial_defender_action_id": 0,
+  "neighborhood_rule": "0 < abs(j - i) <= r_neighbor",
+  "passed": true,
+  "r_neighbor_values": [
+    1,
+    2,
+    4,
+    8
+  ],
+  "schema_version": "stage14.6-v1"
+}

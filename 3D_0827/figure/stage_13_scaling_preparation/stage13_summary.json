@@ -1,0 +1,42 @@
+{
+  "all_exactness_checks_passed": true,
+  "all_validation_passed": true,
+  "exact_infeasible_count": 1,
+  "gate_passed": true,
+  "memory_comparison_metric": "peak_memory_delta_bytes (sampled peak RSS minus worker start RSS); absolute process peak remains stored as peak_memory_bytes",
+  "memory_measurement_method": "psutil sampled process RSS (10 ms interval)",
+  "notebook_policy": "Stage-11 and original GUI notebooks remain frozen",
+  "notebook_sha256": {
+    "3D_Attacker_Bellman_Validated.ipynb": "ffa40265b2327c8c62a2b03a3114ad87679aaedc22d570bba7360abe86fa7472",
+    "3D_bellman_0827.ipynb": "3b5938317df97814facf1c25066777d4efcdeca28fc8116fe99cd8e63b3a09a2"
+  },
+  "profile_count": 7,
+  "repeated_baseline_deterministic": true,
+  "rl_implemented": false,
+  "run_ids": [
+    "baseline_repeat",
+    "spatial_fine_50m_5m",
+    "heading_12",
+    "switch_candidates_128",
+    "defender_actions_2",
+    "terrain_stepped_pyramid",
+    "terrain_offset_cube_left"
+  ],
+  "scope": "measured smoke data validating the scaling framework; not a production convergence conclusion and not an RL comparison",
+  "spatial_motion_horizon_policy": "motion_primitive_step_cells changes inversely with horizontal spacing so the spatial sweep preserves the 1-map-unit/100-m canonical transition horizon",
+  "stage": 13,
+  "terrain_categories_attempted": [
+    "centered_cube",
+    "offset_cube_left",
+    "stepped_pyramid"
+  ],
+  "terrain_categories_with_feasible_results": [
+    "centered_cube",
+    "offset_cube_left"
+  ],
+  "valid_result_count": 6,
+  "virtual_connection_regression_fixes": [
+    "turn-infeasible zero-length identity proposals use only corners of cells incident to the exact lattice intersection",
+    "virtual chord-heading compatibility is rejected in the solver at the same 1e-8-rad tolerance used by independent replay"
+  ]
+}

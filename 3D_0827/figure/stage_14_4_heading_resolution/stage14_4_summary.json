@@ -1,0 +1,85 @@
+{
+  "figure_files": [
+    "01_total_sse_runtime.png",
+    "02_runtime_decomposition.png",
+    "03_peak_memory.png",
+    "04_objectives.png",
+    "04_1_detection_probability.png",
+    "05_equilibrium_selection.png",
+    "06_trajectory_identity.png"
+  ],
+  "figure_methodology": {
+    "controlled_x_axis": "requested heading resolution Delta psi [deg]",
+    "displayed_algorithms": [
+      "local_sse"
+    ],
+    "individual_measurement_label": "Individual isolated-process runs (n=3)",
+    "individual_runtime_memory_points_displayed": false,
+    "oracle_measurements_retained": true,
+    "performance_legend_algorithm_prefix": false,
+    "pod_figure": "04_1_detection_probability.png",
+    "primary_algorithm": "local_sse",
+    "realized_heading_bins_location": "summary table and machine-readable metadata only",
+    "reference_algorithm": "global_oracle",
+    "shared_resolution_figure_schema": true
+  },
+  "fine_heading_outcome": {
+    "completed": true,
+    "computational_limit": false,
+    "heading_spacing_deg": 1.0,
+    "local_status_counts": {
+      "completed": 3
+    }
+  },
+  "gate_checks": {
+    "canonical_frozen_regression_passes": true,
+    "completed_solution_identities_deterministic": true,
+    "every_completed_exactness_check_passes": true,
+    "every_completed_local_result_is_certified": true,
+    "every_completed_replay_passes": true,
+    "fine_local_completed_or_explicit_computational_limit": true,
+    "global_solver_is_oracle_only": true,
+    "new_runner_resume_deterministic": true,
+    "only_heading_resolution_varied": true,
+    "png_figures_exist": true,
+    "realized_heading_bins_match_requested": true,
+    "realized_heading_metadata_recorded": true,
+    "required_heading_spacings_declared": true,
+    "reused_stage14_2c_rows_complete": true,
+    "solver_source_fingerprint_unchanged": true,
+    "three_repetitions_per_configuration_recorded": true
+  },
+  "gate_passed": true,
+  "heading_spacings_deg": [
+    45.0,
+    36.0,
+    30.0,
+    22.5,
+    20.0,
+    18.0,
+    15.0,
+    12.0,
+    10.0,
+    9.0,
+    7.5,
+    6.0,
+    5.0,
+    4.5,
+    4.0,
+    3.0,
+    2.5,
+    2.0,
+    1.5,
+    1.0
+  ],
+  "new_repetition_count": 120,
+  "next_stage_started": false,
+  "reused_repetition_count": 0,
+  "schema_version": "stage14.4-v2",
+  "scientific_interpretation": {
+    "objective_convergence_established": false,
+    "power_law_fit_performed": false
+  },
+  "stage": "14.4",
+  "total_repetition_count": 120
+}

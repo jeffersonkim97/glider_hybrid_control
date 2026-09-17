@@ -1,0 +1,66 @@
+{
+  "defender_action_count": 9,
+  "defender_x_map": [
+    5.0,
+    5.3125,
+    5.625,
+    5.9375,
+    6.25,
+    6.5625,
+    6.875,
+    7.1875,
+    7.5
+  ],
+  "figure_files": [
+    "01_total_sse_runtime.png",
+    "02_runtime_decomposition.png",
+    "03_peak_memory.png",
+    "04_objectives.png",
+    "05_equilibrium_selection.png",
+    "06_trajectory_identity.png"
+  ],
+  "figure_methodology": {
+    "controlled_x_axis": "r_neighbor [grid steps]",
+    "other_solver_control_displayed": false,
+    "performance_displayed_algorithms": [
+      "local_sse"
+    ],
+    "performance_legend_algorithm_prefix": false,
+    "primary_algorithm": "local_sse",
+    "reference_algorithm": "global_oracle",
+    "saved_measurement_configuration_preserved": true,
+    "search_work_diagnostics_location": "raw/tabular audit artifacts only",
+    "shared_performance_figure_schema": true
+  },
+  "full_radius": 8,
+  "full_radius_global_equivalence_passed": true,
+  "gate_checks": {
+    "all_evaluation_accounting_reconciles": true,
+    "all_independent_replays_pass": true,
+    "all_local_exactness_and_strong_ties_verified": true,
+    "all_measurements_completed": true,
+    "all_realized_neighborhoods_match_rule": true,
+    "configuration_contract_passes": true,
+    "deterministic_solution_per_configuration": true,
+    "fixed_defender_grid_start_and_attacker_settings": true,
+    "full_radius_covers_complete_grid": true,
+    "full_radius_matches_exact_global": true,
+    "global_reference_enumerates_complete_grid": true,
+    "only_r_neighbor_varied_in_local_sweep": true,
+    "runner_resume_deterministic": true,
+    "six_static_png_figures_exist": true,
+    "solver_source_fingerprint_unchanged": true,
+    "three_repetitions_per_configuration_recorded": true
+  },
+  "gate_passed": true,
+  "next_stage_started": false,
+  "r_neighbor_values": [
+    1,
+    2,
+    4,
+    8
+  ],
+  "schema_version": "stage14.6-v1",
+  "stage": "14.6",
+  "total_repetition_count": 15
+}

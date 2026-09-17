@@ -1,0 +1,1350 @@
+[
+  {
+    "record": {
+      "altitude_resolution": 0.1,
+      "attacker_objective": 0.2135615223650064,
+      "configuration": {
+        "defender_action_count": 1,
+        "defender_x_map": [
+          5.0
+        ],
+        "defender_y_map": 0.0,
+        "defender_z_map": 0.0,
+        "discretization": {
+          "altitude_spacing_map": 0.1,
+          "hazard_quadrature_resolution": 8,
+          "heading_bin_count": 8,
+          "horizontal_spacing_map": 1.0,
+          "los_boundary_refinement_steps": 24,
+          "los_display_extension_factor": 4.0,
+          "los_probe_grid_size": 101,
+          "maximum_altitude_map": 5.0,
+          "minimum_altitude_map": 0.0,
+          "motion_primitive_radius": 1,
+          "motion_primitive_step_cells": 1,
+          "switching_contour_sample_count": 12,
+          "switching_radial_max": 4.0,
+          "switching_radial_min": 0.5,
+          "switching_radial_sample_count": 8,
+          "switching_radial_scales": [
+            0.5,
+            1.0,
+            1.5,
+            2.0,
+            2.5,
+            3.0,
+            3.5,
+            4.0
+          ],
+          "visualization_ray_count": 10
+        },
+        "mission_and_physics": {
+          "attacker_objective": {
+            "hazard_reference": 1.0,
+            "hazard_weight": 0.5,
+            "objective_id": "attacker_hazard_time_v2",
+            "time_reference_s": 221.23893805309734,
+            "time_weight": 0.5
+          },
+          "detection": {
+            "doppler_coefficient": 33250.0,
+            "radar_coefficient": 13000000.0,
+            "radar_rate_scale": 1.0,
+            "radial_velocity_rate_scale": 1.0,
+            "range_floor_m": 10.0,
+            "rcs_max": 1.0,
+            "rcs_min": 0.1
+          },
+          "deterministic_single_candidate_id": 25,
+          "discretization": {
+            "altitude_spacing_map": 0.1,
+            "hazard_quadrature_resolution": 8,
+            "heading_bin_count": 8,
+            "horizontal_spacing_map": 1.0,
+            "los_boundary_refinement_steps": 24,
+            "los_display_extension_factor": 4.0,
+            "los_probe_grid_size": 101,
+            "maximum_altitude_map": 5.0,
+            "minimum_altitude_map": 0.0,
+            "motion_primitive_radius": 1,
+            "motion_primitive_step_cells": 1,
+            "switching_contour_sample_count": 12,
+            "switching_radial_max": 4.0,
+            "switching_radial_min": 0.5,
+            "switching_radial_sample_count": 8,
+            "switching_radial_scales": [
+              0.5,
+              1.0,
+              1.5,
+              2.0,
+              2.5,
+              3.0,
+              3.5,
+              4.0
+            ],
+            "visualization_ray_count": 10
+          },
+          "glider": {
+            "aircraft_name": "Schleicher Ka 6 CR",
+            "best_glide_ratio": 10.0,
+            "best_glide_speed_mps": 22.22222222222222,
+            "goal_tolerance_m": 25.0,
+            "gravity_mps2": 9.81,
+            "mass_kg": 304.0,
+            "maximum_bank_deg": 30.0,
+            "powered_speed_mps": 22.22222222222222,
+            "source_url": "https://mobilit.belgium.be/sites/default/files/domain/Aviation/Veiligheid/Verslagen%20voorvallen/2010/2010_5.pdf",
+            "switch_energy_loss_height_m": 10.0
+          },
+          "goal_map": [
+            8.0,
+            0.0,
+            0.0
+          ],
+          "graph_bounds": {
+            "x_max": 8.0,
+            "x_min": -8.0,
+            "y_max": 4.0,
+            "y_min": -4.0
+          },
+          "physical_scale": {
+            "meters_per_map_unit": 100.0
+          },
+          "random_seed": 0,
+          "sensor_map": [
+            5.0,
+            0.0,
+            0.0
+          ],
+          "start_map": [
+            -8.0,
+            0.0,
+            0.0
+          ],
+          "terrain_category": "centered_cube"
+        },
+        "repeat_count": 2,
+        "run_id": "baseline_repeat",
+        "sweep_variable": "baseline",
+        "terrain_category": "centered_cube"
+      },
+      "defender_action_count": 1,
+      "defender_payoff": 0.017098090252410693,
+      "deterministic": true,
+      "edge_count": 190852,
+      "exhaustive_attacker_verified": true,
+      "exhaustive_defender_verified": true,
+      "grid_dx": 1.0,
+      "grid_dy": 1.0,
+      "heading_bins": 8,
+      "memory_measurement_method": "psutil sampled process RSS (10 ms interval)",
+      "motion_primitive_radius": 1,
+      "motion_primitive_step_cells": 1,
+      "peak_memory_bytes": 271069184,
+      "peak_memory_delta_bytes": 122527744,
+      "repeat_count": 2,
+      "repeats": [
+        {
+          "attacker_objective": 0.2135615223650064,
+          "defender_payoff": 0.017098090252410693,
+          "edge_count": 190852,
+          "exhaustive_attacker_verified": true,
+          "exhaustive_defender_verified": true,
+          "feasible_defender_action_count": 1,
+          "process_rss_delta_peak_bytes": 122527744,
+          "process_rss_peak_bytes": 165351424,
+          "process_rss_start_bytes": 42823680,
+          "repeat_index": 0,
+          "selected_attacker_candidate_id": 34,
+          "selected_defender_action_id": 0,
+          "state_count": 59616,
+          "switch_candidate_count": 96,
+          "t_attacker_br_s": 56.001907799975015,
+          "t_bellman_s": 0.152383100008592,
+          "t_graph_build_s": 6.973464199982118,
+          "t_hazard_s": 47.72232569998596,
+          "t_los_s": 0.9913323000073433,
+          "t_sse_s": 56.00454520000494,
+          "validation_passed": true
+        },
+        {
+          "attacker_objective": 0.2135615223650064,
+          "defender_payoff": 0.017098090252410693,
+          "edge_count": 190852,
+          "exhaustive_attacker_verified": true,
+          "exhaustive_defender_verified": true,
+          "feasible_defender_action_count": 1,
+          "process_rss_delta_peak_bytes": 109785088,
+          "process_rss_peak_bytes": 271069184,
+          "process_rss_start_bytes": 161284096,
+          "repeat_index": 1,
+          "selected_attacker_candidate_id": 34,
+          "selected_defender_action_id": 0,
+          "state_count": 59616,
+          "switch_candidate_count": 96,
+          "t_attacker_br_s": 57.00990459998138,
+          "t_bellman_s": 0.15115979997790419,
+          "t_graph_build_s": 7.178025300003355,
+          "t_hazard_s": 48.49941499999841,
+          "t_los_s": 1.0117064000223763,
+          "t_sse_s": 57.01301120000426,
+          "validation_passed": true
+        }
+      ],
+      "run_id": "baseline_repeat",
+      "runtime_max_s": 57.01301120000426,
+      "runtime_median_s": 56.5087782000046,
+      "runtime_min_s": 56.00454520000494,
+      "runtime_spread_s": 1.0084659999993164,
+      "selected_attacker_candidate_id": 34,
+      "selected_defender_action_id": 0,
+      "state_count": 59616,
+      "sweep_variable": "baseline",
+      "switch_candidate_count": 96,
+      "t_attacker_br_s": 56.5059061999782,
+      "t_bellman_s": 0.1517714499932481,
+      "t_graph_build_s": 7.075744749992737,
+      "t_hazard_s": 48.11087034999218,
+      "t_los_s": 1.0015193500148598,
+      "t_sse_s": 56.5087782000046,
+      "terrain": "centered_cube",
+      "validation_passed": true
+    },
+    "run_id": "baseline_repeat",
+    "status": "complete"
+  },
+  {
+    "record": {
+      "altitude_resolution": 0.05,
+      "attacker_objective": 0.3960891294210085,
+      "configuration": {
+        "defender_action_count": 1,
+        "defender_x_map": [
+          5.0
+        ],
+        "defender_y_map": 0.0,
+        "defender_z_map": 0.0,
+        "discretization": {
+          "altitude_spacing_map": 0.05,
+          "hazard_quadrature_resolution": 8,
+          "heading_bin_count": 8,
+          "horizontal_spacing_map": 0.5,
+          "los_boundary_refinement_steps": 24,
+          "los_display_extension_factor": 4.0,
+          "los_probe_grid_size": 101,
+          "maximum_altitude_map": 5.0,
+          "minimum_altitude_map": 0.0,
+          "motion_primitive_radius": 1,
+          "motion_primitive_step_cells": 2,
+          "switching_contour_sample_count": 12,
+          "switching_radial_max": 4.0,
+          "switching_radial_min": 0.5,
+          "switching_radial_sample_count": 8,
+          "switching_radial_scales": [
+            0.5,
+            1.0,
+            1.5,
+            2.0,
+            2.5,
+            3.0,
+            3.5,
+            4.0
+          ],
+          "visualization_ray_count": 10
+        },
+        "mission_and_physics": {
+          "attacker_objective": {
+            "hazard_reference": 1.0,
+            "hazard_weight": 0.5,
+            "objective_id": "attacker_hazard_time_v2",
+            "time_reference_s": 221.23893805309734,
+            "time_weight": 0.5
+          },
+          "detection": {
+            "doppler_coefficient": 33250.0,
+            "radar_coefficient": 13000000.0,
+            "radar_rate_scale": 1.0,
+            "radial_velocity_rate_scale": 1.0,
+            "range_floor_m": 10.0,
+            "rcs_max": 1.0,
+            "rcs_min": 0.1
+          },
+          "deterministic_single_candidate_id": 25,
+          "discretization": {
+            "altitude_spacing_map": 0.05,
+            "hazard_quadrature_resolution": 8,
+            "heading_bin_count": 8,
+            "horizontal_spacing_map": 0.5,
+            "los_boundary_refinement_steps": 24,
+            "los_display_extension_factor": 4.0,
+            "los_probe_grid_size": 101,
+            "maximum_altitude_map": 5.0,
+            "minimum_altitude_map": 0.0,
+            "motion_primitive_radius": 1,
+            "motion_primitive_step_cells": 2,
+            "switching_contour_sample_count": 12,
+            "switching_radial_max": 4.0,
+            "switching_radial_min": 0.5,
+            "switching_radial_sample_count": 8,
+            "switching_radial_scales": [
+              0.5,
+              1.0,
+              1.5,
+              2.0,
+              2.5,
+              3.0,
+              3.5,
+              4.0
+            ],
+            "visualization_ray_count": 10
+          },
+          "glider": {
+            "aircraft_name": "Schleicher Ka 6 CR",
+            "best_glide_ratio": 10.0,
+            "best_glide_speed_mps": 22.22222222222222,
+            "goal_tolerance_m": 25.0,
+            "gravity_mps2": 9.81,
+            "mass_kg": 304.0,
+            "maximum_bank_deg": 30.0,
+            "powered_speed_mps": 22.22222222222222,
+            "source_url": "https://mobilit.belgium.be/sites/default/files/domain/Aviation/Veiligheid/Verslagen%20voorvallen/2010/2010_5.pdf",
+            "switch_energy_loss_height_m": 10.0
+          },
+          "goal_map": [
+            8.0,
+            0.0,
+            0.0
+          ],
+          "graph_bounds": {
+            "x_max": 8.0,
+            "x_min": -8.0,
+            "y_max": 4.0,
+            "y_min": -4.0
+          },
+          "physical_scale": {
+            "meters_per_map_unit": 100.0
+          },
+          "random_seed": 0,
+          "sensor_map": [
+            5.0,
+            0.0,
+            0.0
+          ],
+          "start_map": [
+            -8.0,
+            0.0,
+            0.0
+          ],
+          "terrain_category": "centered_cube"
+        },
+        "repeat_count": 1,
+        "run_id": "spatial_fine_50m_5m",
+        "sweep_variable": "spatial_resolution",
+        "terrain_category": "centered_cube"
+      },
+      "defender_action_count": 1,
+      "defender_payoff": 0.016355989763691618,
+      "deterministic": true,
+      "edge_count": 1331906,
+      "exhaustive_attacker_verified": true,
+      "exhaustive_defender_verified": true,
+      "grid_dx": 0.5,
+      "grid_dy": 0.5,
+      "heading_bins": 8,
+      "memory_measurement_method": "psutil sampled process RSS (10 ms interval)",
+      "motion_primitive_radius": 1,
+      "motion_primitive_step_cells": 2,
+      "peak_memory_bytes": 831918080,
+      "peak_memory_delta_bytes": 788951040,
+      "repeat_count": 1,
+      "repeats": [
+        {
+          "attacker_objective": 0.3960891294210085,
+          "defender_payoff": 0.016355989763691618,
+          "edge_count": 1331906,
+          "exhaustive_attacker_verified": true,
+          "exhaustive_defender_verified": true,
+          "feasible_defender_action_count": 1,
+          "process_rss_delta_peak_bytes": 788951040,
+          "process_rss_peak_bytes": 831918080,
+          "process_rss_start_bytes": 42967040,
+          "repeat_index": 0,
+          "selected_attacker_candidate_id": 33,
+          "selected_defender_action_id": 0,
+          "state_count": 422320,
+          "switch_candidate_count": 96,
+          "t_attacker_br_s": 157.3780754999898,
+          "t_bellman_s": 0.40029560000402853,
+          "t_graph_build_s": 49.66403350001201,
+          "t_hazard_s": 105.92020860000048,
+          "t_los_s": 1.0474888000171632,
+          "t_sse_s": 157.38902669999516,
+          "validation_passed": true
+        }
+      ],
+      "run_id": "spatial_fine_50m_5m",
+      "runtime_max_s": 157.38902669999516,
+      "runtime_median_s": 157.38902669999516,
+      "runtime_min_s": 157.38902669999516,
+      "runtime_spread_s": 0.0,
+      "selected_attacker_candidate_id": 33,
+      "selected_defender_action_id": 0,
+      "state_count": 422320,
+      "sweep_variable": "spatial_resolution",
+      "switch_candidate_count": 96,
+      "t_attacker_br_s": 157.3780754999898,
+      "t_bellman_s": 0.40029560000402853,
+      "t_graph_build_s": 49.66403350001201,
+      "t_hazard_s": 105.92020860000048,
+      "t_los_s": 1.0474888000171632,
+      "t_sse_s": 157.38902669999516,
+      "terrain": "centered_cube",
+      "validation_passed": true
+    },
+    "run_id": "spatial_fine_50m_5m",
+    "status": "complete"
+  },
+  {
+    "record": {
+      "altitude_resolution": 0.1,
+      "attacker_objective": 0.21926556686824505,
+      "configuration": {
+        "defender_action_count": 1,
+        "defender_x_map": [
+          5.0
+        ],
+        "defender_y_map": 0.0,
+        "defender_z_map": 0.0,
+        "discretization": {
+          "altitude_spacing_map": 0.1,
+          "hazard_quadrature_resolution": 8,
+          "heading_bin_count": 12,
+          "horizontal_spacing_map": 1.0,
+          "los_boundary_refinement_steps": 24,
+          "los_display_extension_factor": 4.0,
+          "los_probe_grid_size": 101,
+          "maximum_altitude_map": 5.0,
+          "minimum_altitude_map": 0.0,
+          "motion_primitive_radius": 2,
+          "motion_primitive_step_cells": 1,
+          "switching_contour_sample_count": 12,
+          "switching_radial_max": 4.0,
+          "switching_radial_min": 0.5,
+          "switching_radial_sample_count": 8,
+          "switching_radial_scales": [
+            0.5,
+            1.0,
+            1.5,
+            2.0,
+            2.5,
+            3.0,
+            3.5,
+            4.0
+          ],
+          "visualization_ray_count": 10
+        },
+        "mission_and_physics": {
+          "attacker_objective": {
+            "hazard_reference": 1.0,
+            "hazard_weight": 0.5,
+            "objective_id": "attacker_hazard_time_v2",
+            "time_reference_s": 221.23893805309734,
+            "time_weight": 0.5
+          },
+          "detection": {
+            "doppler_coefficient": 33250.0,
+            "radar_coefficient": 13000000.0,
+            "radar_rate_scale": 1.0,
+            "radial_velocity_rate_scale": 1.0,
+            "range_floor_m": 10.0,
+            "rcs_max": 1.0,
+            "rcs_min": 0.1
+          },
+          "deterministic_single_candidate_id": 25,
+          "discretization": {
+            "altitude_spacing_map": 0.1,
+            "hazard_quadrature_resolution": 8,
+            "heading_bin_count": 12,
+            "horizontal_spacing_map": 1.0,
+            "los_boundary_refinement_steps": 24,
+            "los_display_extension_factor": 4.0,
+            "los_probe_grid_size": 101,
+            "maximum_altitude_map": 5.0,
+            "minimum_altitude_map": 0.0,
+            "motion_primitive_radius": 2,
+            "motion_primitive_step_cells": 1,
+            "switching_contour_sample_count": 12,
+            "switching_radial_max": 4.0,
+            "switching_radial_min": 0.5,
+            "switching_radial_sample_count": 8,
+            "switching_radial_scales": [
+              0.5,
+              1.0,
+              1.5,
+              2.0,
+              2.5,
+              3.0,
+              3.5,
+              4.0
+            ],
+            "visualization_ray_count": 10
+          },
+          "glider": {
+            "aircraft_name": "Schleicher Ka 6 CR",
+            "best_glide_ratio": 10.0,
+            "best_glide_speed_mps": 22.22222222222222,
+            "goal_tolerance_m": 25.0,
+            "gravity_mps2": 9.81,
+            "mass_kg": 304.0,
+            "maximum_bank_deg": 30.0,
+            "powered_speed_mps": 22.22222222222222,
+            "source_url": "https://mobilit.belgium.be/sites/default/files/domain/Aviation/Veiligheid/Verslagen%20voorvallen/2010/2010_5.pdf",
+            "switch_energy_loss_height_m": 10.0
+          },
+          "goal_map": [
+            8.0,
+            0.0,
+            0.0
+          ],
+          "graph_bounds": {
+            "x_max": 8.0,
+            "x_min": -8.0,
+            "y_max": 4.0,
+            "y_min": -4.0
+          },
+          "physical_scale": {
+            "meters_per_map_unit": 100.0
+          },
+          "random_seed": 0,
+          "sensor_map": [
+            5.0,
+            0.0,
+            0.0
+          ],
+          "start_map": [
+            -8.0,
+            0.0,
+            0.0
+          ],
+          "terrain_category": "centered_cube"
+        },
+        "repeat_count": 1,
+        "run_id": "heading_12",
+        "sweep_variable": "heading_resolution",
+        "terrain_category": "centered_cube"
+      },
+      "defender_action_count": 1,
+      "defender_payoff": 0.019132771847555043,
+      "deterministic": true,
+      "edge_count": 512130,
+      "exhaustive_attacker_verified": true,
+      "exhaustive_defender_verified": true,
+      "grid_dx": 1.0,
+      "grid_dy": 1.0,
+      "heading_bins": 12,
+      "memory_measurement_method": "psutil sampled process RSS (10 ms interval)",
+      "motion_primitive_radius": 2,
+      "motion_primitive_step_cells": 1,
+      "peak_memory_bytes": 329859072,
+      "peak_memory_delta_bytes": 286928896,
+      "repeat_count": 1,
+      "repeats": [
+        {
+          "attacker_objective": 0.21926556686824505,
+          "defender_payoff": 0.019132771847555043,
+          "edge_count": 512130,
+          "exhaustive_attacker_verified": true,
+          "exhaustive_defender_verified": true,
+          "feasible_defender_action_count": 1,
+          "process_rss_delta_peak_bytes": 286928896,
+          "process_rss_peak_bytes": 329859072,
+          "process_rss_start_bytes": 42930176,
+          "repeat_index": 0,
+          "selected_attacker_candidate_id": 34,
+          "selected_defender_action_id": 0,
+          "state_count": 89424,
+          "switch_candidate_count": 96,
+          "t_attacker_br_s": 98.67131539998809,
+          "t_bellman_s": 0.23864480000338517,
+          "t_graph_build_s": 16.650529500009725,
+          "t_hazard_s": 80.56225129999802,
+          "t_los_s": 1.0279014999978244,
+          "t_sse_s": 98.6742426000128,
+          "validation_passed": true
+        }
+      ],
+      "run_id": "heading_12",
+      "runtime_max_s": 98.6742426000128,
+      "runtime_median_s": 98.6742426000128,
+      "runtime_min_s": 98.6742426000128,
+      "runtime_spread_s": 0.0,
+      "selected_attacker_candidate_id": 34,
+      "selected_defender_action_id": 0,
+      "state_count": 89424,
+      "sweep_variable": "heading_resolution",
+      "switch_candidate_count": 96,
+      "t_attacker_br_s": 98.67131539998809,
+      "t_bellman_s": 0.23864480000338517,
+      "t_graph_build_s": 16.650529500009725,
+      "t_hazard_s": 80.56225129999802,
+      "t_los_s": 1.0279014999978244,
+      "t_sse_s": 98.6742426000128,
+      "terrain": "centered_cube",
+      "validation_passed": true
+    },
+    "run_id": "heading_12",
+    "status": "complete"
+  },
+  {
+    "record": {
+      "altitude_resolution": 0.1,
+      "attacker_objective": 0.19489972091359992,
+      "configuration": {
+        "defender_action_count": 1,
+        "defender_x_map": [
+          5.0
+        ],
+        "defender_y_map": 0.0,
+        "defender_z_map": 0.0,
+        "discretization": {
+          "altitude_spacing_map": 0.1,
+          "hazard_quadrature_resolution": 8,
+          "heading_bin_count": 8,
+          "horizontal_spacing_map": 1.0,
+          "los_boundary_refinement_steps": 24,
+          "los_display_extension_factor": 4.0,
+          "los_probe_grid_size": 101,
+          "maximum_altitude_map": 5.0,
+          "minimum_altitude_map": 0.0,
+          "motion_primitive_radius": 1,
+          "motion_primitive_step_cells": 1,
+          "switching_contour_sample_count": 16,
+          "switching_radial_max": 4.0,
+          "switching_radial_min": 0.5,
+          "switching_radial_sample_count": 8,
+          "switching_radial_scales": [
+            0.5,
+            1.0,
+            1.5,
+            2.0,
+            2.5,
+            3.0,
+            3.5,
+            4.0
+          ],
+          "visualization_ray_count": 10
+        },
+        "mission_and_physics": {
+          "attacker_objective": {
+            "hazard_reference": 1.0,
+            "hazard_weight": 0.5,
+            "objective_id": "attacker_hazard_time_v2",
+            "time_reference_s": 221.23893805309734,
+            "time_weight": 0.5
+          },
+          "detection": {
+            "doppler_coefficient": 33250.0,
+            "radar_coefficient": 13000000.0,
+            "radar_rate_scale": 1.0,
+            "radial_velocity_rate_scale": 1.0,
+            "range_floor_m": 10.0,
+            "rcs_max": 1.0,
+            "rcs_min": 0.1
+          },
+          "deterministic_single_candidate_id": 25,
+          "discretization": {
+            "altitude_spacing_map": 0.1,
+            "hazard_quadrature_resolution": 8,
+            "heading_bin_count": 8,
+            "horizontal_spacing_map": 1.0,
+            "los_boundary_refinement_steps": 24,
+            "los_display_extension_factor": 4.0,
+            "los_probe_grid_size": 101,
+            "maximum_altitude_map": 5.0,
+            "minimum_altitude_map": 0.0,
+            "motion_primitive_radius": 1,
+            "motion_primitive_step_cells": 1,
+            "switching_contour_sample_count": 16,
+            "switching_radial_max": 4.0,
+            "switching_radial_min": 0.5,
+            "switching_radial_sample_count": 8,
+            "switching_radial_scales": [
+              0.5,
+              1.0,
+              1.5,
+              2.0,
+              2.5,
+              3.0,
+              3.5,
+              4.0
+            ],
+            "visualization_ray_count": 10
+          },
+          "glider": {
+            "aircraft_name": "Schleicher Ka 6 CR",
+            "best_glide_ratio": 10.0,
+            "best_glide_speed_mps": 22.22222222222222,
+            "goal_tolerance_m": 25.0,
+            "gravity_mps2": 9.81,
+            "mass_kg": 304.0,
+            "maximum_bank_deg": 30.0,
+            "powered_speed_mps": 22.22222222222222,
+            "source_url": "https://mobilit.belgium.be/sites/default/files/domain/Aviation/Veiligheid/Verslagen%20voorvallen/2010/2010_5.pdf",
+            "switch_energy_loss_height_m": 10.0
+          },
+          "goal_map": [
+            8.0,
+            0.0,
+            0.0
+          ],
+          "graph_bounds": {
+            "x_max": 8.0,
+            "x_min": -8.0,
+            "y_max": 4.0,
+            "y_min": -4.0
+          },
+          "physical_scale": {
+            "meters_per_map_unit": 100.0
+          },
+          "random_seed": 0,
+          "sensor_map": [
+            5.0,
+            0.0,
+            0.0
+          ],
+          "start_map": [
+            -8.0,
+            0.0,
+            0.0
+          ],
+          "terrain_category": "centered_cube"
+        },
+        "repeat_count": 1,
+        "run_id": "switch_candidates_128",
+        "sweep_variable": "switch_candidate_count",
+        "terrain_category": "centered_cube"
+      },
+      "defender_action_count": 1,
+      "defender_payoff": 0.014905652492373805,
+      "deterministic": true,
+      "edge_count": 190852,
+      "exhaustive_attacker_verified": true,
+      "exhaustive_defender_verified": true,
+      "grid_dx": 1.0,
+      "grid_dy": 1.0,
+      "heading_bins": 8,
+      "memory_measurement_method": "psutil sampled process RSS (10 ms interval)",
+      "motion_primitive_radius": 1,
+      "motion_primitive_step_cells": 1,
+      "peak_memory_bytes": 160272384,
+      "peak_memory_delta_bytes": 117579776,
+      "repeat_count": 1,
+      "repeats": [
+        {
+          "attacker_objective": 0.19489972091359992,
+          "defender_payoff": 0.014905652492373805,
+          "edge_count": 190852,
+          "exhaustive_attacker_verified": true,
+          "exhaustive_defender_verified": true,
+          "feasible_defender_action_count": 1,
+          "process_rss_delta_peak_bytes": 117579776,
+          "process_rss_peak_bytes": 160272384,
+          "process_rss_start_bytes": 42692608,
+          "repeat_index": 0,
+          "selected_attacker_candidate_id": 46,
+          "selected_defender_action_id": 0,
+          "state_count": 59616,
+          "switch_candidate_count": 128,
+          "t_attacker_br_s": 34.53569509999943,
+          "t_bellman_s": 0.08983260000240989,
+          "t_graph_build_s": 6.9962910000176635,
+          "t_hazard_s": 26.239288300013868,
+          "t_los_s": 1.0213711000105832,
+          "t_sse_s": 34.53788639997947,
+          "validation_passed": true
+        }
+      ],
+      "run_id": "switch_candidates_128",
+      "runtime_max_s": 34.53788639997947,
+      "runtime_median_s": 34.53788639997947,
+      "runtime_min_s": 34.53788639997947,
+      "runtime_spread_s": 0.0,
+      "selected_attacker_candidate_id": 46,
+      "selected_defender_action_id": 0,
+      "state_count": 59616,
+      "sweep_variable": "switch_candidate_count",
+      "switch_candidate_count": 128,
+      "t_attacker_br_s": 34.53569509999943,
+      "t_bellman_s": 0.08983260000240989,
+      "t_graph_build_s": 6.9962910000176635,
+      "t_hazard_s": 26.239288300013868,
+      "t_los_s": 1.0213711000105832,
+      "t_sse_s": 34.53788639997947,
+      "terrain": "centered_cube",
+      "validation_passed": true
+    },
+    "run_id": "switch_candidates_128",
+    "status": "complete"
+  },
+  {
+    "record": {
+      "altitude_resolution": 0.1,
+      "attacker_objective": 0.32999210081664865,
+      "configuration": {
+        "defender_action_count": 2,
+        "defender_x_map": [
+          5.0,
+          7.0
+        ],
+        "defender_y_map": 0.0,
+        "defender_z_map": 0.0,
+        "discretization": {
+          "altitude_spacing_map": 0.1,
+          "hazard_quadrature_resolution": 8,
+          "heading_bin_count": 8,
+          "horizontal_spacing_map": 1.0,
+          "los_boundary_refinement_steps": 24,
+          "los_display_extension_factor": 4.0,
+          "los_probe_grid_size": 101,
+          "maximum_altitude_map": 5.0,
+          "minimum_altitude_map": 0.0,
+          "motion_primitive_radius": 1,
+          "motion_primitive_step_cells": 1,
+          "switching_contour_sample_count": 12,
+          "switching_radial_max": 4.0,
+          "switching_radial_min": 0.5,
+          "switching_radial_sample_count": 8,
+          "switching_radial_scales": [
+            0.5,
+            1.0,
+            1.5,
+            2.0,
+            2.5,
+            3.0,
+            3.5,
+            4.0
+          ],
+          "visualization_ray_count": 10
+        },
+        "mission_and_physics": {
+          "attacker_objective": {
+            "hazard_reference": 1.0,
+            "hazard_weight": 0.5,
+            "objective_id": "attacker_hazard_time_v2",
+            "time_reference_s": 221.23893805309734,
+            "time_weight": 0.5
+          },
+          "detection": {
+            "doppler_coefficient": 33250.0,
+            "radar_coefficient": 13000000.0,
+            "radar_rate_scale": 1.0,
+            "radial_velocity_rate_scale": 1.0,
+            "range_floor_m": 10.0,
+            "rcs_max": 1.0,
+            "rcs_min": 0.1
+          },
+          "deterministic_single_candidate_id": 25,
+          "discretization": {
+            "altitude_spacing_map": 0.1,
+            "hazard_quadrature_resolution": 8,
+            "heading_bin_count": 8,
+            "horizontal_spacing_map": 1.0,
+            "los_boundary_refinement_steps": 24,
+            "los_display_extension_factor": 4.0,
+            "los_probe_grid_size": 101,
+            "maximum_altitude_map": 5.0,
+            "minimum_altitude_map": 0.0,
+            "motion_primitive_radius": 1,
+            "motion_primitive_step_cells": 1,
+            "switching_contour_sample_count": 12,
+            "switching_radial_max": 4.0,
+            "switching_radial_min": 0.5,
+            "switching_radial_sample_count": 8,
+            "switching_radial_scales": [
+              0.5,
+              1.0,
+              1.5,
+              2.0,
+              2.5,
+              3.0,
+              3.5,
+              4.0
+            ],
+            "visualization_ray_count": 10
+          },
+          "glider": {
+            "aircraft_name": "Schleicher Ka 6 CR",
+            "best_glide_ratio": 10.0,
+            "best_glide_speed_mps": 22.22222222222222,
+            "goal_tolerance_m": 25.0,
+            "gravity_mps2": 9.81,
+            "mass_kg": 304.0,
+            "maximum_bank_deg": 30.0,
+            "powered_speed_mps": 22.22222222222222,
+            "source_url": "https://mobilit.belgium.be/sites/default/files/domain/Aviation/Veiligheid/Verslagen%20voorvallen/2010/2010_5.pdf",
+            "switch_energy_loss_height_m": 10.0
+          },
+          "goal_map": [
+            8.0,
+            0.0,
+            0.0
+          ],
+          "graph_bounds": {
+            "x_max": 8.0,
+            "x_min": -8.0,
+            "y_max": 4.0,
+            "y_min": -4.0
+          },
+          "physical_scale": {
+            "meters_per_map_unit": 100.0
+          },
+          "random_seed": 0,
+          "sensor_map": [
+            5.0,
+            0.0,
+            0.0
+          ],
+          "start_map": [
+            -8.0,
+            0.0,
+            0.0
+          ],
+          "terrain_category": "centered_cube"
+        },
+        "repeat_count": 1,
+        "run_id": "defender_actions_2",
+        "sweep_variable": "defender_action_count",
+        "terrain_category": "centered_cube"
+      },
+      "defender_action_count": 2,
+      "defender_payoff": 0.21995715510086283,
+      "deterministic": true,
+      "edge_count": 190852,
+      "exhaustive_attacker_verified": true,
+      "exhaustive_defender_verified": true,
+      "grid_dx": 1.0,
+      "grid_dy": 1.0,
+      "heading_bins": 8,
+      "memory_measurement_method": "psutil sampled process RSS (10 ms interval)",
+      "motion_primitive_radius": 1,
+      "motion_primitive_step_cells": 1,
+      "peak_memory_bytes": 265113600,
+      "peak_memory_delta_bytes": 222306304,
+      "repeat_count": 1,
+      "repeats": [
+        {
+          "attacker_objective": 0.32999210081664865,
+          "defender_payoff": 0.21995715510086283,
+          "edge_count": 190852,
+          "exhaustive_attacker_verified": true,
+          "exhaustive_defender_verified": true,
+          "feasible_defender_action_count": 2,
+          "process_rss_delta_peak_bytes": 222306304,
+          "process_rss_peak_bytes": 265113600,
+          "process_rss_start_bytes": 42807296,
+          "repeat_index": 0,
+          "selected_attacker_candidate_id": 25,
+          "selected_defender_action_id": 1,
+          "state_count": 59616,
+          "switch_candidate_count": 96,
+          "t_attacker_br_s": 91.12602069997229,
+          "t_bellman_s": 0.238154599966947,
+          "t_graph_build_s": 14.137296700006118,
+          "t_hazard_s": 74.39750759999151,
+          "t_los_s": 2.025003699993249,
+          "t_sse_s": 91.13177389997873,
+          "validation_passed": true
+        }
+      ],
+      "run_id": "defender_actions_2",
+      "runtime_max_s": 91.13177389997873,
+      "runtime_median_s": 91.13177389997873,
+      "runtime_min_s": 91.13177389997873,
+      "runtime_spread_s": 0.0,
+      "selected_attacker_candidate_id": 25,
+      "selected_defender_action_id": 1,
+      "state_count": 59616,
+      "sweep_variable": "defender_action_count",
+      "switch_candidate_count": 96,
+      "t_attacker_br_s": 91.12602069997229,
+      "t_bellman_s": 0.238154599966947,
+      "t_graph_build_s": 14.137296700006118,
+      "t_hazard_s": 74.39750759999151,
+      "t_los_s": 2.025003699993249,
+      "t_sse_s": 91.13177389997873,
+      "terrain": "centered_cube",
+      "validation_passed": true
+    },
+    "run_id": "defender_actions_2",
+    "status": "complete"
+  },
+  {
+    "record": {
+      "altitude_resolution": 0.1,
+      "attacker_objective": 0.20020173981951314,
+      "configuration": {
+        "defender_action_count": 1,
+        "defender_x_map": [
+          5.0
+        ],
+        "defender_y_map": 0.0,
+        "defender_z_map": 0.0,
+        "discretization": {
+          "altitude_spacing_map": 0.1,
+          "hazard_quadrature_resolution": 8,
+          "heading_bin_count": 8,
+          "horizontal_spacing_map": 1.0,
+          "los_boundary_refinement_steps": 24,
+          "los_display_extension_factor": 4.0,
+          "los_probe_grid_size": 101,
+          "maximum_altitude_map": 5.0,
+          "minimum_altitude_map": 0.0,
+          "motion_primitive_radius": 1,
+          "motion_primitive_step_cells": 1,
+          "switching_contour_sample_count": 12,
+          "switching_radial_max": 4.0,
+          "switching_radial_min": 0.5,
+          "switching_radial_sample_count": 8,
+          "switching_radial_scales": [
+            0.5,
+            1.0,
+            1.5,
+            2.0,
+            2.5,
+            3.0,
+            3.5,
+            4.0
+          ],
+          "visualization_ray_count": 10
+        },
+        "mission_and_physics": {
+          "attacker_objective": {
+            "hazard_reference": 1.0,
+            "hazard_weight": 0.5,
+            "objective_id": "attacker_hazard_time_v2",
+            "time_reference_s": 221.23893805309734,
+            "time_weight": 0.5
+          },
+          "detection": {
+            "doppler_coefficient": 33250.0,
+            "radar_coefficient": 13000000.0,
+            "radar_rate_scale": 1.0,
+            "radial_velocity_rate_scale": 1.0,
+            "range_floor_m": 10.0,
+            "rcs_max": 1.0,
+            "rcs_min": 0.1
+          },
+          "deterministic_single_candidate_id": 25,
+          "discretization": {
+            "altitude_spacing_map": 0.1,
+            "hazard_quadrature_resolution": 8,
+            "heading_bin_count": 8,
+            "horizontal_spacing_map": 1.0,
+            "los_boundary_refinement_steps": 24,
+            "los_display_extension_factor": 4.0,
+            "los_probe_grid_size": 101,
+            "maximum_altitude_map": 5.0,
+            "minimum_altitude_map": 0.0,
+            "motion_primitive_radius": 1,
+            "motion_primitive_step_cells": 1,
+            "switching_contour_sample_count": 12,
+            "switching_radial_max": 4.0,
+            "switching_radial_min": 0.5,
+            "switching_radial_sample_count": 8,
+            "switching_radial_scales": [
+              0.5,
+              1.0,
+              1.5,
+              2.0,
+              2.5,
+              3.0,
+              3.5,
+              4.0
+            ],
+            "visualization_ray_count": 10
+          },
+          "glider": {
+            "aircraft_name": "Schleicher Ka 6 CR",
+            "best_glide_ratio": 10.0,
+            "best_glide_speed_mps": 22.22222222222222,
+            "goal_tolerance_m": 25.0,
+            "gravity_mps2": 9.81,
+            "mass_kg": 304.0,
+            "maximum_bank_deg": 30.0,
+            "powered_speed_mps": 22.22222222222222,
+            "source_url": "https://mobilit.belgium.be/sites/default/files/domain/Aviation/Veiligheid/Verslagen%20voorvallen/2010/2010_5.pdf",
+            "switch_energy_loss_height_m": 10.0
+          },
+          "goal_map": [
+            8.0,
+            0.0,
+            0.0
+          ],
+          "graph_bounds": {
+            "x_max": 8.0,
+            "x_min": -8.0,
+            "y_max": 4.0,
+            "y_min": -4.0
+          },
+          "physical_scale": {
+            "meters_per_map_unit": 100.0
+          },
+          "random_seed": 0,
+          "sensor_map": [
+            5.0,
+            0.0,
+            0.0
+          ],
+          "start_map": [
+            -8.0,
+            0.0,
+            0.0
+          ],
+          "terrain_category": "offset_cube_left"
+        },
+        "repeat_count": 1,
+        "run_id": "terrain_offset_cube_left",
+        "sweep_variable": "terrain_complexity",
+        "terrain_category": "offset_cube_left"
+      },
+      "defender_action_count": 1,
+      "defender_payoff": 0.01405751567187161,
+      "deterministic": true,
+      "edge_count": 194772,
+      "exhaustive_attacker_verified": true,
+      "exhaustive_defender_verified": true,
+      "grid_dx": 1.0,
+      "grid_dy": 1.0,
+      "heading_bins": 8,
+      "memory_measurement_method": "psutil sampled process RSS (10 ms interval)",
+      "motion_primitive_radius": 1,
+      "motion_primitive_step_cells": 1,
+      "peak_memory_bytes": 165670912,
+      "peak_memory_delta_bytes": 122753024,
+      "repeat_count": 1,
+      "repeats": [
+        {
+          "attacker_objective": 0.20020173981951314,
+          "defender_payoff": 0.01405751567187161,
+          "edge_count": 194772,
+          "exhaustive_attacker_verified": true,
+          "exhaustive_defender_verified": true,
+          "feasible_defender_action_count": 1,
+          "process_rss_delta_peak_bytes": 122753024,
+          "process_rss_peak_bytes": 165670912,
+          "process_rss_start_bytes": 42917888,
+          "repeat_index": 0,
+          "selected_attacker_candidate_id": 2,
+          "selected_defender_action_id": 0,
+          "state_count": 59616,
+          "switch_candidate_count": 96,
+          "t_attacker_br_s": 49.99523160001263,
+          "t_bellman_s": 0.12993999998434447,
+          "t_graph_build_s": 7.096236399986083,
+          "t_hazard_s": 41.599070900003426,
+          "t_los_s": 1.0089536999876145,
+          "t_sse_s": 49.99771540000802,
+          "validation_passed": true
+        }
+      ],
+      "run_id": "terrain_offset_cube_left",
+      "runtime_max_s": 49.99771540000802,
+      "runtime_median_s": 49.99771540000802,
+      "runtime_min_s": 49.99771540000802,
+      "runtime_spread_s": 0.0,
+      "selected_attacker_candidate_id": 2,
+      "selected_defender_action_id": 0,
+      "state_count": 59616,
+      "sweep_variable": "terrain_complexity",
+      "switch_candidate_count": 96,
+      "t_attacker_br_s": 49.99523160001263,
+      "t_bellman_s": 0.12993999998434447,
+      "t_graph_build_s": 7.096236399986083,
+      "t_hazard_s": 41.599070900003426,
+      "t_los_s": 1.0089536999876145,
+      "t_sse_s": 49.99771540000802,
+      "terrain": "offset_cube_left",
+      "validation_passed": true
+    },
+    "run_id": "terrain_offset_cube_left",
+    "status": "complete"
+  },
+  {
+    "failure": {
+      "T_total_attempt_s": 10.169610200013267,
+      "actions": [
+        {
+          "T_Bellman_s": 0.008130600006552413,
+          "T_LOS_s": 0.9714575000107288,
+          "T_attacker_BR_s": 10.158835100010037,
+          "T_graph_build_s": 9.064295599993784,
+          "T_hazard_s": 0.0021474999957717955,
+          "candidate_count": 96,
+          "candidate_ids_unique": true,
+          "defender_action_id": 0,
+          "edge_count": 176812,
+          "feasible_candidate_count": 0,
+          "reason_counts": {
+            "insufficient total energy": 10,
+            "no admissible virtual connection: outside lattice domain": 50,
+            "no admissible virtual connection: virtual-segment chord does not match target heading bin; virtual-segment turn-rate limit exceeded": 4,
+            "powered segment intersects terrain": 32
+          },
+          "sensor_position_map": [
+            5.0,
+            0.0,
+            0.0
+          ],
+          "state_count": 56616,
+          "status_counts": {
+            "energy_infeasible": 10,
+            "powered_infeasible": 32,
+            "virtual_infeasible": 54
+          }
+        }
+      ],
+      "attacker_objective": null,
+      "category": "no feasible attacker response",
+      "configuration": {
+        "defender_action_count": 1,
+        "defender_x_map": [
+          5.0
+        ],
+        "defender_y_map": 0.0,
+        "defender_z_map": 0.0,
+        "discretization": {
+          "altitude_spacing_map": 0.1,
+          "hazard_quadrature_resolution": 8,
+          "heading_bin_count": 8,
+          "horizontal_spacing_map": 1.0,
+          "los_boundary_refinement_steps": 24,
+          "los_display_extension_factor": 4.0,
+          "los_probe_grid_size": 101,
+          "maximum_altitude_map": 5.0,
+          "minimum_altitude_map": 0.0,
+          "motion_primitive_radius": 1,
+          "motion_primitive_step_cells": 1,
+          "switching_contour_sample_count": 12,
+          "switching_radial_max": 4.0,
+          "switching_radial_min": 0.5,
+          "switching_radial_sample_count": 8,
+          "switching_radial_scales": [
+            0.5,
+            1.0,
+            1.5,
+            2.0,
+            2.5,
+            3.0,
+            3.5,
+            4.0
+          ],
+          "visualization_ray_count": 10
+        },
+        "mission_and_physics": {
+          "attacker_objective": {
+            "hazard_reference": 1.0,
+            "hazard_weight": 0.5,
+            "objective_id": "attacker_hazard_time_v2",
+            "time_reference_s": 221.23893805309734,
+            "time_weight": 0.5
+          },
+          "detection": {
+            "doppler_coefficient": 33250.0,
+            "radar_coefficient": 13000000.0,
+            "radar_rate_scale": 1.0,
+            "radial_velocity_rate_scale": 1.0,
+            "range_floor_m": 10.0,
+            "rcs_max": 1.0,
+            "rcs_min": 0.1
+          },
+          "deterministic_single_candidate_id": 25,
+          "discretization": {
+            "altitude_spacing_map": 0.1,
+            "hazard_quadrature_resolution": 8,
+            "heading_bin_count": 8,
+            "horizontal_spacing_map": 1.0,
+            "los_boundary_refinement_steps": 24,
+            "los_display_extension_factor": 4.0,
+            "los_probe_grid_size": 101,
+            "maximum_altitude_map": 5.0,
+            "minimum_altitude_map": 0.0,
+            "motion_primitive_radius": 1,
+            "motion_primitive_step_cells": 1,
+            "switching_contour_sample_count": 12,
+            "switching_radial_max": 4.0,
+            "switching_radial_min": 0.5,
+            "switching_radial_sample_count": 8,
+            "switching_radial_scales": [
+              0.5,
+              1.0,
+              1.5,
+              2.0,
+              2.5,
+              3.0,
+              3.5,
+              4.0
+            ],
+            "visualization_ray_count": 10
+          },
+          "glider": {
+            "aircraft_name": "Schleicher Ka 6 CR",
+            "best_glide_ratio": 10.0,
+            "best_glide_speed_mps": 22.22222222222222,
+            "goal_tolerance_m": 25.0,
+            "gravity_mps2": 9.81,
+            "mass_kg": 304.0,
+            "maximum_bank_deg": 30.0,
+            "powered_speed_mps": 22.22222222222222,
+            "source_url": "https://mobilit.belgium.be/sites/default/files/domain/Aviation/Veiligheid/Verslagen%20voorvallen/2010/2010_5.pdf",
+            "switch_energy_loss_height_m": 10.0
+          },
+          "goal_map": [
+            8.0,
+            0.0,
+            0.0
+          ],
+          "graph_bounds": {
+            "x_max": 8.0,
+            "x_min": -8.0,
+            "y_max": 4.0,
+            "y_min": -4.0
+          },
+          "physical_scale": {
+            "meters_per_map_unit": 100.0
+          },
+          "random_seed": 0,
+          "sensor_map": [
+            5.0,
+            0.0,
+            0.0
+          ],
+          "start_map": [
+            -8.0,
+            0.0,
+            0.0
+          ],
+          "terrain_category": "stepped_pyramid"
+        },
+        "repeat_count": 1,
+        "run_id": "terrain_stepped_pyramid",
+        "sweep_variable": "terrain_complexity",
+        "terrain_category": "stepped_pyramid"
+      },
+      "defender_action_count": 1,
+      "defender_payoff": null,
+      "exactness_certificate": "every configured defender action and every generated attacker switching candidate was evaluated; none produced a feasible path",
+      "memory_measurement_method": "psutil sampled process RSS (10 ms interval)",
+      "process_rss_delta_peak_bytes": 102215680,
+      "process_rss_peak_bytes": 246497280,
+      "process_rss_start_bytes": 144281600,
+      "run_id": "terrain_stepped_pyramid",
+      "status": "exact_finite_infeasible",
+      "sweep_variable": "terrain_complexity",
+      "terrain": "stepped_pyramid",
+      "trajectory_replay_applicable": false,
+      "validation_passed": true
+    },
+    "run_id": "terrain_stepped_pyramid",
+    "status": "exact_finite_infeasible"
+  }
+]

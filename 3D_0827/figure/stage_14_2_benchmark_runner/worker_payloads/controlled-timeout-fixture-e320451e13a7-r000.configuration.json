@@ -1,0 +1,15 @@
+{
+  "case_id": "controlled-timeout-fixture-e320451e13a7",
+  "experiment_type": "stage14_2_smoke",
+  "memory_limit_bytes": null,
+  "name": "controlled_timeout_fixture",
+  "parameters": {
+    "delay_s": 2.0
+  },
+  "process_semantics": "fresh cold process per repetition",
+  "repetition_id": "controlled-timeout-fixture-e320451e13a7-r000",
+  "sampling_interval_s": 0.01,
+  "sweep_variable": "delay_s",
+  "timeout_s": 0.25,
+  "worker_mode": "controlled_timeout"
+}

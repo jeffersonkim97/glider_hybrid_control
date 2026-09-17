@@ -1,0 +1,53 @@
+{
+  "cases": [
+    {
+      "case_id": "canonical-centered-cube-25m-25m-5deg-533a50c86023",
+      "declared_sweep_value": 25.0,
+      "declared_sweep_variable": "horizontal_spacing_m",
+      "memory_limit_bytes": null,
+      "name": "canonical_centered_cube_25m_25m_5deg",
+      "parameters": {
+        "altitude_spacing_m": 25.0,
+        "heading_spacing_deg": 5.0,
+        "horizontal_spacing_m": 25.0,
+        "terrain_category": "centered_cube"
+      },
+      "process_semantics": "fresh cold process per repetition",
+      "repetitions": 3,
+      "timeout_s": 300.0,
+      "worker_mode": "canonical"
+    },
+    {
+      "case_id": "explicit-infeasible-centered-cube-small-76403510096e",
+      "declared_sweep_value": 2,
+      "declared_sweep_variable": "switching_contour_sample_count",
+      "memory_limit_bytes": null,
+      "name": "explicit_infeasible_centered_cube_small",
+      "parameters": {
+        "switching_contour_sample_count": 2,
+        "terrain_category": "centered_cube",
+        "vehicle_and_objectives_unchanged": true
+      },
+      "process_semantics": "fresh cold process per repetition",
+      "repetitions": 1,
+      "timeout_s": 30.0,
+      "worker_mode": "infeasible"
+    },
+    {
+      "case_id": "controlled-timeout-fixture-e320451e13a7",
+      "declared_sweep_value": 2.0,
+      "declared_sweep_variable": "delay_s",
+      "memory_limit_bytes": null,
+      "name": "controlled_timeout_fixture",
+      "parameters": {
+        "delay_s": 2.0
+      },
+      "process_semantics": "fresh cold process per repetition",
+      "repetitions": 1,
+      "timeout_s": 0.25,
+      "worker_mode": "controlled_timeout"
+    }
+  ],
+  "exactly_one_declared_sweep_variable_per_case": true,
+  "schema_version": "stage14.2-v1"
+}

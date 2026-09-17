@@ -1,0 +1,55 @@
+{
+  "figure_files": [
+    "01_local_runtime_vs_state_count.png",
+    "02_local_runtime_vs_heading_bins.png",
+    "03_local_runtime_vs_switch_candidates.png",
+    "04_local_runtime_vs_defender_count.png",
+    "05_local_evaluated_vs_total_defenders.png",
+    "06_local_vs_global_runtime.png",
+    "07_defender_optimality_gap.png",
+    "08_speedup_vs_optimality_gap.png",
+    "09_peak_memory_vs_state_edge_count.png",
+    "10_representative_runtime_decomposition.png"
+  ],
+  "gate_checks": {
+    "all_completed_replays_pass": true,
+    "all_local_repetitions_completed": true,
+    "completed_gaps_nonnegative_within_tolerance": true,
+    "every_evaluated_attacker_response_exact": true,
+    "every_local_certificate_verified": true,
+    "gap_only_when_oracle_succeeds": true,
+    "global_solver_fingerprint_unchanged": true,
+    "global_solver_only_used_as_oracle": true,
+    "multi_start_deferred": true,
+    "no_rl_or_approximate_planner": true,
+    "one_variable_at_a_time": true,
+    "plots_generated_from_stored_raw_data": true,
+    "same_reproducible_runner_and_resume": true,
+    "terrain_fixed_centered_cube": true
+  },
+  "gate_passed": true,
+  "global_oracle_case_count": 10,
+  "global_oracle_completed_repetitions": 30,
+  "global_oracle_unavailable_count": 0,
+  "interpretation": {
+    "gap_is_empirical_not_bounded": true,
+    "multi_start_performed": false,
+    "oracle_role": "exact finite global reference on tractable cases only",
+    "primary_object": "single-start local finite-grid SSE",
+    "rl_or_approximation_used": false
+  },
+  "isolated_local_sse_profiles": [
+    "defender_count_3",
+    "defender_count_5",
+    "switch_contour_6"
+  ],
+  "isolated_local_sse_repetition_count": 9,
+  "local_case_count": 10,
+  "local_completed_repetitions": 30,
+  "next_stage_started": false,
+  "repetitions_per_case": 3,
+  "schema_version": "stage14.2C-v1",
+  "stage": "14.2C",
+  "successful_oracle_comparisons": 10,
+  "total_repetition_rows": 60
+}

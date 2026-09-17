@@ -1,0 +1,125 @@
+{
+  "claim_scope": "observations only over completed measured configurations; no extrapolation",
+  "completed_configuration_count": 26,
+  "maximum_measured_median_peak_rss": {
+    "bytes": 363986944.0,
+    "label": "\u0394\u03c8=2.5\u00b0",
+    "mib": 347.125,
+    "sweep": "heading",
+    "variant": "local_sse"
+  },
+  "maximum_measured_median_total_runtime": {
+    "label": "\u0394\u03c8=2.5\u00b0",
+    "seconds": 225.60300240000106,
+    "sweep": "heading",
+    "variant": "local_sse"
+  },
+  "noncompleted_repetition_inventory": {
+    "all_noncompleted_repetitions": [
+      {
+        "algorithm_variant": "global_oracle",
+        "case_id": "global-oracle-spatial-12p5m-9ce2768d5aed",
+        "classification": "computational_or_instrumentation_failure",
+        "declared_sweep_value": 12.5,
+        "failure_category": "nonzero_worker_exit",
+        "failure_message": "Traceback (most recent call last):\n  File \"C:\\Users\\jeffe\\Desktop\\git\\glider_hybrid_control\\3D_0827\\stage14_3_worker.py\", line 65, in <module>\n    main()\n    ~~~~^^\n  File \"C:\\Users\\jeffe\\Desktop\\git\\glider_hybrid_control\\3D_0827\\stage14_3_worker.py\", line 59, in main\n    payload = run_worker(configuration)\n  File \"C:\\Users\\jeffe\\Desktop\\git\\glider_hybrid_control\\3D_0827\\stage14_3_worker.py\", line 30, in run_worker\n    payload = run_worker_case(configuration)\n  File \"C:\\Users\\jeffe\\Desktop\\git\\glider_hybrid_control\\3D_0827\\stage14_2c_worker.py\", line 388, in run_worker_case\n    payload = _global_payload(configuration)\n  File \"C:\\Users\\jeffe\\Desktop\\git\\glider_hybrid_control\\3D_0827\\stage14_2c_worker.py\", line 340, in _global_payload\n    timing = decompose_exact_sse_timing(run, validation_time_s=validation_s)\n  File \"C:\\Users\\jeffe\\Desktop\\git\\glider_hybrid_control\\3D_0827\\stage14_profiling.py\", line 126, in decompose_exact_sse_timing\n    residual = _nonnegative_residual(\n        timing.total_attacker_br_s,\n        named_parts,\n        \"Attacker best-response\",\n    )\n  File \"C:\\Users\\jeffe\\Desktop\\git\\glider_hybrid_control\\3D_0827\\stage14_profiling.py\", line 95, in _nonnegative_residual\n    raise RuntimeError(f\"{name} timing components exceed their enclosing wall time\")\nRuntimeError: Attacker best-response timing components exceed their enclosing wall time",
+        "repetition_id": "global-oracle-spatial-12p5m-9ce2768d5aed-r000",
+        "status": "worker_failure",
+        "sweep": "spatial"
+      },
+      {
+        "algorithm_variant": "global_oracle",
+        "case_id": "global-oracle-spatial-12p5m-9ce2768d5aed",
+        "classification": "computational_or_instrumentation_failure",
+        "declared_sweep_value": 12.5,
+        "failure_category": "nonzero_worker_exit",
+        "failure_message": "Traceback (most recent call last):\n  File \"C:\\Users\\jeffe\\Desktop\\git\\glider_hybrid_control\\3D_0827\\stage14_3_worker.py\", line 65, in <module>\n    main()\n    ~~~~^^\n  File \"C:\\Users\\jeffe\\Desktop\\git\\glider_hybrid_control\\3D_0827\\stage14_3_worker.py\", line 59, in main\n    payload = run_worker(configuration)\n  File \"C:\\Users\\jeffe\\Desktop\\git\\glider_hybrid_control\\3D_0827\\stage14_3_worker.py\", line 30, in run_worker\n    payload = run_worker_case(configuration)\n  File \"C:\\Users\\jeffe\\Desktop\\git\\glider_hybrid_control\\3D_0827\\stage14_2c_worker.py\", line 388, in run_worker_case\n    payload = _global_payload(configuration)\n  File \"C:\\Users\\jeffe\\Desktop\\git\\glider_hybrid_control\\3D_0827\\stage14_2c_worker.py\", line 340, in _global_payload\n    timing = decompose_exact_sse_timing(run, validation_time_s=validation_s)\n  File \"C:\\Users\\jeffe\\Desktop\\git\\glider_hybrid_control\\3D_0827\\stage14_profiling.py\", line 126, in decompose_exact_sse_timing\n    residual = _nonnegative_residual(\n        timing.total_attacker_br_s,\n        named_parts,\n        \"Attacker best-response\",\n    )\n  File \"C:\\Users\\jeffe\\Desktop\\git\\glider_hybrid_control\\3D_0827\\stage14_profiling.py\", line 95, in _nonnegative_residual\n    raise RuntimeError(f\"{name} timing components exceed their enclosing wall time\")\nRuntimeError: Attacker best-response timing components exceed their enclosing wall time",
+        "repetition_id": "global-oracle-spatial-12p5m-9ce2768d5aed-r001",
+        "status": "worker_failure",
+        "sweep": "spatial"
+      },
+      {
+        "algorithm_variant": "global_oracle",
+        "case_id": "global-oracle-spatial-12p5m-9ce2768d5aed",
+        "classification": "computational_or_instrumentation_failure",
+        "declared_sweep_value": 12.5,
+        "failure_category": "nonzero_worker_exit",
+        "failure_message": "Traceback (most recent call last):\n  File \"C:\\Users\\jeffe\\Desktop\\git\\glider_hybrid_control\\3D_0827\\stage14_3_worker.py\", line 65, in <module>\n    main()\n    ~~~~^^\n  File \"C:\\Users\\jeffe\\Desktop\\git\\glider_hybrid_control\\3D_0827\\stage14_3_worker.py\", line 59, in main\n    payload = run_worker(configuration)\n  File \"C:\\Users\\jeffe\\Desktop\\git\\glider_hybrid_control\\3D_0827\\stage14_3_worker.py\", line 30, in run_worker\n    payload = run_worker_case(configuration)\n  File \"C:\\Users\\jeffe\\Desktop\\git\\glider_hybrid_control\\3D_0827\\stage14_2c_worker.py\", line 388, in run_worker_case\n    payload = _global_payload(configuration)\n  File \"C:\\Users\\jeffe\\Desktop\\git\\glider_hybrid_control\\3D_0827\\stage14_2c_worker.py\", line 340, in _global_payload\n    timing = decompose_exact_sse_timing(run, validation_time_s=validation_s)\n  File \"C:\\Users\\jeffe\\Desktop\\git\\glider_hybrid_control\\3D_0827\\stage14_profiling.py\", line 126, in decompose_exact_sse_timing\n    residual = _nonnegative_residual(\n        timing.total_attacker_br_s,\n        named_parts,\n        \"Attacker best-response\",\n    )\n  File \"C:\\Users\\jeffe\\Desktop\\git\\glider_hybrid_control\\3D_0827\\stage14_profiling.py\", line 95, in _nonnegative_residual\n    raise RuntimeError(f\"{name} timing components exceed their enclosing wall time\")\nRuntimeError: Attacker best-response timing components exceed their enclosing wall time",
+        "repetition_id": "global-oracle-spatial-12p5m-9ce2768d5aed-r002",
+        "status": "worker_failure",
+        "sweep": "spatial"
+      },
+      {
+        "algorithm_variant": "local_sse",
+        "case_id": "local-sse-spatial-12p5m-aac68d27c7a2",
+        "classification": "model_infeasible",
+        "declared_sweep_value": 12.5,
+        "failure_category": "initial_defender_infeasible",
+        "failure_message": "local SSE was not certified",
+        "repetition_id": "local-sse-spatial-12p5m-aac68d27c7a2-r000",
+        "status": "initial_defender_infeasible",
+        "sweep": "spatial"
+      },
+      {
+        "algorithm_variant": "local_sse",
+        "case_id": "local-sse-spatial-12p5m-aac68d27c7a2",
+        "classification": "model_infeasible",
+        "declared_sweep_value": 12.5,
+        "failure_category": "initial_defender_infeasible",
+        "failure_message": "local SSE was not certified",
+        "repetition_id": "local-sse-spatial-12p5m-aac68d27c7a2-r001",
+        "status": "initial_defender_infeasible",
+        "sweep": "spatial"
+      },
+      {
+        "algorithm_variant": "local_sse",
+        "case_id": "local-sse-spatial-12p5m-aac68d27c7a2",
+        "classification": "model_infeasible",
+        "declared_sweep_value": 12.5,
+        "failure_category": "initial_defender_infeasible",
+        "failure_message": "local SSE was not certified",
+        "repetition_id": "local-sse-spatial-12p5m-aac68d27c7a2-r002",
+        "status": "initial_defender_infeasible",
+        "sweep": "spatial"
+      },
+      {
+        "algorithm_variant": "local_sse",
+        "case_id": "local-sse-spatial-20p0m-d38252da4260",
+        "classification": "model_infeasible",
+        "declared_sweep_value": 20.0,
+        "failure_category": "initial_defender_infeasible",
+        "failure_message": "local SSE was not certified",
+        "repetition_id": "local-sse-spatial-20p0m-d38252da4260-r000",
+        "status": "initial_defender_infeasible",
+        "sweep": "spatial"
+      },
+      {
+        "algorithm_variant": "local_sse",
+        "case_id": "local-sse-spatial-20p0m-d38252da4260",
+        "classification": "model_infeasible",
+        "declared_sweep_value": 20.0,
+        "failure_category": "initial_defender_infeasible",
+        "failure_message": "local SSE was not certified",
+        "repetition_id": "local-sse-spatial-20p0m-d38252da4260-r001",
+        "status": "initial_defender_infeasible",
+        "sweep": "spatial"
+      },
+      {
+        "algorithm_variant": "local_sse",
+        "case_id": "local-sse-spatial-20p0m-d38252da4260",
+        "classification": "model_infeasible",
+        "declared_sweep_value": 20.0,
+        "failure_category": "initial_defender_infeasible",
+        "failure_message": "local SSE was not certified",
+        "repetition_id": "local-sse-spatial-20p0m-d38252da4260-r002",
+        "status": "initial_defender_infeasible",
+        "sweep": "spatial"
+      }
+    ],
+    "computational_or_instrumentation_failure_repetition_count": 3,
+    "memory_limit_repetition_count": 0,
+    "model_infeasible_repetition_count": 6,
+    "noncompleted_repetition_count": 9,
+    "timeout_repetition_count": 0
+  }
+}

@@ -1,0 +1,200 @@
+{
+  "candidates": {
+    "candidate_count": 96,
+    "contour_samples": 12,
+    "maximum_surface_residual": 8.648552211973499e-17,
+    "mean_surface_residual": 1.740607526981153e-17,
+    "radial_samples": 8
+  },
+  "configuration": {
+    "attacker_objective": {
+      "hazard_reference": 1.0,
+      "hazard_weight": 0.5,
+      "objective_id": "attacker_hazard_time_v2",
+      "time_reference_s": 221.23893805309734,
+      "time_weight": 0.5
+    },
+    "detection": {
+      "doppler_coefficient": 33250.0,
+      "radar_coefficient": 13000000.0,
+      "radar_rate_scale": 1.0,
+      "radial_velocity_rate_scale": 1.0,
+      "range_floor_m": 10.0,
+      "rcs_max": 1.0,
+      "rcs_min": 0.1
+    },
+    "deterministic_single_candidate_id": 25,
+    "discretization": {
+      "altitude_spacing_map": 0.1,
+      "hazard_quadrature_resolution": 8,
+      "heading_bin_count": 8,
+      "horizontal_spacing_map": 1.0,
+      "los_boundary_refinement_steps": 24,
+      "los_display_extension_factor": 4.0,
+      "los_probe_grid_size": 101,
+      "maximum_altitude_map": 5.0,
+      "minimum_altitude_map": 0.0,
+      "motion_primitive_radius": 1,
+      "motion_primitive_step_cells": 1,
+      "switching_contour_sample_count": 12,
+      "switching_radial_max": 4.0,
+      "switching_radial_min": 0.5,
+      "switching_radial_sample_count": 8,
+      "switching_radial_scales": [
+        0.5,
+        1.0,
+        1.5,
+        2.0,
+        2.5,
+        3.0,
+        3.5,
+        4.0
+      ],
+      "visualization_ray_count": 10
+    },
+    "glider": {
+      "aircraft_name": "Schleicher Ka 6 CR",
+      "best_glide_ratio": 10.0,
+      "best_glide_speed_mps": 22.22222222222222,
+      "goal_tolerance_m": 25.0,
+      "gravity_mps2": 9.81,
+      "mass_kg": 304.0,
+      "maximum_bank_deg": 30.0,
+      "powered_speed_mps": 22.22222222222222,
+      "source_url": "https://mobilit.belgium.be/sites/default/files/domain/Aviation/Veiligheid/Verslagen%20voorvallen/2010/2010_5.pdf",
+      "switch_energy_loss_height_m": 10.0
+    },
+    "goal_map": [
+      8.0,
+      0.0,
+      0.0
+    ],
+    "graph_bounds": {
+      "x_max": 8.0,
+      "x_min": -8.0,
+      "y_max": 4.0,
+      "y_min": -4.0
+    },
+    "physical_scale": {
+      "meters_per_map_unit": 100.0
+    },
+    "random_seed": 0,
+    "sensor_map": [
+      5.0,
+      0.0,
+      0.0
+    ],
+    "start_map": [
+      -8.0,
+      0.0,
+      0.0
+    ],
+    "terrain_category": "centered_cube"
+  },
+  "energy": {
+    "acoustically_neutralized": 96,
+    "energy_reachable": 60,
+    "energy_unreachable": 12,
+    "powered_feasible": 72,
+    "total": 96
+  },
+  "exact_attacker_best_response": {
+    "cooptimal_candidate_ids": [
+      25,
+      34
+    ],
+    "cumulative_hazard": 0.0172459504390233,
+    "detection_probability": 0.017098090252410686,
+    "feasible_candidates": 10,
+    "mission_time_s": 90.68077307322775,
+    "objective": 0.21356152236500636,
+    "selected_candidate_id": 25,
+    "total_candidates": 96
+  },
+  "gate_passed": true,
+  "graph": {
+    "altitude_spacing_map": 0.1,
+    "cartesian_state_count": 62424,
+    "goal_reachable_states": 43136,
+    "heading_bins": 8,
+    "motion_primitive_radius": 1,
+    "rejected_by_altitude": 6591,
+    "rejected_by_bounds": 61944,
+    "rejected_by_terrain": 7508,
+    "rejected_by_turn": 209841,
+    "state_count": 59616,
+    "terminal_state_count": 24,
+    "terrain_excluded_state_count": 2808,
+    "valid_edge_count": 190852,
+    "xy_spacing_map": 1.0
+  },
+  "los": {
+    "closed": false,
+    "discarded_ground_candidates": 71,
+    "displayed_ray_count": 10,
+    "minimum_tangent_altitude": 0.026178010471204157,
+    "surface_panel_count": 212,
+    "tangent_ray_count": 213
+  },
+  "single_candidate": {
+    "attacker_objective": 0.21356152236500636,
+    "candidate_id": 25,
+    "energy_margin_m": 26.447639547125334,
+    "glide_edges": 8,
+    "mission_PoD": 0.017098090252410686,
+    "mission_hazard": 0.0172459504390233,
+    "mission_time_s": 90.68077307322775,
+    "virtual_target_state": 20608
+  },
+  "stage": 11,
+  "terrain": {
+    "bounds": {
+      "x_max": 10.0,
+      "x_min": -10.0,
+      "y_max": 8.0,
+      "y_min": -8.0
+    },
+    "ground_triangles": 2,
+    "ground_vertices": 4,
+    "ground_z": 0.0,
+    "maximum_height": 4.0,
+    "obstacle_triangles": 12,
+    "obstacle_vertices": 8
+  },
+  "timing_s": {
+    "Bellman_solve_s": 0.1571716999999353,
+    "all_candidate_BR_s": 57.162540400000125,
+    "candidate_generation_s": 0.03450569999995423,
+    "energy_filtering_s": 0.06040119999988747,
+    "graph_build_s": 7.4281645000000935,
+    "hazard_precompute_s": 48.417785300000105,
+    "notebook_total_s": 68.54636730000016,
+    "terrain_LOS_s": 0.9962648999999146,
+    "validation_s": 0.005280499999798849
+  },
+  "validation_recomputed": {
+    "cumulative_hazard": 0.017245950439023303,
+    "detection_probability": 0.01709809025241069,
+    "energy_margin_m": 26.447639547125334,
+    "goal_distance_m": 20.0,
+    "mission_time_s": 90.68077307322774
+  },
+  "validation_report": {
+    "energy_valid": true,
+    "goal_error_m": 0.0,
+    "goal_valid": true,
+    "hazard_consistent": true,
+    "hazard_error": 3.469446951953614e-18,
+    "los_phase_valid": true,
+    "max_turn_violation": 0.0,
+    "messages": [
+      "independent replay passed all checks"
+    ],
+    "min_terrain_clearance": null,
+    "passed": true,
+    "terrain_clear": true,
+    "time_consistent": true,
+    "time_error_s": 1.4210854715202004e-14,
+    "turn_constraints_valid": true
+  }
+}

@@ -1,0 +1,90 @@
+{
+  "bellman": {
+    "active_state_count": 1974,
+    "feasible": true,
+    "glide_edge_count": 8,
+    "hazard_edge_count": 4565,
+    "hazard_precompute_s": 2.1421871000202373
+  },
+  "continuous_switching_state": {
+    "heading_rad": 0.3392926142527624,
+    "position_map": [
+      0.5,
+      2.9999999980759777,
+      1.6630045328951102
+    ],
+    "powered_path_length_m": 916.6001530923152,
+    "speed_mps": 22.222222222222218,
+    "total_mechanical_energy_j": 571009.5922131732
+  },
+  "energy": {
+    "available_specific_height_m": 166.30045328951104,
+    "feasible": true,
+    "margin_j": 78873.20856301906,
+    "margin_m": 26.447639547125334,
+    "required_specific_height_m": 139.8528137423857
+  },
+  "mission": {
+    "maximum_join_gap_m": 0.0,
+    "objective": 0.21356152236500636,
+    "pod": 0.017098090252410686,
+    "terminal_goal_distance_m": 20.0,
+    "total_hazard": 0.0172459504390233,
+    "total_time_s": 90.68077307322775,
+    "within_goal_tolerance": true
+  },
+  "phase_objective": {
+    "glide": {
+      "duration_s": 47.18376618407357,
+      "hazard": 0.01673673924344096,
+      "hazard_assumption": "Stage-7 LOS-gated hazard quadrature",
+      "weighted_cost": 0.11500368119772675
+    },
+    "powered": {
+      "duration_s": 41.247006889154186,
+      "hazard": 0.0,
+      "hazard_assumption": "powered hazard = 0: pre-switch powered flight is outside the post-switch LOS-gated acoustic detection objective",
+      "weighted_cost": 0.09321823556948847
+    },
+    "virtual": {
+      "duration_s": 2.25,
+      "hazard": 0.0005092111955823422,
+      "hazard_assumption": "Stage-7 LOS-gated hazard quadrature",
+      "weighted_cost": 0.0053396055977911715
+    }
+  },
+  "powered_detection_assumption": "powered hazard = 0: pre-switch powered flight is outside the post-switch LOS-gated acoustic detection objective",
+  "scope": {
+    "candidate_count_considered": 1,
+    "candidate_optimized": false,
+    "fixed_candidate_id": 25,
+    "sensor_position_map": [
+      5.0,
+      0.0,
+      0.0
+    ],
+    "terrain_category": "centered_cube"
+  },
+  "virtual_connection": {
+    "altitude_mismatch_m": 6.30045328951101,
+    "duration_s": 2.25,
+    "feasible": true,
+    "feasible_proposal_count": 1,
+    "hazard": 0.0005092111955823422,
+    "heading_mismatch_rad": 0.33929261425276236,
+    "projection_error_m": 50.39539375432353,
+    "proposal_count": 2,
+    "selected_position_map": [
+      1.0,
+      3.0,
+      1.6
+    ],
+    "selected_state": {
+      "altitude_index": 16,
+      "heading_bin": 0,
+      "x_index": 9,
+      "y_index": 7
+    },
+    "selected_state_id": 20608
+  }
+}

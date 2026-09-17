@@ -1,0 +1,5 @@
+# Local Python/Jupyter caches, not reproducible source or result artifacts.
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+.pytest_cache/

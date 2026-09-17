@@ -1,0 +1,30 @@
+{
+  "current_discretized_existence_condition_satisfied": true,
+  "current_global_action_id": 2,
+  "current_global_action_passes_local_verifier": true,
+  "default_r_neighbor": 1,
+  "full_radius_equals_global": true,
+  "gate_checks": {
+    "attacker_response_remains_exact": true,
+    "global_solver_source_unchanged": true,
+    "local_not_mislabeled_global": true,
+    "neighborhood_explicit_deterministic_exported": true,
+    "strong_tie_breaking_preserved": true,
+    "tiny_games_distinguish_local_global": true
+  },
+  "gate_passed": true,
+  "global_solver_modified": false,
+  "local_search_implemented": false,
+  "neighbor_metric": "chebyshev_grid_index",
+  "schema_version": "stage14.2A-v1",
+  "solver_source_fingerprint": "3c70e0017f33fd017d4b36c3e688f7385e3c83a822d7d97cd5df8a80037e8d13",
+  "solver_source_unchanged": true,
+  "stage": "14.2A",
+  "tiny_global_sse_action_ids": [
+    3
+  ],
+  "tiny_local_sse_action_ids": [
+    1,
+    3
+  ]
+}

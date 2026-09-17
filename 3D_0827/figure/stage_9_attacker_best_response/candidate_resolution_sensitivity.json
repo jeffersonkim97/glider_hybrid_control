@@ -1,0 +1,26 @@
+[
+  {
+    "best_candidate_id": 25,
+    "best_objective": 0.21356152236500636,
+    "best_x_map": 0.5,
+    "best_y_map": 2.9999999980759777,
+    "best_z_map": 1.6630045328951102,
+    "candidate_count": 96,
+    "contour_sample_count": 12,
+    "number_feasible": 6,
+    "radial_scale_count": 8,
+    "total_runtime_s": 33.37054089998128
+  },
+  {
+    "best_candidate_id": 33,
+    "best_objective": 0.1948997209135999,
+    "best_x_map": 0.5,
+    "best_y_map": 2.999999997525016,
+    "best_z_map": 1.230007861644896,
+    "candidate_count": 128,
+    "contour_sample_count": 16,
+    "number_feasible": 8,
+    "radial_scale_count": 8,
+    "total_runtime_s": 32.99745990001247
+  }
+]

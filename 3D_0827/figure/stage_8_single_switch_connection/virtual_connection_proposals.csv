@@ -1,0 +1,3 @@
+candidate_id,target_state_id,target_x_map,target_y_map,target_z_map,target_heading_bin,projection_error_m,altitude_mismatch_m,heading_mismatch_rad,chord_heading_mismatch_rad,duration_s,node_admissible,bellman_reachable,terrain_feasible,altitude_feasible,turn_feasible,powered_feasible,coarse_energy_feasible,virtual_feasible,rejection_reasons
+25,20604,0.0,3.0,1.6,4,50.39539375432353,6.30045328951101,2.8023000393370303,3.848044549670249e-09,2.25,True,False,True,True,False,True,True,False,virtual-segment turn-rate limit exceeded
+25,20608,1.0,3.0,1.6,0,50.39539375432353,6.30045328951101,0.33929261425276236,3.848044549670249e-09,2.25,True,True,True,True,True,True,True,True,

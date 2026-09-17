@@ -1,0 +1,38 @@
+{
+  "first_invocation_attempted": [
+    "local-sse-r-neighbor-1-69d3ac42f283-r000",
+    "local-sse-r-neighbor-1-69d3ac42f283-r001",
+    "local-sse-r-neighbor-1-69d3ac42f283-r002",
+    "local-sse-r-neighbor-2-f52214fd8f05-r000",
+    "local-sse-r-neighbor-2-f52214fd8f05-r001",
+    "local-sse-r-neighbor-2-f52214fd8f05-r002",
+    "local-sse-r-neighbor-4-7c53a9d6272c-r000",
+    "local-sse-r-neighbor-4-7c53a9d6272c-r001",
+    "local-sse-r-neighbor-4-7c53a9d6272c-r002",
+    "local-sse-r-neighbor-8-9dd871c09f65-r000",
+    "local-sse-r-neighbor-8-9dd871c09f65-r001",
+    "local-sse-r-neighbor-8-9dd871c09f65-r002",
+    "global-oracle-r-neighbor-8-reference-825b789a73e4-r000",
+    "global-oracle-r-neighbor-8-reference-825b789a73e4-r001",
+    "global-oracle-r-neighbor-8-reference-825b789a73e4-r002"
+  ],
+  "first_invocation_skipped": [],
+  "second_invocation_attempted": [],
+  "second_invocation_skipped": [
+    "local-sse-r-neighbor-1-69d3ac42f283-r000",
+    "local-sse-r-neighbor-1-69d3ac42f283-r001",
+    "local-sse-r-neighbor-1-69d3ac42f283-r002",
+    "local-sse-r-neighbor-2-f52214fd8f05-r000",
+    "local-sse-r-neighbor-2-f52214fd8f05-r001",
+    "local-sse-r-neighbor-2-f52214fd8f05-r002",
+    "local-sse-r-neighbor-4-7c53a9d6272c-r000",
+    "local-sse-r-neighbor-4-7c53a9d6272c-r001",
+    "local-sse-r-neighbor-4-7c53a9d6272c-r002",
+    "local-sse-r-neighbor-8-9dd871c09f65-r000",
+    "local-sse-r-neighbor-8-9dd871c09f65-r001",
+    "local-sse-r-neighbor-8-9dd871c09f65-r002",
+    "global-oracle-r-neighbor-8-reference-825b789a73e4-r000",
+    "global-oracle-r-neighbor-8-reference-825b789a73e4-r001",
+    "global-oracle-r-neighbor-8-reference-825b789a73e4-r002"
+  ]
+}

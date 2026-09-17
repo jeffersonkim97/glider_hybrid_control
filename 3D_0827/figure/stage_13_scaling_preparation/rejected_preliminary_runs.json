@@ -1,0 +1,20 @@
+[
+  {
+    "category": "virtual connection infeasible",
+    "reason": "independent replay rejected a selected virtual chord whose direction did not match its target heading bin",
+    "recorded_as_benchmark": false,
+    "run_id": "spatial_coarse_200m_20m_pre_fix"
+  },
+  {
+    "category": "goal unreachable",
+    "reason": "halving horizontal spacing alone shortened the physical motion horizon and made 45-degree turns unreachable",
+    "recorded_as_benchmark": false,
+    "run_id": "spatial_fine_50m_10m_pre_fix"
+  },
+  {
+    "category": "virtual connection infeasible",
+    "reason": "an exact x-y lattice switching point generated only a turn-infeasible zero-length identity proposal",
+    "recorded_as_benchmark": false,
+    "run_id": "spatial_fine_50m_5m_pre_fix"
+  }
+]

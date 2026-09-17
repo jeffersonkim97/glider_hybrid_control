@@ -1,0 +1,889 @@
+{
+  "algorithm_variant": "local_sse",
+  "complete_configuration": {
+    "case_id": "local-sse-heading-12p0deg-c36bd2aef991",
+    "experiment_type": "stage14_4_local_sse_heading",
+    "memory_limit_bytes": 4294967296,
+    "name": "local_sse_heading_12p0deg",
+    "parameters": {
+      "approximate_planner": false,
+      "baseline_anchor": 0,
+      "defender_action_count": 6,
+      "defender_domain_x_max": 10.0,
+      "defender_domain_x_min": 5.0,
+      "defender_grid_policy": "canonical_six",
+      "heading_spacing_deg": 12.0,
+      "initial_defender_action_id": 0,
+      "multi_start": false,
+      "r_neighbor": 1,
+      "reinforcement_learning": false,
+      "spatial_resolution_m": 25.0,
+      "switching_contour_sample_count": 12,
+      "switching_radial_sample_count": 8,
+      "terrain_category": "centered_cube"
+    },
+    "process_semantics": "fresh cold process per repetition",
+    "repetition_id": "local-sse-heading-12p0deg-c36bd2aef991-r001",
+    "sampling_interval_s": 0.02,
+    "sweep_variable": "heading_spacing_deg",
+    "timeout_s": 900.0,
+    "worker_mode": "local_sse"
+  },
+  "exactness": {
+    "all_evaluated_attacker_responses_exact": true,
+    "all_required_final_neighbors_evaluated": true,
+    "local_sse_verified": true,
+    "strong_follower_tie_break_verified": true
+  },
+  "independent_replay": {
+    "energy_valid": true,
+    "goal_error_m": 0.0,
+    "goal_valid": true,
+    "hazard_consistent": true,
+    "hazard_error": 0.0,
+    "los_phase_valid": true,
+    "max_turn_violation": 0.0,
+    "messages": [
+      "independent replay passed all checks"
+    ],
+    "min_terrain_clearance": null,
+    "passed": true,
+    "terrain_clear": true,
+    "time_consistent": true,
+    "time_error_s": 1.4210854715202004e-14,
+    "turn_constraints_valid": true
+  },
+  "local_search": {
+    "attacker_exactness_verified": true,
+    "cached_evaluation_reuses": 6,
+    "evaluated_defender_actions": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "exact_evaluation_records": [
+      {
+        "action_id": 0,
+        "attacker_br_runtime_s": 3.303386200001114,
+        "attacker_cooptimal_candidate_ids": [
+          25,
+          34
+        ],
+        "candidate_count": 96,
+        "exact_exhaustive_minimum_verified": true,
+        "local_evaluation": {
+          "action_id": 0,
+          "attacker_objective": 0.19158023348311207,
+          "defender_value": 0.019699188196044028,
+          "diagnostic": null,
+          "exact_attacker_best_response_verified": true,
+          "selected_attacker_response_id": 34,
+          "status": "feasible",
+          "strong_tie_break_verified": true
+        },
+        "selected_candidate_id": 34,
+        "sensor_position_map": [
+          5.0,
+          0.0,
+          0.0
+        ],
+        "strong_follower_tie_audit_passed": true
+      },
+      {
+        "action_id": 1,
+        "attacker_br_runtime_s": 4.707548100006534,
+        "attacker_cooptimal_candidate_ids": [
+          26,
+          33
+        ],
+        "candidate_count": 96,
+        "exact_exhaustive_minimum_verified": true,
+        "local_evaluation": {
+          "action_id": 1,
+          "attacker_objective": 0.20360974705942617,
+          "defender_value": 0.03396994651446255,
+          "diagnostic": null,
+          "exact_attacker_best_response_verified": true,
+          "selected_attacker_response_id": 33,
+          "status": "feasible",
+          "strong_tie_break_verified": true
+        },
+        "selected_candidate_id": 33,
+        "sensor_position_map": [
+          6.0,
+          0.0,
+          0.0
+        ],
+        "strong_follower_tie_audit_passed": true
+      },
+      {
+        "action_id": 2,
+        "attacker_br_runtime_s": 3.6976274000044214,
+        "attacker_cooptimal_candidate_ids": [
+          27,
+          32
+        ],
+        "candidate_count": 96,
+        "exact_exhaustive_minimum_verified": true,
+        "local_evaluation": {
+          "action_id": 2,
+          "attacker_objective": 0.3106953294881229,
+          "defender_value": 0.20853489185691793,
+          "diagnostic": null,
+          "exact_attacker_best_response_verified": true,
+          "selected_attacker_response_id": 27,
+          "status": "feasible",
+          "strong_tie_break_verified": true
+        },
+        "selected_candidate_id": 27,
+        "sensor_position_map": [
+          7.0,
+          0.0,
+          0.0
+        ],
+        "strong_follower_tie_audit_passed": true
+      },
+      {
+        "action_id": 3,
+        "attacker_br_runtime_s": 3.1562949000071967,
+        "attacker_cooptimal_candidate_ids": [
+          27,
+          32
+        ],
+        "candidate_count": 96,
+        "exact_exhaustive_minimum_verified": true,
+        "local_evaluation": {
+          "action_id": 3,
+          "attacker_objective": 8.540254821294537,
+          "defender_value": 0.9999999431529204,
+          "diagnostic": null,
+          "exact_attacker_best_response_verified": true,
+          "selected_attacker_response_id": 27,
+          "status": "feasible",
+          "strong_tie_break_verified": true
+        },
+        "selected_candidate_id": 27,
+        "sensor_position_map": [
+          8.0,
+          0.0,
+          0.0
+        ],
+        "strong_follower_tie_audit_passed": true
+      },
+      {
+        "action_id": 4,
+        "attacker_br_runtime_s": 1.8906292999890866,
+        "attacker_cooptimal_candidate_ids": [
+          26,
+          33
+        ],
+        "candidate_count": 96,
+        "exact_exhaustive_minimum_verified": true,
+        "local_evaluation": {
+          "action_id": 4,
+          "attacker_objective": 0.26180709666414337,
+          "defender_value": 0.13918470157339669,
+          "diagnostic": null,
+          "exact_attacker_best_response_verified": true,
+          "selected_attacker_response_id": 26,
+          "status": "feasible",
+          "strong_tie_break_verified": true
+        },
+        "selected_candidate_id": 26,
+        "sensor_position_map": [
+          9.0,
+          0.0,
+          0.0
+        ],
+        "strong_follower_tie_audit_passed": true
+      }
+    ],
+    "feasible_neighbor_comparisons": 7,
+    "feasible_neighbor_count_per_iteration": [
+      1,
+      2,
+      2,
+      2
+    ],
+    "final_J_A": 8.540254821294537,
+    "final_J_D": 0.9999999431529204,
+    "final_attacker_response_id": 27,
+    "final_local_sse_action_id": 3,
+    "global_optimal": null,
+    "global_optimality_evaluated": false,
+    "independent_replay_status": true,
+    "infeasible_neighbor_diagnostics": [],
+    "initial_defender_action_id": 0,
+    "initialization_dependent_solution_concept": true,
+    "initialization_feasible_neighbor_ids": [],
+    "initialization_infeasible_neighbor_ids": [],
+    "initialization_neighbor_action_ids": [],
+    "initialization_recovery_action_id": null,
+    "initialization_recovery_attempted": false,
+    "initialization_unknown_neighbor_ids": [],
+    "isolated_feasible_local_solution": false,
+    "iterations": [
+      {
+        "chosen_next_action_id": 1,
+        "current_action_id": 0,
+        "current_defender_value": 0.019699188196044028,
+        "feasible_neighbor_ids": [
+          1
+        ],
+        "infeasible_neighbor_ids": [],
+        "iteration": 0,
+        "local_verification": {
+          "best_feasible_neighbor_value": 0.03396994651446255,
+          "candidate_action_id": 0,
+          "candidate_defender_value": 0.019699188196044028,
+          "comparison_scope": "local Strong Stackelberg equilibrium over an explicit finite Defender grid neighborhood; not a global or continuous-space optimality claim",
+          "equal_payoff_neighbor_ids": [],
+          "exact_attacker_responses_verified": true,
+          "feasible_neighbor_ids": [
+            1
+          ],
+          "global_condition_equivalent": false,
+          "improving_neighbor_ids": [
+            1
+          ],
+          "infeasible_neighbor_diagnostics": [],
+          "isolated_feasible_local_solution": false,
+          "local_optimality_margin": -0.014270758318418522,
+          "local_sse_verified": false,
+          "neighbor_action_ids": [
+            1
+          ],
+          "neighborhood_metadata": {
+            "configuration": {
+              "boundary_rule": "clip to explicitly configured grid actions",
+              "metric": "chebyshev_grid_index",
+              "one_dimensional_rule": "0 < abs(j-i) <= r_neighbor",
+              "r_neighbor": 1,
+              "radius_units": "integer Defender grid-index lengths",
+              "two_dimensional_rule": "0 < max(abs(p-i), abs(q-j)) <= r_neighbor"
+            },
+            "topology": {
+              "dimension": 1,
+              "ordered_action_grid_indices": [
+                {
+                  "action_id": 0,
+                  "grid_index": [
+                    0
+                  ]
+                },
+                {
+                  "action_id": 1,
+                  "grid_index": [
+                    1
+                  ]
+                },
+                {
+                  "action_id": 2,
+                  "grid_index": [
+                    2
+                  ]
+                },
+                {
+                  "action_id": 3,
+                  "grid_index": [
+                    3
+                  ]
+                },
+                {
+                  "action_id": 4,
+                  "grid_index": [
+                    4
+                  ]
+                },
+                {
+                  "action_id": 5,
+                  "grid_index": [
+                    5
+                  ]
+                }
+              ]
+            }
+          },
+          "strong_tie_breaking_verified": true,
+          "unknown_neighbor_diagnostics": []
+        },
+        "neighbor_action_ids": [
+          1
+        ],
+        "payoff_improvement": 0.014270758318418522,
+        "unknown_neighbor_ids": []
+      },
+      {
+        "chosen_next_action_id": 2,
+        "current_action_id": 1,
+        "current_defender_value": 0.03396994651446255,
+        "feasible_neighbor_ids": [
+          0,
+          2
+        ],
+        "infeasible_neighbor_ids": [],
+        "iteration": 1,
+        "local_verification": {
+          "best_feasible_neighbor_value": 0.20853489185691793,
+          "candidate_action_id": 1,
+          "candidate_defender_value": 0.03396994651446255,
+          "comparison_scope": "local Strong Stackelberg equilibrium over an explicit finite Defender grid neighborhood; not a global or continuous-space optimality claim",
+          "equal_payoff_neighbor_ids": [],
+          "exact_attacker_responses_verified": true,
+          "feasible_neighbor_ids": [
+            0,
+            2
+          ],
+          "global_condition_equivalent": false,
+          "improving_neighbor_ids": [
+            2
+          ],
+          "infeasible_neighbor_diagnostics": [],
+          "isolated_feasible_local_solution": false,
+          "local_optimality_margin": -0.17456494534245537,
+          "local_sse_verified": false,
+          "neighbor_action_ids": [
+            0,
+            2
+          ],
+          "neighborhood_metadata": {
+            "configuration": {
+              "boundary_rule": "clip to explicitly configured grid actions",
+              "metric": "chebyshev_grid_index",
+              "one_dimensional_rule": "0 < abs(j-i) <= r_neighbor",
+              "r_neighbor": 1,
+              "radius_units": "integer Defender grid-index lengths",
+              "two_dimensional_rule": "0 < max(abs(p-i), abs(q-j)) <= r_neighbor"
+            },
+            "topology": {
+              "dimension": 1,
+              "ordered_action_grid_indices": [
+                {
+                  "action_id": 0,
+                  "grid_index": [
+                    0
+                  ]
+                },
+                {
+                  "action_id": 1,
+                  "grid_index": [
+                    1
+                  ]
+                },
+                {
+                  "action_id": 2,
+                  "grid_index": [
+                    2
+                  ]
+                },
+                {
+                  "action_id": 3,
+                  "grid_index": [
+                    3
+                  ]
+                },
+                {
+                  "action_id": 4,
+                  "grid_index": [
+                    4
+                  ]
+                },
+                {
+                  "action_id": 5,
+                  "grid_index": [
+                    5
+                  ]
+                }
+              ]
+            }
+          },
+          "strong_tie_breaking_verified": true,
+          "unknown_neighbor_diagnostics": []
+        },
+        "neighbor_action_ids": [
+          0,
+          2
+        ],
+        "payoff_improvement": 0.17456494534245537,
+        "unknown_neighbor_ids": []
+      },
+      {
+        "chosen_next_action_id": 3,
+        "current_action_id": 2,
+        "current_defender_value": 0.20853489185691793,
+        "feasible_neighbor_ids": [
+          1,
+          3
+        ],
+        "infeasible_neighbor_ids": [],
+        "iteration": 2,
+        "local_verification": {
+          "best_feasible_neighbor_value": 0.9999999431529204,
+          "candidate_action_id": 2,
+          "candidate_defender_value": 0.20853489185691793,
+          "comparison_scope": "local Strong Stackelberg equilibrium over an explicit finite Defender grid neighborhood; not a global or continuous-space optimality claim",
+          "equal_payoff_neighbor_ids": [],
+          "exact_attacker_responses_verified": true,
+          "feasible_neighbor_ids": [
+            1,
+            3
+          ],
+          "global_condition_equivalent": false,
+          "improving_neighbor_ids": [
+            3
+          ],
+          "infeasible_neighbor_diagnostics": [],
+          "isolated_feasible_local_solution": false,
+          "local_optimality_margin": -0.7914650512960024,
+          "local_sse_verified": false,
+          "neighbor_action_ids": [
+            1,
+            3
+          ],
+          "neighborhood_metadata": {
+            "configuration": {
+              "boundary_rule": "clip to explicitly configured grid actions",
+              "metric": "chebyshev_grid_index",
+              "one_dimensional_rule": "0 < abs(j-i) <= r_neighbor",
+              "r_neighbor": 1,
+              "radius_units": "integer Defender grid-index lengths",
+              "two_dimensional_rule": "0 < max(abs(p-i), abs(q-j)) <= r_neighbor"
+            },
+            "topology": {
+              "dimension": 1,
+              "ordered_action_grid_indices": [
+                {
+                  "action_id": 0,
+                  "grid_index": [
+                    0
+                  ]
+                },
+                {
+                  "action_id": 1,
+                  "grid_index": [
+                    1
+                  ]
+                },
+                {
+                  "action_id": 2,
+                  "grid_index": [
+                    2
+                  ]
+                },
+                {
+                  "action_id": 3,
+                  "grid_index": [
+                    3
+                  ]
+                },
+                {
+                  "action_id": 4,
+                  "grid_index": [
+                    4
+                  ]
+                },
+                {
+                  "action_id": 5,
+                  "grid_index": [
+                    5
+                  ]
+                }
+              ]
+            }
+          },
+          "strong_tie_breaking_verified": true,
+          "unknown_neighbor_diagnostics": []
+        },
+        "neighbor_action_ids": [
+          1,
+          3
+        ],
+        "payoff_improvement": 0.7914650512960024,
+        "unknown_neighbor_ids": []
+      },
+      {
+        "chosen_next_action_id": null,
+        "current_action_id": 3,
+        "current_defender_value": 0.9999999431529204,
+        "feasible_neighbor_ids": [
+          2,
+          4
+        ],
+        "infeasible_neighbor_ids": [],
+        "iteration": 3,
+        "local_verification": {
+          "best_feasible_neighbor_value": 0.20853489185691793,
+          "candidate_action_id": 3,
+          "candidate_defender_value": 0.9999999431529204,
+          "comparison_scope": "local Strong Stackelberg equilibrium over an explicit finite Defender grid neighborhood; not a global or continuous-space optimality claim",
+          "equal_payoff_neighbor_ids": [],
+          "exact_attacker_responses_verified": true,
+          "feasible_neighbor_ids": [
+            2,
+            4
+          ],
+          "global_condition_equivalent": false,
+          "improving_neighbor_ids": [],
+          "infeasible_neighbor_diagnostics": [],
+          "isolated_feasible_local_solution": false,
+          "local_optimality_margin": 0.7914650512960024,
+          "local_sse_verified": true,
+          "neighbor_action_ids": [
+            2,
+            4
+          ],
+          "neighborhood_metadata": {
+            "configuration": {
+              "boundary_rule": "clip to explicitly configured grid actions",
+              "metric": "chebyshev_grid_index",
+              "one_dimensional_rule": "0 < abs(j-i) <= r_neighbor",
+              "r_neighbor": 1,
+              "radius_units": "integer Defender grid-index lengths",
+              "two_dimensional_rule": "0 < max(abs(p-i), abs(q-j)) <= r_neighbor"
+            },
+            "topology": {
+              "dimension": 1,
+              "ordered_action_grid_indices": [
+                {
+                  "action_id": 0,
+                  "grid_index": [
+                    0
+                  ]
+                },
+                {
+                  "action_id": 1,
+                  "grid_index": [
+                    1
+                  ]
+                },
+                {
+                  "action_id": 2,
+                  "grid_index": [
+                    2
+                  ]
+                },
+                {
+                  "action_id": 3,
+                  "grid_index": [
+                    3
+                  ]
+                },
+                {
+                  "action_id": 4,
+                  "grid_index": [
+                    4
+                  ]
+                },
+                {
+                  "action_id": 5,
+                  "grid_index": [
+                    5
+                  ]
+                }
+              ]
+            }
+          },
+          "strong_tie_breaking_verified": true,
+          "unknown_neighbor_diagnostics": []
+        },
+        "neighbor_action_ids": [
+          2,
+          4
+        ],
+        "payoff_improvement": 0.0,
+        "unknown_neighbor_ids": []
+      }
+    ],
+    "local_optimality_margin": 0.7914650512960024,
+    "local_search_iterations": 4,
+    "local_sse_verified": true,
+    "max_neighborhood_size": 2,
+    "mean_neighborhood_size": 1.75,
+    "neighbor_count_per_iteration": [
+      1,
+      2,
+      2,
+      2
+    ],
+    "neighborhood_metadata": {
+      "configuration": {
+        "boundary_rule": "clip to explicitly configured grid actions",
+        "metric": "chebyshev_grid_index",
+        "one_dimensional_rule": "0 < abs(j-i) <= r_neighbor",
+        "r_neighbor": 1,
+        "radius_units": "integer Defender grid-index lengths",
+        "two_dimensional_rule": "0 < max(abs(p-i), abs(q-j)) <= r_neighbor"
+      },
+      "topology": {
+        "dimension": 1,
+        "ordered_action_grid_indices": [
+          {
+            "action_id": 0,
+            "grid_index": [
+              0
+            ]
+          },
+          {
+            "action_id": 1,
+            "grid_index": [
+              1
+            ]
+          },
+          {
+            "action_id": 2,
+            "grid_index": [
+              2
+            ]
+          },
+          {
+            "action_id": 3,
+            "grid_index": [
+              3
+            ]
+          },
+          {
+            "action_id": 4,
+            "grid_index": [
+              4
+            ]
+          },
+          {
+            "action_id": 5,
+            "grid_index": [
+              5
+            ]
+          }
+        ]
+      }
+    },
+    "payoff_improvement_per_iteration": [
+      0.014270758318418522,
+      0.17456494534245537,
+      0.7914650512960024,
+      0.0
+    ],
+    "peak_memory": null,
+    "runtime_decomposition_s": {
+      "T_Bellman_s": 3.125847800009069,
+      "T_LOS_s": 4.839470599996275,
+      "T_accounted_s": 17.039214799995534,
+      "T_attacker_residual_s": 6.1692263005825225,
+      "T_graph_s": 0.274891299995943,
+      "T_hazard_s": 2.113662699412089,
+      "T_local_s": 17.039214799995534,
+      "T_local_search_control_s": 0.00020280001626815647,
+      "T_reconciliation_error_s": 0.0,
+      "T_switch_s": 0.5072785000083968,
+      "T_validation_s": 0.007846799999242648,
+      "T_wrapper_residual_s": 0.0007879999757278711
+    },
+    "search_path_length": 4,
+    "solution_scope": "local Strong Stackelberg equilibrium over an explicit finite Defender grid neighborhood; not a global or continuous-space optimality claim",
+    "strong_tie_break_verified": true,
+    "termination_status": "certified_local_sse",
+    "unique_defender_evaluations": 5,
+    "unique_feasible_neighbor_evaluations": 4,
+    "unknown_neighbor_diagnostics": [],
+    "visited_defender_actions": [
+      0,
+      1,
+      2,
+      3
+    ]
+  },
+  "realized_grid": {
+    "heading": {
+      "heading_bin_count": 30,
+      "maximum_heading_quantization_error_deg": 6.0,
+      "period_deg": 360.0,
+      "realized_heading_spacing_deg": 12.0,
+      "requested_heading_spacing_deg": 12.0
+    }
+  },
+  "realized_heading_grid": {
+    "heading_bin_count": 30,
+    "maximum_heading_quantization_error_deg": 6.0,
+    "period_deg": 360.0,
+    "realized_heading_spacing_deg": 12.0,
+    "requested_heading_spacing_deg": 12.0
+  },
+  "schema_version": "stage14.2C-v2",
+  "solution_identity": {
+    "attacker_objective": 8.540254821294537,
+    "attacker_objective_cooptimal_candidate_ids": [
+      27,
+      32
+    ],
+    "cumulative_hazard": 16.68290098908323,
+    "defender_objective_pod": 0.9999999431529204,
+    "detection_probability": 0.9999999431529204,
+    "equilibrium_scope": "local Strong Stackelberg equilibrium over an explicit finite Defender grid neighborhood; not a global or continuous-space optimality claim",
+    "feasible": true,
+    "leader_cooptimal_action_ids": null,
+    "mission_time_s": 87.96651626235501,
+    "selected_attacker_candidate_id": 27,
+    "selected_defender_action_id": 3,
+    "selected_sensor_position_map": [
+      8.0,
+      0.0,
+      0.0
+    ],
+    "sse_selected_follower_candidate_id": 27,
+    "tie_break_convention": {
+      "follower": "maximize Defender PoD among Attacker-objective co-optima, then lowest candidate ID",
+      "leader": "strict-improvement local search with deterministic topology order"
+    },
+    "trajectory_identity": {
+      "bellman_state_ids": [
+        1274368,
+        1208096,
+        1141826,
+        1075679,
+        1011330,
+        947010,
+        882690,
+        818370,
+        754050,
+        689730,
+        625410,
+        561090,
+        496770,
+        432450,
+        368130,
+        298077,
+        231806,
+        171482,
+        97495
+      ],
+      "sha256": "5c45eca0b838542c898a4ccaf0389fc2c267d45fb1fd3293ac1c0f0aeb734251",
+      "switching_position_map": [
+        -1.0,
+        2.9999999976595366,
+        4.911895617962234
+      ],
+      "virtual_target_state_id": 1274368
+    }
+  },
+  "solver_source_fingerprint": "decfe0664e1b8ed0ba4daf7e45642be9d3d263301e3119a8135e96f62735866d",
+  "stage14_2c_case_id": "local-sse-heading-12p0deg-c36bd2aef991",
+  "stage14_2c_repetition_id": "local-sse-heading-12p0deg-c36bd2aef991-r001",
+  "stage14_4_schema_version": "stage14.4-v2",
+  "state_and_game_size": {
+    "B": 30,
+    "B_effective": 7.541874320565854,
+    "N_C": 96,
+    "N_C_energy_feasible": 60,
+    "N_C_feasible": 2,
+    "N_C_goal_reachable": 2,
+    "N_C_powered_feasible": 72,
+    "N_C_raw": 96,
+    "N_C_unique": 96,
+    "N_C_unique_definition": "unique physical switching positions after rounding map coordinates to 12 decimal places; diagnostic count only, no solver deduplication",
+    "N_C_virtual_feasible": 2,
+    "N_D": 6,
+    "N_E": 2136794,
+    "N_E_goal_reachable": 6761874,
+    "N_S_active": 283324,
+    "N_S_admissible": 1250100,
+    "N_S_cart": 1351350,
+    "N_S_goal_reachable": 786188,
+    "N_eval": 5,
+    "N_h": 21,
+    "N_position_admissible": 41670,
+    "N_position_cart": 45045,
+    "N_psi": 30,
+    "N_x": 65,
+    "N_y": 33,
+    "Q": 8,
+    "per_evaluated_action": [
+      {
+        "N_C": 96,
+        "N_C_energy_feasible": 60,
+        "N_C_feasible": 4,
+        "N_C_goal_reachable": 4,
+        "N_C_powered_feasible": 72,
+        "N_C_raw": 96,
+        "N_C_unique": 96,
+        "N_C_virtual_feasible": 4,
+        "N_E": 2124952,
+        "N_S_active": 279525,
+        "action_id": 0
+      },
+      {
+        "N_C": 96,
+        "N_C_energy_feasible": 60,
+        "N_C_feasible": 10,
+        "N_C_goal_reachable": 10,
+        "N_C_powered_feasible": 72,
+        "N_C_raw": 96,
+        "N_C_unique": 96,
+        "N_C_virtual_feasible": 10,
+        "N_E": 2156043,
+        "N_S_active": 283872,
+        "action_id": 1
+      },
+      {
+        "N_C": 96,
+        "N_C_energy_feasible": 60,
+        "N_C_feasible": 6,
+        "N_C_goal_reachable": 6,
+        "N_C_powered_feasible": 72,
+        "N_C_raw": 96,
+        "N_C_unique": 96,
+        "N_C_virtual_feasible": 6,
+        "N_E": 2149179,
+        "N_S_active": 283789,
+        "action_id": 2
+      },
+      {
+        "N_C": 96,
+        "N_C_energy_feasible": 60,
+        "N_C_feasible": 2,
+        "N_C_goal_reachable": 2,
+        "N_C_powered_feasible": 72,
+        "N_C_raw": 96,
+        "N_C_unique": 96,
+        "N_C_virtual_feasible": 2,
+        "N_E": 376312,
+        "N_S_active": 59132,
+        "action_id": 4
+      },
+      {
+        "N_C": 96,
+        "N_C_energy_feasible": 60,
+        "N_C_feasible": 2,
+        "N_C_goal_reachable": 2,
+        "N_C_powered_feasible": 72,
+        "N_C_raw": 96,
+        "N_C_unique": 96,
+        "N_C_virtual_feasible": 2,
+        "N_E": 2136794,
+        "N_S_active": 283324,
+        "action_id": 3
+      }
+    ]
+  },
+  "status": "completed",
+  "terrain_category": "centered_cube",
+  "timing": {
+    "schema_version": "stage14.2C-v2",
+    "totals": {
+      "T_Bellman_s": 3.125847800009069,
+      "T_LOS_s": 4.839470599996275,
+      "T_SSE_s": 17.039214799995534,
+      "T_accounted_s": 17.039214799995534,
+      "T_attacker_BR_s": 16.755485900008352,
+      "T_attacker_residual_s": 6.1692263005825225,
+      "T_graph_s": 0.274891299995943,
+      "T_hazard_s": 2.113662699412089,
+      "T_local_s": 17.039214799995534,
+      "T_local_search_control_s": 0.00020280001626815647,
+      "T_reconciliation_error_s": 0.0,
+      "T_switch_s": 0.5072785000083968,
+      "T_validation_s": 0.007846799999242648,
+      "T_wrapper_residual_s": 0.0007879999757278711
+    }
+  }
+}

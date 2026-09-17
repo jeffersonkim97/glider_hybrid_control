@@ -1,0 +1,121 @@
+{
+  "failure_status_vocabulary_reserved_for_later_substages": [
+    "completed",
+    "model_infeasible",
+    "numerical_failure",
+    "computational_failure",
+    "timeout",
+    "memory_limit"
+  ],
+  "quantity_definitions": {
+    "B": {
+      "definition": "configured maximum target-heading motion primitives considered per source by forward transition generation; sparse-backward exact attempt counts require Stage-14.1 instrumentation",
+      "unit": "attempts per source state"
+    },
+    "B_effective": {
+      "definition": "N_E/N_S_active; descriptive edge density, not attempted branching factor",
+      "unit": "valid edges per active state"
+    },
+    "N_C_energy_feasible": {
+      "definition": "candidates passing powered switching-state total-energy feasibility",
+      "unit": "candidates per Defender action"
+    },
+    "N_C_feasible": {
+      "definition": "candidates with a complete feasible powered-virtual-glide mission",
+      "unit": "candidates per Defender action"
+    },
+    "N_C_goal_reachable": {
+      "definition": "candidates with a virtual connection to the exact goal-backward set",
+      "unit": "candidates per Defender action"
+    },
+    "N_C_powered_feasible": {
+      "definition": "raw switching candidates with a feasible powered segment",
+      "unit": "candidates per Defender action"
+    },
+    "N_C_raw": {
+      "definition": "switching candidates generated before powered/energy/connection/reachability filters",
+      "unit": "candidates per Defender action"
+    },
+    "N_C_virtual_feasible": {
+      "definition": "candidates with at least one admissible virtual lattice connection",
+      "unit": "candidates per Defender action"
+    },
+    "N_D": {
+      "definition": "finite Defender action-set cardinality",
+      "unit": "actions"
+    },
+    "N_E": {
+      "definition": "valid edges in the active corridor actually processed by hazard precomputation and additive Bellman",
+      "unit": "edges"
+    },
+    "N_E_goal_reachable": {
+      "definition": "valid transition edges in the complete goal-backward-reachable graph before active-corridor restriction",
+      "unit": "edges"
+    },
+    "N_S_active": {
+      "definition": "goal-reachable states in the forward descendant corridor of feasible virtual connections and processed by hazard/Bellman",
+      "unit": "states"
+    },
+    "N_S_admissible": {
+      "definition": "Cartesian lattice states whose position is not strictly inside terrain solid",
+      "unit": "states"
+    },
+    "N_S_cart": {
+      "definition": "full Cartesian count N_x*N_y*N_h*N_psi before terrain or reachability filtering",
+      "unit": "states"
+    },
+    "N_S_goal_reachable": {
+      "definition": "exact goal-backward-reachable finite states after terrain/dynamics filtering",
+      "unit": "states"
+    },
+    "N_h": {
+      "definition": "altitude lattice node count",
+      "unit": "count"
+    },
+    "N_psi": {
+      "definition": "heading-bin count",
+      "unit": "count"
+    },
+    "N_x": {
+      "definition": "x-axis lattice node count",
+      "unit": "count"
+    },
+    "N_y": {
+      "definition": "y-axis lattice node count",
+      "unit": "count"
+    },
+    "Q": {
+      "definition": "configured trapezoidal detection-hazard samples for each processed edge",
+      "unit": "quadrature samples per edge"
+    }
+  },
+  "required_top_level_fields": [
+    "schema_version",
+    "configuration",
+    "environment_manifest_id",
+    "solver_source_fingerprint",
+    "quantity_definitions",
+    "state_and_game_size",
+    "solution_identity",
+    "defender_action_results",
+    "independent_replay",
+    "regression",
+    "gate_passed"
+  ],
+  "schema_version": "stage14.0-v2",
+  "solution_identity_fields": [
+    "feasible",
+    "selected_defender_action_id",
+    "selected_sensor_position_map",
+    "leader_cooptimal_action_ids",
+    "selected_attacker_candidate_id",
+    "attacker_objective_cooptimal_candidate_ids",
+    "sse_selected_follower_candidate_id",
+    "attacker_objective",
+    "defender_objective_pod",
+    "mission_time_s",
+    "cumulative_hazard",
+    "detection_probability",
+    "trajectory_identity"
+  ]
+}
