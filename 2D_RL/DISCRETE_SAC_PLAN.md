@@ -10,13 +10,15 @@
 ## 변경하지 않을 기준 계약
 
 - `p1b_4D`는 authoritative reference이며 직접 수정하지 않는다.
-- 상태는 기존 4D 상태를 유지한다.
-  - `s = (z, h, v, gamma)`
+- 현재 production physical-successor Bellman과 동일하게 정책 상태는 2D 공간 상태를 사용한다.
+  - `s = (z, h)`
 - 행동은 기존 physical successor action의 discrete index를 사용한다.
+  - 각 action은 `forward_cells`, `descent_cells`, `speed`와 여기서 유도되는 `gamma`, `duration`을 포함한다.
+  - `v`, `gamma`는 stage-cost 4D grid에는 존재하지만 현재 production Bellman의 persistent state는 아니다.
 - terrain, LOS, detection, edge quadrature, attacker cost와 goal 조건을 그대로 사용한다.
 - powered phase와 LOS tangent-line switching 후보 생성은 기존 방식을 유지한다.
 - 첫 실험에서는 SAC가 switching 이후 glide policy만 학습한다.
-- 4D→2D projected cost-to-go는 시각화용이며 SAC observation으로 사용하지 않는다.
+- 별도의 4D→2D projection을 RL 입력에 적용하지 않는다. 현재 exact value 자체가 physical-successor 공간 grid의 `V(z,h)`이다.
 
 ## 1. Exact Bellman 기준군 제작
 
@@ -26,7 +28,8 @@
   - 고정 sensor 위치
   - 고정 grid, cost weight, random seed
 - 다음 기준 데이터를 저장한다.
-  - 4D state grids와 state-validity mask
+  - Bellman spatial state grids `(z,h)`와 state-validity mask
+  - stage-cost 호환성 기록용 `v`, `gamma` grid
   - physical successor/action table
   - edge cost와 feasibility
   - exact Bellman value `V*(s)`
@@ -51,7 +54,7 @@
 ## 3. Discrete SAC 구현
 
 - Actor
-  - 4D state를 입력받아 discrete action별 categorical probability 출력
+  - 2D spatial state를 입력받아 discrete action별 categorical probability 출력
 - Critic
   - twin Q-network `Q1(s,a)`, `Q2(s,a)` 사용
 - Target critic
@@ -133,8 +136,8 @@
 
 ## 9. 구현 순서
 
-- [ ] `p1b_4D` exact Bellman 기준군 생성 및 hash 저장
-- [ ] Bellman transition/action mask exporter 작성
+- [x] `p1b_4D` exact Bellman 기준군 생성 및 hash 저장
+- [x] Bellman transition/action mask exporter 작성
 - [ ] RL environment 작성 및 Bellman transition과 일치 검증
 - [ ] Discrete SAC actor/critic/replay buffer 구현
 - [ ] 작은 grid smoke training
@@ -143,6 +146,16 @@
 - [ ] continuous replay와 성공 기준 검증
 - [ ] sensor-conditioned policy 설계
 - [ ] 검증 완료 후 multi-sensor 및 3D 확장 판단
+
+## 단계별 확인 규칙
+
+- 각 단계가 끝날 때 다음 단계로 바로 넘어가지 않고 사용자 확인 checkpoint를 둔다.
+- checkpoint마다 아래 세 항목을 함께 제공한다.
+  - 핵심 수치: grid/action/sample 수, objective, PoD, time, 오차와 residual
+  - visual verification: geometry와 trajectory, value/policy 또는 학습곡선 비교 figure
+  - 자동 판정: 물리 feasibility와 수치 consistency의 `PASS/FAIL`
+- figure와 수치가 같은 artifact/configuration hash에서 생성되었는지 확인한다.
+- 사용자가 결과를 확인한 뒤 다음 단계로 진행한다.
 
 ## 이번 단계의 비범위
 

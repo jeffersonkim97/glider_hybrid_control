@@ -1,0 +1,3139 @@
+{
+  "array_references": {
+    "coverage_los_mask": {
+      "dtype": "bool",
+      "npz_file": "stackelberg_bundle.npz",
+      "npz_key": "coverage_los_mask",
+      "shape": [
+        161,
+        101
+      ]
+    },
+    "coverage_occlusion_mask": {
+      "dtype": "bool",
+      "npz_file": "stackelberg_bundle.npz",
+      "npz_key": "coverage_occlusion_mask",
+      "shape": [
+        161,
+        101
+      ]
+    },
+    "coverage_terrain_mask": {
+      "dtype": "bool",
+      "npz_file": "stackelberg_bundle.npz",
+      "npz_key": "coverage_terrain_mask",
+      "shape": [
+        161,
+        101
+      ]
+    },
+    "final_cost_to_go": {
+      "dtype": "float64",
+      "npz_file": "stackelberg_bundle.npz",
+      "npz_key": "final_cost_to_go",
+      "shape": [
+        161,
+        101
+      ]
+    },
+    "final_goal_position": {
+      "dtype": "float64",
+      "npz_file": "stackelberg_bundle.npz",
+      "npz_key": "final_goal_position",
+      "shape": [
+        2
+      ]
+    },
+    "final_los_mask": {
+      "dtype": "bool",
+      "npz_file": "stackelberg_bundle.npz",
+      "npz_key": "final_los_mask",
+      "shape": [
+        161,
+        101
+      ]
+    },
+    "final_occlusion_mask": {
+      "dtype": "bool",
+      "npz_file": "stackelberg_bundle.npz",
+      "npz_key": "final_occlusion_mask",
+      "shape": [
+        161,
+        101
+      ]
+    },
+    "final_pod_to_go": {
+      "dtype": "float64",
+      "npz_file": "stackelberg_bundle.npz",
+      "npz_key": "final_pod_to_go",
+      "shape": [
+        161,
+        101
+      ]
+    },
+    "final_sensor_position": {
+      "dtype": "float64",
+      "npz_file": "stackelberg_bundle.npz",
+      "npz_key": "final_sensor_position",
+      "shape": [
+        2
+      ]
+    },
+    "final_tangent_line_height": {
+      "dtype": "float64",
+      "npz_file": "stackelberg_bundle.npz",
+      "npz_key": "final_tangent_line_height",
+      "shape": [
+        161
+      ]
+    },
+    "final_tangent_point": {
+      "dtype": "float64",
+      "npz_file": "stackelberg_bundle.npz",
+      "npz_key": "final_tangent_point",
+      "shape": [
+        2
+      ]
+    },
+    "final_terrain_h_grid": {
+      "dtype": "float64",
+      "npz_file": "stackelberg_bundle.npz",
+      "npz_key": "final_terrain_h_grid",
+      "shape": [
+        101
+      ]
+    },
+    "final_terrain_height": {
+      "dtype": "float64",
+      "npz_file": "stackelberg_bundle.npz",
+      "npz_key": "final_terrain_height",
+      "shape": [
+        161
+      ]
+    },
+    "final_terrain_mask": {
+      "dtype": "bool",
+      "npz_file": "stackelberg_bundle.npz",
+      "npz_key": "final_terrain_mask",
+      "shape": [
+        161,
+        101
+      ]
+    },
+    "final_terrain_z": {
+      "dtype": "float64",
+      "npz_file": "stackelberg_bundle.npz",
+      "npz_key": "final_terrain_z",
+      "shape": [
+        161
+      ]
+    },
+    "optimal_gamma_profile": {
+      "dtype": "float64",
+      "npz_file": "stackelberg_bundle.npz",
+      "npz_key": "optimal_gamma_profile",
+      "shape": [
+        70
+      ]
+    },
+    "optimal_powered_path": {
+      "dtype": "float64",
+      "npz_file": "stackelberg_bundle.npz",
+      "npz_key": "optimal_powered_path",
+      "shape": [
+        9,
+        2
+      ]
+    },
+    "optimal_sensor_position": {
+      "dtype": "float64",
+      "npz_file": "stackelberg_bundle.npz",
+      "npz_key": "optimal_sensor_position",
+      "shape": [
+        2
+      ]
+    },
+    "optimal_switching_point": {
+      "dtype": "float64",
+      "npz_file": "stackelberg_bundle.npz",
+      "npz_key": "optimal_switching_point",
+      "shape": [
+        2
+      ]
+    },
+    "optimal_trajectory": {
+      "dtype": "float64",
+      "npz_file": "stackelberg_bundle.npz",
+      "npz_key": "optimal_trajectory",
+      "shape": [
+        71,
+        2
+      ]
+    },
+    "optimal_velocity_profile": {
+      "dtype": "float64",
+      "npz_file": "stackelberg_bundle.npz",
+      "npz_key": "optimal_velocity_profile",
+      "shape": [
+        70
+      ]
+    },
+    "outer_attacker_objective": {
+      "dtype": "float64",
+      "npz_file": "stackelberg_bundle.npz",
+      "npz_key": "outer_attacker_objective",
+      "shape": [
+        68
+      ]
+    },
+    "outer_coverage_normalized": {
+      "dtype": "float64",
+      "npz_file": "stackelberg_bundle.npz",
+      "npz_key": "outer_coverage_normalized",
+      "shape": [
+        68
+      ]
+    },
+    "outer_defender_objective": {
+      "dtype": "float64",
+      "npz_file": "stackelberg_bundle.npz",
+      "npz_key": "outer_defender_objective",
+      "shape": [
+        68
+      ]
+    },
+    "outer_defender_pod_normalized": {
+      "dtype": "float64",
+      "npz_file": "stackelberg_bundle.npz",
+      "npz_key": "outer_defender_pod_normalized",
+      "shape": [
+        68
+      ]
+    },
+    "outer_mission_pod": {
+      "dtype": "float64",
+      "npz_file": "stackelberg_bundle.npz",
+      "npz_key": "outer_mission_pod",
+      "shape": [
+        68
+      ]
+    },
+    "outer_z_sensor": {
+      "dtype": "float64",
+      "npz_file": "stackelberg_bundle.npz",
+      "npz_key": "outer_z_sensor",
+      "shape": [
+        68
+      ]
+    }
+  },
+  "bundle_name": "stackelberg",
+  "category": "stackelberg",
+  "configuration": {
+    "bellman_config": {
+      "attacker_objective_id": "attacker_hazard_time_v2",
+      "convergence_tolerance": 1e-08,
+      "duplicate_threshold": {
+        "mission_cost_difference": 0.05,
+        "path_length_relative_difference": 0.08,
+        "resample_point_count": 64,
+        "switching_distance": 50.0,
+        "trajectory_rms_distance": 20.0
+      },
+      "maximum_iterations": 4,
+      "random_seed": 20260722,
+      "search_options": {
+        "exploration_orderings": [
+          "low_gamma_first",
+          "high_gamma_first",
+          "low_speed_first",
+          "high_speed_first"
+        ],
+        "initialization": "terminal_goal_region",
+        "max_descent_cells": 8,
+        "max_forward_cells": 3,
+        "mode": "multi_start_coarse_bellman",
+        "segment_check_count": 9
+      },
+      "top_k": 3,
+      "warm_start": {
+        "enabled": true,
+        "preserve_switching_point": true,
+        "preserve_trajectory_profiles": true
+      }
+    },
+    "cost_config": {
+      "attacker": {
+        "normalization": {
+          "pod": {
+            "hazard_reference": 1.0,
+            "method": "cumulative_hazard_reference",
+            "mission_pod_reporting_only": true
+          },
+          "time": {
+            "method": "reference_time",
+            "reference_seconds": 110.61946902654867
+          }
+        },
+        "objective_id": "attacker_hazard_time_v2",
+        "w_pod": 0.5,
+        "w_time": 0.5
+      },
+      "defender": {
+        "normalization": {
+          "coverage": {
+            "method": "los_fraction"
+          },
+          "pod": {
+            "diagnostic_only": false,
+            "hazard_reference": 1.0,
+            "method": "hazard_reference"
+          }
+        },
+        "objective_id": "defender_pod_los_coverage_v1",
+        "w_cover": 0.5,
+        "w_pod": 0.5
+      },
+      "local_stage_cost": {
+        "detection_weight": 1.0,
+        "steady_glide_deviation_weight": 0.02,
+        "time_weight": 0.01
+      }
+    },
+    "defender_config": {
+      "basin_prominence_threshold": 0.0001,
+      "coarse_sample_count": 5,
+      "continuous_search_bounds": {
+        "z_sensor_max": 2600.0,
+        "z_sensor_min": 1500.0
+      },
+      "diagnostic_search": {
+        "coarse_sensor_count": 41,
+        "fine_neighborhood_half_width": 50.0,
+        "fine_spacing": 5.0,
+        "max_fine_centers": 3,
+        "switch_jump_threshold": 100.0
+      },
+      "maximum_iterations": 41,
+      "optimizer": "hierarchical_coarse_to_fine_brent",
+      "optimizer_contract": "continuous_derivative_free_callback",
+      "termination_tolerance": 5.0,
+      "xtol": 5.0
+    },
+    "environment_config": {
+      "airspace": {
+        "h_max": 200.0,
+        "h_min": 0.0,
+        "z_max": 2750.0,
+        "z_min": 0.0
+      },
+      "grid": {
+        "axis_order_4d": [
+          "z",
+          "h",
+          "v",
+          "gamma"
+        ],
+        "gamma_count": 20,
+        "h_count": 101,
+        "h_max": 200.0,
+        "h_min": 0.0,
+        "h_spacing": 2.0,
+        "v_count": 5,
+        "z_count": 161,
+        "z_max": 2750.0,
+        "z_min": 0.0,
+        "z_spacing": 17.1875
+      },
+      "h_start": 0.0,
+      "simulation": {
+        "h_max": 200.0,
+        "h_min": 0.0,
+        "max_path_steps": 1000,
+        "z_max": 2750.0,
+        "z_min": 0.0
+      },
+      "terrain": {
+        "hills": [
+          {
+            "h_ridge": 100.0,
+            "width": 100.0,
+            "z_ridge": 1000.0
+          },
+          {
+            "h_ridge": 50.0,
+            "width": 100.0,
+            "z_ridge": 2000.0
+          }
+        ],
+        "z_max": 2750.0,
+        "z_min": 0.0
+      },
+      "units": {
+        "angle": "rad",
+        "distance": "m",
+        "speed": "m/s",
+        "time": "s"
+      },
+      "z_goal": 2500.0,
+      "z_start": 0.0
+    },
+    "plot_config": {
+      "colormaps": {
+        "projected_cost": "viridis",
+        "projected_cost_to_go": "viridis"
+      },
+      "colors": {
+        "bellman": "tab:blue",
+        "goal": "gold",
+        "los": "green",
+        "occlusion": "red",
+        "sensor": "black",
+        "stackelberg": "tab:purple",
+        "terrain_fill": "white",
+        "terrain_outline": "black"
+      },
+      "default_figure_size": [
+        10.0,
+        6.0
+      ],
+      "dpi": 300,
+      "export_formats": [
+        "png",
+        "pdf",
+        "svg"
+      ],
+      "font_family": "DejaVu Sans",
+      "font_size": 11,
+      "heatmap_alpha": 1.0,
+      "line_styles": {
+        "bellman": "--",
+        "los_tangent": "--",
+        "stackelberg": "-",
+        "terrain": "-"
+      },
+      "line_width": 1.8,
+      "marker_styles": {
+        "defender": "^",
+        "goal": "*",
+        "sensor": "^",
+        "switching_point": "o"
+      },
+      "terrain_zorder": 1000
+    },
+    "sensor_config": {
+      "default_z_sensor": 2000.0,
+      "detection": {
+        "acoustic_coefficient": 0.0024,
+        "acoustic_rate_scale": 1.0,
+        "acoustic_speed_exponent": 4,
+        "doppler_coefficient": 332.5,
+        "radar_coefficient": 130000.0,
+        "radar_rate_scale": 1.0,
+        "radial_velocity_rate_scale": 1.0,
+        "range_floor": 10.0,
+        "rcs_max": 1.0,
+        "rcs_min": 0.1
+      },
+      "height_rule": "terrain(z_sensor) + mount_height",
+      "los": {
+        "edge_gamma_tolerance_deg": 7.0,
+        "tangent_bisection_iterations": 64,
+        "terrain_numerical_tolerance": 1e-06
+      },
+      "mount_height": 0.0
+    },
+    "validation_config": {
+      "detection_probability_tolerance": 1e-12,
+      "dynamic_tolerance": 1e-06,
+      "goal_radius": 10.0,
+      "goal_tolerance_h": 10.0,
+      "goal_tolerance_z": 10.0,
+      "los_tolerance": 3.0,
+      "objective_tolerance": 1e-08,
+      "solver_tolerance": 1e-06,
+      "terrain_tolerance": 1e-06
+    },
+    "vehicle_config": {
+      "active_model": "byu_unicorn_flight_test",
+      "air_density": 1.225,
+      "cd0": 0.0213,
+      "drag_polar_type": "quadratic_cl",
+      "dynamic_limits": {
+        "cl_max": 0.5,
+        "cl_min": 0.05,
+        "gamma_feasibility_tolerance_deg": 2.0
+      },
+      "gamma_count": 20,
+      "gamma_max_deg": -1.0,
+      "gamma_min_deg": -90.0,
+      "gamma_penalty_scale_deg": 10.0,
+      "glide_speed_count": 5,
+      "glide_speed_max": 22.6,
+      "glide_speed_min": 10.0,
+      "gravity": 9.81,
+      "linear_drag_coefficient": -0.056,
+      "mass": 0.9520897043832823,
+      "powered_speed": 21.0,
+      "quadratic_drag_coefficient": 0.22,
+      "segment_check_count": 9,
+      "segment_length": null,
+      "source": "Ostler et al. 2009 Unicorn flight-test polar; powered speed retained from the existing 4D notebook",
+      "switching_constraints": {
+        "tangent_tolerance": 3.0,
+        "terrain_clearance": 1.0
+      },
+      "time_step": 1.0,
+      "wing_area": 0.321
+    }
+  },
+  "execution_time": {
+    "computation_seconds": null,
+    "export_seconds": 0.00043829999049194157
+  },
+  "large_arrays_embedded_in_json": false,
+  "metadata": {
+    "defender_decision_continuous": true,
+    "figure5_cost_to_go_ordering": "low_gamma_first",
+    "figure5_evaluation_id": "outer-evaluation-0068",
+    "figure5_uses_final_defender_evaluation_only": true,
+    "fresh_nested_solve_per_evaluation": true,
+    "global_attacker_optimum_claim": false,
+    "outer_optimizer_algorithm": "scipy_direct_global",
+    "outer_optimizer_injected": true,
+    "producer_module": "p1b_4D.stackelberg_solver",
+    "producer_phase": 9,
+    "schema_name": "StackelbergSolutionBundle",
+    "schema_version": "1.0.0",
+    "sensor_height_independent_variable": false
+  },
+  "objective_values": {
+    "mission_objective": 0.35469850008734916,
+    "mission_pod": 0.00367155477599046,
+    "mission_time": 78.06622662588532
+  },
+  "schema_name": "StackelbergSolutionBundle",
+  "schema_version": "1.0.0",
+  "solver_information": {
+    "converged": true,
+    "evaluated_candidate_solutions": [
+      {
+        "attacker_objective": 0.45256295361863685,
+        "best_found_attacker_response": {
+          "mission_objective": 0.45256295361863685,
+          "mission_pod": 0.020979912177202742,
+          "mission_time": 97.77906961183305,
+          "solution_id": "bellman-optimal-bellman-candidate-000"
+        },
+        "coverage_area": 195903.125,
+        "coverage_area_normalized": 0.37879694250581586,
+        "defender_objective": 0.1997799113277011,
+        "defender_pod_normalized": 0.02076288014958633,
+        "evaluation_id": "outer-evaluation-0001",
+        "evaluation_index": 0,
+        "h_sensor": 44.12477848443209,
+        "infeasible": false,
+        "mission_pod": 0.020979912177202742,
+        "z_sensor": 2050.0
+      },
+      {
+        "attacker_objective": 0.4152084833812836,
+        "best_found_attacker_response": {
+          "mission_objective": 0.4152084833812836,
+          "mission_pod": 0.015360106509814453,
+          "mission_time": 90.14797253791761,
+          "solution_id": "bellman-optimal-bellman-candidate-000"
+        },
+        "coverage_area": 235984.375,
+        "coverage_area_normalized": 0.4562977733466268,
+        "defender_objective": 0.23577055611340286,
+        "defender_pod_normalized": 0.015243338880178946,
+        "evaluation_id": "outer-evaluation-0002",
+        "evaluation_index": 1,
+        "h_sensor": 0.008489138346028121,
+        "infeasible": false,
+        "mission_pod": 0.015360106509814453,
+        "z_sensor": 2416.6666666666665
+      },
+      {
+        "attacker_objective": 0.37073196540184633,
+        "best_found_attacker_response": {
+          "mission_objective": 0.37073196540184633,
+          "mission_pod": 0.0042033710017232995,
+          "mission_time": 81.55439168188742,
+          "solution_id": "bellman-optimal-bellman-candidate-000"
+        },
+        "coverage_area": 361453.125,
+        "coverage_area_normalized": 0.6989032901296112,
+        "defender_objective": 0.35154892583554104,
+        "defender_pod_normalized": 0.004194561541470909,
+        "evaluation_id": "outer-evaluation-0003",
+        "evaluation_index": 2,
+        "h_sensor": 0.33224967212138834,
+        "infeasible": false,
+        "mission_pod": 0.0042033710017232995,
+        "z_sensor": 1683.3333333333333
+      },
+      {
+        "attacker_objective": 0.36265344289599694,
+        "best_found_attacker_response": {
+          "mission_objective": 0.36265344289599694,
+          "mission_pod": 0.002430576540036755,
+          "mission_time": 79.96386621744273,
+          "solution_id": "bellman-optimal-bellman-candidate-002"
+        },
+        "coverage_area": 370871.875,
+        "coverage_area_normalized": 0.717115320704553,
+        "defender_objective": 0.3597714740869992,
+        "defender_pod_normalized": 0.002427627469445503,
+        "evaluation_id": "outer-evaluation-0004",
+        "evaluation_index": 3,
+        "h_sensor": 7.550335867827492,
+        "infeasible": false,
+        "mission_pod": 0.002430576540036755,
+        "z_sensor": 1805.5555555555557
+      },
+      {
+        "attacker_objective": 0.37896261777956597,
+        "best_found_attacker_response": {
+          "mission_objective": 0.37896261777956597,
+          "mission_pod": 0.006782455937458187,
+          "mission_time": 83.08845953915436,
+          "solution_id": "bellman-optimal-bellman-candidate-000"
+        },
+        "coverage_area": 354887.5,
+        "coverage_area_normalized": 0.6862080425390495,
+        "defender_objective": 0.3464838006363664,
+        "defender_pod_normalized": 0.006759558733683282,
+        "evaluation_id": "outer-evaluation-0005",
+        "evaluation_index": 4,
+        "h_sensor": 0.0032967634850517616,
+        "infeasible": false,
+        "mission_pod": 0.006782455937458187,
+        "z_sensor": 1561.111111111111
+      },
+      {
+        "attacker_objective": 0.3785151266445915,
+        "best_found_attacker_response": {
+          "mission_objective": 0.3785151266445915,
+          "mission_pod": 0.010077338841361194,
+          "mission_time": 82.62187990512977,
+          "solution_id": "bellman-optimal-bellman-candidate-000"
+        },
+        "coverage_area": 265650.0,
+        "coverage_area_normalized": 0.5136590229312064,
+        "defender_objective": 0.26184296240696664,
+        "defender_pod_normalized": 0.010026901882726978,
+        "evaluation_id": "outer-evaluation-0006",
+        "evaluation_index": 5,
+        "h_sensor": 2.468654808670609e-05,
+        "infeasible": false,
+        "mission_pod": 0.010077338841361194,
+        "z_sensor": 2538.8888888888887
+      },
+      {
+        "attacker_objective": 0.4390038454549661,
+        "best_found_attacker_response": {
+          "mission_objective": 0.4390038454549661,
+          "mission_pod": 0.016260737938378345,
+          "mission_time": 95.31120534155244,
+          "solution_id": "bellman-optimal-bellman-candidate-000"
+        },
+        "coverage_area": 206868.75,
+        "coverage_area_normalized": 0.4,
+        "defender_objective": 0.20806497689727543,
+        "defender_pod_normalized": 0.01612995379455084,
+        "evaluation_id": "outer-evaluation-0007",
+        "evaluation_index": 6,
+        "h_sensor": 0.6551345933041786,
+        "infeasible": false,
+        "mission_pod": 0.016260737938378345,
+        "z_sensor": 2294.4444444444443
+      },
+      {
+        "attacker_objective": 0.3606804989602922,
+        "best_found_attacker_response": {
+          "mission_objective": 0.3606804989602922,
+          "mission_pod": 0.0022188032917190847,
+          "mission_time": 79.55085502628876,
+          "solution_id": "bellman-optimal-bellman-candidate-008"
+        },
+        "coverage_area": 377884.375,
+        "coverage_area_normalized": 0.7306746427384513,
+        "defender_objective": 0.3664454940616174,
+        "defender_pod_normalized": 0.0022163453847835386,
+        "evaluation_id": "outer-evaluation-0008",
+        "evaluation_index": 7,
+        "h_sensor": 15.345070249992391,
+        "infeasible": false,
+        "mission_pod": 0.0022188032917190847,
+        "z_sensor": 1846.2962962962963
+      },
+      {
+        "attacker_objective": 0.3644818742203018,
+        "best_found_attacker_response": {
+          "mission_objective": 0.3644818742203018,
+          "mission_pod": 0.0027649006330173753,
+          "mission_time": 80.33130734619456,
+          "solution_id": "bellman-optimal-bellman-candidate-000"
+        },
+        "coverage_area": 366953.125,
+        "coverage_area_normalized": 0.7095380525091393,
+        "defender_objective": 0.3561495689201347,
+        "defender_pod_normalized": 0.00276108533113023,
+        "evaluation_id": "outer-evaluation-0009",
+        "evaluation_index": 8,
+        "h_sensor": 3.146892882705644,
+        "infeasible": false,
+        "mission_pod": 0.0027649006330173753,
+        "z_sensor": 1764.8148148148146
+      },
+      {
+        "attacker_objective": 0.46732564190496645,
+        "best_found_attacker_response": {
+          "mission_objective": 0.46732564190496645,
+          "mission_pod": 0.023986909574291615,
+          "mission_time": 100.7048676407485,
+          "solution_id": "bellman-optimal-bellman-candidate-000"
+        },
+        "coverage_area": 183253.125,
+        "coverage_area_normalized": 0.3543369890329013,
+        "defender_objective": 0.18902037944844147,
+        "defender_pod_normalized": 0.02370376986398166,
+        "evaluation_id": "outer-evaluation-0010",
+        "evaluation_index": 9,
+        "h_sensor": 11.347641027930035,
+        "infeasible": false,
+        "mission_pod": 0.023986909574291615,
+        "z_sensor": 2172.222222222222
+      },
+      {
+        "attacker_objective": 0.35622714203566297,
+        "best_found_attacker_response": {
+          "mission_objective": 0.35622714203566297,
+          "mission_pod": 0.0026635176370093383,
+          "mission_time": 78.51628461946737,
+          "solution_id": "bellman-optimal-bellman-candidate-007"
+        },
+        "coverage_area": 395759.375,
+        "coverage_area_normalized": 0.7652376204719176,
+        "defender_objective": 0.383948798618037,
+        "defender_pod_normalized": 0.002659976764156426,
+        "evaluation_id": "outer-evaluation-0011",
+        "evaluation_index": 10,
+        "h_sensor": 38.52162084978955,
+        "infeasible": false,
+        "mission_pod": 0.0026635176370093383,
+        "z_sensor": 1927.7777777777776
+      },
+      {
+        "attacker_objective": 0.3672950262922687,
+        "best_found_attacker_response": {
+          "mission_objective": 0.3672950262922687,
+          "mission_pod": 0.003477332745168926,
+          "mission_time": 80.8746305160858,
+          "solution_id": "bellman-optimal-bellman-candidate-000"
+        },
+        "coverage_area": 363893.75,
+        "coverage_area_normalized": 0.7036224659355268,
+        "defender_objective": 0.3535468833753316,
+        "defender_pod_normalized": 0.003471300815136339,
+        "evaluation_id": "outer-evaluation-0012",
+        "evaluation_index": 11,
+        "h_sensor": 1.1109788437729227,
+        "infeasible": false,
+        "mission_pod": 0.003477332745168926,
+        "z_sensor": 1724.074074074074
+      },
+      {
+        "attacker_objective": 0.3731466839551075,
+        "best_found_attacker_response": {
+          "mission_objective": 0.3731466839551075,
+          "mission_pod": 0.004844380864206799,
+          "mission_time": 82.01739103968895,
+          "solution_id": "bellman-optimal-bellman-candidate-000"
+        },
+        "coverage_area": 359218.75,
+        "coverage_area_normalized": 0.6945829179129279,
+        "defender_objective": 0.3497078012843469,
+        "defender_pod_normalized": 0.004832684655765866,
+        "evaluation_id": "outer-evaluation-0013",
+        "evaluation_index": 12,
+        "h_sensor": 0.08414934829841594,
+        "infeasible": false,
+        "mission_pod": 0.004844380864206799,
+        "z_sensor": 1642.5925925925924
+      },
+      {
+        "attacker_objective": 0.3598970146191723,
+        "best_found_attacker_response": {
+          "mission_objective": 0.3598970146191723,
+          "mission_pod": 0.002239572664402778,
+          "mission_time": 79.37521515270474,
+          "solution_id": "bellman-optimal-bellman-candidate-009"
+        },
+        "coverage_area": 380806.25,
+        "coverage_area_normalized": 0.7363243602525756,
+        "defender_objective": 0.3692807144071317,
+        "defender_pod_normalized": 0.002237068561687777,
+        "evaluation_id": "outer-evaluation-0014",
+        "evaluation_index": 13,
+        "h_sensor": 18.73323305955299,
+        "infeasible": false,
+        "mission_pod": 0.002239572664402778,
+        "z_sensor": 1859.8765432098762
+      },
+      {
+        "attacker_objective": 0.36142534455289566,
+        "best_found_attacker_response": {
+          "mission_objective": 0.36142534455289566,
+          "mission_pod": 0.00241459450578696,
+          "mission_time": 79.69393526168137,
+          "solution_id": "bellman-optimal-bellman-candidate-007"
+        },
+        "coverage_area": 375306.25,
+        "coverage_area_normalized": 0.7256895978730475,
+        "defender_objective": 0.3640506409662208,
+        "defender_pod_normalized": 0.0024116840593940477,
+        "evaluation_id": "outer-evaluation-0015",
+        "evaluation_index": 14,
+        "h_sensor": 12.339903541453467,
+        "infeasible": false,
+        "mission_pod": 0.00241459450578696,
+        "z_sensor": 1832.716049382716
+      },
+      {
+        "attacker_objective": 0.35484695413776124,
+        "best_found_attacker_response": {
+          "mission_objective": 0.35484695413776124,
+          "mission_pod": 0.003616707384316409,
+          "mission_time": 78.10515982219255,
+          "solution_id": "bellman-optimal-bellman-candidate-007"
+        },
+        "coverage_area": 400296.875,
+        "coverage_area_normalized": 0.7740112994350282,
+        "defender_objective": 0.38881074113714104,
+        "defender_pod_normalized": 0.0036101828392538604,
+        "evaluation_id": "outer-evaluation-0016",
+        "evaluation_index": 15,
+        "h_sensor": 47.58241701158469,
+        "infeasible": false,
+        "mission_pod": 0.003616707384316409,
+        "z_sensor": 1968.5185185185182
+      },
+      {
+        "attacker_objective": 0.3583346887996817,
+        "best_found_attacker_response": {
+          "mission_objective": 0.3583346887996817,
+          "mission_pod": 0.0023767501094960064,
+          "mission_time": 79.01435824512824,
+          "solution_id": "bellman-optimal-bellman-candidate-009"
+        },
+        "coverage_area": 387028.125,
+        "coverage_area_normalized": 0.7483549351944168,
+        "defender_objective": 0.37536443265171776,
+        "defender_pod_normalized": 0.0023739301090187257,
+        "evaluation_id": "outer-evaluation-0017",
+        "evaluation_index": 16,
+        "h_sensor": 26.416666487660628,
+        "infeasible": false,
+        "mission_pod": 0.0023767501094960064,
+        "z_sensor": 1887.037037037037
+      },
+      {
+        "attacker_objective": 0.37615709193445995,
+        "best_found_attacker_response": {
+          "mission_objective": 0.37615709193445995,
+          "mission_pod": 0.005861159397654747,
+          "mission_time": 82.57032969729985,
+          "solution_id": "bellman-optimal-bellman-candidate-000"
+        },
+        "coverage_area": 357053.125,
+        "coverage_area_normalized": 0.6903954802259887,
+        "defender_objective": 0.3481197649747611,
+        "defender_pod_normalized": 0.005844049723533427,
+        "evaluation_id": "outer-evaluation-0018",
+        "evaluation_index": 17,
+        "h_sensor": 0.018057568760565735,
+        "infeasible": false,
+        "mission_pod": 0.005861159397654747,
+        "z_sensor": 1601.8518518518517
+      },
+      {
+        "attacker_objective": 0.38193896555613427,
+        "best_found_attacker_response": {
+          "mission_objective": 0.38193896555613427,
+          "mission_pod": 0.007882912741848158,
+          "mission_time": 83.6243123849632,
+          "solution_id": "bellman-optimal-bellman-candidate-000"
+        },
+        "coverage_area": 352790.625,
+        "coverage_area_normalized": 0.6821535393818544,
+        "defender_objective": 0.34500277230462306,
+        "defender_pod_normalized": 0.007852005227391764,
+        "evaluation_id": "outer-evaluation-0019",
+        "evaluation_index": 18,
+        "h_sensor": 0.0006366295680589876,
+        "infeasible": false,
+        "mission_pod": 0.007882912741848158,
+        "z_sensor": 1520.3703703703704
+      },
+      {
+        "attacker_objective": 0.35463649154169474,
+        "best_found_attacker_response": {
+          "mission_objective": 0.35463649154169474,
+          "mission_pod": 0.003890954036382177,
+          "mission_time": 78.02814597258192,
+          "solution_id": "bellman-optimal-bellman-candidate-007"
+        },
+        "coverage_area": 397100.0,
+        "coverage_area_normalized": 0.7678298438019275,
+        "defender_objective": 0.385856623837143,
+        "defender_pod_normalized": 0.0038834038723583905,
+        "evaluation_id": "outer-evaluation-0020",
+        "evaluation_index": 19,
+        "h_sensor": 49.20498638666949,
+        "infeasible": false,
+        "mission_pod": 0.003890954036382177,
+        "z_sensor": 1982.0987654320986
+      },
+      {
+        "attacker_objective": 0.35515765058317517,
+        "best_found_attacker_response": {
+          "mission_objective": 0.35515765058317517,
+          "mission_pod": 0.003246429758523184,
+          "mission_time": 78.21499892940908,
+          "solution_id": "bellman-optimal-bellman-candidate-007"
+        },
+        "coverage_area": 399987.5,
+        "coverage_area_normalized": 0.7734130940511798,
+        "defender_objective": 0.3883271327715913,
+        "defender_pod_normalized": 0.00324117149200288,
+        "evaluation_id": "outer-evaluation-0021",
+        "evaluation_index": 20,
+        "h_sensor": 45.172716041261324,
+        "infeasible": false,
+        "mission_pod": 0.003246429758523184,
+        "z_sensor": 1954.9382716049383
+      },
+      {
+        "attacker_objective": 0.36733196464350343,
+        "best_found_attacker_response": {
+          "mission_objective": 0.36733196464350343,
+          "mission_pod": 0.0032122537441099386,
+          "mission_time": 80.91222402439443,
+          "solution_id": "bellman-optimal-bellman-candidate-000"
+        },
+        "coverage_area": 275137.5,
+        "coverage_area_normalized": 0.5320039880358923,
+        "defender_objective": 0.2676055467619322,
+        "defender_pod_normalized": 0.003207105487972122,
+        "evaluation_id": "outer-evaluation-0022",
+        "evaluation_index": 21,
+        "h_sensor": 2.532268215107076e-06,
+        "infeasible": false,
+        "mission_pod": 0.0032122537441099386,
+        "z_sensor": 2579.6296296296296
+      },
+      {
+        "attacker_objective": 0.560420878325055,
+        "best_found_attacker_response": {
+          "mission_objective": 0.560420878325055,
+          "mission_pod": 0.29803981660150525,
+          "mission_time": 84.84105766367799,
+          "solution_id": "bellman-optimal-bellman-candidate-000"
+        },
+        "coverage_area": 255887.5,
+        "coverage_area_normalized": 0.49478231970754405,
+        "defender_objective": 0.37808182760660314,
+        "defender_pod_normalized": 0.26138133550566217,
+        "evaluation_id": "outer-evaluation-0023",
+        "evaluation_index": 22,
+        "h_sensor": 0.00020425048027221114,
+        "infeasible": false,
+        "mission_pod": 0.29803981660150525,
+        "z_sensor": 2498.148148148148
+      },
+      {
+        "attacker_objective": 0.35566948927422903,
+        "best_found_attacker_response": {
+          "mission_objective": 0.35566948927422903,
+          "mission_pod": 0.003018760427790812,
+          "mission_time": 78.35350137972274,
+          "solution_id": "bellman-optimal-bellman-candidate-007"
+        },
+        "coverage_area": 398200.0,
+        "coverage_area_normalized": 0.7699567962778332,
+        "defender_objective": 0.38648550470222703,
+        "defender_pod_normalized": 0.003014213126620828,
+        "evaluation_id": "outer-evaluation-0024",
+        "evaluation_index": 23,
+        "h_sensor": 42.10132176178494,
+        "infeasible": false,
+        "mission_pod": 0.003018760427790812,
+        "z_sensor": 1941.358024691358
+      },
+      {
+        "attacker_objective": 0.3569204172187411,
+        "best_found_attacker_response": {
+          "mission_objective": 0.3569204172187411,
+          "mission_pod": 0.0026830200157120787,
+          "mission_time": 78.66750095935755,
+          "solution_id": "bellman-optimal-bellman-candidate-009"
+        },
+        "coverage_area": 393043.75,
+        "coverage_area_normalized": 0.7599867065470256,
+        "defender_objective": 0.3813330668469538,
+        "defender_pod_normalized": 0.0026794271468819925,
+        "evaluation_id": "outer-evaluation-0025",
+        "evaluation_index": 24,
+        "h_sensor": 34.602332723350706,
+        "infeasible": false,
+        "mission_pod": 0.0026830200157120787,
+        "z_sensor": 1914.1975308641975
+      },
+      {
+        "attacker_objective": 0.3547352336378313,
+        "best_found_attacker_response": {
+          "mission_objective": 0.3547352336378313,
+          "mission_pod": 0.003655521263329242,
+          "mission_time": 78.07613365785373,
+          "solution_id": "bellman-optimal-bellman-candidate-007"
+        },
+        "coverage_area": 400365.625,
+        "coverage_area_normalized": 0.7741442339647724,
+        "defender_objective": 0.38889654503163673,
+        "defender_pod_normalized": 0.003648856098501067,
+        "evaluation_id": "outer-evaluation-0026",
+        "evaluation_index": 25,
+        "h_sensor": 48.216102671224164,
+        "infeasible": false,
+        "mission_pod": 0.003655521263329242,
+        "z_sensor": 1973.0452674897117
+      },
+      {
+        "attacker_objective": 0.354909398937376,
+        "best_found_attacker_response": {
+          "mission_objective": 0.354909398937376,
+          "mission_pod": 0.0034448063327393585,
+          "mission_time": 78.1380580238081,
+          "solution_id": "bellman-optimal-bellman-candidate-007"
+        },
+        "coverage_area": 400090.625,
+        "coverage_area_normalized": 0.7736124958457959,
+        "defender_objective": 0.38852569121796876,
+        "defender_pod_normalized": 0.003438886590141542,
+        "evaluation_id": "outer-evaluation-0027",
+        "evaluation_index": 26,
+        "h_sensor": 46.861175980589785,
+        "infeasible": false,
+        "mission_pod": 0.0034448063327393585,
+        "z_sensor": 1963.991769547325
+      },
+      {
+        "attacker_objective": 0.41806570278216565,
+        "best_found_attacker_response": {
+          "mission_objective": 0.41806570278216565,
+          "mission_pod": 0.04037899428043368,
+          "mission_time": 87.93302515341783,
+          "solution_id": "bellman-optimal-bellman-candidate-000"
+        },
+        "coverage_area": 245918.75,
+        "coverage_area_normalized": 0.4755068128946494,
+        "defender_objective": 0.25754604515353086,
+        "defender_pod_normalized": 0.039585277412412335,
+        "evaluation_id": "outer-evaluation-0028",
+        "evaluation_index": 27,
+        "h_sensor": 0.0014314309802191047,
+        "infeasible": false,
+        "mission_pod": 0.04037899428043368,
+        "z_sensor": 2457.407407407407
+      },
+      {
+        "attacker_objective": 0.4214041562612877,
+        "best_found_attacker_response": {
+          "mission_objective": 0.4214041562612877,
+          "mission_pod": 0.014992903559605364,
+          "mission_time": 91.55994238878205,
+          "solution_id": "bellman-optimal-bellman-candidate-000"
+        },
+        "coverage_area": 226187.5,
+        "coverage_area_normalized": 0.4373546028580924,
+        "defender_objective": 0.226118113954714,
+        "defender_pod_normalized": 0.014881625051335595,
+        "evaluation_id": "outer-evaluation-0029",
+        "evaluation_index": 28,
+        "h_sensor": 0.04267705170505031,
+        "infeasible": false,
+        "mission_pod": 0.014992903559605364,
+        "z_sensor": 2375.925925925926
+      },
+      {
+        "attacker_objective": 0.4159946829281434,
+        "best_found_attacker_response": {
+          "mission_objective": 0.4159946829281434,
+          "mission_pod": 0.06878035729113907,
+          "mission_time": 84.15146654901999,
+          "solution_id": "bellman-optimal-bellman-candidate-001"
+        },
+        "coverage_area": 259118.75,
+        "coverage_area_normalized": 0.5010302426055168,
+        "defender_objective": 0.2837750680253833,
+        "defender_pod_normalized": 0.06651989344524988,
+        "evaluation_id": "outer-evaluation-0030",
+        "evaluation_index": 29,
+        "h_sensor": 0.0001029454487523865,
+        "infeasible": false,
+        "mission_pod": 0.06878035729113907,
+        "z_sensor": 2511.728395061728
+      },
+      {
+        "attacker_objective": 0.49690350796244454,
+        "best_found_attacker_response": {
+          "mission_objective": 0.49690350796244454,
+          "mission_pod": 0.19799631056073375,
+          "mission_time": 85.52709569657324,
+          "solution_id": "bellman-optimal-bellman-candidate-000"
+        },
+        "coverage_area": 252553.125,
+        "coverage_area_normalized": 0.48833499501495514,
+        "defender_objective": 0.3345470101021166,
+        "defender_pod_normalized": 0.18075902518927806,
+        "evaluation_id": "outer-evaluation-0031",
+        "evaluation_index": 30,
+        "h_sensor": 0.00039795696294116207,
+        "infeasible": false,
+        "mission_pod": 0.19799631056073375,
+        "z_sensor": 2484.5679012345677
+      },
+      {
+        "attacker_objective": 0.35505917123418673,
+        "best_found_attacker_response": {
+          "mission_objective": 0.35505917123418673,
+          "mission_pod": 0.003411360362317706,
+          "mission_time": 78.17490598996092,
+          "solution_id": "bellman-optimal-bellman-candidate-007"
+        },
+        "coverage_area": 399815.625,
+        "coverage_area_normalized": 0.7730807577268195,
+        "defender_objective": 0.3882431563049786,
+        "defender_pod_normalized": 0.0034055548831376896,
+        "evaluation_id": "outer-evaluation-0032",
+        "evaluation_index": 31,
+        "h_sensor": 46.056492982712854,
+        "infeasible": false,
+        "mission_pod": 0.003411360362317706,
+        "z_sensor": 1959.4650205761316
+      },
+      {
+        "attacker_objective": 0.3553319308333927,
+        "best_found_attacker_response": {
+          "mission_objective": 0.3553319308333927,
+          "mission_pod": 0.003204428167637774,
+          "mission_time": 78.25821773503378,
+          "solution_id": "bellman-optimal-bellman-candidate-007"
+        },
+        "coverage_area": 398956.25,
+        "coverage_area_normalized": 0.7714190761050183,
+        "defender_objective": 0.38730919052162766,
+        "defender_pod_normalized": 0.0031993049382370484,
+        "evaluation_id": "outer-evaluation-0033",
+        "evaluation_index": 32,
+        "h_sensor": 44.215189360948244,
+        "infeasible": false,
+        "mission_pod": 0.003204428167637774,
+        "z_sensor": 1950.4115226337447
+      },
+      {
+        "attacker_objective": 0.35470205646376374,
+        "best_found_attacker_response": {
+          "mission_objective": 0.35470205646376374,
+          "mission_pod": 0.0036699048585311367,
+          "mission_time": 78.06719662024408,
+          "solution_id": "bellman-optimal-bellman-candidate-007"
+        },
+        "coverage_area": 400434.375,
+        "coverage_area_normalized": 0.7742771684945164,
+        "defender_objective": 0.3889701778488653,
+        "defender_pod_normalized": 0.0036631872032141222,
+        "evaluation_id": "outer-evaluation-0034",
+        "evaluation_index": 33,
+        "h_sensor": 48.407163516449344,
+        "infeasible": false,
+        "mission_pod": 0.0036699048585311367,
+        "z_sensor": 1974.554183813443
+      },
+      {
+        "attacker_objective": 0.35477047814241036,
+        "best_found_attacker_response": {
+          "mission_objective": 0.35477047814241036,
+          "mission_pod": 0.0036419161543196354,
+          "mission_time": 78.08544161594818,
+          "solution_id": "bellman-optimal-bellman-candidate-007"
+        },
+        "coverage_area": 400296.875,
+        "coverage_area_normalized": 0.7740112994350282,
+        "defender_objective": 0.3888232999425238,
+        "defender_pod_normalized": 0.003635300450019347,
+        "evaluation_id": "outer-evaluation-0035",
+        "evaluation_index": 34,
+        "h_sensor": 48.014856406462464,
+        "infeasible": false,
+        "mission_pod": 0.0036419161543196354,
+        "z_sensor": 1971.5363511659807
+      },
+      {
+        "attacker_objective": 0.4307964785062412,
+        "best_found_attacker_response": {
+          "mission_objective": 0.4307964785062412,
+          "mission_pod": 0.014741419716316595,
+          "mission_time": 93.66612862888275,
+          "solution_id": "bellman-optimal-bellman-candidate-000"
+        },
+        "coverage_area": 216425.0,
+        "coverage_area_normalized": 0.41847789963443005,
+        "defender_objective": 0.21655586232493215,
+        "defender_pod_normalized": 0.014633825015434266,
+        "evaluation_id": "outer-evaluation-0036",
+        "evaluation_index": 35,
+        "h_sensor": 0.18168654951669697,
+        "infeasible": false,
+        "mission_pod": 0.014741419716316595,
+        "z_sensor": 2335.185185185185
+      },
+      {
+        "attacker_objective": 0.45035973167126525,
+        "best_found_attacker_response": {
+          "mission_objective": 0.45035973167126525,
+          "mission_pod": 0.017683219139092543,
+          "mission_time": 97.66349868688634,
+          "solution_id": "bellman-optimal-bellman-candidate-000"
+        },
+        "coverage_area": 197450.0,
+        "coverage_area_normalized": 0.38178796942505816,
+        "defender_objective": 0.1996583337534693,
+        "defender_pod_normalized": 0.017528698081880463,
+        "evaluation_id": "outer-evaluation-0037",
+        "evaluation_index": 36,
+        "h_sensor": 2.0011860377281137,
+        "infeasible": false,
+        "mission_pod": 0.017683219139092543,
+        "z_sensor": 2253.7037037037035
+      },
+      {
+        "attacker_objective": 0.35760748739353465,
+        "best_found_attacker_response": {
+          "mission_objective": 0.35760748739353465,
+          "mission_pod": 0.0025261398468006124,
+          "mission_time": 78.83690695413532,
+          "solution_id": "bellman-optimal-bellman-candidate-009"
+        },
+        "coverage_area": 389915.625,
+        "coverage_area_normalized": 0.753938185443669,
+        "defender_objective": 0.37823056998292665,
+        "defender_pod_normalized": 0.002522954522184336,
+        "evaluation_id": "outer-evaluation-0038",
+        "evaluation_index": 37,
+        "h_sensor": 30.51387806663705,
+        "infeasible": false,
+        "mission_pod": 0.0025261398468006124,
+        "z_sensor": 1900.6172839506173
+      },
+      {
+        "attacker_objective": 0.3591160931494122,
+        "best_found_attacker_response": {
+          "mission_objective": 0.3591160931494122,
+          "mission_pod": 0.0023048681005800598,
+          "mission_time": 79.19520552004666,
+          "solution_id": "bellman-optimal-bellman-candidate-009"
+        },
+        "coverage_area": 383865.625,
+        "coverage_area_normalized": 0.7422399468261881,
+        "defender_objective": 0.37227108139753257,
+        "defender_pod_normalized": 0.0023022159688769754,
+        "evaluation_id": "outer-evaluation-0039",
+        "evaluation_index": 38,
+        "h_sensor": 22.451643206139888,
+        "infeasible": false,
+        "mission_pod": 0.0023048681005800598,
+        "z_sensor": 1873.4567901234566
+      },
+      {
+        "attacker_objective": 0.35546638076417747,
+        "best_found_attacker_response": {
+          "mission_objective": 0.35546638076417747,
+          "mission_pod": 0.0030560302981210707,
+          "mission_time": 78.30443053473824,
+          "solution_id": "bellman-optimal-bellman-candidate-007"
+        },
+        "coverage_area": 398750.0,
+        "coverage_area_normalized": 0.771020272515786,
+        "defender_objective": 0.38703582132627945,
+        "defender_pod_normalized": 0.0030513701367729414,
+        "evaluation_id": "outer-evaluation-0040",
+        "evaluation_index": 39,
+        "h_sensor": 43.18952149450225,
+        "infeasible": false,
+        "mission_pod": 0.0030560302981210707,
+        "z_sensor": 1945.8847736625514
+      },
+      {
+        "attacker_objective": 0.35583647657310125,
+        "best_found_attacker_response": {
+          "mission_objective": 0.35583647657310125,
+          "mission_pod": 0.002885030303639402,
+          "mission_time": 78.40528242487352,
+          "solution_id": "bellman-optimal-bellman-candidate-007"
+        },
+        "coverage_area": 397443.75,
+        "coverage_area_normalized": 0.768494516450648,
+        "defender_objective": 0.385687696523629,
+        "defender_pod_normalized": 0.0028808765966099616,
+        "evaluation_id": "outer-evaluation-0041",
+        "evaluation_index": 40,
+        "h_sensor": 40.95640244976487,
+        "infeasible": false,
+        "mission_pod": 0.002885030303639402,
+        "z_sensor": 1936.8312757201645
+      },
+      {
+        "attacker_objective": 0.3548077360094988,
+        "best_found_attacker_response": {
+          "mission_objective": 0.3548077360094988,
+          "mission_pod": 0.0036290055853003267,
+          "mission_time": 78.09511787815183,
+          "solution_id": "bellman-optimal-bellman-candidate-007"
+        },
+        "coverage_area": 400296.875,
+        "coverage_area_normalized": 0.7740112994350282,
+        "defender_objective": 0.38881686804083765,
+        "defender_pod_normalized": 0.0036224366466470767,
+        "evaluation_id": "outer-evaluation-0042",
+        "evaluation_index": 41,
+        "h_sensor": 47.80357707047805,
+        "infeasible": false,
+        "mission_pod": 0.0036290055853003267,
+        "z_sensor": 1970.0274348422497
+      },
+      {
+        "attacker_objective": 0.35488808062998084,
+        "best_found_attacker_response": {
+          "mission_objective": 0.35488808062998084,
+          "mission_pod": 0.0036049418402742672,
+          "mission_time": 78.11556481840418,
+          "solution_id": "bellman-optimal-bellman-candidate-007"
+        },
+        "coverage_area": 400159.375,
+        "coverage_area_normalized": 0.77374543037554,
+        "defender_objective": 0.38867194500051794,
+        "defender_pod_normalized": 0.0035984596254959103,
+        "evaluation_id": "outer-evaluation-0043",
+        "evaluation_index": 42,
+        "h_sensor": 47.35152857809634,
+        "infeasible": false,
+        "mission_pod": 0.0036049418402742672,
+        "z_sensor": 1967.0096021947872
+      },
+      {
+        "attacker_objective": 0.35469146621868264,
+        "best_found_attacker_response": {
+          "mission_objective": 0.35469146621868264,
+          "mission_pod": 0.003674887057590337,
+          "mission_time": 78.06430048603289,
+          "solution_id": "bellman-optimal-bellman-candidate-007"
+        },
+        "coverage_area": 400331.25,
+        "coverage_area_normalized": 0.7740777666999002,
+        "defender_objective": 0.38887295893629714,
+        "defender_pod_normalized": 0.003668151172694057,
+        "evaluation_id": "outer-evaluation-0044",
+        "evaluation_index": 43,
+        "h_sensor": 48.46856070648673,
+        "infeasible": false,
+        "mission_pod": 0.003674887057590337,
+        "z_sensor": 1975.0571559213533
+      },
+      {
+        "attacker_objective": 0.3547128824624866,
+        "best_found_attacker_response": {
+          "mission_objective": 0.3547128824624866,
+          "mission_pod": 0.0036650185960286352,
+          "mission_time": 78.07013425808617,
+          "solution_id": "bellman-optimal-bellman-candidate-007"
+        },
+        "coverage_area": 400400.0,
+        "coverage_area_normalized": 0.7742107012296444,
+        "defender_objective": 0.3889345100124877,
+        "defender_pod_normalized": 0.0036583187953309454,
+        "evaluation_id": "outer-evaluation-0045",
+        "evaluation_index": 44,
+        "h_sensor": 48.34461768553969,
+        "infeasible": false,
+        "mission_pod": 0.0036650185960286352,
+        "z_sensor": 1974.0512117055325
+      },
+      {
+        "attacker_objective": 0.4740726395709628,
+        "best_found_attacker_response": {
+          "mission_objective": 0.4740726395709628,
+          "mission_pod": 0.030038017247006277,
+          "mission_time": 101.50961038174768,
+          "solution_id": "bellman-optimal-bellman-candidate-000"
+        },
+        "coverage_area": 179093.75,
+        "coverage_area_normalized": 0.34629444998338316,
+        "defender_objective": 0.18794511368939387,
+        "defender_pod_normalized": 0.029595777395404605,
+        "evaluation_id": "outer-evaluation-0046",
+        "evaluation_index": 45,
+        "h_sensor": 33.12641042428657,
+        "infeasible": false,
+        "mission_pod": 0.030038017247006277,
+        "z_sensor": 2090.7407407407404
+      },
+      {
+        "attacker_objective": 0.35443726148650195,
+        "best_found_attacker_response": {
+          "mission_objective": 0.35443726148650195,
+          "mission_pod": 0.004058567082885989,
+          "mission_time": 77.9654532693018,
+          "solution_id": "bellman-optimal-bellman-candidate-007"
+        },
+        "coverage_area": 367090.625,
+        "coverage_area_normalized": 0.7098039215686275,
+        "defender_objective": 0.3569271374536158,
+        "defender_pod_normalized": 0.004050353338604178,
+        "evaluation_id": "outer-evaluation-0047",
+        "evaluation_index": 46,
+        "h_sensor": 49.786076119453114,
+        "infeasible": false,
+        "mission_pod": 0.004058567082885989,
+        "z_sensor": 2009.2592592592591
+      },
+      {
+        "attacker_objective": 0.36205554673852614,
+        "best_found_attacker_response": {
+          "mission_objective": 0.36205554673852614,
+          "mission_pod": 0.002418217805777334,
+          "mission_time": 79.83295874560818,
+          "solution_id": "bellman-optimal-bellman-candidate-004"
+        },
+        "coverage_area": 372968.75,
+        "coverage_area_normalized": 0.7211698238617481,
+        "defender_objective": 0.36179256124344533,
+        "defender_pod_normalized": 0.00241529862514259,
+        "evaluation_id": "outer-evaluation-0048",
+        "evaluation_index": 47,
+        "h_sensor": 9.741865365726943,
+        "infeasible": false,
+        "mission_pod": 0.002418217805777334,
+        "z_sensor": 1819.1358024691356
+      },
+      {
+        "attacker_objective": 0.3632229994683333,
+        "best_found_attacker_response": {
+          "mission_objective": 0.3632229994683333,
+          "mission_pod": 0.002460358960103215,
+          "mission_time": 80.08657171679133,
+          "solution_id": "bellman-optimal-bellman-candidate-001"
+        },
+        "coverage_area": 369703.125,
+        "coverage_area_normalized": 0.7148554336989033,
+        "defender_objective": 0.35865638546714407,
+        "defender_pod_normalized": 0.002457337235384877,
+        "evaluation_id": "outer-evaluation-0049",
+        "evaluation_index": 48,
+        "h_sensor": 5.744927912370492,
+        "infeasible": false,
+        "mission_pod": 0.002460358960103215,
+        "z_sensor": 1791.9753086419753
+      },
+      {
+        "attacker_objective": 0.35456221991731446,
+        "best_found_attacker_response": {
+          "mission_objective": 0.35456221991731446,
+          "mission_pod": 0.0039132010693326835,
+          "mission_time": 78.0092436018491,
+          "solution_id": "bellman-optimal-bellman-candidate-007"
+        },
+        "coverage_area": 396034.375,
+        "coverage_area_normalized": 0.765769358590894,
+        "defender_objective": 0.3848374615122078,
+        "defender_pod_normalized": 0.00390556443352167,
+        "evaluation_id": "outer-evaluation-0050",
+        "evaluation_index": 49,
+        "h_sensor": 49.55448948637936,
+        "infeasible": false,
+        "mission_pod": 0.0039132010693326835,
+        "z_sensor": 1986.625514403292
+      },
+      {
+        "attacker_objective": 0.35472012919043333,
+        "best_found_attacker_response": {
+          "mission_objective": 0.35472012919043333,
+          "mission_pod": 0.0038567733956564876,
+          "mission_time": 78.05044562571109,
+          "solution_id": "bellman-optimal-bellman-candidate-007"
+        },
+        "coverage_area": 397787.5,
+        "coverage_area_normalized": 0.7691591890993685,
+        "defender_objective": 0.3865042721152596,
+        "defender_pod_normalized": 0.003849355131150736,
+        "evaluation_id": "outer-evaluation-0051",
+        "evaluation_index": 50,
+        "h_sensor": 48.75812338764465,
+        "infeasible": false,
+        "mission_pod": 0.0038567733956564876,
+        "z_sensor": 1977.5720164609054
+      },
+      {
+        "attacker_objective": 0.35493189410228776,
+        "best_found_attacker_response": {
+          "mission_objective": 0.35493189410228776,
+          "mission_pod": 0.003593655389947381,
+          "mission_time": 78.12651107559327,
+          "solution_id": "bellman-optimal-bellman-candidate-007"
+        },
+        "coverage_area": 400159.375,
+        "coverage_area_normalized": 0.77374543037554,
+        "defender_objective": 0.38866632201407414,
+        "defender_pod_normalized": 0.0035872136526082597,
+        "evaluation_id": "outer-evaluation-0052",
+        "evaluation_index": 51,
+        "h_sensor": 47.11106411832674,
+        "infeasible": false,
+        "mission_pod": 0.003593655389947381,
+        "z_sensor": 1965.500685871056
+      },
+      {
+        "attacker_objective": 0.354958247702993,
+        "best_found_attacker_response": {
+          "mission_objective": 0.354958247702993,
+          "mission_pod": 0.003434812196742576,
+          "mission_time": 78.1499746348495,
+          "solution_id": "bellman-optimal-bellman-candidate-007"
+        },
+        "coverage_area": 399953.125,
+        "coverage_area_normalized": 0.7733466267863077,
+        "defender_objective": 0.38838777675019537,
+        "defender_pod_normalized": 0.003428926714083057,
+        "evaluation_id": "outer-evaluation-0053",
+        "evaluation_index": 52,
+        "h_sensor": 46.60201651319928,
+        "infeasible": false,
+        "mission_pod": 0.003434812196742576,
+        "z_sensor": 1962.482853223594
+      },
+      {
+        "attacker_objective": 0.3547239421933997,
+        "best_found_attacker_response": {
+          "mission_objective": 0.3547239421933997,
+          "mission_pod": 0.00366022511428421,
+          "mission_time": 78.07311330286731,
+          "solution_id": "bellman-optimal-bellman-candidate-007"
+        },
+        "coverage_area": 400434.375,
+        "coverage_area_normalized": 0.7742771684945164,
+        "defender_objective": 0.38896535565033347,
+        "defender_pod_normalized": 0.003653542806150471,
+        "evaluation_id": "outer-evaluation-0054",
+        "evaluation_index": 53,
+        "h_sensor": 48.280928856287915,
+        "infeasible": false,
+        "mission_pod": 0.00366022511428421,
+        "z_sensor": 1973.5482395976221
+      },
+      {
+        "attacker_objective": 0.35474675478157996,
+        "best_found_attacker_response": {
+          "mission_objective": 0.35474675478157996,
+          "mission_pod": 0.0036509039024519296,
+          "mission_time": 78.07919522626354,
+          "solution_id": "bellman-optimal-bellman-candidate-007"
+        },
+        "coverage_area": 400365.625,
+        "coverage_area_normalized": 0.7741442339647724,
+        "defender_objective": 0.38889424475456175,
+        "defender_pod_normalized": 0.003644255544351086,
+        "evaluation_id": "outer-evaluation-0055",
+        "evaluation_index": 54,
+        "h_sensor": 48.15014477287859,
+        "infeasible": false,
+        "mission_pod": 0.0036509039024519296,
+        "z_sensor": 1972.5422953818015
+      },
+      {
+        "attacker_objective": 0.45996541276717473,
+        "best_found_attacker_response": {
+          "mission_objective": 0.45996541276717473,
+          "mission_pod": 0.02057471558702617,
+          "mission_time": 99.46255549938624,
+          "solution_id": "bellman-optimal-bellman-candidate-000"
+        },
+        "coverage_area": 189578.125,
+        "coverage_area_normalized": 0.3665669657693586,
+        "defender_objective": 0.19346644783875136,
+        "defender_pod_normalized": 0.020365929908144106,
+        "evaluation_id": "outer-evaluation-0056",
+        "evaluation_index": 55,
+        "h_sensor": 5.177740314692936,
+        "infeasible": false,
+        "mission_pod": 0.02057471558702617,
+        "z_sensor": 2212.962962962963
+      },
+      {
+        "attacker_objective": 0.47287098851148596,
+        "best_found_attacker_response": {
+          "mission_objective": 0.47287098851148596,
+          "mission_pod": 0.027703336699380743,
+          "mission_time": 101.50969746586833,
+          "solution_id": "bellman-optimal-bellman-candidate-000"
+        },
+        "coverage_area": 179093.75,
+        "coverage_area_normalized": 0.34629444998338316,
+        "defender_objective": 0.18681052008314106,
+        "defender_pod_normalized": 0.027326590182898975,
+        "evaluation_id": "outer-evaluation-0057",
+        "evaluation_index": 56,
+        "h_sensor": 21.065866833967203,
+        "infeasible": false,
+        "mission_pod": 0.027703336699380743,
+        "z_sensor": 2131.4814814814813
+      },
+      {
+        "attacker_objective": 0.36432805670124,
+        "best_found_attacker_response": {
+          "mission_objective": 0.36432805670124,
+          "mission_pod": 0.0029424709495355916,
+          "mission_time": 80.27757797283309,
+          "solution_id": "bellman-optimal-bellman-candidate-001"
+        },
+        "coverage_area": 282012.5,
+        "coverage_area_normalized": 0.5452974410103024,
+        "defender_objective": 0.2741177956859146,
+        "defender_pod_normalized": 0.002938150361526804,
+        "evaluation_id": "outer-evaluation-0058",
+        "evaluation_index": 57,
+        "h_sensor": 48.71251062272642,
+        "infeasible": false,
+        "mission_pod": 0.0029424709495355916,
+        "z_sensor": 2022.8395061728395
+      },
+      {
+        "attacker_objective": 0.35453722071107435,
+        "best_found_attacker_response": {
+          "mission_objective": 0.35453722071107435,
+          "mission_pod": 0.0041118171591946195,
+          "mission_time": 77.98165348431357,
+          "solution_id": "bellman-optimal-bellman-candidate-007"
+        },
+        "coverage_area": 379396.875,
+        "coverage_area_normalized": 0.7335992023928215,
+        "defender_objective": 0.36885129457861127,
+        "defender_pod_normalized": 0.0041033867644010595,
+        "evaluation_id": "outer-evaluation-0059",
+        "evaluation_index": 58,
+        "h_sensor": 49.953286163487086,
+        "infeasible": false,
+        "mission_pod": 0.0041118171591946195,
+        "z_sensor": 1995.679012345679
+      },
+      {
+        "attacker_objective": 0.3560226142007241,
+        "best_found_attacker_response": {
+          "mission_objective": 0.3560226142007241,
+          "mission_pod": 0.0027665813074867485,
+          "mission_time": 78.4596032118111,
+          "solution_id": "bellman-optimal-bellman-candidate-007"
+        },
+        "coverage_area": 396584.375,
+        "coverage_area_normalized": 0.7668328348288468,
+        "defender_objective": 0.3847977980994842,
+        "defender_pod_normalized": 0.0027627613701216576,
+        "evaluation_id": "outer-evaluation-0060",
+        "evaluation_index": 59,
+        "h_sensor": 39.76105055811775,
+        "infeasible": false,
+        "mission_pod": 0.0027665813074867485,
+        "z_sensor": 1932.304526748971
+      },
+      {
+        "attacker_objective": 0.3564800193987822,
+        "best_found_attacker_response": {
+          "mission_objective": 0.3564800193987822,
+          "mission_pod": 0.002637281156619986,
+          "mission_time": 78.5751409168758,
+          "solution_id": "bellman-optimal-bellman-candidate-007"
+        },
+        "coverage_area": 394900.0,
+        "coverage_area_normalized": 0.7635759388501163,
+        "defender_objective": 0.3831048742435287,
+        "defender_pod_normalized": 0.002633809636941026,
+        "evaluation_id": "outer-evaluation-0061",
+        "evaluation_index": 60,
+        "h_sensor": 37.24446774934594,
+        "infeasible": false,
+        "mission_pod": 0.002637281156619986,
+        "z_sensor": 1923.2510288065844
+      },
+      {
+        "attacker_objective": 0.3551630692538158,
+        "best_found_attacker_response": {
+          "mission_objective": 0.3551630692538158,
+          "mission_pod": 0.0033808313087836384,
+          "mission_time": 78.20128089324541,
+          "solution_id": "bellman-optimal-bellman-candidate-007"
+        },
+        "coverage_area": 400228.125,
+        "coverage_area_normalized": 0.7738783649052842,
+        "defender_objective": 0.388626747031583,
+        "defender_pod_normalized": 0.0033751291578818393,
+        "evaluation_id": "outer-evaluation-0062",
+        "evaluation_index": 61,
+        "h_sensor": 45.47577973573566,
+        "infeasible": false,
+        "mission_pod": 0.0033808313087836384,
+        "z_sensor": 1956.4471879286693
+      },
+      {
+        "attacker_objective": 0.35521423252468604,
+        "best_found_attacker_response": {
+          "mission_objective": 0.35521423252468604,
+          "mission_pod": 0.003232487880478141,
+          "mission_time": 78.22906431347873,
+          "solution_id": "bellman-optimal-bellman-candidate-007"
+        },
+        "coverage_area": 399953.125,
+        "coverage_area_normalized": 0.7733466267863077,
+        "defender_objective": 0.38828695070920644,
+        "defender_pod_normalized": 0.003227274632105131,
+        "evaluation_id": "outer-evaluation-0063",
+        "evaluation_index": 62,
+        "h_sensor": 44.86145793114011,
+        "infeasible": false,
+        "mission_pod": 0.003232487880478141,
+        "z_sensor": 1953.4293552812069
+      },
+      {
+        "attacker_objective": 0.35475850361656175,
+        "best_found_attacker_response": {
+          "mission_objective": 0.35475850361656175,
+          "mission_pod": 0.0036463699035380603,
+          "mission_time": 78.08229791126057,
+          "solution_id": "bellman-optimal-bellman-candidate-007"
+        },
+        "coverage_area": 400331.25,
+        "coverage_area_normalized": 0.7740777666999002,
+        "defender_objective": 0.38885875236402023,
+        "defender_pod_normalized": 0.0036397380281402584,
+        "evaluation_id": "outer-evaluation-0064",
+        "evaluation_index": 63,
+        "h_sensor": 48.08306080378128,
+        "infeasible": false,
+        "mission_pod": 0.0036463699035380603,
+        "z_sensor": 1972.039323273891
+      },
+      {
+        "attacker_objective": 0.3547826763680299,
+        "best_found_attacker_response": {
+          "mission_objective": 0.3547826763680299,
+          "mission_pod": 0.00363753956152546,
+          "mission_time": 78.08862624336312,
+          "solution_id": "bellman-optimal-bellman-candidate-007"
+        },
+        "coverage_area": 400400.0,
+        "coverage_area_normalized": 0.7742107012296444,
+        "defender_objective": 0.3889208204793186,
+        "defender_pod_normalized": 0.0036309397289927678,
+        "evaluation_id": "outer-evaluation-0065",
+        "evaluation_index": 64,
+        "h_sensor": 47.945537223452206,
+        "infeasible": false,
+        "mission_pod": 0.00363753956152546,
+        "z_sensor": 1971.0333790580703
+      },
+      {
+        "attacker_objective": 0.35469850008734916,
+        "best_found_attacker_response": {
+          "mission_objective": 0.35469850008734916,
+          "mission_pod": 0.00367155477599046,
+          "mission_time": 78.06622662588532,
+          "solution_id": "bellman-optimal-bellman-candidate-007"
+        },
+        "coverage_area": 400434.375,
+        "coverage_area_normalized": 0.7742771684945164,
+        "defender_objective": 0.388970999790483,
+        "defender_pod_normalized": 0.003664831086449516,
+        "evaluation_id": "outer-evaluation-0066",
+        "evaluation_index": 65,
+        "h_sensor": 48.42775715186885,
+        "infeasible": false,
+        "mission_pod": 0.00367155477599046,
+        "z_sensor": 1974.7218411827464
+      },
+      {
+        "attacker_objective": 0.3547056390350187,
+        "best_found_attacker_response": {
+          "mission_objective": 0.3547056390350187,
+          "mission_pod": 0.0036682656006699066,
+          "mission_time": 78.06817122611767,
+          "solution_id": "bellman-optimal-bellman-candidate-007"
+        },
+        "coverage_area": 400400.0,
+        "coverage_area_normalized": 0.7742107012296444,
+        "defender_objective": 0.38893612758378,
+        "defender_pod_normalized": 0.0036615539379155375,
+        "evaluation_id": "outer-evaluation-0067",
+        "evaluation_index": 66,
+        "h_sensor": 48.38644225426627,
+        "infeasible": false,
+        "mission_pod": 0.0036682656006699066,
+        "z_sensor": 1974.3865264441397
+      }
+    ],
+    "evaluation_history": [
+      {
+        "attacker_objective": 0.45256295361863685,
+        "best_found_attacker_response": {
+          "mission_objective": 0.45256295361863685,
+          "mission_pod": 0.020979912177202742,
+          "mission_time": 97.77906961183305,
+          "solution_id": "bellman-optimal-bellman-candidate-000"
+        },
+        "coverage_area": 195903.125,
+        "coverage_area_normalized": 0.37879694250581586,
+        "defender_objective": 0.1997799113277011,
+        "defender_pod_normalized": 0.02076288014958633,
+        "evaluation_id": "outer-evaluation-0001",
+        "evaluation_index": 0,
+        "h_sensor": 44.12477848443209,
+        "infeasible": false,
+        "mission_pod": 0.020979912177202742,
+        "z_sensor": 2050.0
+      },
+      {
+        "attacker_objective": 0.4152084833812836,
+        "best_found_attacker_response": {
+          "mission_objective": 0.4152084833812836,
+          "mission_pod": 0.015360106509814453,
+          "mission_time": 90.14797253791761,
+          "solution_id": "bellman-optimal-bellman-candidate-000"
+        },
+        "coverage_area": 235984.375,
+        "coverage_area_normalized": 0.4562977733466268,
+        "defender_objective": 0.23577055611340286,
+        "defender_pod_normalized": 0.015243338880178946,
+        "evaluation_id": "outer-evaluation-0002",
+        "evaluation_index": 1,
+        "h_sensor": 0.008489138346028121,
+        "infeasible": false,
+        "mission_pod": 0.015360106509814453,
+        "z_sensor": 2416.6666666666665
+      },
+      {
+        "attacker_objective": 0.37073196540184633,
+        "best_found_attacker_response": {
+          "mission_objective": 0.37073196540184633,
+          "mission_pod": 0.0042033710017232995,
+          "mission_time": 81.55439168188742,
+          "solution_id": "bellman-optimal-bellman-candidate-000"
+        },
+        "coverage_area": 361453.125,
+        "coverage_area_normalized": 0.6989032901296112,
+        "defender_objective": 0.35154892583554104,
+        "defender_pod_normalized": 0.004194561541470909,
+        "evaluation_id": "outer-evaluation-0003",
+        "evaluation_index": 2,
+        "h_sensor": 0.33224967212138834,
+        "infeasible": false,
+        "mission_pod": 0.0042033710017232995,
+        "z_sensor": 1683.3333333333333
+      },
+      {
+        "attacker_objective": 0.36265344289599694,
+        "best_found_attacker_response": {
+          "mission_objective": 0.36265344289599694,
+          "mission_pod": 0.002430576540036755,
+          "mission_time": 79.96386621744273,
+          "solution_id": "bellman-optimal-bellman-candidate-002"
+        },
+        "coverage_area": 370871.875,
+        "coverage_area_normalized": 0.717115320704553,
+        "defender_objective": 0.3597714740869992,
+        "defender_pod_normalized": 0.002427627469445503,
+        "evaluation_id": "outer-evaluation-0004",
+        "evaluation_index": 3,
+        "h_sensor": 7.550335867827492,
+        "infeasible": false,
+        "mission_pod": 0.002430576540036755,
+        "z_sensor": 1805.5555555555557
+      },
+      {
+        "attacker_objective": 0.37896261777956597,
+        "best_found_attacker_response": {
+          "mission_objective": 0.37896261777956597,
+          "mission_pod": 0.006782455937458187,
+          "mission_time": 83.08845953915436,
+          "solution_id": "bellman-optimal-bellman-candidate-000"
+        },
+        "coverage_area": 354887.5,
+        "coverage_area_normalized": 0.6862080425390495,
+        "defender_objective": 0.3464838006363664,
+        "defender_pod_normalized": 0.006759558733683282,
+        "evaluation_id": "outer-evaluation-0005",
+        "evaluation_index": 4,
+        "h_sensor": 0.0032967634850517616,
+        "infeasible": false,
+        "mission_pod": 0.006782455937458187,
+        "z_sensor": 1561.111111111111
+      },
+      {
+        "attacker_objective": 0.3785151266445915,
+        "best_found_attacker_response": {
+          "mission_objective": 0.3785151266445915,
+          "mission_pod": 0.010077338841361194,
+          "mission_time": 82.62187990512977,
+          "solution_id": "bellman-optimal-bellman-candidate-000"
+        },
+        "coverage_area": 265650.0,
+        "coverage_area_normalized": 0.5136590229312064,
+        "defender_objective": 0.26184296240696664,
+        "defender_pod_normalized": 0.010026901882726978,
+        "evaluation_id": "outer-evaluation-0006",
+        "evaluation_index": 5,
+        "h_sensor": 2.468654808670609e-05,
+        "infeasible": false,
+        "mission_pod": 0.010077338841361194,
+        "z_sensor": 2538.8888888888887
+      },
+      {
+        "attacker_objective": 0.4390038454549661,
+        "best_found_attacker_response": {
+          "mission_objective": 0.4390038454549661,
+          "mission_pod": 0.016260737938378345,
+          "mission_time": 95.31120534155244,
+          "solution_id": "bellman-optimal-bellman-candidate-000"
+        },
+        "coverage_area": 206868.75,
+        "coverage_area_normalized": 0.4,
+        "defender_objective": 0.20806497689727543,
+        "defender_pod_normalized": 0.01612995379455084,
+        "evaluation_id": "outer-evaluation-0007",
+        "evaluation_index": 6,
+        "h_sensor": 0.6551345933041786,
+        "infeasible": false,
+        "mission_pod": 0.016260737938378345,
+        "z_sensor": 2294.4444444444443
+      },
+      {
+        "attacker_objective": 0.3606804989602922,
+        "best_found_attacker_response": {
+          "mission_objective": 0.3606804989602922,
+          "mission_pod": 0.0022188032917190847,
+          "mission_time": 79.55085502628876,
+          "solution_id": "bellman-optimal-bellman-candidate-008"
+        },
+        "coverage_area": 377884.375,
+        "coverage_area_normalized": 0.7306746427384513,
+        "defender_objective": 0.3664454940616174,
+        "defender_pod_normalized": 0.0022163453847835386,
+        "evaluation_id": "outer-evaluation-0008",
+        "evaluation_index": 7,
+        "h_sensor": 15.345070249992391,
+        "infeasible": false,
+        "mission_pod": 0.0022188032917190847,
+        "z_sensor": 1846.2962962962963
+      },
+      {
+        "attacker_objective": 0.3644818742203018,
+        "best_found_attacker_response": {
+          "mission_objective": 0.3644818742203018,
+          "mission_pod": 0.0027649006330173753,
+          "mission_time": 80.33130734619456,
+          "solution_id": "bellman-optimal-bellman-candidate-000"
+        },
+        "coverage_area": 366953.125,
+        "coverage_area_normalized": 0.7095380525091393,
+        "defender_objective": 0.3561495689201347,
+        "defender_pod_normalized": 0.00276108533113023,
+        "evaluation_id": "outer-evaluation-0009",
+        "evaluation_index": 8,
+        "h_sensor": 3.146892882705644,
+        "infeasible": false,
+        "mission_pod": 0.0027649006330173753,
+        "z_sensor": 1764.8148148148146
+      },
+      {
+        "attacker_objective": 0.46732564190496645,
+        "best_found_attacker_response": {
+          "mission_objective": 0.46732564190496645,
+          "mission_pod": 0.023986909574291615,
+          "mission_time": 100.7048676407485,
+          "solution_id": "bellman-optimal-bellman-candidate-000"
+        },
+        "coverage_area": 183253.125,
+        "coverage_area_normalized": 0.3543369890329013,
+        "defender_objective": 0.18902037944844147,
+        "defender_pod_normalized": 0.02370376986398166,
+        "evaluation_id": "outer-evaluation-0010",
+        "evaluation_index": 9,
+        "h_sensor": 11.347641027930035,
+        "infeasible": false,
+        "mission_pod": 0.023986909574291615,
+        "z_sensor": 2172.222222222222
+      },
+      {
+        "attacker_objective": 0.35622714203566297,
+        "best_found_attacker_response": {
+          "mission_objective": 0.35622714203566297,
+          "mission_pod": 0.0026635176370093383,
+          "mission_time": 78.51628461946737,
+          "solution_id": "bellman-optimal-bellman-candidate-007"
+        },
+        "coverage_area": 395759.375,
+        "coverage_area_normalized": 0.7652376204719176,
+        "defender_objective": 0.383948798618037,
+        "defender_pod_normalized": 0.002659976764156426,
+        "evaluation_id": "outer-evaluation-0011",
+        "evaluation_index": 10,
+        "h_sensor": 38.52162084978955,
+        "infeasible": false,
+        "mission_pod": 0.0026635176370093383,
+        "z_sensor": 1927.7777777777776
+      },
+      {
+        "attacker_objective": 0.3672950262922687,
+        "best_found_attacker_response": {
+          "mission_objective": 0.3672950262922687,
+          "mission_pod": 0.003477332745168926,
+          "mission_time": 80.8746305160858,
+          "solution_id": "bellman-optimal-bellman-candidate-000"
+        },
+        "coverage_area": 363893.75,
+        "coverage_area_normalized": 0.7036224659355268,
+        "defender_objective": 0.3535468833753316,
+        "defender_pod_normalized": 0.003471300815136339,
+        "evaluation_id": "outer-evaluation-0012",
+        "evaluation_index": 11,
+        "h_sensor": 1.1109788437729227,
+        "infeasible": false,
+        "mission_pod": 0.003477332745168926,
+        "z_sensor": 1724.074074074074
+      },
+      {
+        "attacker_objective": 0.3731466839551075,
+        "best_found_attacker_response": {
+          "mission_objective": 0.3731466839551075,
+          "mission_pod": 0.004844380864206799,
+          "mission_time": 82.01739103968895,
+          "solution_id": "bellman-optimal-bellman-candidate-000"
+        },
+        "coverage_area": 359218.75,
+        "coverage_area_normalized": 0.6945829179129279,
+        "defender_objective": 0.3497078012843469,
+        "defender_pod_normalized": 0.004832684655765866,
+        "evaluation_id": "outer-evaluation-0013",
+        "evaluation_index": 12,
+        "h_sensor": 0.08414934829841594,
+        "infeasible": false,
+        "mission_pod": 0.004844380864206799,
+        "z_sensor": 1642.5925925925924
+      },
+      {
+        "attacker_objective": 0.3598970146191723,
+        "best_found_attacker_response": {
+          "mission_objective": 0.3598970146191723,
+          "mission_pod": 0.002239572664402778,
+          "mission_time": 79.37521515270474,
+          "solution_id": "bellman-optimal-bellman-candidate-009"
+        },
+        "coverage_area": 380806.25,
+        "coverage_area_normalized": 0.7363243602525756,
+        "defender_objective": 0.3692807144071317,
+        "defender_pod_normalized": 0.002237068561687777,
+        "evaluation_id": "outer-evaluation-0014",
+        "evaluation_index": 13,
+        "h_sensor": 18.73323305955299,
+        "infeasible": false,
+        "mission_pod": 0.002239572664402778,
+        "z_sensor": 1859.8765432098762
+      },
+      {
+        "attacker_objective": 0.36142534455289566,
+        "best_found_attacker_response": {
+          "mission_objective": 0.36142534455289566,
+          "mission_pod": 0.00241459450578696,
+          "mission_time": 79.69393526168137,
+          "solution_id": "bellman-optimal-bellman-candidate-007"
+        },
+        "coverage_area": 375306.25,
+        "coverage_area_normalized": 0.7256895978730475,
+        "defender_objective": 0.3640506409662208,
+        "defender_pod_normalized": 0.0024116840593940477,
+        "evaluation_id": "outer-evaluation-0015",
+        "evaluation_index": 14,
+        "h_sensor": 12.339903541453467,
+        "infeasible": false,
+        "mission_pod": 0.00241459450578696,
+        "z_sensor": 1832.716049382716
+      },
+      {
+        "attacker_objective": 0.35484695413776124,
+        "best_found_attacker_response": {
+          "mission_objective": 0.35484695413776124,
+          "mission_pod": 0.003616707384316409,
+          "mission_time": 78.10515982219255,
+          "solution_id": "bellman-optimal-bellman-candidate-007"
+        },
+        "coverage_area": 400296.875,
+        "coverage_area_normalized": 0.7740112994350282,
+        "defender_objective": 0.38881074113714104,
+        "defender_pod_normalized": 0.0036101828392538604,
+        "evaluation_id": "outer-evaluation-0016",
+        "evaluation_index": 15,
+        "h_sensor": 47.58241701158469,
+        "infeasible": false,
+        "mission_pod": 0.003616707384316409,
+        "z_sensor": 1968.5185185185182
+      },
+      {
+        "attacker_objective": 0.3583346887996817,
+        "best_found_attacker_response": {
+          "mission_objective": 0.3583346887996817,
+          "mission_pod": 0.0023767501094960064,
+          "mission_time": 79.01435824512824,
+          "solution_id": "bellman-optimal-bellman-candidate-009"
+        },
+        "coverage_area": 387028.125,
+        "coverage_area_normalized": 0.7483549351944168,
+        "defender_objective": 0.37536443265171776,
+        "defender_pod_normalized": 0.0023739301090187257,
+        "evaluation_id": "outer-evaluation-0017",
+        "evaluation_index": 16,
+        "h_sensor": 26.416666487660628,
+        "infeasible": false,
+        "mission_pod": 0.0023767501094960064,
+        "z_sensor": 1887.037037037037
+      },
+      {
+        "attacker_objective": 0.37615709193445995,
+        "best_found_attacker_response": {
+          "mission_objective": 0.37615709193445995,
+          "mission_pod": 0.005861159397654747,
+          "mission_time": 82.57032969729985,
+          "solution_id": "bellman-optimal-bellman-candidate-000"
+        },
+        "coverage_area": 357053.125,
+        "coverage_area_normalized": 0.6903954802259887,
+        "defender_objective": 0.3481197649747611,
+        "defender_pod_normalized": 0.005844049723533427,
+        "evaluation_id": "outer-evaluation-0018",
+        "evaluation_index": 17,
+        "h_sensor": 0.018057568760565735,
+        "infeasible": false,
+        "mission_pod": 0.005861159397654747,
+        "z_sensor": 1601.8518518518517
+      },
+      {
+        "attacker_objective": 0.38193896555613427,
+        "best_found_attacker_response": {
+          "mission_objective": 0.38193896555613427,
+          "mission_pod": 0.007882912741848158,
+          "mission_time": 83.6243123849632,
+          "solution_id": "bellman-optimal-bellman-candidate-000"
+        },
+        "coverage_area": 352790.625,
+        "coverage_area_normalized": 0.6821535393818544,
+        "defender_objective": 0.34500277230462306,
+        "defender_pod_normalized": 0.007852005227391764,
+        "evaluation_id": "outer-evaluation-0019",
+        "evaluation_index": 18,
+        "h_sensor": 0.0006366295680589876,
+        "infeasible": false,
+        "mission_pod": 0.007882912741848158,
+        "z_sensor": 1520.3703703703704
+      },
+      {
+        "attacker_objective": 0.35463649154169474,
+        "best_found_attacker_response": {
+          "mission_objective": 0.35463649154169474,
+          "mission_pod": 0.003890954036382177,
+          "mission_time": 78.02814597258192,
+          "solution_id": "bellman-optimal-bellman-candidate-007"
+        },
+        "coverage_area": 397100.0,
+        "coverage_area_normalized": 0.7678298438019275,
+        "defender_objective": 0.385856623837143,
+        "defender_pod_normalized": 0.0038834038723583905,
+        "evaluation_id": "outer-evaluation-0020",
+        "evaluation_index": 19,
+        "h_sensor": 49.20498638666949,
+        "infeasible": false,
+        "mission_pod": 0.003890954036382177,
+        "z_sensor": 1982.0987654320986
+      },
+      {
+        "attacker_objective": 0.35515765058317517,
+        "best_found_attacker_response": {
+          "mission_objective": 0.35515765058317517,
+          "mission_pod": 0.003246429758523184,
+          "mission_time": 78.21499892940908,
+          "solution_id": "bellman-optimal-bellman-candidate-007"
+        },
+        "coverage_area": 399987.5,
+        "coverage_area_normalized": 0.7734130940511798,
+        "defender_objective": 0.3883271327715913,
+        "defender_pod_normalized": 0.00324117149200288,
+        "evaluation_id": "outer-evaluation-0021",
+        "evaluation_index": 20,
+        "h_sensor": 45.172716041261324,
+        "infeasible": false,
+        "mission_pod": 0.003246429758523184,
+        "z_sensor": 1954.9382716049383
+      },
+      {
+        "attacker_objective": 0.36733196464350343,
+        "best_found_attacker_response": {
+          "mission_objective": 0.36733196464350343,
+          "mission_pod": 0.0032122537441099386,
+          "mission_time": 80.91222402439443,
+          "solution_id": "bellman-optimal-bellman-candidate-000"
+        },
+        "coverage_area": 275137.5,
+        "coverage_area_normalized": 0.5320039880358923,
+        "defender_objective": 0.2676055467619322,
+        "defender_pod_normalized": 0.003207105487972122,
+        "evaluation_id": "outer-evaluation-0022",
+        "evaluation_index": 21,
+        "h_sensor": 2.532268215107076e-06,
+        "infeasible": false,
+        "mission_pod": 0.0032122537441099386,
+        "z_sensor": 2579.6296296296296
+      },
+      {
+        "attacker_objective": 0.560420878325055,
+        "best_found_attacker_response": {
+          "mission_objective": 0.560420878325055,
+          "mission_pod": 0.29803981660150525,
+          "mission_time": 84.84105766367799,
+          "solution_id": "bellman-optimal-bellman-candidate-000"
+        },
+        "coverage_area": 255887.5,
+        "coverage_area_normalized": 0.49478231970754405,
+        "defender_objective": 0.37808182760660314,
+        "defender_pod_normalized": 0.26138133550566217,
+        "evaluation_id": "outer-evaluation-0023",
+        "evaluation_index": 22,
+        "h_sensor": 0.00020425048027221114,
+        "infeasible": false,
+        "mission_pod": 0.29803981660150525,
+        "z_sensor": 2498.148148148148
+      },
+      {
+        "attacker_objective": 0.35566948927422903,
+        "best_found_attacker_response": {
+          "mission_objective": 0.35566948927422903,
+          "mission_pod": 0.003018760427790812,
+          "mission_time": 78.35350137972274,
+          "solution_id": "bellman-optimal-bellman-candidate-007"
+        },
+        "coverage_area": 398200.0,
+        "coverage_area_normalized": 0.7699567962778332,
+        "defender_objective": 0.38648550470222703,
+        "defender_pod_normalized": 0.003014213126620828,
+        "evaluation_id": "outer-evaluation-0024",
+        "evaluation_index": 23,
+        "h_sensor": 42.10132176178494,
+        "infeasible": false,
+        "mission_pod": 0.003018760427790812,
+        "z_sensor": 1941.358024691358
+      },
+      {
+        "attacker_objective": 0.3569204172187411,
+        "best_found_attacker_response": {
+          "mission_objective": 0.3569204172187411,
+          "mission_pod": 0.0026830200157120787,
+          "mission_time": 78.66750095935755,
+          "solution_id": "bellman-optimal-bellman-candidate-009"
+        },
+        "coverage_area": 393043.75,
+        "coverage_area_normalized": 0.7599867065470256,
+        "defender_objective": 0.3813330668469538,
+        "defender_pod_normalized": 0.0026794271468819925,
+        "evaluation_id": "outer-evaluation-0025",
+        "evaluation_index": 24,
+        "h_sensor": 34.602332723350706,
+        "infeasible": false,
+        "mission_pod": 0.0026830200157120787,
+        "z_sensor": 1914.1975308641975
+      },
+      {
+        "attacker_objective": 0.3547352336378313,
+        "best_found_attacker_response": {
+          "mission_objective": 0.3547352336378313,
+          "mission_pod": 0.003655521263329242,
+          "mission_time": 78.07613365785373,
+          "solution_id": "bellman-optimal-bellman-candidate-007"
+        },
+        "coverage_area": 400365.625,
+        "coverage_area_normalized": 0.7741442339647724,
+        "defender_objective": 0.38889654503163673,
+        "defender_pod_normalized": 0.003648856098501067,
+        "evaluation_id": "outer-evaluation-0026",
+        "evaluation_index": 25,
+        "h_sensor": 48.216102671224164,
+        "infeasible": false,
+        "mission_pod": 0.003655521263329242,
+        "z_sensor": 1973.0452674897117
+      },
+      {
+        "attacker_objective": 0.354909398937376,
+        "best_found_attacker_response": {
+          "mission_objective": 0.354909398937376,
+          "mission_pod": 0.0034448063327393585,
+          "mission_time": 78.1380580238081,
+          "solution_id": "bellman-optimal-bellman-candidate-007"
+        },
+        "coverage_area": 400090.625,
+        "coverage_area_normalized": 0.7736124958457959,
+        "defender_objective": 0.38852569121796876,
+        "defender_pod_normalized": 0.003438886590141542,
+        "evaluation_id": "outer-evaluation-0027",
+        "evaluation_index": 26,
+        "h_sensor": 46.861175980589785,
+        "infeasible": false,
+        "mission_pod": 0.0034448063327393585,
+        "z_sensor": 1963.991769547325
+      },
+      {
+        "attacker_objective": 0.41806570278216565,
+        "best_found_attacker_response": {
+          "mission_objective": 0.41806570278216565,
+          "mission_pod": 0.04037899428043368,
+          "mission_time": 87.93302515341783,
+          "solution_id": "bellman-optimal-bellman-candidate-000"
+        },
+        "coverage_area": 245918.75,
+        "coverage_area_normalized": 0.4755068128946494,
+        "defender_objective": 0.25754604515353086,
+        "defender_pod_normalized": 0.039585277412412335,
+        "evaluation_id": "outer-evaluation-0028",
+        "evaluation_index": 27,
+        "h_sensor": 0.0014314309802191047,
+        "infeasible": false,
+        "mission_pod": 0.04037899428043368,
+        "z_sensor": 2457.407407407407
+      },
+      {
+        "attacker_objective": 0.4214041562612877,
+        "best_found_attacker_response": {
+          "mission_objective": 0.4214041562612877,
+          "mission_pod": 0.014992903559605364,
+          "mission_time": 91.55994238878205,
+          "solution_id": "bellman-optimal-bellman-candidate-000"
+        },
+        "coverage_area": 226187.5,
+        "coverage_area_normalized": 0.4373546028580924,
+        "defender_objective": 0.226118113954714,
+        "defender_pod_normalized": 0.014881625051335595,
+        "evaluation_id": "outer-evaluation-0029",
+        "evaluation_index": 28,
+        "h_sensor": 0.04267705170505031,
+        "infeasible": false,
+        "mission_pod": 0.014992903559605364,
+        "z_sensor": 2375.925925925926
+      },
+      {
+        "attacker_objective": 0.4159946829281434,
+        "best_found_attacker_response": {
+          "mission_objective": 0.4159946829281434,
+          "mission_pod": 0.06878035729113907,
+          "mission_time": 84.15146654901999,
+          "solution_id": "bellman-optimal-bellman-candidate-001"
+        },
+        "coverage_area": 259118.75,
+        "coverage_area_normalized": 0.5010302426055168,
+        "defender_objective": 0.2837750680253833,
+        "defender_pod_normalized": 0.06651989344524988,
+        "evaluation_id": "outer-evaluation-0030",
+        "evaluation_index": 29,
+        "h_sensor": 0.0001029454487523865,
+        "infeasible": false,
+        "mission_pod": 0.06878035729113907,
+        "z_sensor": 2511.728395061728
+      },
+      {
+        "attacker_objective": 0.49690350796244454,
+        "best_found_attacker_response": {
+          "mission_objective": 0.49690350796244454,
+          "mission_pod": 0.19799631056073375,
+          "mission_time": 85.52709569657324,
+          "solution_id": "bellman-optimal-bellman-candidate-000"
+        },
+        "coverage_area": 252553.125,
+        "coverage_area_normalized": 0.48833499501495514,
+        "defender_objective": 0.3345470101021166,
+        "defender_pod_normalized": 0.18075902518927806,
+        "evaluation_id": "outer-evaluation-0031",
+        "evaluation_index": 30,
+        "h_sensor": 0.00039795696294116207,
+        "infeasible": false,
+        "mission_pod": 0.19799631056073375,
+        "z_sensor": 2484.5679012345677
+      },
+      {
+        "attacker_objective": 0.35505917123418673,
+        "best_found_attacker_response": {
+          "mission_objective": 0.35505917123418673,
+          "mission_pod": 0.003411360362317706,
+          "mission_time": 78.17490598996092,
+          "solution_id": "bellman-optimal-bellman-candidate-007"
+        },
+        "coverage_area": 399815.625,
+        "coverage_area_normalized": 0.7730807577268195,
+        "defender_objective": 0.3882431563049786,
+        "defender_pod_normalized": 0.0034055548831376896,
+        "evaluation_id": "outer-evaluation-0032",
+        "evaluation_index": 31,
+        "h_sensor": 46.056492982712854,
+        "infeasible": false,
+        "mission_pod": 0.003411360362317706,
+        "z_sensor": 1959.4650205761316
+      },
+      {
+        "attacker_objective": 0.3553319308333927,
+        "best_found_attacker_response": {
+          "mission_objective": 0.3553319308333927,
+          "mission_pod": 0.003204428167637774,
+          "mission_time": 78.25821773503378,
+          "solution_id": "bellman-optimal-bellman-candidate-007"
+        },
+        "coverage_area": 398956.25,
+        "coverage_area_normalized": 0.7714190761050183,
+        "defender_objective": 0.38730919052162766,
+        "defender_pod_normalized": 0.0031993049382370484,
+        "evaluation_id": "outer-evaluation-0033",
+        "evaluation_index": 32,
+        "h_sensor": 44.215189360948244,
+        "infeasible": false,
+        "mission_pod": 0.003204428167637774,
+        "z_sensor": 1950.4115226337447
+      },
+      {
+        "attacker_objective": 0.35470205646376374,
+        "best_found_attacker_response": {
+          "mission_objective": 0.35470205646376374,
+          "mission_pod": 0.0036699048585311367,
+          "mission_time": 78.06719662024408,
+          "solution_id": "bellman-optimal-bellman-candidate-007"
+        },
+        "coverage_area": 400434.375,
+        "coverage_area_normalized": 0.7742771684945164,
+        "defender_objective": 0.3889701778488653,
+        "defender_pod_normalized": 0.0036631872032141222,
+        "evaluation_id": "outer-evaluation-0034",
+        "evaluation_index": 33,
+        "h_sensor": 48.407163516449344,
+        "infeasible": false,
+        "mission_pod": 0.0036699048585311367,
+        "z_sensor": 1974.554183813443
+      },
+      {
+        "attacker_objective": 0.35477047814241036,
+        "best_found_attacker_response": {
+          "mission_objective": 0.35477047814241036,
+          "mission_pod": 0.0036419161543196354,
+          "mission_time": 78.08544161594818,
+          "solution_id": "bellman-optimal-bellman-candidate-007"
+        },
+        "coverage_area": 400296.875,
+        "coverage_area_normalized": 0.7740112994350282,
+        "defender_objective": 0.3888232999425238,
+        "defender_pod_normalized": 0.003635300450019347,
+        "evaluation_id": "outer-evaluation-0035",
+        "evaluation_index": 34,
+        "h_sensor": 48.014856406462464,
+        "infeasible": false,
+        "mission_pod": 0.0036419161543196354,
+        "z_sensor": 1971.5363511659807
+      },
+      {
+        "attacker_objective": 0.4307964785062412,
+        "best_found_attacker_response": {
+          "mission_objective": 0.4307964785062412,
+          "mission_pod": 0.014741419716316595,
+          "mission_time": 93.66612862888275,
+          "solution_id": "bellman-optimal-bellman-candidate-000"
+        },
+        "coverage_area": 216425.0,
+        "coverage_area_normalized": 0.41847789963443005,
+        "defender_objective": 0.21655586232493215,
+        "defender_pod_normalized": 0.014633825015434266,
+        "evaluation_id": "outer-evaluation-0036",
+        "evaluation_index": 35,
+        "h_sensor": 0.18168654951669697,
+        "infeasible": false,
+        "mission_pod": 0.014741419716316595,
+        "z_sensor": 2335.185185185185
+      },
+      {
+        "attacker_objective": 0.45035973167126525,
+        "best_found_attacker_response": {
+          "mission_objective": 0.45035973167126525,
+          "mission_pod": 0.017683219139092543,
+          "mission_time": 97.66349868688634,
+          "solution_id": "bellman-optimal-bellman-candidate-000"
+        },
+        "coverage_area": 197450.0,
+        "coverage_area_normalized": 0.38178796942505816,
+        "defender_objective": 0.1996583337534693,
+        "defender_pod_normalized": 0.017528698081880463,
+        "evaluation_id": "outer-evaluation-0037",
+        "evaluation_index": 36,
+        "h_sensor": 2.0011860377281137,
+        "infeasible": false,
+        "mission_pod": 0.017683219139092543,
+        "z_sensor": 2253.7037037037035
+      },
+      {
+        "attacker_objective": 0.35760748739353465,
+        "best_found_attacker_response": {
+          "mission_objective": 0.35760748739353465,
+          "mission_pod": 0.0025261398468006124,
+          "mission_time": 78.83690695413532,
+          "solution_id": "bellman-optimal-bellman-candidate-009"
+        },
+        "coverage_area": 389915.625,
+        "coverage_area_normalized": 0.753938185443669,
+        "defender_objective": 0.37823056998292665,
+        "defender_pod_normalized": 0.002522954522184336,
+        "evaluation_id": "outer-evaluation-0038",
+        "evaluation_index": 37,
+        "h_sensor": 30.51387806663705,
+        "infeasible": false,
+        "mission_pod": 0.0025261398468006124,
+        "z_sensor": 1900.6172839506173
+      },
+      {
+        "attacker_objective": 0.3591160931494122,
+        "best_found_attacker_response": {
+          "mission_objective": 0.3591160931494122,
+          "mission_pod": 0.0023048681005800598,
+          "mission_time": 79.19520552004666,
+          "solution_id": "bellman-optimal-bellman-candidate-009"
+        },
+        "coverage_area": 383865.625,
+        "coverage_area_normalized": 0.7422399468261881,
+        "defender_objective": 0.37227108139753257,
+        "defender_pod_normalized": 0.0023022159688769754,
+        "evaluation_id": "outer-evaluation-0039",
+        "evaluation_index": 38,
+        "h_sensor": 22.451643206139888,
+        "infeasible": false,
+        "mission_pod": 0.0023048681005800598,
+        "z_sensor": 1873.4567901234566
+      },
+      {
+        "attacker_objective": 0.35546638076417747,
+        "best_found_attacker_response": {
+          "mission_objective": 0.35546638076417747,
+          "mission_pod": 0.0030560302981210707,
+          "mission_time": 78.30443053473824,
+          "solution_id": "bellman-optimal-bellman-candidate-007"
+        },
+        "coverage_area": 398750.0,
+        "coverage_area_normalized": 0.771020272515786,
+        "defender_objective": 0.38703582132627945,
+        "defender_pod_normalized": 0.0030513701367729414,
+        "evaluation_id": "outer-evaluation-0040",
+        "evaluation_index": 39,
+        "h_sensor": 43.18952149450225,
+        "infeasible": false,
+        "mission_pod": 0.0030560302981210707,
+        "z_sensor": 1945.8847736625514
+      },
+      {
+        "attacker_objective": 0.35583647657310125,
+        "best_found_attacker_response": {
+          "mission_objective": 0.35583647657310125,
+          "mission_pod": 0.002885030303639402,
+          "mission_time": 78.40528242487352,
+          "solution_id": "bellman-optimal-bellman-candidate-007"
+        },
+        "coverage_area": 397443.75,
+        "coverage_area_normalized": 0.768494516450648,
+        "defender_objective": 0.385687696523629,
+        "defender_pod_normalized": 0.0028808765966099616,
+        "evaluation_id": "outer-evaluation-0041",
+        "evaluation_index": 40,
+        "h_sensor": 40.95640244976487,
+        "infeasible": false,
+        "mission_pod": 0.002885030303639402,
+        "z_sensor": 1936.8312757201645
+      },
+      {
+        "attacker_objective": 0.3548077360094988,
+        "best_found_attacker_response": {
+          "mission_objective": 0.3548077360094988,
+          "mission_pod": 0.0036290055853003267,
+          "mission_time": 78.09511787815183,
+          "solution_id": "bellman-optimal-bellman-candidate-007"
+        },
+        "coverage_area": 400296.875,
+        "coverage_area_normalized": 0.7740112994350282,
+        "defender_objective": 0.38881686804083765,
+        "defender_pod_normalized": 0.0036224366466470767,
+        "evaluation_id": "outer-evaluation-0042",
+        "evaluation_index": 41,
+        "h_sensor": 47.80357707047805,
+        "infeasible": false,
+        "mission_pod": 0.0036290055853003267,
+        "z_sensor": 1970.0274348422497
+      },
+      {
+        "attacker_objective": 0.35488808062998084,
+        "best_found_attacker_response": {
+          "mission_objective": 0.35488808062998084,
+          "mission_pod": 0.0036049418402742672,
+          "mission_time": 78.11556481840418,
+          "solution_id": "bellman-optimal-bellman-candidate-007"
+        },
+        "coverage_area": 400159.375,
+        "coverage_area_normalized": 0.77374543037554,
+        "defender_objective": 0.38867194500051794,
+        "defender_pod_normalized": 0.0035984596254959103,
+        "evaluation_id": "outer-evaluation-0043",
+        "evaluation_index": 42,
+        "h_sensor": 47.35152857809634,
+        "infeasible": false,
+        "mission_pod": 0.0036049418402742672,
+        "z_sensor": 1967.0096021947872
+      },
+      {
+        "attacker_objective": 0.35469146621868264,
+        "best_found_attacker_response": {
+          "mission_objective": 0.35469146621868264,
+          "mission_pod": 0.003674887057590337,
+          "mission_time": 78.06430048603289,
+          "solution_id": "bellman-optimal-bellman-candidate-007"
+        },
+        "coverage_area": 400331.25,
+        "coverage_area_normalized": 0.7740777666999002,
+        "defender_objective": 0.38887295893629714,
+        "defender_pod_normalized": 0.003668151172694057,
+        "evaluation_id": "outer-evaluation-0044",
+        "evaluation_index": 43,
+        "h_sensor": 48.46856070648673,
+        "infeasible": false,
+        "mission_pod": 0.003674887057590337,
+        "z_sensor": 1975.0571559213533
+      },
+      {
+        "attacker_objective": 0.3547128824624866,
+        "best_found_attacker_response": {
+          "mission_objective": 0.3547128824624866,
+          "mission_pod": 0.0036650185960286352,
+          "mission_time": 78.07013425808617,
+          "solution_id": "bellman-optimal-bellman-candidate-007"
+        },
+        "coverage_area": 400400.0,
+        "coverage_area_normalized": 0.7742107012296444,
+        "defender_objective": 0.3889345100124877,
+        "defender_pod_normalized": 0.0036583187953309454,
+        "evaluation_id": "outer-evaluation-0045",
+        "evaluation_index": 44,
+        "h_sensor": 48.34461768553969,
+        "infeasible": false,
+        "mission_pod": 0.0036650185960286352,
+        "z_sensor": 1974.0512117055325
+      },
+      {
+        "attacker_objective": 0.4740726395709628,
+        "best_found_attacker_response": {
+          "mission_objective": 0.4740726395709628,
+          "mission_pod": 0.030038017247006277,
+          "mission_time": 101.50961038174768,
+          "solution_id": "bellman-optimal-bellman-candidate-000"
+        },
+        "coverage_area": 179093.75,
+        "coverage_area_normalized": 0.34629444998338316,
+        "defender_objective": 0.18794511368939387,
+        "defender_pod_normalized": 0.029595777395404605,
+        "evaluation_id": "outer-evaluation-0046",
+        "evaluation_index": 45,
+        "h_sensor": 33.12641042428657,
+        "infeasible": false,
+        "mission_pod": 0.030038017247006277,
+        "z_sensor": 2090.7407407407404
+      },
+      {
+        "attacker_objective": 0.35443726148650195,
+        "best_found_attacker_response": {
+          "mission_objective": 0.35443726148650195,
+          "mission_pod": 0.004058567082885989,
+          "mission_time": 77.9654532693018,
+          "solution_id": "bellman-optimal-bellman-candidate-007"
+        },
+        "coverage_area": 367090.625,
+        "coverage_area_normalized": 0.7098039215686275,
+        "defender_objective": 0.3569271374536158,
+        "defender_pod_normalized": 0.004050353338604178,
+        "evaluation_id": "outer-evaluation-0047",
+        "evaluation_index": 46,
+        "h_sensor": 49.786076119453114,
+        "infeasible": false,
+        "mission_pod": 0.004058567082885989,
+        "z_sensor": 2009.2592592592591
+      },
+      {
+        "attacker_objective": 0.36205554673852614,
+        "best_found_attacker_response": {
+          "mission_objective": 0.36205554673852614,
+          "mission_pod": 0.002418217805777334,
+          "mission_time": 79.83295874560818,
+          "solution_id": "bellman-optimal-bellman-candidate-004"
+        },
+        "coverage_area": 372968.75,
+        "coverage_area_normalized": 0.7211698238617481,
+        "defender_objective": 0.36179256124344533,
+        "defender_pod_normalized": 0.00241529862514259,
+        "evaluation_id": "outer-evaluation-0048",
+        "evaluation_index": 47,
+        "h_sensor": 9.741865365726943,
+        "infeasible": false,
+        "mission_pod": 0.002418217805777334,
+        "z_sensor": 1819.1358024691356
+      },
+      {
+        "attacker_objective": 0.3632229994683333,
+        "best_found_attacker_response": {
+          "mission_objective": 0.3632229994683333,
+          "mission_pod": 0.002460358960103215,
+          "mission_time": 80.08657171679133,
+          "solution_id": "bellman-optimal-bellman-candidate-001"
+        },
+        "coverage_area": 369703.125,
+        "coverage_area_normalized": 0.7148554336989033,
+        "defender_objective": 0.35865638546714407,
+        "defender_pod_normalized": 0.002457337235384877,
+        "evaluation_id": "outer-evaluation-0049",
+        "evaluation_index": 48,
+        "h_sensor": 5.744927912370492,
+        "infeasible": false,
+        "mission_pod": 0.002460358960103215,
+        "z_sensor": 1791.9753086419753
+      },
+      {
+        "attacker_objective": 0.35456221991731446,
+        "best_found_attacker_response": {
+          "mission_objective": 0.35456221991731446,
+          "mission_pod": 0.0039132010693326835,
+          "mission_time": 78.0092436018491,
+          "solution_id": "bellman-optimal-bellman-candidate-007"
+        },
+        "coverage_area": 396034.375,
+        "coverage_area_normalized": 0.765769358590894,
+        "defender_objective": 0.3848374615122078,
+        "defender_pod_normalized": 0.00390556443352167,
+        "evaluation_id": "outer-evaluation-0050",
+        "evaluation_index": 49,
+        "h_sensor": 49.55448948637936,
+        "infeasible": false,
+        "mission_pod": 0.0039132010693326835,
+        "z_sensor": 1986.625514403292
+      },
+      {
+        "attacker_objective": 0.35472012919043333,
+        "best_found_attacker_response": {
+          "mission_objective": 0.35472012919043333,
+          "mission_pod": 0.0038567733956564876,
+          "mission_time": 78.05044562571109,
+          "solution_id": "bellman-optimal-bellman-candidate-007"
+        },
+        "coverage_area": 397787.5,
+        "coverage_area_normalized": 0.7691591890993685,
+        "defender_objective": 0.3865042721152596,
+        "defender_pod_normalized": 0.003849355131150736,
+        "evaluation_id": "outer-evaluation-0051",
+        "evaluation_index": 50,
+        "h_sensor": 48.75812338764465,
+        "infeasible": false,
+        "mission_pod": 0.0038567733956564876,
+        "z_sensor": 1977.5720164609054
+      },
+      {
+        "attacker_objective": 0.35493189410228776,
+        "best_found_attacker_response": {
+          "mission_objective": 0.35493189410228776,
+          "mission_pod": 0.003593655389947381,
+          "mission_time": 78.12651107559327,
+          "solution_id": "bellman-optimal-bellman-candidate-007"
+        },
+        "coverage_area": 400159.375,
+        "coverage_area_normalized": 0.77374543037554,
+        "defender_objective": 0.38866632201407414,
+        "defender_pod_normalized": 0.0035872136526082597,
+        "evaluation_id": "outer-evaluation-0052",
+        "evaluation_index": 51,
+        "h_sensor": 47.11106411832674,
+        "infeasible": false,
+        "mission_pod": 0.003593655389947381,
+        "z_sensor": 1965.500685871056
+      },
+      {
+        "attacker_objective": 0.354958247702993,
+        "best_found_attacker_response": {
+          "mission_objective": 0.354958247702993,
+          "mission_pod": 0.003434812196742576,
+          "mission_time": 78.1499746348495,
+          "solution_id": "bellman-optimal-bellman-candidate-007"
+        },
+        "coverage_area": 399953.125,
+        "coverage_area_normalized": 0.7733466267863077,
+        "defender_objective": 0.38838777675019537,
+        "defender_pod_normalized": 0.003428926714083057,
+        "evaluation_id": "outer-evaluation-0053",
+        "evaluation_index": 52,
+        "h_sensor": 46.60201651319928,
+        "infeasible": false,
+        "mission_pod": 0.003434812196742576,
+        "z_sensor": 1962.482853223594
+      },
+      {
+        "attacker_objective": 0.3547239421933997,
+        "best_found_attacker_response": {
+          "mission_objective": 0.3547239421933997,
+          "mission_pod": 0.00366022511428421,
+          "mission_time": 78.07311330286731,
+          "solution_id": "bellman-optimal-bellman-candidate-007"
+        },
+        "coverage_area": 400434.375,
+        "coverage_area_normalized": 0.7742771684945164,
+        "defender_objective": 0.38896535565033347,
+        "defender_pod_normalized": 0.003653542806150471,
+        "evaluation_id": "outer-evaluation-0054",
+        "evaluation_index": 53,
+        "h_sensor": 48.280928856287915,
+        "infeasible": false,
+        "mission_pod": 0.00366022511428421,
+        "z_sensor": 1973.5482395976221
+      },
+      {
+        "attacker_objective": 0.35474675478157996,
+        "best_found_attacker_response": {
+          "mission_objective": 0.35474675478157996,
+          "mission_pod": 0.0036509039024519296,
+          "mission_time": 78.07919522626354,
+          "solution_id": "bellman-optimal-bellman-candidate-007"
+        },
+        "coverage_area": 400365.625,
+        "coverage_area_normalized": 0.7741442339647724,
+        "defender_objective": 0.38889424475456175,
+        "defender_pod_normalized": 0.003644255544351086,
+        "evaluation_id": "outer-evaluation-0055",
+        "evaluation_index": 54,
+        "h_sensor": 48.15014477287859,
+        "infeasible": false,
+        "mission_pod": 0.0036509039024519296,
+        "z_sensor": 1972.5422953818015
+      },
+      {
+        "attacker_objective": 0.45996541276717473,
+        "best_found_attacker_response": {
+          "mission_objective": 0.45996541276717473,
+          "mission_pod": 0.02057471558702617,
+          "mission_time": 99.46255549938624,
+          "solution_id": "bellman-optimal-bellman-candidate-000"
+        },
+        "coverage_area": 189578.125,
+        "coverage_area_normalized": 0.3665669657693586,
+        "defender_objective": 0.19346644783875136,
+        "defender_pod_normalized": 0.020365929908144106,
+        "evaluation_id": "outer-evaluation-0056",
+        "evaluation_index": 55,
+        "h_sensor": 5.177740314692936,
+        "infeasible": false,
+        "mission_pod": 0.02057471558702617,
+        "z_sensor": 2212.962962962963
+      },
+      {
+        "attacker_objective": 0.47287098851148596,
+        "best_found_attacker_response": {
+          "mission_objective": 0.47287098851148596,
+          "mission_pod": 0.027703336699380743,
+          "mission_time": 101.50969746586833,
+          "solution_id": "bellman-optimal-bellman-candidate-000"
+        },
+        "coverage_area": 179093.75,
+        "coverage_area_normalized": 0.34629444998338316,
+        "defender_objective": 0.18681052008314106,
+        "defender_pod_normalized": 0.027326590182898975,
+        "evaluation_id": "outer-evaluation-0057",
+        "evaluation_index": 56,
+        "h_sensor": 21.065866833967203,
+        "infeasible": false,
+        "mission_pod": 0.027703336699380743,
+        "z_sensor": 2131.4814814814813
+      },
+      {
+        "attacker_objective": 0.36432805670124,
+        "best_found_attacker_response": {
+          "mission_objective": 0.36432805670124,
+          "mission_pod": 0.0029424709495355916,
+          "mission_time": 80.27757797283309,
+          "solution_id": "bellman-optimal-bellman-candidate-001"
+        },
+        "coverage_area": 282012.5,
+        "coverage_area_normalized": 0.5452974410103024,
+        "defender_objective": 0.2741177956859146,
+        "defender_pod_normalized": 0.002938150361526804,
+        "evaluation_id": "outer-evaluation-0058",
+        "evaluation_index": 57,
+        "h_sensor": 48.71251062272642,
+        "infeasible": false,
+        "mission_pod": 0.0029424709495355916,
+        "z_sensor": 2022.8395061728395
+      },
+      {
+        "attacker_objective": 0.35453722071107435,
+        "best_found_attacker_response": {
+          "mission_objective": 0.35453722071107435,
+          "mission_pod": 0.0041118171591946195,
+          "mission_time": 77.98165348431357,
+          "solution_id": "bellman-optimal-bellman-candidate-007"
+        },
+        "coverage_area": 379396.875,
+        "coverage_area_normalized": 0.7335992023928215,
+        "defender_objective": 0.36885129457861127,
+        "defender_pod_normalized": 0.0041033867644010595,
+        "evaluation_id": "outer-evaluation-0059",
+        "evaluation_index": 58,
+        "h_sensor": 49.953286163487086,
+        "infeasible": false,
+        "mission_pod": 0.0041118171591946195,
+        "z_sensor": 1995.679012345679
+      },
+      {
+        "attacker_objective": 0.3560226142007241,
+        "best_found_attacker_response": {
+          "mission_objective": 0.3560226142007241,
+          "mission_pod": 0.0027665813074867485,
+          "mission_time": 78.4596032118111,
+          "solution_id": "bellman-optimal-bellman-candidate-007"
+        },
+        "coverage_area": 396584.375,
+        "coverage_area_normalized": 0.7668328348288468,
+        "defender_objective": 0.3847977980994842,
+        "defender_pod_normalized": 0.0027627613701216576,
+        "evaluation_id": "outer-evaluation-0060",
+        "evaluation_index": 59,
+        "h_sensor": 39.76105055811775,
+        "infeasible": false,
+        "mission_pod": 0.0027665813074867485,
+        "z_sensor": 1932.304526748971
+      },
+      {
+        "attacker_objective": 0.3564800193987822,
+        "best_found_attacker_response": {
+          "mission_objective": 0.3564800193987822,
+          "mission_pod": 0.002637281156619986,
+          "mission_time": 78.5751409168758,
+          "solution_id": "bellman-optimal-bellman-candidate-007"
+        },
+        "coverage_area": 394900.0,
+        "coverage_area_normalized": 0.7635759388501163,
+        "defender_objective": 0.3831048742435287,
+        "defender_pod_normalized": 0.002633809636941026,
+        "evaluation_id": "outer-evaluation-0061",
+        "evaluation_index": 60,
+        "h_sensor": 37.24446774934594,
+        "infeasible": false,
+        "mission_pod": 0.002637281156619986,
+        "z_sensor": 1923.2510288065844
+      },
+      {
+        "attacker_objective": 0.3551630692538158,
+        "best_found_attacker_response": {
+          "mission_objective": 0.3551630692538158,
+          "mission_pod": 0.0033808313087836384,
+          "mission_time": 78.20128089324541,
+          "solution_id": "bellman-optimal-bellman-candidate-007"
+        },
+        "coverage_area": 400228.125,
+        "coverage_area_normalized": 0.7738783649052842,
+        "defender_objective": 0.388626747031583,
+        "defender_pod_normalized": 0.0033751291578818393,
+        "evaluation_id": "outer-evaluation-0062",
+        "evaluation_index": 61,
+        "h_sensor": 45.47577973573566,
+        "infeasible": false,
+        "mission_pod": 0.0033808313087836384,
+        "z_sensor": 1956.4471879286693
+      },
+      {
+        "attacker_objective": 0.35521423252468604,
+        "best_found_attacker_response": {
+          "mission_objective": 0.35521423252468604,
+          "mission_pod": 0.003232487880478141,
+          "mission_time": 78.22906431347873,
+          "solution_id": "bellman-optimal-bellman-candidate-007"
+        },
+        "coverage_area": 399953.125,
+        "coverage_area_normalized": 0.7733466267863077,
+        "defender_objective": 0.38828695070920644,
+        "defender_pod_normalized": 0.003227274632105131,
+        "evaluation_id": "outer-evaluation-0063",
+        "evaluation_index": 62,
+        "h_sensor": 44.86145793114011,
+        "infeasible": false,
+        "mission_pod": 0.003232487880478141,
+        "z_sensor": 1953.4293552812069
+      },
+      {
+        "attacker_objective": 0.35475850361656175,
+        "best_found_attacker_response": {
+          "mission_objective": 0.35475850361656175,
+          "mission_pod": 0.0036463699035380603,
+          "mission_time": 78.08229791126057,
+          "solution_id": "bellman-optimal-bellman-candidate-007"
+        },
+        "coverage_area": 400331.25,
+        "coverage_area_normalized": 0.7740777666999002,
+        "defender_objective": 0.38885875236402023,
+        "defender_pod_normalized": 0.0036397380281402584,
+        "evaluation_id": "outer-evaluation-0064",
+        "evaluation_index": 63,
+        "h_sensor": 48.08306080378128,
+        "infeasible": false,
+        "mission_pod": 0.0036463699035380603,
+        "z_sensor": 1972.039323273891
+      },
+      {
+        "attacker_objective": 0.3547826763680299,
+        "best_found_attacker_response": {
+          "mission_objective": 0.3547826763680299,
+          "mission_pod": 0.00363753956152546,
+          "mission_time": 78.08862624336312,
+          "solution_id": "bellman-optimal-bellman-candidate-007"
+        },
+        "coverage_area": 400400.0,
+        "coverage_area_normalized": 0.7742107012296444,
+        "defender_objective": 0.3889208204793186,
+        "defender_pod_normalized": 0.0036309397289927678,
+        "evaluation_id": "outer-evaluation-0065",
+        "evaluation_index": 64,
+        "h_sensor": 47.945537223452206,
+        "infeasible": false,
+        "mission_pod": 0.00363753956152546,
+        "z_sensor": 1971.0333790580703
+      },
+      {
+        "attacker_objective": 0.35469850008734916,
+        "best_found_attacker_response": {
+          "mission_objective": 0.35469850008734916,
+          "mission_pod": 0.00367155477599046,
+          "mission_time": 78.06622662588532,
+          "solution_id": "bellman-optimal-bellman-candidate-007"
+        },
+        "coverage_area": 400434.375,
+        "coverage_area_normalized": 0.7742771684945164,
+        "defender_objective": 0.388970999790483,
+        "defender_pod_normalized": 0.003664831086449516,
+        "evaluation_id": "outer-evaluation-0066",
+        "evaluation_index": 65,
+        "h_sensor": 48.42775715186885,
+        "infeasible": false,
+        "mission_pod": 0.00367155477599046,
+        "z_sensor": 1974.7218411827464
+      },
+      {
+        "attacker_objective": 0.3547056390350187,
+        "best_found_attacker_response": {
+          "mission_objective": 0.3547056390350187,
+          "mission_pod": 0.0036682656006699066,
+          "mission_time": 78.06817122611767,
+          "solution_id": "bellman-optimal-bellman-candidate-007"
+        },
+        "coverage_area": 400400.0,
+        "coverage_area_normalized": 0.7742107012296444,
+        "defender_objective": 0.38893612758378,
+        "defender_pod_normalized": 0.0036615539379155375,
+        "evaluation_id": "outer-evaluation-0067",
+        "evaluation_index": 66,
+        "h_sensor": 48.38644225426627,
+        "infeasible": false,
+        "mission_pod": 0.0036682656006699066,
+        "z_sensor": 1974.3865264441397
+      }
+    ],
+    "metadata": {
+      "algorithm": "scipy_direct_global",
+      "certified_global": true,
+      "direct_reported_success": true,
+      "function_evaluations": 67,
+      "iterations": 11,
+      "locally_biased": false,
+      "objective_direction": "maximize_via_negative_minimization",
+      "termination_message": "The side length measure of the hyperrectangle containing the lowest function value found is below len_tol=0.0001"
+    },
+    "selected_evaluation": {
+      "attacker_objective": 0.35469850008734916,
+      "best_found_attacker_response": {
+        "mission_objective": 0.35469850008734916,
+        "mission_pod": 0.00367155477599046,
+        "mission_time": 78.06622662588532,
+        "solution_id": "bellman-optimal-bellman-candidate-007"
+      },
+      "coverage_area": 400434.375,
+      "coverage_area_normalized": 0.7742771684945164,
+      "defender_objective": 0.388970999790483,
+      "defender_pod_normalized": 0.003664831086449516,
+      "evaluation_id": "outer-evaluation-0066",
+      "evaluation_index": 65,
+      "h_sensor": 48.42775715186885,
+      "infeasible": false,
+      "mission_pod": 0.00367155477599046,
+      "z_sensor": 1974.7218411827464
+    },
+    "z_sensor": 1974.7218411827466
+  },
+  "summary_statistics": {
+    "defender_objective": 0.388970999790483,
+    "figure5_evaluation_id": "outer-evaluation-0068",
+    "maximum_pre_final_evaluation_objective": 0.388970999790483,
+    "optimal_z_sensor": 1974.7218411827466,
+    "outer_evaluation_count": 68,
+    "switching_tangent_residual": 0.0
+  },
+  "validation": {
+    "checks": {
+      "attacker_convergence": true,
+      "attacker_goal_region_reached": true,
+      "authoritative_attacker_solver_used": true,
+      "bellman_response_valid": true,
+      "coverage_consistency": true,
+      "figure5_arrays_consistent": true,
+      "figure5_evaluation_id_matches_final": true,
+      "figure5_sensor_matches_final_defender": true,
+      "fresh_nested_solve_every_evaluation": true,
+      "geometry_consistency": true,
+      "mission_pod_consistency": true,
+      "objective_consistency": true,
+      "outer_optimizer_convergence": true,
+      "selected_candidate_dominates_all_outer_evaluations": true,
+      "switching_point_on_final_tangent": true
+    },
+    "failed_checks": [],
+    "metrics": {
+      "defender_objective": 0.388970999790483,
+      "figure5_evaluation_id": "outer-evaluation-0068",
+      "maximum_pre_final_evaluation_objective": 0.388970999790483,
+      "optimal_z_sensor": 1974.7218411827466,
+      "outer_evaluation_count": 68,
+      "switching_tangent_residual": 0.0
+    },
+    "passed": true,
+    "summary": "Phase 9 Stackelberg solution validation passed",
+    "warnings": []
+  }
+}

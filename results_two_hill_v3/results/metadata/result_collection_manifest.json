@@ -1,0 +1,82 @@
+{
+  "bundle_exports": [
+    {
+      "array_count": 14,
+      "bundle_name": "geometry",
+      "category": "geometry",
+      "export_seconds": 0.003840899997157976,
+      "json_path": "C:\\Users\\jeffe\\Desktop\\git\\glider_hybrid_control\\results_two_hill_v3\\results\\geometry\\geometry_bundle.json",
+      "npz_path": "C:\\Users\\jeffe\\Desktop\\git\\glider_hybrid_control\\results_two_hill_v3\\results\\geometry\\geometry_bundle.npz",
+      "status": "exported"
+    },
+    {
+      "array_count": 3,
+      "bundle_name": "detection",
+      "category": "geometry",
+      "export_seconds": 0.0011496000224724412,
+      "json_path": "C:\\Users\\jeffe\\Desktop\\git\\glider_hybrid_control\\results_two_hill_v3\\results\\geometry\\detection_bundle.json",
+      "npz_path": "C:\\Users\\jeffe\\Desktop\\git\\glider_hybrid_control\\results_two_hill_v3\\results\\geometry\\detection_bundle.npz",
+      "status": "exported"
+    },
+    {
+      "array_count": 30,
+      "bundle_name": "stage_cost",
+      "category": "cost",
+      "export_seconds": 2.0030676999886055,
+      "json_path": "C:\\Users\\jeffe\\Desktop\\git\\glider_hybrid_control\\results_two_hill_v3\\results\\cost\\stage_cost_bundle.json",
+      "npz_path": "C:\\Users\\jeffe\\Desktop\\git\\glider_hybrid_control\\results_two_hill_v3\\results\\cost\\stage_cost_bundle.npz",
+      "status": "exported"
+    },
+    {
+      "array_count": 6,
+      "bundle_name": "projected_cost",
+      "category": "cost",
+      "export_seconds": 0.006439499993575737,
+      "json_path": "C:\\Users\\jeffe\\Desktop\\git\\glider_hybrid_control\\results_two_hill_v3\\results\\cost\\projected_cost_bundle.json",
+      "npz_path": "C:\\Users\\jeffe\\Desktop\\git\\glider_hybrid_control\\results_two_hill_v3\\results\\cost\\projected_cost_bundle.npz",
+      "status": "exported"
+    },
+    {
+      "array_count": 20,
+      "bundle_name": "bellman",
+      "category": "bellman",
+      "export_seconds": 0.01672420001705177,
+      "json_path": "C:\\Users\\jeffe\\Desktop\\git\\glider_hybrid_control\\results_two_hill_v3\\results\\bellman\\bellman_bundle.json",
+      "npz_path": "C:\\Users\\jeffe\\Desktop\\git\\glider_hybrid_control\\results_two_hill_v3\\results\\bellman\\bellman_bundle.npz",
+      "status": "exported"
+    },
+    {
+      "array_count": 9,
+      "bundle_name": "bellman_response",
+      "category": "bellman",
+      "export_seconds": 0.004045000008773059,
+      "json_path": "C:\\Users\\jeffe\\Desktop\\git\\glider_hybrid_control\\results_two_hill_v3\\results\\bellman\\bellman_response_bundle.json",
+      "npz_path": "C:\\Users\\jeffe\\Desktop\\git\\glider_hybrid_control\\results_two_hill_v3\\results\\bellman\\bellman_response_bundle.npz",
+      "status": "exported"
+    },
+    {
+      "array_count": 27,
+      "bundle_name": "stackelberg",
+      "category": "stackelberg",
+      "export_seconds": 0.011118700000224635,
+      "json_path": "C:\\Users\\jeffe\\Desktop\\git\\glider_hybrid_control\\results_two_hill_v3\\results\\stackelberg\\stackelberg_bundle.json",
+      "npz_path": "C:\\Users\\jeffe\\Desktop\\git\\glider_hybrid_control\\results_two_hill_v3\\results\\stackelberg\\stackelberg_bundle.npz",
+      "status": "exported"
+    }
+  ],
+  "complete": true,
+  "execution_time_seconds": 2.0515794999955688,
+  "future_visualization_input_policy": "exported_files_only",
+  "missing_bundles": [],
+  "producer_phase": 10,
+  "schema_name": "StandardResultCollection",
+  "schema_version": "1.0.0",
+  "standard_directories": {
+    "bellman": "bellman",
+    "cost": "cost",
+    "geometry": "geometry",
+    "logs": "logs",
+    "metadata": "metadata",
+    "stackelberg": "stackelberg"
+  }
+}

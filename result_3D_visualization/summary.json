@@ -1,0 +1,25 @@
+{
+  "sensor_position": [
+    2502.331961591221,
+    0.0,
+    13.407821981430825
+  ],
+  "mission_cost": 2.0711290949585166,
+  "mission_pod": 0.9515026350717467,
+  "mission_time": 123.45269646306537,
+  "switching_point": [
+    641.6666666666667,
+    -150.0,
+    193.33333333333334
+  ],
+  "entire_powered_path_occluded": true,
+  "trajectory_point_count": 24,
+  "grid_resolution": {
+    "x_count": 31,
+    "y_count": 21,
+    "h_count": 31,
+    "v_count": 3,
+    "gamma_count": 6,
+    "heading_count": 24
+  }
+}

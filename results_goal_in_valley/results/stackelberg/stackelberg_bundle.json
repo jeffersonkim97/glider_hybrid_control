@@ -1,0 +1,632 @@
+{
+  "array_references": {
+    "coverage_los_mask": {
+      "dtype": "bool",
+      "npz_file": "stackelberg_bundle.npz",
+      "npz_key": "coverage_los_mask",
+      "shape": [
+        467,
+        201
+      ]
+    },
+    "coverage_occlusion_mask": {
+      "dtype": "bool",
+      "npz_file": "stackelberg_bundle.npz",
+      "npz_key": "coverage_occlusion_mask",
+      "shape": [
+        467,
+        201
+      ]
+    },
+    "coverage_terrain_mask": {
+      "dtype": "bool",
+      "npz_file": "stackelberg_bundle.npz",
+      "npz_key": "coverage_terrain_mask",
+      "shape": [
+        467,
+        201
+      ]
+    },
+    "final_cost_to_go": {
+      "dtype": "float64",
+      "npz_file": "stackelberg_bundle.npz",
+      "npz_key": "final_cost_to_go",
+      "shape": [
+        467,
+        201
+      ]
+    },
+    "final_goal_position": {
+      "dtype": "float64",
+      "npz_file": "stackelberg_bundle.npz",
+      "npz_key": "final_goal_position",
+      "shape": [
+        2
+      ]
+    },
+    "final_los_mask": {
+      "dtype": "bool",
+      "npz_file": "stackelberg_bundle.npz",
+      "npz_key": "final_los_mask",
+      "shape": [
+        467,
+        201
+      ]
+    },
+    "final_occlusion_mask": {
+      "dtype": "bool",
+      "npz_file": "stackelberg_bundle.npz",
+      "npz_key": "final_occlusion_mask",
+      "shape": [
+        467,
+        201
+      ]
+    },
+    "final_pod_to_go": {
+      "dtype": "float64",
+      "npz_file": "stackelberg_bundle.npz",
+      "npz_key": "final_pod_to_go",
+      "shape": [
+        467,
+        201
+      ]
+    },
+    "final_sensor_position": {
+      "dtype": "float64",
+      "npz_file": "stackelberg_bundle.npz",
+      "npz_key": "final_sensor_position",
+      "shape": [
+        2
+      ]
+    },
+    "final_tangent_line_height": {
+      "dtype": "float64",
+      "npz_file": "stackelberg_bundle.npz",
+      "npz_key": "final_tangent_line_height",
+      "shape": [
+        467
+      ]
+    },
+    "final_tangent_point": {
+      "dtype": "float64",
+      "npz_file": "stackelberg_bundle.npz",
+      "npz_key": "final_tangent_point",
+      "shape": [
+        2
+      ]
+    },
+    "final_terrain_h_grid": {
+      "dtype": "float64",
+      "npz_file": "stackelberg_bundle.npz",
+      "npz_key": "final_terrain_h_grid",
+      "shape": [
+        201
+      ]
+    },
+    "final_terrain_height": {
+      "dtype": "float64",
+      "npz_file": "stackelberg_bundle.npz",
+      "npz_key": "final_terrain_height",
+      "shape": [
+        467
+      ]
+    },
+    "final_terrain_mask": {
+      "dtype": "bool",
+      "npz_file": "stackelberg_bundle.npz",
+      "npz_key": "final_terrain_mask",
+      "shape": [
+        467,
+        201
+      ]
+    },
+    "final_terrain_z": {
+      "dtype": "float64",
+      "npz_file": "stackelberg_bundle.npz",
+      "npz_key": "final_terrain_z",
+      "shape": [
+        467
+      ]
+    },
+    "optimal_duration_profile": {
+      "dtype": "float64",
+      "npz_file": "stackelberg_bundle.npz",
+      "npz_key": "optimal_duration_profile",
+      "shape": [
+        80
+      ]
+    },
+    "optimal_gamma_profile": {
+      "dtype": "float64",
+      "npz_file": "stackelberg_bundle.npz",
+      "npz_key": "optimal_gamma_profile",
+      "shape": [
+        80
+      ]
+    },
+    "optimal_powered_path": {
+      "dtype": "float64",
+      "npz_file": "stackelberg_bundle.npz",
+      "npz_key": "optimal_powered_path",
+      "shape": [
+        9,
+        2
+      ]
+    },
+    "optimal_sensor_position": {
+      "dtype": "float64",
+      "npz_file": "stackelberg_bundle.npz",
+      "npz_key": "optimal_sensor_position",
+      "shape": [
+        2
+      ]
+    },
+    "optimal_switching_point": {
+      "dtype": "float64",
+      "npz_file": "stackelberg_bundle.npz",
+      "npz_key": "optimal_switching_point",
+      "shape": [
+        2
+      ]
+    },
+    "optimal_trajectory": {
+      "dtype": "float64",
+      "npz_file": "stackelberg_bundle.npz",
+      "npz_key": "optimal_trajectory",
+      "shape": [
+        81,
+        2
+      ]
+    },
+    "optimal_velocity_profile": {
+      "dtype": "float64",
+      "npz_file": "stackelberg_bundle.npz",
+      "npz_key": "optimal_velocity_profile",
+      "shape": [
+        80
+      ]
+    },
+    "outer_attacker_objective": {
+      "dtype": "float64",
+      "npz_file": "stackelberg_bundle.npz",
+      "npz_key": "outer_attacker_objective",
+      "shape": [
+        1
+      ]
+    },
+    "outer_coverage_normalized": {
+      "dtype": "float64",
+      "npz_file": "stackelberg_bundle.npz",
+      "npz_key": "outer_coverage_normalized",
+      "shape": [
+        1
+      ]
+    },
+    "outer_defender_objective": {
+      "dtype": "float64",
+      "npz_file": "stackelberg_bundle.npz",
+      "npz_key": "outer_defender_objective",
+      "shape": [
+        1
+      ]
+    },
+    "outer_defender_pod_normalized": {
+      "dtype": "float64",
+      "npz_file": "stackelberg_bundle.npz",
+      "npz_key": "outer_defender_pod_normalized",
+      "shape": [
+        1
+      ]
+    },
+    "outer_mission_pod": {
+      "dtype": "float64",
+      "npz_file": "stackelberg_bundle.npz",
+      "npz_key": "outer_mission_pod",
+      "shape": [
+        1
+      ]
+    },
+    "outer_z_sensor": {
+      "dtype": "float64",
+      "npz_file": "stackelberg_bundle.npz",
+      "npz_key": "outer_z_sensor",
+      "shape": [
+        1
+      ]
+    }
+  },
+  "bundle_name": "stackelberg",
+  "category": "stackelberg",
+  "configuration": {
+    "attacker_solver_config": {
+      "successor_grid": {
+        "edge_quadrature_count": 9,
+        "maximum_descent_cells": 8,
+        "maximum_forward_cells": 3,
+        "virtual_switch_maximum_descent_cells": 8,
+        "virtual_switch_maximum_forward_cells": 3
+      },
+      "supported_transition_models": [
+        "snapped_fixed_time_step",
+        "successor_grid_physical_edge"
+      ],
+      "transition_model": "successor_grid_physical_edge"
+    },
+    "bellman_config": {
+      "attacker_objective_id": "attacker_hazard_time_v2",
+      "convergence_tolerance": 1e-08,
+      "duplicate_threshold": {
+        "mission_cost_difference": 0.05,
+        "path_length_relative_difference": 0.08,
+        "resample_point_count": 64,
+        "switching_distance": 50.0,
+        "trajectory_rms_distance": 20.0
+      },
+      "maximum_iterations": 4,
+      "random_seed": 20260722,
+      "search_options": {
+        "exploration_orderings": [
+          "low_gamma_first",
+          "high_gamma_first",
+          "low_speed_first",
+          "high_speed_first"
+        ],
+        "initialization": "terminal_goal_region",
+        "max_descent_cells": 8,
+        "max_forward_cells": 3,
+        "mode": "multi_start_coarse_bellman",
+        "segment_check_count": 9
+      },
+      "top_k": 3,
+      "warm_start": {
+        "enabled": true,
+        "preserve_switching_point": true,
+        "preserve_trajectory_profiles": true
+      }
+    },
+    "cost_config": {
+      "attacker": {
+        "normalization": {
+          "pod": {
+            "hazard_reference": 1.0,
+            "method": "cumulative_hazard_reference",
+            "mission_pod_reporting_only": true
+          },
+          "time": {
+            "method": "reference_time",
+            "reference_seconds": 110.61946902654867
+          }
+        },
+        "objective_id": "attacker_hazard_time_v2",
+        "w_pod": 0.5,
+        "w_time": 0.5
+      },
+      "defender": {
+        "normalization": {
+          "coverage": {
+            "method": "los_fraction"
+          },
+          "pod": {
+            "diagnostic_only": false,
+            "hazard_reference": 1.0,
+            "method": "hazard_reference"
+          }
+        },
+        "objective_id": "defender_pod_los_coverage_v1",
+        "w_cover": 0.5,
+        "w_pod": 0.5
+      },
+      "local_stage_cost": {
+        "detection_weight": 1.0,
+        "steady_glide_deviation_weight": 0.02,
+        "time_weight": 0.01
+      }
+    },
+    "defender_config": {
+      "basin_prominence_threshold": 0.0001,
+      "coarse_sample_count": 5,
+      "continuous_search_bounds": {
+        "z_sensor_max": 2200.0,
+        "z_sensor_min": 1700.0
+      },
+      "diagnostic_search": {
+        "coarse_sensor_count": 41,
+        "fine_neighborhood_half_width": 50.0,
+        "fine_spacing": 5.0,
+        "max_fine_centers": 3,
+        "switch_jump_threshold": 100.0
+      },
+      "maximum_iterations": 41,
+      "optimizer": "hierarchical_coarse_to_fine_brent",
+      "optimizer_contract": "continuous_derivative_free_callback",
+      "termination_tolerance": 5.0,
+      "xtol": 5.0
+    },
+    "environment_config": {
+      "airspace": {
+        "h_max": 200.0,
+        "h_min": 0.0,
+        "z_max": 4000.0,
+        "z_min": 0.0
+      },
+      "grid": {
+        "axis_order_4d": [
+          "z",
+          "h",
+          "v",
+          "gamma"
+        ],
+        "gamma_count": 20,
+        "h_count": 201,
+        "h_max": 200.0,
+        "h_min": 0.0,
+        "h_spacing": 1.0,
+        "v_count": 5,
+        "z_count": 467,
+        "z_max": 4000.0,
+        "z_min": 0.0,
+        "z_spacing": 8.583690987124463
+      },
+      "h_start": 0.0,
+      "simulation": {
+        "h_max": 200.0,
+        "h_min": 0.0,
+        "max_path_steps": 1000,
+        "z_max": 4000.0,
+        "z_min": 0.0
+      },
+      "terrain": {
+        "hills": [
+          {
+            "h_ridge": 100.0,
+            "width": 100.0,
+            "z_ridge": 1500.0
+          },
+          {
+            "h_ridge": 100.0,
+            "width": 100.0,
+            "z_ridge": 3500.0
+          }
+        ],
+        "z_max": 4000.0,
+        "z_min": 0.0
+      },
+      "units": {
+        "angle": "rad",
+        "distance": "m",
+        "speed": "m/s",
+        "time": "s"
+      },
+      "z_goal": 2500.0,
+      "z_start": 0.0
+    },
+    "plot_config": {
+      "colormaps": {
+        "projected_cost": "viridis",
+        "projected_cost_to_go": "viridis"
+      },
+      "colors": {
+        "bellman": "tab:blue",
+        "goal": "gold",
+        "los": "green",
+        "occlusion": "red",
+        "sensor": "black",
+        "stackelberg": "tab:purple",
+        "terrain_fill": "white",
+        "terrain_outline": "black"
+      },
+      "default_figure_size": [
+        10.0,
+        6.0
+      ],
+      "dpi": 300,
+      "export_formats": [
+        "png",
+        "pdf",
+        "svg"
+      ],
+      "font_family": "DejaVu Sans",
+      "font_size": 11,
+      "heatmap_alpha": 1.0,
+      "line_styles": {
+        "bellman": "--",
+        "los_tangent": "--",
+        "stackelberg": "-",
+        "terrain": "-"
+      },
+      "line_width": 1.8,
+      "marker_styles": {
+        "defender": "^",
+        "goal": "*",
+        "sensor": "^",
+        "switching_point": "o"
+      },
+      "terrain_zorder": 1000
+    },
+    "sensor_config": {
+      "default_z_sensor": 2197.828074988569,
+      "detection": {
+        "acoustic_coefficient": 0.0024,
+        "acoustic_rate_scale": 1.0,
+        "acoustic_speed_exponent": 4,
+        "doppler_coefficient": 33250.0,
+        "radar_coefficient": 13000000.0,
+        "radar_rate_scale": 1.0,
+        "radial_velocity_rate_scale": 1.0,
+        "range_floor": 10.0,
+        "rcs_max": 1.0,
+        "rcs_min": 0.1
+      },
+      "height_rule": "terrain(z_sensor) + mount_height",
+      "los": {
+        "edge_gamma_tolerance_deg": 7.0,
+        "tangent_bisection_iterations": 64,
+        "terrain_numerical_tolerance": 1e-06
+      },
+      "mount_height": 0.0
+    },
+    "validation_config": {
+      "detection_probability_tolerance": 1e-12,
+      "dynamic_tolerance": 1e-06,
+      "goal_radius": 10.0,
+      "goal_tolerance_h": 10.0,
+      "goal_tolerance_z": 10.0,
+      "los_tolerance": 3.0,
+      "objective_tolerance": 1e-08,
+      "solver_tolerance": 1e-06,
+      "terrain_tolerance": 1e-06
+    },
+    "vehicle_config": {
+      "active_model": "byu_unicorn_flight_test",
+      "air_density": 1.225,
+      "cd0": 0.0213,
+      "drag_polar_type": "quadratic_cl",
+      "dynamic_limits": {
+        "cl_max": 0.5,
+        "cl_min": 0.05,
+        "gamma_feasibility_tolerance_deg": 2.0
+      },
+      "gamma_count": 20,
+      "gamma_max_deg": -1.0,
+      "gamma_min_deg": -90.0,
+      "gamma_penalty_scale_deg": 10.0,
+      "glide_speed_count": 5,
+      "glide_speed_max": 22.6,
+      "glide_speed_min": 10.0,
+      "gravity": 9.81,
+      "linear_drag_coefficient": -0.056,
+      "mass": 0.9520897043832823,
+      "powered_speed": 21.0,
+      "quadratic_drag_coefficient": 0.22,
+      "segment_check_count": 9,
+      "segment_length": null,
+      "source": "Ostler et al. 2009 Unicorn flight-test polar; powered speed retained from the existing 4D notebook",
+      "switching_constraints": {
+        "tangent_tolerance": 3.0,
+        "terrain_clearance": 1.0
+      },
+      "time_step": 1.0,
+      "wing_area": 0.321
+    }
+  },
+  "execution_time": {
+    "computation_seconds": null,
+    "export_seconds": 9.310001041740179e-05
+  },
+  "large_arrays_embedded_in_json": false,
+  "metadata": {
+    "defender_decision_continuous": true,
+    "figure5_cost_to_go_ordering": "successor_grid",
+    "figure5_evaluation_id": "outer-evaluation-0001",
+    "figure5_uses_final_defender_evaluation_only": true,
+    "fresh_nested_solve_per_evaluation": true,
+    "global_attacker_optimum_claim": false,
+    "outer_optimizer_algorithm": "fixed_p2_stackelberg_candidate_replay",
+    "outer_optimizer_injected": true,
+    "producer_module": "p1b_4D.stackelberg_solver",
+    "producer_phase": 9,
+    "schema_name": "StackelbergSolutionBundle",
+    "schema_version": "1.0.0",
+    "sensor_height_independent_variable": false
+  },
+  "objective_values": {
+    "mission_objective": 0.607849843948488,
+    "mission_pod": 0.1536291169600673,
+    "mission_time": 116.02898987631511
+  },
+  "provenance": {
+    "configuration_hash_sha256": "afc41b07ed24e3617585b258f498e70a4e7149e191c7bd4b10b05f0b73e633b2",
+    "continuous_validation": {
+      "checked": true,
+      "feasible": true,
+      "goal_miss": 10.000000000000066,
+      "reached_goal": true,
+      "violation": null
+    },
+    "generated_at_utc": "2026-07-29T23:14:49.536839+00:00",
+    "numerical_validation": {
+      "dynamic_tolerance": 1e-06,
+      "goal_radius": 10.0,
+      "los_tolerance": 3.0,
+      "objective_tolerance": 1e-08,
+      "segment_check_count": 9,
+      "solver_tolerance": 1e-06,
+      "terrain_tolerance": 1e-06
+    },
+    "random_seed": 20260722,
+    "resolution": {
+      "action": {
+        "gamma_count": 20,
+        "v_count": 5
+      },
+      "spatial": {
+        "h_count": 201,
+        "h_spacing": 1.0,
+        "z_count": 467,
+        "z_spacing": 8.583690987124463
+      }
+    },
+    "schema_name": "ResultProvenance",
+    "schema_version": "1.0.0",
+    "script_identifier": "p1b_4D/stackelberg_security_problem.ipynb",
+    "script_version": "1.0.0",
+    "source_control": {
+      "source_commit": "827b0e1026eb5e81de166a8f49c0d38d5017b959",
+      "working_tree_dirty": true,
+      "working_tree_identifier": "827b0e1026eb5e81de166a8f49c0d38d5017b959-dirty"
+    },
+    "transition_model": "successor_grid_physical_edge"
+  },
+  "schema_name": "StackelbergSolutionBundle",
+  "schema_version": "1.0.0",
+  "solver_information": {
+    "converged": true,
+    "metadata": {
+      "algorithm": "fixed_p2_stackelberg_candidate_replay",
+      "fresh_successor_follower_solve": true,
+      "outer_search_repeated": false,
+      "selection_source": "results/multiterrain_strategic_baselines_refined/multiterrain_baseline_results.json"
+    },
+    "z_sensor": 2197.828074988569
+  },
+  "summary_statistics": {
+    "defender_objective": 0.4024672468459437,
+    "figure5_evaluation_id": "outer-evaluation-0001",
+    "maximum_pre_final_evaluation_objective": 0.4024672468459437,
+    "optimal_z_sensor": 2197.828074988569,
+    "outer_evaluation_count": 1,
+    "outer_optimizer_converged": true,
+    "switching_tangent_residual": 0.0
+  },
+  "validation": {
+    "checks": {
+      "attacker_convergence": true,
+      "attacker_goal_region_reached": true,
+      "authoritative_attacker_solver_used": true,
+      "bellman_response_valid": true,
+      "coverage_consistency": true,
+      "figure5_arrays_consistent": true,
+      "figure5_evaluation_id_matches_final": true,
+      "figure5_sensor_matches_final_defender": true,
+      "fresh_nested_solve_every_evaluation": true,
+      "geometry_consistency": true,
+      "mission_pod_consistency": true,
+      "objective_consistency": true,
+      "selected_candidate_dominates_all_outer_evaluations": true,
+      "switching_point_on_final_tangent": true
+    },
+    "failed_checks": [],
+    "metrics": {
+      "defender_objective": 0.4024672468459437,
+      "figure5_evaluation_id": "outer-evaluation-0001",
+      "maximum_pre_final_evaluation_objective": 0.4024672468459437,
+      "optimal_z_sensor": 2197.828074988569,
+      "outer_evaluation_count": 1,
+      "outer_optimizer_converged": true,
+      "switching_tangent_residual": 0.0
+    },
+    "passed": true,
+    "summary": "Phase 9 Stackelberg solution validation passed",
+    "warnings": []
+  }
+}

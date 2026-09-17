@@ -1,0 +1,4263 @@
+{
+  "continuous_replay": {
+    "continuous_glide_hazard": 0.1318281225535228,
+    "continuous_mission_pod_glide_only": 0.1235083687230375,
+    "continuous_mission_time": 87.72332203377242,
+    "feasible": true,
+    "goal_miss": 10.000000000000046,
+    "reached_goal": true,
+    "step_count_used": 117,
+    "step_diagnostics": [
+      {
+        "continuous_nominal_endpoint": [
+          532.8125,
+          199.0
+        ],
+        "continuous_start": [
+          524.21875,
+          199.23868423896081
+        ],
+        "first_invalid_sample": null,
+        "minimum_los_margin": 0.1895018778614883,
+        "minimum_terrain_margin": 198.99817839595352,
+        "nominal_endpoint_to_grid": [
+          0.0,
+          0.0
+        ],
+        "reference_grid_endpoint": [
+          532.8125,
+          199.0
+        ],
+        "reference_grid_start": [
+          524.21875,
+          199.23868423896081
+        ],
+        "start_drift": [
+          0.0,
+          0.0
+        ],
+        "start_drift_norm": 0.0,
+        "step_index": 0,
+        "terminal_fraction": 1.0
+      },
+      {
+        "continuous_nominal_endpoint": [
+          558.59375,
+          198.0
+        ],
+        "continuous_start": [
+          532.8125,
+          199.0
+        ],
+        "first_invalid_sample": null,
+        "minimum_los_margin": 2.049027246086524,
+        "minimum_terrain_margin": 197.99412355734597,
+        "nominal_endpoint_to_grid": [
+          0.0,
+          0.0
+        ],
+        "reference_grid_endpoint": [
+          558.59375,
+          198.0
+        ],
+        "reference_grid_start": [
+          532.8125,
+          199.0
+        ],
+        "start_drift": [
+          0.0,
+          0.0
+        ],
+        "start_drift_norm": 0.0,
+        "step_index": 1,
+        "terminal_fraction": 1.0
+      },
+      {
+        "continuous_nominal_endpoint": [
+          584.375,
+          197.0
+        ],
+        "continuous_start": [
+          558.59375,
+          198.0
+        ],
+        "first_invalid_sample": null,
+        "minimum_los_margin": 6.313125031644347,
+        "minimum_terrain_margin": 196.98226183676059,
+        "nominal_endpoint_to_grid": [
+          0.0,
+          0.0
+        ],
+        "reference_grid_endpoint": [
+          584.375,
+          197.0
+        ],
+        "reference_grid_start": [
+          558.59375,
+          198.0
+        ],
+        "start_drift": [
+          0.0,
+          0.0
+        ],
+        "start_drift_norm": 0.0,
+        "step_index": 2,
+        "terminal_fraction": 1.0
+      },
+      {
+        "continuous_nominal_endpoint": [
+          610.15625,
+          196.0
+        ],
+        "continuous_start": [
+          584.375,
+          197.0
+        ],
+        "first_invalid_sample": null,
+        "minimum_los_margin": 10.57722281720217,
+        "minimum_terrain_margin": 195.94990015099233,
+        "nominal_endpoint_to_grid": [
+          0.0,
+          0.0
+        ],
+        "reference_grid_endpoint": [
+          610.15625,
+          196.0
+        ],
+        "reference_grid_start": [
+          584.375,
+          197.0
+        ],
+        "start_drift": [
+          0.0,
+          0.0
+        ],
+        "start_drift_norm": 0.0,
+        "step_index": 3,
+        "terminal_fraction": 1.0
+      },
+      {
+        "continuous_nominal_endpoint": [
+          635.9375,
+          195.0
+        ],
+        "continuous_start": [
+          610.15625,
+          196.0
+        ],
+        "first_invalid_sample": null,
+        "minimum_los_margin": 14.841320602760021,
+        "minimum_terrain_margin": 194.86759700426322,
+        "nominal_endpoint_to_grid": [
+          0.0,
+          0.0
+        ],
+        "reference_grid_endpoint": [
+          635.9375,
+          195.0
+        ],
+        "reference_grid_start": [
+          610.15625,
+          196.0
+        ],
+        "start_drift": [
+          0.0,
+          0.0
+        ],
+        "start_drift_norm": 0.0,
+        "step_index": 4,
+        "terminal_fraction": 1.0
+      },
+      {
+        "continuous_nominal_endpoint": [
+          661.71875,
+          194.0
+        ],
+        "continuous_start": [
+          635.9375,
+          195.0
+        ],
+        "first_invalid_sample": null,
+        "minimum_los_margin": 19.105418388317844,
+        "minimum_terrain_margin": 193.6725893282378,
+        "nominal_endpoint_to_grid": [
+          0.0,
+          0.0
+        ],
+        "reference_grid_endpoint": [
+          661.71875,
+          194.0
+        ],
+        "reference_grid_start": [
+          635.9375,
+          195.0
+        ],
+        "start_drift": [
+          0.0,
+          0.0
+        ],
+        "start_drift_norm": 0.0,
+        "step_index": 5,
+        "terminal_fraction": 1.0
+      },
+      {
+        "continuous_nominal_endpoint": [
+          687.5,
+          193.0
+        ],
+        "continuous_start": [
+          661.71875,
+          194.0
+        ],
+        "first_invalid_sample": null,
+        "minimum_los_margin": 23.369516173875667,
+        "minimum_terrain_margin": 192.24243225557402,
+        "nominal_endpoint_to_grid": [
+          0.0,
+          0.0
+        ],
+        "reference_grid_endpoint": [
+          687.5,
+          193.0
+        ],
+        "reference_grid_start": [
+          661.71875,
+          194.0
+        ],
+        "start_drift": [
+          0.0,
+          0.0
+        ],
+        "start_drift_norm": 0.0,
+        "step_index": 6,
+        "terminal_fraction": 1.0
+      },
+      {
+        "continuous_nominal_endpoint": [
+          713.28125,
+          192.0
+        ],
+        "continuous_start": [
+          687.5,
+          193.0
+        ],
+        "first_invalid_sample": null,
+        "minimum_los_margin": 27.63361395943349,
+        "minimum_terrain_margin": 190.35984933599866,
+        "nominal_endpoint_to_grid": [
+          0.0,
+          0.0
+        ],
+        "reference_grid_endpoint": [
+          713.28125,
+          192.0
+        ],
+        "reference_grid_start": [
+          687.5,
+          193.0
+        ],
+        "start_drift": [
+          0.0,
+          0.0
+        ],
+        "start_drift_norm": 0.0,
+        "step_index": 7,
+        "terminal_fraction": 1.0
+      },
+      {
+        "continuous_nominal_endpoint": [
+          739.0625,
+          191.0
+        ],
+        "continuous_start": [
+          713.28125,
+          192.0
+        ],
+        "first_invalid_sample": null,
+        "minimum_los_margin": 31.897711744991312,
+        "minimum_terrain_margin": 187.6773879332739,
+        "nominal_endpoint_to_grid": [
+          0.0,
+          0.0
+        ],
+        "reference_grid_endpoint": [
+          739.0625,
+          191.0
+        ],
+        "reference_grid_start": [
+          713.28125,
+          192.0
+        ],
+        "start_drift": [
+          0.0,
+          0.0
+        ],
+        "start_drift_norm": 0.0,
+        "step_index": 8,
+        "terminal_fraction": 1.0
+      },
+      {
+        "continuous_nominal_endpoint": [
+          764.84375,
+          190.0
+        ],
+        "continuous_start": [
+          739.0625,
+          191.0
+        ],
+        "first_invalid_sample": null,
+        "minimum_los_margin": 36.161809530549135,
+        "minimum_terrain_margin": 183.7019057333111,
+        "nominal_endpoint_to_grid": [
+          0.0,
+          0.0
+        ],
+        "reference_grid_endpoint": [
+          764.84375,
+          190.0
+        ],
+        "reference_grid_start": [
+          739.0625,
+          191.0
+        ],
+        "start_drift": [
+          0.0,
+          0.0
+        ],
+        "start_drift_norm": 0.0,
+        "step_index": 9,
+        "terminal_fraction": 1.0
+      },
+      {
+        "continuous_nominal_endpoint": [
+          790.625,
+          189.0
+        ],
+        "continuous_start": [
+          764.84375,
+          190.0
+        ],
+        "first_invalid_sample": null,
+        "minimum_los_margin": 40.42590731610696,
+        "minimum_terrain_margin": 177.8295080438583,
+        "nominal_endpoint_to_grid": [
+          0.0,
+          0.0
+        ],
+        "reference_grid_endpoint": [
+          790.625,
+          189.0
+        ],
+        "reference_grid_start": [
+          764.84375,
+          190.0
+        ],
+        "start_drift": [
+          0.0,
+          0.0
+        ],
+        "start_drift_norm": 0.0,
+        "step_index": 10,
+        "terminal_fraction": 1.0
+      },
+      {
+        "continuous_nominal_endpoint": [
+          816.40625,
+          188.0
+        ],
+        "continuous_start": [
+          790.625,
+          189.0
+        ],
+        "first_invalid_sample": null,
+        "minimum_los_margin": 44.69000510166481,
+        "minimum_terrain_margin": 169.461735746688,
+        "nominal_endpoint_to_grid": [
+          0.0,
+          0.0
+        ],
+        "reference_grid_endpoint": [
+          816.40625,
+          188.0
+        ],
+        "reference_grid_start": [
+          790.625,
+          189.0
+        ],
+        "start_drift": [
+          0.0,
+          0.0
+        ],
+        "start_drift_norm": 0.0,
+        "step_index": 11,
+        "terminal_fraction": 1.0
+      },
+      {
+        "continuous_nominal_endpoint": [
+          842.1875,
+          187.0
+        ],
+        "continuous_start": [
+          816.40625,
+          188.0
+        ],
+        "first_invalid_sample": null,
+        "minimum_los_margin": 48.95410288722263,
+        "minimum_terrain_margin": 158.21279757402075,
+        "nominal_endpoint_to_grid": [
+          0.0,
+          0.0
+        ],
+        "reference_grid_endpoint": [
+          842.1875,
+          187.0
+        ],
+        "reference_grid_start": [
+          816.40625,
+          188.0
+        ],
+        "start_drift": [
+          0.0,
+          0.0
+        ],
+        "start_drift_norm": 0.0,
+        "step_index": 12,
+        "terminal_fraction": 1.0
+      },
+      {
+        "continuous_nominal_endpoint": [
+          867.96875,
+          186.0
+        ],
+        "continuous_start": [
+          842.1875,
+          187.0
+        ],
+        "first_invalid_sample": null,
+        "minimum_los_margin": 53.218200672780455,
+        "minimum_terrain_margin": 144.17234861720786,
+        "nominal_endpoint_to_grid": [
+          0.0,
+          0.0
+        ],
+        "reference_grid_endpoint": [
+          867.96875,
+          186.0
+        ],
+        "reference_grid_start": [
+          842.1875,
+          187.0
+        ],
+        "start_drift": [
+          0.0,
+          0.0
+        ],
+        "start_drift_norm": 0.0,
+        "step_index": 13,
+        "terminal_fraction": 1.0
+      },
+      {
+        "continuous_nominal_endpoint": [
+          893.75,
+          185.0
+        ],
+        "continuous_start": [
+          867.96875,
+          186.0
+        ],
+        "first_invalid_sample": null,
+        "minimum_los_margin": 57.48229845833828,
+        "minimum_terrain_margin": 128.13289462813282,
+        "nominal_endpoint_to_grid": [
+          0.0,
+          0.0
+        ],
+        "reference_grid_endpoint": [
+          893.75,
+          185.0
+        ],
+        "reference_grid_start": [
+          867.96875,
+          186.0
+        ],
+        "start_drift": [
+          0.0,
+          0.0
+        ],
+        "start_drift_norm": 0.0,
+        "step_index": 14,
+        "terminal_fraction": 1.0
+      },
+      {
+        "continuous_nominal_endpoint": [
+          919.53125,
+          184.0
+        ],
+        "continuous_start": [
+          893.75,
+          185.0
+        ],
+        "first_invalid_sample": null,
+        "minimum_los_margin": 61.7463962438961,
+        "minimum_terrain_margin": 111.6576870263644,
+        "nominal_endpoint_to_grid": [
+          0.0,
+          0.0
+        ],
+        "reference_grid_endpoint": [
+          919.53125,
+          184.0
+        ],
+        "reference_grid_start": [
+          893.75,
+          185.0
+        ],
+        "start_drift": [
+          0.0,
+          0.0
+        ],
+        "start_drift_norm": 0.0,
+        "step_index": 15,
+        "terminal_fraction": 1.0
+      },
+      {
+        "continuous_nominal_endpoint": [
+          945.3125,
+          183.0
+        ],
+        "continuous_start": [
+          919.53125,
+          184.0
+        ],
+        "first_invalid_sample": null,
+        "minimum_los_margin": 66.01049402945394,
+        "minimum_terrain_margin": 96.88926767718807,
+        "nominal_endpoint_to_grid": [
+          0.0,
+          0.0
+        ],
+        "reference_grid_endpoint": [
+          945.3125,
+          183.0
+        ],
+        "reference_grid_start": [
+          919.53125,
+          184.0
+        ],
+        "start_drift": [
+          0.0,
+          0.0
+        ],
+        "start_drift_norm": 0.0,
+        "step_index": 16,
+        "terminal_fraction": 1.0
+      },
+      {
+        "continuous_nominal_endpoint": [
+          971.09375,
+          182.0
+        ],
+        "continuous_start": [
+          945.3125,
+          183.0
+        ],
+        "first_invalid_sample": null,
+        "minimum_los_margin": 70.27459181501176,
+        "minimum_terrain_margin": 86.09178680630698,
+        "nominal_endpoint_to_grid": [
+          0.0,
+          0.0
+        ],
+        "reference_grid_endpoint": [
+          971.09375,
+          182.0
+        ],
+        "reference_grid_start": [
+          945.3125,
+          183.0
+        ],
+        "start_drift": [
+          0.0,
+          0.0
+        ],
+        "start_drift_norm": 0.0,
+        "step_index": 17,
+        "terminal_fraction": 1.0
+      },
+      {
+        "continuous_nominal_endpoint": [
+          996.875,
+          181.0
+        ],
+        "continuous_start": [
+          971.09375,
+          182.0
+        ],
+        "first_invalid_sample": null,
+        "minimum_los_margin": 74.53868960056958,
+        "minimum_terrain_margin": 81.04881620601105,
+        "nominal_endpoint_to_grid": [
+          0.0,
+          0.0
+        ],
+        "reference_grid_endpoint": [
+          996.875,
+          181.0
+        ],
+        "reference_grid_start": [
+          971.09375,
+          182.0
+        ],
+        "start_drift": [
+          0.0,
+          0.0
+        ],
+        "start_drift_norm": 0.0,
+        "step_index": 18,
+        "terminal_fraction": 1.0
+      },
+      {
+        "continuous_nominal_endpoint": [
+          1022.65625,
+          180.0
+        ],
+        "continuous_start": [
+          996.875,
+          181.0
+        ],
+        "first_invalid_sample": null,
+        "minimum_los_margin": 78.8027873861274,
+        "minimum_terrain_margin": 80.80513148239433,
+        "nominal_endpoint_to_grid": [
+          0.0,
+          0.0
+        ],
+        "reference_grid_endpoint": [
+          1022.65625,
+          180.0
+        ],
+        "reference_grid_start": [
+          996.875,
+          181.0
+        ],
+        "start_drift": [
+          0.0,
+          0.0
+        ],
+        "start_drift_norm": 0.0,
+        "step_index": 19,
+        "terminal_fraction": 1.0
+      },
+      {
+        "continuous_nominal_endpoint": [
+          1048.4375,
+          179.0
+        ],
+        "continuous_start": [
+          1022.65625,
+          180.0
+        ],
+        "first_invalid_sample": null,
+        "minimum_los_margin": 83.24574059673746,
+        "minimum_terrain_margin": 83.16817504448154,
+        "nominal_endpoint_to_grid": [
+          0.0,
+          0.0
+        ],
+        "reference_grid_endpoint": [
+          1048.4375,
+          179.0
+        ],
+        "reference_grid_start": [
+          1022.65625,
+          180.0
+        ],
+        "start_drift": [
+          0.0,
+          0.0
+        ],
+        "start_drift_norm": 0.0,
+        "step_index": 20,
+        "terminal_fraction": 1.0
+      },
+      {
+        "continuous_nominal_endpoint": [
+          1074.21875,
+          178.0
+        ],
+        "continuous_start": [
+          1048.4375,
+          179.0
+        ],
+        "first_invalid_sample": null,
+        "minimum_los_margin": 91.42161655915072,
+        "minimum_terrain_margin": 91.36689381970182,
+        "nominal_endpoint_to_grid": [
+          0.0,
+          0.0
+        ],
+        "reference_grid_endpoint": [
+          1074.21875,
+          178.0
+        ],
+        "reference_grid_start": [
+          1048.4375,
+          179.0
+        ],
+        "start_drift": [
+          0.0,
+          0.0
+        ],
+        "start_drift_norm": 0.0,
+        "step_index": 21,
+        "terminal_fraction": 1.0
+      },
+      {
+        "continuous_nominal_endpoint": [
+          1100.0,
+          177.0
+        ],
+        "continuous_start": [
+          1074.21875,
+          178.0
+        ],
+        "first_invalid_sample": null,
+        "minimum_los_margin": 103.80751733358427,
+        "minimum_terrain_margin": 103.78269608109085,
+        "nominal_endpoint_to_grid": [
+          0.0,
+          0.0
+        ],
+        "reference_grid_endpoint": [
+          1100.0,
+          177.0
+        ],
+        "reference_grid_start": [
+          1074.21875,
+          178.0
+        ],
+        "start_drift": [
+          0.0,
+          0.0
+        ],
+        "start_drift_norm": 0.0,
+        "step_index": 22,
+        "terminal_fraction": 1.0
+      },
+      {
+        "continuous_nominal_endpoint": [
+          1125.78125,
+          176.0
+        ],
+        "continuous_start": [
+          1100.0,
+          177.0
+        ],
+        "first_invalid_sample": null,
+        "minimum_los_margin": 118.17187051626209,
+        "minimum_terrain_margin": 118.17588510392716,
+        "nominal_endpoint_to_grid": [
+          0.0,
+          0.0
+        ],
+        "reference_grid_endpoint": [
+          1125.78125,
+          176.0
+        ],
+        "reference_grid_start": [
+          1100.0,
+          177.0
+        ],
+        "start_drift": [
+          0.0,
+          0.0
+        ],
+        "start_drift_norm": 0.0,
+        "step_index": 23,
+        "terminal_fraction": 1.0
+      },
+      {
+        "continuous_nominal_endpoint": [
+          1151.5625,
+          175.0
+        ],
+        "continuous_start": [
+          1125.78125,
+          176.0
+        ],
+        "first_invalid_sample": null,
+        "minimum_los_margin": 132.33611377708027,
+        "minimum_terrain_margin": 132.3615393789417,
+        "nominal_endpoint_to_grid": [
+          0.0,
+          0.0
+        ],
+        "reference_grid_endpoint": [
+          1151.5625,
+          175.0
+        ],
+        "reference_grid_start": [
+          1125.78125,
+          176.0
+        ],
+        "start_drift": [
+          0.0,
+          0.0
+        ],
+        "start_drift_norm": 0.0,
+        "step_index": 24,
+        "terminal_fraction": 1.0
+      },
+      {
+        "continuous_nominal_endpoint": [
+          1177.34375,
+          174.0
+        ],
+        "continuous_start": [
+          1151.5625,
+          175.0
+        ],
+        "first_invalid_sample": null,
+        "minimum_los_margin": 144.6563229312781,
+        "minimum_terrain_margin": 144.69291153631085,
+        "nominal_endpoint_to_grid": [
+          0.0,
+          0.0
+        ],
+        "reference_grid_endpoint": [
+          1177.34375,
+          174.0
+        ],
+        "reference_grid_start": [
+          1151.5625,
+          175.0
+        ],
+        "start_drift": [
+          0.0,
+          0.0
+        ],
+        "start_drift_norm": 0.0,
+        "step_index": 25,
+        "terminal_fraction": 1.0
+      },
+      {
+        "continuous_nominal_endpoint": [
+          1203.125,
+          173.0
+        ],
+        "continuous_start": [
+          1177.34375,
+          174.0
+        ],
+        "first_invalid_sample": null,
+        "minimum_los_margin": 154.24793666686102,
+        "minimum_terrain_margin": 154.2861692944297,
+        "nominal_endpoint_to_grid": [
+          0.0,
+          0.0
+        ],
+        "reference_grid_endpoint": [
+          1203.125,
+          173.0
+        ],
+        "reference_grid_start": [
+          1177.34375,
+          174.0
+        ],
+        "start_drift": [
+          0.0,
+          0.0
+        ],
+        "start_drift_norm": 0.0,
+        "step_index": 26,
+        "terminal_fraction": 1.0
+      },
+      {
+        "continuous_nominal_endpoint": [
+          1228.90625,
+          172.0
+        ],
+        "continuous_start": [
+          1203.125,
+          173.0
+        ],
+        "first_invalid_sample": null,
+        "minimum_los_margin": 160.94565475938037,
+        "minimum_terrain_margin": 160.9789915382355,
+        "nominal_endpoint_to_grid": [
+          0.0,
+          0.0
+        ],
+        "reference_grid_endpoint": [
+          1228.90625,
+          172.0
+        ],
+        "reference_grid_start": [
+          1203.125,
+          173.0
+        ],
+        "start_drift": [
+          0.0,
+          0.0
+        ],
+        "start_drift_norm": 0.0,
+        "step_index": 27,
+        "terminal_fraction": 1.0
+      },
+      {
+        "continuous_nominal_endpoint": [
+          1254.6875,
+          171.0
+        ],
+        "continuous_start": [
+          1228.90625,
+          172.0
+        ],
+        "first_invalid_sample": null,
+        "minimum_los_margin": 165.08985779955074,
+        "minimum_terrain_margin": 165.11529874588183,
+        "nominal_endpoint_to_grid": [
+          0.0,
+          0.0
+        ],
+        "reference_grid_endpoint": [
+          1254.6875,
+          171.0
+        ],
+        "reference_grid_start": [
+          1228.90625,
+          172.0
+        ],
+        "start_drift": [
+          0.0,
+          0.0
+        ],
+        "start_drift_norm": 0.0,
+        "step_index": 28,
+        "terminal_fraction": 1.0
+      },
+      {
+        "continuous_nominal_endpoint": [
+          1280.46875,
+          170.0
+        ],
+        "continuous_start": [
+          1254.6875,
+          171.0
+        ],
+        "first_invalid_sample": null,
+        "minimum_los_margin": 167.26354663724723,
+        "minimum_terrain_margin": 167.28092459935988,
+        "nominal_endpoint_to_grid": [
+          0.0,
+          0.0
+        ],
+        "reference_grid_endpoint": [
+          1280.46875,
+          170.0
+        ],
+        "reference_grid_start": [
+          1254.6875,
+          171.0
+        ],
+        "start_drift": [
+          0.0,
+          0.0
+        ],
+        "start_drift_norm": 0.0,
+        "step_index": 29,
+        "terminal_fraction": 1.0
+      },
+      {
+        "continuous_nominal_endpoint": [
+          1306.25,
+          169.0
+        ],
+        "continuous_start": [
+          1280.46875,
+          170.0
+        ],
+        "first_invalid_sample": null,
+        "minimum_los_margin": 168.0761894801568,
+        "minimum_terrain_margin": 168.08082884830742,
+        "nominal_endpoint_to_grid": [
+          0.0,
+          0.0
+        ],
+        "reference_grid_endpoint": [
+          1306.25,
+          169.0
+        ],
+        "reference_grid_start": [
+          1280.46875,
+          170.0
+        ],
+        "start_drift": [
+          0.0,
+          0.0
+        ],
+        "start_drift_norm": 0.0,
+        "step_index": 30,
+        "terminal_fraction": 1.0
+      },
+      {
+        "continuous_nominal_endpoint": [
+          1332.03125,
+          168.0
+        ],
+        "continuous_start": [
+          1306.25,
+          169.0
+        ],
+        "first_invalid_sample": null,
+        "minimum_los_margin": 167.5962935756104,
+        "minimum_terrain_margin": 167.5962935756104,
+        "nominal_endpoint_to_grid": [
+          0.0,
+          0.0
+        ],
+        "reference_grid_endpoint": [
+          1332.03125,
+          168.0
+        ],
+        "reference_grid_start": [
+          1306.25,
+          169.0
+        ],
+        "start_drift": [
+          0.0,
+          0.0
+        ],
+        "start_drift_norm": 0.0,
+        "step_index": 31,
+        "terminal_fraction": 1.0
+      },
+      {
+        "continuous_nominal_endpoint": [
+          1357.8125,
+          167.0
+        ],
+        "continuous_start": [
+          1332.03125,
+          168.0
+        ],
+        "first_invalid_sample": null,
+        "minimum_los_margin": 166.83409148180553,
+        "minimum_terrain_margin": 166.83409148180553,
+        "nominal_endpoint_to_grid": [
+          0.0,
+          0.0
+        ],
+        "reference_grid_endpoint": [
+          1357.8125,
+          167.0
+        ],
+        "reference_grid_start": [
+          1332.03125,
+          168.0
+        ],
+        "start_drift": [
+          0.0,
+          0.0
+        ],
+        "start_drift_norm": 0.0,
+        "step_index": 32,
+        "terminal_fraction": 1.0
+      },
+      {
+        "continuous_nominal_endpoint": [
+          1383.59375,
+          166.0
+        ],
+        "continuous_start": [
+          1357.8125,
+          167.0
+        ],
+        "first_invalid_sample": null,
+        "minimum_los_margin": 165.9362020145651,
+        "minimum_terrain_margin": 165.9362020145651,
+        "nominal_endpoint_to_grid": [
+          0.0,
+          0.0
+        ],
+        "reference_grid_endpoint": [
+          1383.59375,
+          166.0
+        ],
+        "reference_grid_start": [
+          1357.8125,
+          167.0
+        ],
+        "start_drift": [
+          0.0,
+          0.0
+        ],
+        "start_drift_norm": 0.0,
+        "step_index": 33,
+        "terminal_fraction": 1.0
+      },
+      {
+        "continuous_nominal_endpoint": [
+          1409.375,
+          165.0
+        ],
+        "continuous_start": [
+          1383.59375,
+          166.0
+        ],
+        "first_invalid_sample": null,
+        "minimum_los_margin": 164.97704378058125,
+        "minimum_terrain_margin": 164.97704378058125,
+        "nominal_endpoint_to_grid": [
+          0.0,
+          0.0
+        ],
+        "reference_grid_endpoint": [
+          1409.375,
+          165.0
+        ],
+        "reference_grid_start": [
+          1383.59375,
+          166.0
+        ],
+        "start_drift": [
+          0.0,
+          0.0
+        ],
+        "start_drift_norm": 0.0,
+        "step_index": 34,
+        "terminal_fraction": 1.0
+      },
+      {
+        "continuous_nominal_endpoint": [
+          1435.15625,
+          164.0
+        ],
+        "continuous_start": [
+          1409.375,
+          165.0
+        ],
+        "first_invalid_sample": null,
+        "minimum_los_margin": 163.9922658883034,
+        "minimum_terrain_margin": 163.9922658883034,
+        "nominal_endpoint_to_grid": [
+          0.0,
+          0.0
+        ],
+        "reference_grid_endpoint": [
+          1435.15625,
+          164.0
+        ],
+        "reference_grid_start": [
+          1409.375,
+          165.0
+        ],
+        "start_drift": [
+          0.0,
+          0.0
+        ],
+        "start_drift_norm": 0.0,
+        "step_index": 35,
+        "terminal_fraction": 1.0
+      },
+      {
+        "continuous_nominal_endpoint": [
+          1460.9375,
+          163.0
+        ],
+        "continuous_start": [
+          1435.15625,
+          164.0
+        ],
+        "first_invalid_sample": null,
+        "minimum_los_margin": 162.99754097686215,
+        "minimum_terrain_margin": 162.99754097686215,
+        "nominal_endpoint_to_grid": [
+          0.0,
+          0.0
+        ],
+        "reference_grid_endpoint": [
+          1460.9375,
+          163.0
+        ],
+        "reference_grid_start": [
+          1435.15625,
+          164.0
+        ],
+        "start_drift": [
+          0.0,
+          0.0
+        ],
+        "start_drift_norm": 0.0,
+        "step_index": 36,
+        "terminal_fraction": 1.0
+      },
+      {
+        "continuous_nominal_endpoint": [
+          1486.71875,
+          162.0
+        ],
+        "continuous_start": [
+          1460.9375,
+          163.0
+        ],
+        "first_invalid_sample": null,
+        "minimum_los_margin": 161.99918731823823,
+        "minimum_terrain_margin": 161.99918731823823,
+        "nominal_endpoint_to_grid": [
+          0.0,
+          0.0
+        ],
+        "reference_grid_endpoint": [
+          1486.71875,
+          162.0
+        ],
+        "reference_grid_start": [
+          1460.9375,
+          163.0
+        ],
+        "start_drift": [
+          0.0,
+          0.0
+        ],
+        "start_drift_norm": 0.0,
+        "step_index": 37,
+        "terminal_fraction": 1.0
+      },
+      {
+        "continuous_nominal_endpoint": [
+          1512.5,
+          161.0
+        ],
+        "continuous_start": [
+          1486.71875,
+          162.0
+        ],
+        "first_invalid_sample": null,
+        "minimum_los_margin": 161.49938218475754,
+        "minimum_terrain_margin": 160.9994566727621,
+        "nominal_endpoint_to_grid": [
+          0.0,
+          0.0
+        ],
+        "reference_grid_endpoint": [
+          1512.5,
+          161.0
+        ],
+        "reference_grid_start": [
+          1486.71875,
+          162.0
+        ],
+        "start_drift": [
+          0.0,
+          0.0
+        ],
+        "start_drift_norm": 0.0,
+        "step_index": 38,
+        "terminal_fraction": 1.0
+      },
+      {
+        "continuous_nominal_endpoint": [
+          1538.28125,
+          160.0
+        ],
+        "continuous_start": [
+          1512.5,
+          161.0
+        ],
+        "first_invalid_sample": null,
+        "minimum_los_margin": Infinity,
+        "minimum_terrain_margin": 159.9987747447182,
+        "nominal_endpoint_to_grid": [
+          0.0,
+          0.0
+        ],
+        "reference_grid_endpoint": [
+          1538.28125,
+          160.0
+        ],
+        "reference_grid_start": [
+          1512.5,
+          161.0
+        ],
+        "start_drift": [
+          0.0,
+          0.0
+        ],
+        "start_drift_norm": 0.0,
+        "step_index": 39,
+        "terminal_fraction": 1.0
+      },
+      {
+        "continuous_nominal_endpoint": [
+          1564.0625,
+          159.0
+        ],
+        "continuous_start": [
+          1538.28125,
+          160.0
+        ],
+        "first_invalid_sample": null,
+        "minimum_los_margin": Infinity,
+        "minimum_terrain_margin": 158.9962528331118,
+        "nominal_endpoint_to_grid": [
+          0.0,
+          0.0
+        ],
+        "reference_grid_endpoint": [
+          1564.0625,
+          159.0
+        ],
+        "reference_grid_start": [
+          1538.28125,
+          160.0
+        ],
+        "start_drift": [
+          0.0,
+          0.0
+        ],
+        "start_drift_norm": 0.0,
+        "step_index": 40,
+        "terminal_fraction": 1.0
+      },
+      {
+        "continuous_nominal_endpoint": [
+          1581.25,
+          158.0
+        ],
+        "continuous_start": [
+          1564.0625,
+          159.0
+        ],
+        "first_invalid_sample": null,
+        "minimum_los_margin": Infinity,
+        "minimum_terrain_margin": 157.99221038003546,
+        "nominal_endpoint_to_grid": [
+          0.0,
+          0.0
+        ],
+        "reference_grid_endpoint": [
+          1581.25,
+          158.0
+        ],
+        "reference_grid_start": [
+          1564.0625,
+          159.0
+        ],
+        "start_drift": [
+          0.0,
+          0.0
+        ],
+        "start_drift_norm": 0.0,
+        "step_index": 41,
+        "terminal_fraction": 1.0
+      },
+      {
+        "continuous_nominal_endpoint": [
+          1589.84375,
+          157.0
+        ],
+        "continuous_start": [
+          1581.25,
+          158.0
+        ],
+        "first_invalid_sample": null,
+        "minimum_los_margin": Infinity,
+        "minimum_terrain_margin": 156.98888137657173,
+        "nominal_endpoint_to_grid": [
+          0.0,
+          0.0
+        ],
+        "reference_grid_endpoint": [
+          1589.84375,
+          157.0
+        ],
+        "reference_grid_start": [
+          1581.25,
+          158.0
+        ],
+        "start_drift": [
+          0.0,
+          0.0
+        ],
+        "start_drift_norm": 0.0,
+        "step_index": 42,
+        "terminal_fraction": 1.0
+      },
+      {
+        "continuous_nominal_endpoint": [
+          1607.03125,
+          154.0
+        ],
+        "continuous_start": [
+          1589.84375,
+          157.0
+        ],
+        "first_invalid_sample": null,
+        "minimum_los_margin": Infinity,
+        "minimum_terrain_margin": 153.9778330750953,
+        "nominal_endpoint_to_grid": [
+          0.0,
+          0.0
+        ],
+        "reference_grid_endpoint": [
+          1607.03125,
+          154.0
+        ],
+        "reference_grid_start": [
+          1589.84375,
+          157.0
+        ],
+        "start_drift": [
+          0.0,
+          0.0
+        ],
+        "start_drift_norm": 0.0,
+        "step_index": 43,
+        "terminal_fraction": 1.0
+      },
+      {
+        "continuous_nominal_endpoint": [
+          1624.21875,
+          150.0
+        ],
+        "continuous_start": [
+          1607.03125,
+          154.0
+        ],
+        "first_invalid_sample": null,
+        "minimum_los_margin": Infinity,
+        "minimum_terrain_margin": 149.95708553490746,
+        "nominal_endpoint_to_grid": [
+          0.0,
+          0.0
+        ],
+        "reference_grid_endpoint": [
+          1624.21875,
+          150.0
+        ],
+        "reference_grid_start": [
+          1607.03125,
+          154.0
+        ],
+        "start_drift": [
+          0.0,
+          0.0
+        ],
+        "start_drift_norm": 0.0,
+        "step_index": 44,
+        "terminal_fraction": 1.0
+      },
+      {
+        "continuous_nominal_endpoint": [
+          1641.40625,
+          145.0
+        ],
+        "continuous_start": [
+          1624.21875,
+          150.0
+        ],
+        "first_invalid_sample": null,
+        "minimum_los_margin": Infinity,
+        "minimum_terrain_margin": 144.91933491318608,
+        "nominal_endpoint_to_grid": [
+          0.0,
+          0.0
+        ],
+        "reference_grid_endpoint": [
+          1641.40625,
+          145.0
+        ],
+        "reference_grid_start": [
+          1624.21875,
+          150.0
+        ],
+        "start_drift": [
+          0.0,
+          0.0
+        ],
+        "start_drift_norm": 0.0,
+        "step_index": 45,
+        "terminal_fraction": 1.0
+      },
+      {
+        "continuous_nominal_endpoint": [
+          1667.1875,
+          137.0
+        ],
+        "continuous_start": [
+          1641.40625,
+          145.0
+        ],
+        "first_invalid_sample": null,
+        "minimum_los_margin": Infinity,
+        "minimum_terrain_margin": 136.80332150582655,
+        "nominal_endpoint_to_grid": [
+          0.0,
+          0.0
+        ],
+        "reference_grid_endpoint": [
+          1667.1875,
+          137.0
+        ],
+        "reference_grid_start": [
+          1641.40625,
+          145.0
+        ],
+        "start_drift": [
+          0.0,
+          0.0
+        ],
+        "start_drift_norm": 0.0,
+        "step_index": 46,
+        "terminal_fraction": 1.0
+      },
+      {
+        "continuous_nominal_endpoint": [
+          1684.375,
+          131.0
+        ],
+        "continuous_start": [
+          1667.1875,
+          137.0
+        ],
+        "first_invalid_sample": null,
+        "minimum_los_margin": Infinity,
+        "minimum_terrain_margin": 130.65662564265617,
+        "nominal_endpoint_to_grid": [
+          0.0,
+          0.0
+        ],
+        "reference_grid_endpoint": [
+          1684.375,
+          131.0
+        ],
+        "reference_grid_start": [
+          1667.1875,
+          137.0
+        ],
+        "start_drift": [
+          0.0,
+          0.0
+        ],
+        "start_drift_norm": 0.0,
+        "step_index": 47,
+        "terminal_fraction": 1.0
+      },
+      {
+        "continuous_nominal_endpoint": [
+          1701.5625,
+          125.0
+        ],
+        "continuous_start": [
+          1684.375,
+          131.0
+        ],
+        "first_invalid_sample": null,
+        "minimum_los_margin": Infinity,
+        "minimum_terrain_margin": 124.41796463084798,
+        "nominal_endpoint_to_grid": [
+          0.0,
+          0.0
+        ],
+        "reference_grid_endpoint": [
+          1701.5625,
+          125.0
+        ],
+        "reference_grid_start": [
+          1684.375,
+          131.0
+        ],
+        "start_drift": [
+          0.0,
+          0.0
+        ],
+        "start_drift_norm": 0.0,
+        "step_index": 48,
+        "terminal_fraction": 1.0
+      },
+      {
+        "continuous_nominal_endpoint": [
+          1718.75,
+          119.0
+        ],
+        "continuous_start": [
+          1701.5625,
+          125.0
+        ],
+        "first_invalid_sample": null,
+        "minimum_los_margin": Infinity,
+        "minimum_terrain_margin": 118.04214140753801,
+        "nominal_endpoint_to_grid": [
+          0.0,
+          0.0
+        ],
+        "reference_grid_endpoint": [
+          1718.75,
+          119.0
+        ],
+        "reference_grid_start": [
+          1701.5625,
+          125.0
+        ],
+        "start_drift": [
+          0.0,
+          0.0
+        ],
+        "start_drift_norm": 0.0,
+        "step_index": 49,
+        "terminal_fraction": 1.0
+      },
+      {
+        "continuous_nominal_endpoint": [
+          1735.9375,
+          113.0
+        ],
+        "continuous_start": [
+          1718.75,
+          119.0
+        ],
+        "first_invalid_sample": null,
+        "minimum_los_margin": Infinity,
+        "minimum_terrain_margin": 111.46953316431201,
+        "nominal_endpoint_to_grid": [
+          0.0,
+          0.0
+        ],
+        "reference_grid_endpoint": [
+          1735.9375,
+          113.0
+        ],
+        "reference_grid_start": [
+          1718.75,
+          119.0
+        ],
+        "start_drift": [
+          0.0,
+          0.0
+        ],
+        "start_drift_norm": 0.0,
+        "step_index": 50,
+        "terminal_fraction": 1.0
+      },
+      {
+        "continuous_nominal_endpoint": [
+          1761.71875,
+          105.0
+        ],
+        "continuous_start": [
+          1735.9375,
+          113.0
+        ],
+        "first_invalid_sample": null,
+        "minimum_los_margin": Infinity,
+        "minimum_terrain_margin": 102.07549481059391,
+        "nominal_endpoint_to_grid": [
+          0.0,
+          0.0
+        ],
+        "reference_grid_endpoint": [
+          1761.71875,
+          105.0
+        ],
+        "reference_grid_start": [
+          1735.9375,
+          113.0
+        ],
+        "start_drift": [
+          0.0,
+          0.0
+        ],
+        "start_drift_norm": 0.0,
+        "step_index": 51,
+        "terminal_fraction": 1.0
+      },
+      {
+        "continuous_nominal_endpoint": [
+          1787.5,
+          98.0
+        ],
+        "continuous_start": [
+          1761.71875,
+          105.0
+        ],
+        "first_invalid_sample": null,
+        "minimum_los_margin": Infinity,
+        "minimum_terrain_margin": 92.77104993554651,
+        "nominal_endpoint_to_grid": [
+          0.0,
+          0.0
+        ],
+        "reference_grid_endpoint": [
+          1787.5,
+          98.0
+        ],
+        "reference_grid_start": [
+          1761.71875,
+          105.0
+        ],
+        "start_drift": [
+          0.0,
+          0.0
+        ],
+        "start_drift_norm": 0.0,
+        "step_index": 52,
+        "terminal_fraction": 1.0
+      },
+      {
+        "continuous_nominal_endpoint": [
+          1796.09375,
+          96.0
+        ],
+        "continuous_start": [
+          1787.5,
+          98.0
+        ],
+        "first_invalid_sample": null,
+        "minimum_los_margin": Infinity,
+        "minimum_terrain_margin": 89.74653902816887,
+        "nominal_endpoint_to_grid": [
+          0.0,
+          0.0
+        ],
+        "reference_grid_endpoint": [
+          1796.09375,
+          96.0
+        ],
+        "reference_grid_start": [
+          1787.5,
+          98.0
+        ],
+        "start_drift": [
+          0.0,
+          0.0
+        ],
+        "start_drift_norm": 0.0,
+        "step_index": 53,
+        "terminal_fraction": 1.0
+      },
+      {
+        "continuous_nominal_endpoint": [
+          1804.6875,
+          94.0
+        ],
+        "continuous_start": [
+          1796.09375,
+          96.0
+        ],
+        "first_invalid_sample": null,
+        "minimum_los_margin": Infinity,
+        "minimum_terrain_margin": 86.57632384910937,
+        "nominal_endpoint_to_grid": [
+          0.0,
+          0.0
+        ],
+        "reference_grid_endpoint": [
+          1804.6875,
+          94.0
+        ],
+        "reference_grid_start": [
+          1796.09375,
+          96.0
+        ],
+        "start_drift": [
+          0.0,
+          0.0
+        ],
+        "start_drift_norm": 0.0,
+        "step_index": 54,
+        "terminal_fraction": 1.0
+      },
+      {
+        "continuous_nominal_endpoint": [
+          1813.28125,
+          92.0
+        ],
+        "continuous_start": [
+          1804.6875,
+          94.0
+        ],
+        "first_invalid_sample": null,
+        "minimum_los_margin": Infinity,
+        "minimum_terrain_margin": 83.25197093441074,
+        "nominal_endpoint_to_grid": [
+          0.0,
+          0.0
+        ],
+        "reference_grid_endpoint": [
+          1813.28125,
+          92.0
+        ],
+        "reference_grid_start": [
+          1804.6875,
+          94.0
+        ],
+        "start_drift": [
+          0.0,
+          0.0
+        ],
+        "start_drift_norm": 0.0,
+        "step_index": 55,
+        "terminal_fraction": 1.0
+      },
+      {
+        "continuous_nominal_endpoint": [
+          1821.875,
+          90.0
+        ],
+        "continuous_start": [
+          1813.28125,
+          92.0
+        ],
+        "first_invalid_sample": null,
+        "minimum_los_margin": Infinity,
+        "minimum_terrain_margin": 79.76721046942691,
+        "nominal_endpoint_to_grid": [
+          0.0,
+          0.0
+        ],
+        "reference_grid_endpoint": [
+          1821.875,
+          90.0
+        ],
+        "reference_grid_start": [
+          1813.28125,
+          92.0
+        ],
+        "start_drift": [
+          0.0,
+          0.0
+        ],
+        "start_drift_norm": 0.0,
+        "step_index": 56,
+        "terminal_fraction": 1.0
+      },
+      {
+        "continuous_nominal_endpoint": [
+          1847.65625,
+          85.0
+        ],
+        "continuous_start": [
+          1821.875,
+          90.0
+        ],
+        "first_invalid_sample": null,
+        "minimum_los_margin": Infinity,
+        "minimum_terrain_margin": 69.33244368920656,
+        "nominal_endpoint_to_grid": [
+          0.0,
+          0.0
+        ],
+        "reference_grid_endpoint": [
+          1847.65625,
+          85.0
+        ],
+        "reference_grid_start": [
+          1821.875,
+          90.0
+        ],
+        "start_drift": [
+          0.0,
+          0.0
+        ],
+        "start_drift_norm": 0.0,
+        "step_index": 57,
+        "terminal_fraction": 1.0
+      },
+      {
+        "continuous_nominal_endpoint": [
+          1864.84375,
+          82.0
+        ],
+        "continuous_start": [
+          1847.65625,
+          85.0
+        ],
+        "first_invalid_sample": null,
+        "minimum_los_margin": Infinity,
+        "minimum_terrain_margin": 61.94131133568057,
+        "nominal_endpoint_to_grid": [
+          0.0,
+          0.0
+        ],
+        "reference_grid_endpoint": [
+          1864.84375,
+          82.0
+        ],
+        "reference_grid_start": [
+          1847.65625,
+          85.0
+        ],
+        "start_drift": [
+          0.0,
+          0.0
+        ],
+        "start_drift_norm": 0.0,
+        "step_index": 58,
+        "terminal_fraction": 1.0
+      },
+      {
+        "continuous_nominal_endpoint": [
+          1882.03125,
+          79.0
+        ],
+        "continuous_start": [
+          1864.84375,
+          82.0
+        ],
+        "first_invalid_sample": null,
+        "minimum_los_margin": Infinity,
+        "minimum_terrain_margin": 54.067012981088254,
+        "nominal_endpoint_to_grid": [
+          0.0,
+          0.0
+        ],
+        "reference_grid_endpoint": [
+          1882.03125,
+          79.0
+        ],
+        "reference_grid_start": [
+          1864.84375,
+          82.0
+        ],
+        "start_drift": [
+          0.0,
+          0.0
+        ],
+        "start_drift_norm": 0.0,
+        "step_index": 59,
+        "terminal_fraction": 1.0
+      },
+      {
+        "continuous_nominal_endpoint": [
+          1907.8125,
+          75.0
+        ],
+        "continuous_start": [
+          1882.03125,
+          79.0
+        ],
+        "first_invalid_sample": null,
+        "minimum_los_margin": Infinity,
+        "minimum_terrain_margin": 42.30911647936892,
+        "nominal_endpoint_to_grid": [
+          0.0,
+          0.0
+        ],
+        "reference_grid_endpoint": [
+          1907.8125,
+          75.0
+        ],
+        "reference_grid_start": [
+          1882.03125,
+          79.0
+        ],
+        "start_drift": [
+          0.0,
+          0.0
+        ],
+        "start_drift_norm": 0.0,
+        "step_index": 60,
+        "terminal_fraction": 1.0
+      },
+      {
+        "continuous_nominal_endpoint": [
+          1933.59375,
+          71.0
+        ],
+        "continuous_start": [
+          1907.8125,
+          75.0
+        ],
+        "first_invalid_sample": null,
+        "minimum_los_margin": Infinity,
+        "minimum_terrain_margin": 30.893697021279877,
+        "nominal_endpoint_to_grid": [
+          0.0,
+          0.0
+        ],
+        "reference_grid_endpoint": [
+          1933.59375,
+          71.0
+        ],
+        "reference_grid_start": [
+          1907.8125,
+          75.0
+        ],
+        "start_drift": [
+          0.0,
+          0.0
+        ],
+        "start_drift_norm": 0.0,
+        "step_index": 61,
+        "terminal_fraction": 1.0
+      },
+      {
+        "continuous_nominal_endpoint": [
+          1959.375,
+          67.0
+        ],
+        "continuous_start": [
+          1933.59375,
+          71.0
+        ],
+        "first_invalid_sample": null,
+        "minimum_los_margin": Infinity,
+        "minimum_terrain_margin": 20.96032732829807,
+        "nominal_endpoint_to_grid": [
+          0.0,
+          0.0
+        ],
+        "reference_grid_endpoint": [
+          1959.375,
+          67.0
+        ],
+        "reference_grid_start": [
+          1933.59375,
+          71.0
+        ],
+        "start_drift": [
+          0.0,
+          0.0
+        ],
+        "start_drift_norm": 0.0,
+        "step_index": 62,
+        "terminal_fraction": 1.0
+      },
+      {
+        "continuous_nominal_endpoint": [
+          1985.15625,
+          63.0
+        ],
+        "continuous_start": [
+          1959.375,
+          67.0
+        ],
+        "first_invalid_sample": null,
+        "minimum_los_margin": Infinity,
+        "minimum_terrain_margin": 13.547819125006221,
+        "nominal_endpoint_to_grid": [
+          0.0,
+          0.0
+        ],
+        "reference_grid_endpoint": [
+          1985.15625,
+          63.0
+        ],
+        "reference_grid_start": [
+          1959.375,
+          67.0
+        ],
+        "start_drift": [
+          0.0,
+          0.0
+        ],
+        "start_drift_norm": 0.0,
+        "step_index": 63,
+        "terminal_fraction": 1.0
+      },
+      {
+        "continuous_nominal_endpoint": [
+          2010.9375,
+          59.0
+        ],
+        "continuous_start": [
+          1985.15625,
+          63.0
+        ],
+        "first_invalid_sample": null,
+        "minimum_los_margin": Infinity,
+        "minimum_terrain_margin": 9.298179604113145,
+        "nominal_endpoint_to_grid": [
+          0.0,
+          0.0
+        ],
+        "reference_grid_endpoint": [
+          2010.9375,
+          59.0
+        ],
+        "reference_grid_start": [
+          1985.15625,
+          63.0
+        ],
+        "start_drift": [
+          0.0,
+          0.0
+        ],
+        "start_drift_norm": 0.0,
+        "step_index": 64,
+        "terminal_fraction": 1.0
+      },
+      {
+        "continuous_nominal_endpoint": [
+          2036.71875,
+          55.0
+        ],
+        "continuous_start": [
+          2010.9375,
+          59.0
+        ],
+        "first_invalid_sample": null,
+        "minimum_los_margin": Infinity,
+        "minimum_terrain_margin": 8.227757491609125,
+        "nominal_endpoint_to_grid": [
+          0.0,
+          0.0
+        ],
+        "reference_grid_endpoint": [
+          2036.71875,
+          55.0
+        ],
+        "reference_grid_start": [
+          2010.9375,
+          59.0
+        ],
+        "start_drift": [
+          0.0,
+          0.0
+        ],
+        "start_drift_norm": 0.0,
+        "step_index": 65,
+        "terminal_fraction": 1.0
+      },
+      {
+        "continuous_nominal_endpoint": [
+          2062.5,
+          51.0
+        ],
+        "continuous_start": [
+          2036.71875,
+          55.0
+        ],
+        "first_invalid_sample": null,
+        "minimum_los_margin": Infinity,
+        "minimum_terrain_margin": 8.333382926236396,
+        "nominal_endpoint_to_grid": [
+          0.0,
+          0.0
+        ],
+        "reference_grid_endpoint": [
+          2062.5,
+          51.0
+        ],
+        "reference_grid_start": [
+          2036.71875,
+          55.0
+        ],
+        "start_drift": [
+          0.0,
+          0.0
+        ],
+        "start_drift_norm": 0.0,
+        "step_index": 66,
+        "terminal_fraction": 1.0
+      },
+      {
+        "continuous_nominal_endpoint": [
+          2071.09375,
+          50.0
+        ],
+        "continuous_start": [
+          2062.5,
+          51.0
+        ],
+        "first_invalid_sample": null,
+        "minimum_los_margin": Infinity,
+        "minimum_terrain_margin": 10.023687886498777,
+        "nominal_endpoint_to_grid": [
+          0.0,
+          0.0
+        ],
+        "reference_grid_endpoint": [
+          2071.09375,
+          50.0
+        ],
+        "reference_grid_start": [
+          2062.5,
+          51.0
+        ],
+        "start_drift": [
+          0.0,
+          0.0
+        ],
+        "start_drift_norm": 0.0,
+        "step_index": 67,
+        "terminal_fraction": 1.0
+      },
+      {
+        "continuous_nominal_endpoint": [
+          2079.6875,
+          49.0
+        ],
+        "continuous_start": [
+          2071.09375,
+          50.0
+        ],
+        "first_invalid_sample": null,
+        "minimum_los_margin": Infinity,
+        "minimum_terrain_margin": 11.338253652992222,
+        "nominal_endpoint_to_grid": [
+          0.0,
+          0.0
+        ],
+        "reference_grid_endpoint": [
+          2079.6875,
+          49.0
+        ],
+        "reference_grid_start": [
+          2071.09375,
+          50.0
+        ],
+        "start_drift": [
+          0.0,
+          0.0
+        ],
+        "start_drift_norm": 0.0,
+        "step_index": 68,
+        "terminal_fraction": 1.0
+      },
+      {
+        "continuous_nominal_endpoint": [
+          2088.28125,
+          48.0
+        ],
+        "continuous_start": [
+          2079.6875,
+          49.0
+        ],
+        "first_invalid_sample": null,
+        "minimum_los_margin": Infinity,
+        "minimum_terrain_margin": 12.789169594115457,
+        "nominal_endpoint_to_grid": [
+          0.0,
+          0.0
+        ],
+        "reference_grid_endpoint": [
+          2088.28125,
+          48.0
+        ],
+        "reference_grid_start": [
+          2079.6875,
+          49.0
+        ],
+        "start_drift": [
+          0.0,
+          0.0
+        ],
+        "start_drift_norm": 0.0,
+        "step_index": 69,
+        "terminal_fraction": 1.0
+      },
+      {
+        "continuous_nominal_endpoint": [
+          2096.875,
+          47.0
+        ],
+        "continuous_start": [
+          2088.28125,
+          48.0
+        ],
+        "first_invalid_sample": null,
+        "minimum_los_margin": Infinity,
+        "minimum_terrain_margin": 14.332842954052921,
+        "nominal_endpoint_to_grid": [
+          0.0,
+          0.0
+        ],
+        "reference_grid_endpoint": [
+          2096.875,
+          47.0
+        ],
+        "reference_grid_start": [
+          2088.28125,
+          48.0
+        ],
+        "start_drift": [
+          0.0,
+          0.0
+        ],
+        "start_drift_norm": 0.0,
+        "step_index": 70,
+        "terminal_fraction": 1.0
+      },
+      {
+        "continuous_nominal_endpoint": [
+          2105.46875,
+          46.0
+        ],
+        "continuous_start": [
+          2096.875,
+          47.0
+        ],
+        "first_invalid_sample": null,
+        "minimum_los_margin": Infinity,
+        "minimum_terrain_margin": 15.926621682216922,
+        "nominal_endpoint_to_grid": [
+          0.0,
+          0.0
+        ],
+        "reference_grid_endpoint": [
+          2105.46875,
+          46.0
+        ],
+        "reference_grid_start": [
+          2096.875,
+          47.0
+        ],
+        "start_drift": [
+          0.0,
+          0.0
+        ],
+        "start_drift_norm": 0.0,
+        "step_index": 71,
+        "terminal_fraction": 1.0
+      },
+      {
+        "continuous_nominal_endpoint": [
+          2114.0625,
+          45.0
+        ],
+        "continuous_start": [
+          2105.46875,
+          46.0
+        ],
+        "first_invalid_sample": null,
+        "minimum_los_margin": Infinity,
+        "minimum_terrain_margin": 17.529936721929054,
+        "nominal_endpoint_to_grid": [
+          0.0,
+          0.0
+        ],
+        "reference_grid_endpoint": [
+          2114.0625,
+          45.0
+        ],
+        "reference_grid_start": [
+          2105.46875,
+          46.0
+        ],
+        "start_drift": [
+          0.0,
+          0.0
+        ],
+        "start_drift_norm": 0.0,
+        "step_index": 72,
+        "terminal_fraction": 1.0
+      },
+      {
+        "continuous_nominal_endpoint": [
+          2122.65625,
+          44.0
+        ],
+        "continuous_start": [
+          2114.0625,
+          45.0
+        ],
+        "first_invalid_sample": null,
+        "minimum_los_margin": Infinity,
+        "minimum_terrain_margin": 19.10528656796905,
+        "nominal_endpoint_to_grid": [
+          0.0,
+          0.0
+        ],
+        "reference_grid_endpoint": [
+          2122.65625,
+          44.0
+        ],
+        "reference_grid_start": [
+          2114.0625,
+          45.0
+        ],
+        "start_drift": [
+          0.0,
+          0.0
+        ],
+        "start_drift_norm": 0.0,
+        "step_index": 73,
+        "terminal_fraction": 1.0
+      },
+      {
+        "continuous_nominal_endpoint": [
+          2131.25,
+          43.0
+        ],
+        "continuous_start": [
+          2122.65625,
+          44.0
+        ],
+        "first_invalid_sample": null,
+        "minimum_los_margin": Infinity,
+        "minimum_terrain_margin": 20.619034656396163,
+        "nominal_endpoint_to_grid": [
+          0.0,
+          0.0
+        ],
+        "reference_grid_endpoint": [
+          2131.25,
+          43.0
+        ],
+        "reference_grid_start": [
+          2122.65625,
+          44.0
+        ],
+        "start_drift": [
+          0.0,
+          0.0
+        ],
+        "start_drift_norm": 0.0,
+        "step_index": 74,
+        "terminal_fraction": 1.0
+      },
+      {
+        "continuous_nominal_endpoint": [
+          2139.84375,
+          42.0
+        ],
+        "continuous_start": [
+          2131.25,
+          43.0
+        ],
+        "first_invalid_sample": null,
+        "minimum_los_margin": Infinity,
+        "minimum_terrain_margin": 22.042001713158434,
+        "nominal_endpoint_to_grid": [
+          0.0,
+          0.0
+        ],
+        "reference_grid_endpoint": [
+          2139.84375,
+          42.0
+        ],
+        "reference_grid_start": [
+          2131.25,
+          43.0
+        ],
+        "start_drift": [
+          0.0,
+          0.0
+        ],
+        "start_drift_norm": 0.0,
+        "step_index": 75,
+        "terminal_fraction": 1.0
+      },
+      {
+        "continuous_nominal_endpoint": [
+          2148.4375,
+          41.0
+        ],
+        "continuous_start": [
+          2139.84375,
+          42.0
+        ],
+        "first_invalid_sample": null,
+        "minimum_los_margin": Infinity,
+        "minimum_terrain_margin": 23.349846783682047,
+        "nominal_endpoint_to_grid": [
+          0.0,
+          0.0
+        ],
+        "reference_grid_endpoint": [
+          2148.4375,
+          41.0
+        ],
+        "reference_grid_start": [
+          2139.84375,
+          42.0
+        ],
+        "start_drift": [
+          0.0,
+          0.0
+        ],
+        "start_drift_norm": 0.0,
+        "step_index": 76,
+        "terminal_fraction": 1.0
+      },
+      {
+        "continuous_nominal_endpoint": [
+          2157.03125,
+          40.0
+        ],
+        "continuous_start": [
+          2148.4375,
+          41.0
+        ],
+        "first_invalid_sample": null,
+        "minimum_los_margin": Infinity,
+        "minimum_terrain_margin": 24.523241562894086,
+        "nominal_endpoint_to_grid": [
+          0.0,
+          0.0
+        ],
+        "reference_grid_endpoint": [
+          2157.03125,
+          40.0
+        ],
+        "reference_grid_start": [
+          2148.4375,
+          41.0
+        ],
+        "start_drift": [
+          0.0,
+          0.0
+        ],
+        "start_drift_norm": 0.0,
+        "step_index": 77,
+        "terminal_fraction": 1.0
+      },
+      {
+        "continuous_nominal_endpoint": [
+          2165.625,
+          39.0
+        ],
+        "continuous_start": [
+          2157.03125,
+          40.0
+        ],
+        "first_invalid_sample": null,
+        "minimum_los_margin": Infinity,
+        "minimum_terrain_margin": 25.54785222760308,
+        "nominal_endpoint_to_grid": [
+          0.0,
+          0.0
+        ],
+        "reference_grid_endpoint": [
+          2165.625,
+          39.0
+        ],
+        "reference_grid_start": [
+          2157.03125,
+          40.0
+        ],
+        "start_drift": [
+          0.0,
+          0.0
+        ],
+        "start_drift_norm": 0.0,
+        "step_index": 78,
+        "terminal_fraction": 1.0
+      },
+      {
+        "continuous_nominal_endpoint": [
+          2174.21875,
+          38.0
+        ],
+        "continuous_start": [
+          2165.625,
+          39.0
+        ],
+        "first_invalid_sample": null,
+        "minimum_los_margin": Infinity,
+        "minimum_terrain_margin": 26.414150775377095,
+        "nominal_endpoint_to_grid": [
+          0.0,
+          0.0
+        ],
+        "reference_grid_endpoint": [
+          2174.21875,
+          38.0
+        ],
+        "reference_grid_start": [
+          2165.625,
+          39.0
+        ],
+        "start_drift": [
+          0.0,
+          0.0
+        ],
+        "start_drift_norm": 0.0,
+        "step_index": 79,
+        "terminal_fraction": 1.0
+      },
+      {
+        "continuous_nominal_endpoint": [
+          2182.8125,
+          37.0
+        ],
+        "continuous_start": [
+          2174.21875,
+          38.0
+        ],
+        "first_invalid_sample": null,
+        "minimum_los_margin": Infinity,
+        "minimum_terrain_margin": 27.117083601714032,
+        "nominal_endpoint_to_grid": [
+          0.0,
+          0.0
+        ],
+        "reference_grid_endpoint": [
+          2182.8125,
+          37.0
+        ],
+        "reference_grid_start": [
+          2174.21875,
+          38.0
+        ],
+        "start_drift": [
+          0.0,
+          0.0
+        ],
+        "start_drift_norm": 0.0,
+        "step_index": 80,
+        "terminal_fraction": 1.0
+      },
+      {
+        "continuous_nominal_endpoint": [
+          2191.40625,
+          36.0
+        ],
+        "continuous_start": [
+          2182.8125,
+          37.0
+        ],
+        "first_invalid_sample": null,
+        "minimum_los_margin": Infinity,
+        "minimum_terrain_margin": 27.655628581264338,
+        "nominal_endpoint_to_grid": [
+          0.0,
+          0.0
+        ],
+        "reference_grid_endpoint": [
+          2191.40625,
+          36.0
+        ],
+        "reference_grid_start": [
+          2182.8125,
+          37.0
+        ],
+        "start_drift": [
+          0.0,
+          0.0
+        ],
+        "start_drift_norm": 0.0,
+        "step_index": 81,
+        "terminal_fraction": 1.0
+      },
+      {
+        "continuous_nominal_endpoint": [
+          2200.0,
+          35.0
+        ],
+        "continuous_start": [
+          2191.40625,
+          36.0
+        ],
+        "first_invalid_sample": null,
+        "minimum_los_margin": Infinity,
+        "minimum_terrain_margin": 28.03227330432518,
+        "nominal_endpoint_to_grid": [
+          0.0,
+          0.0
+        ],
+        "reference_grid_endpoint": [
+          2200.0,
+          35.0
+        ],
+        "reference_grid_start": [
+          2191.40625,
+          36.0
+        ],
+        "start_drift": [
+          0.0,
+          0.0
+        ],
+        "start_drift_norm": 0.0,
+        "step_index": 82,
+        "terminal_fraction": 1.0
+      },
+      {
+        "continuous_nominal_endpoint": [
+          2208.59375,
+          34.0
+        ],
+        "continuous_start": [
+          2200.0,
+          35.0
+        ],
+        "first_invalid_sample": null,
+        "minimum_los_margin": Infinity,
+        "minimum_terrain_margin": 28.252446543187475,
+        "nominal_endpoint_to_grid": [
+          0.0,
+          0.0
+        ],
+        "reference_grid_endpoint": [
+          2208.59375,
+          34.0
+        ],
+        "reference_grid_start": [
+          2200.0,
+          35.0
+        ],
+        "start_drift": [
+          0.0,
+          0.0
+        ],
+        "start_drift_norm": 0.0,
+        "step_index": 83,
+        "terminal_fraction": 1.0
+      },
+      {
+        "continuous_nominal_endpoint": [
+          2217.1875,
+          33.0
+        ],
+        "continuous_start": [
+          2208.59375,
+          34.0
+        ],
+        "first_invalid_sample": null,
+        "minimum_los_margin": Infinity,
+        "minimum_terrain_margin": 28.271998971603864,
+        "nominal_endpoint_to_grid": [
+          0.0,
+          0.0
+        ],
+        "reference_grid_endpoint": [
+          2217.1875,
+          33.0
+        ],
+        "reference_grid_start": [
+          2208.59375,
+          34.0
+        ],
+        "start_drift": [
+          0.0,
+          0.0
+        ],
+        "start_drift_norm": 0.0,
+        "step_index": 84,
+        "terminal_fraction": 1.0
+      },
+      {
+        "continuous_nominal_endpoint": [
+          2225.78125,
+          32.0
+        ],
+        "continuous_start": [
+          2217.1875,
+          33.0
+        ],
+        "first_invalid_sample": null,
+        "minimum_los_margin": Infinity,
+        "minimum_terrain_margin": 28.091458201606127,
+        "nominal_endpoint_to_grid": [
+          0.0,
+          0.0
+        ],
+        "reference_grid_endpoint": [
+          2225.78125,
+          32.0
+        ],
+        "reference_grid_start": [
+          2217.1875,
+          33.0
+        ],
+        "start_drift": [
+          0.0,
+          0.0
+        ],
+        "start_drift_norm": 0.0,
+        "step_index": 85,
+        "terminal_fraction": 1.0
+      },
+      {
+        "continuous_nominal_endpoint": [
+          2234.375,
+          31.0
+        ],
+        "continuous_start": [
+          2225.78125,
+          32.0
+        ],
+        "first_invalid_sample": null,
+        "minimum_los_margin": Infinity,
+        "minimum_terrain_margin": 27.792663075833705,
+        "nominal_endpoint_to_grid": [
+          0.0,
+          0.0
+        ],
+        "reference_grid_endpoint": [
+          2234.375,
+          31.0
+        ],
+        "reference_grid_start": [
+          2225.78125,
+          32.0
+        ],
+        "start_drift": [
+          0.0,
+          0.0
+        ],
+        "start_drift_norm": 0.0,
+        "step_index": 86,
+        "terminal_fraction": 1.0
+      },
+      {
+        "continuous_nominal_endpoint": [
+          2242.96875,
+          30.0
+        ],
+        "continuous_start": [
+          2234.375,
+          31.0
+        ],
+        "first_invalid_sample": null,
+        "minimum_los_margin": Infinity,
+        "minimum_terrain_margin": 27.387435433069637,
+        "nominal_endpoint_to_grid": [
+          0.0,
+          0.0
+        ],
+        "reference_grid_endpoint": [
+          2242.96875,
+          30.0
+        ],
+        "reference_grid_start": [
+          2234.375,
+          31.0
+        ],
+        "start_drift": [
+          0.0,
+          0.0
+        ],
+        "start_drift_norm": 0.0,
+        "step_index": 87,
+        "terminal_fraction": 1.0
+      },
+      {
+        "continuous_nominal_endpoint": [
+          2251.5625,
+          29.0
+        ],
+        "continuous_start": [
+          2242.96875,
+          30.0
+        ],
+        "first_invalid_sample": null,
+        "minimum_los_margin": Infinity,
+        "minimum_terrain_margin": 26.88757107414896,
+        "nominal_endpoint_to_grid": [
+          0.0,
+          0.0
+        ],
+        "reference_grid_endpoint": [
+          2251.5625,
+          29.0
+        ],
+        "reference_grid_start": [
+          2242.96875,
+          30.0
+        ],
+        "start_drift": [
+          0.0,
+          0.0
+        ],
+        "start_drift_norm": 0.0,
+        "step_index": 88,
+        "terminal_fraction": 1.0
+      },
+      {
+        "continuous_nominal_endpoint": [
+          2260.15625,
+          28.0
+        ],
+        "continuous_start": [
+          2251.5625,
+          29.0
+        ],
+        "first_invalid_sample": null,
+        "minimum_los_margin": Infinity,
+        "minimum_terrain_margin": 26.3045311932822,
+        "nominal_endpoint_to_grid": [
+          0.0,
+          0.0
+        ],
+        "reference_grid_endpoint": [
+          2260.15625,
+          28.0
+        ],
+        "reference_grid_start": [
+          2251.5625,
+          29.0
+        ],
+        "start_drift": [
+          0.0,
+          0.0
+        ],
+        "start_drift_norm": 0.0,
+        "step_index": 89,
+        "terminal_fraction": 1.0
+      },
+      {
+        "continuous_nominal_endpoint": [
+          2268.75,
+          27.0
+        ],
+        "continuous_start": [
+          2260.15625,
+          28.0
+        ],
+        "first_invalid_sample": null,
+        "minimum_los_margin": Infinity,
+        "minimum_terrain_margin": 25.649202875986745,
+        "nominal_endpoint_to_grid": [
+          0.0,
+          0.0
+        ],
+        "reference_grid_endpoint": [
+          2268.75,
+          27.0
+        ],
+        "reference_grid_start": [
+          2260.15625,
+          28.0
+        ],
+        "start_drift": [
+          0.0,
+          0.0
+        ],
+        "start_drift_norm": 0.0,
+        "step_index": 90,
+        "terminal_fraction": 1.0
+      },
+      {
+        "continuous_nominal_endpoint": [
+          2277.34375,
+          26.0
+        ],
+        "continuous_start": [
+          2268.75,
+          27.0
+        ],
+        "first_invalid_sample": null,
+        "minimum_los_margin": Infinity,
+        "minimum_terrain_margin": 24.931724974152726,
+        "nominal_endpoint_to_grid": [
+          0.0,
+          0.0
+        ],
+        "reference_grid_endpoint": [
+          2277.34375,
+          26.0
+        ],
+        "reference_grid_start": [
+          2268.75,
+          27.0
+        ],
+        "start_drift": [
+          0.0,
+          0.0
+        ],
+        "start_drift_norm": 0.0,
+        "step_index": 91,
+        "terminal_fraction": 1.0
+      },
+      {
+        "continuous_nominal_endpoint": [
+          2285.9375,
+          25.0
+        ],
+        "continuous_start": [
+          2277.34375,
+          26.0
+        ],
+        "first_invalid_sample": null,
+        "minimum_los_margin": Infinity,
+        "minimum_terrain_margin": 24.16137337036996,
+        "nominal_endpoint_to_grid": [
+          0.0,
+          0.0
+        ],
+        "reference_grid_endpoint": [
+          2285.9375,
+          25.0
+        ],
+        "reference_grid_start": [
+          2277.34375,
+          26.0
+        ],
+        "start_drift": [
+          0.0,
+          0.0
+        ],
+        "start_drift_norm": 0.0,
+        "step_index": 92,
+        "terminal_fraction": 1.0
+      },
+      {
+        "continuous_nominal_endpoint": [
+          2294.53125,
+          24.0
+        ],
+        "continuous_start": [
+          2285.9375,
+          25.0
+        ],
+        "first_invalid_sample": null,
+        "minimum_los_margin": Infinity,
+        "minimum_terrain_margin": 23.346498111370586,
+        "nominal_endpoint_to_grid": [
+          0.0,
+          0.0
+        ],
+        "reference_grid_endpoint": [
+          2294.53125,
+          24.0
+        ],
+        "reference_grid_start": [
+          2285.9375,
+          25.0
+        ],
+        "start_drift": [
+          0.0,
+          0.0
+        ],
+        "start_drift_norm": 0.0,
+        "step_index": 93,
+        "terminal_fraction": 1.0
+      },
+      {
+        "continuous_nominal_endpoint": [
+          2303.125,
+          23.0
+        ],
+        "continuous_start": [
+          2294.53125,
+          24.0
+        ],
+        "first_invalid_sample": null,
+        "minimum_los_margin": Infinity,
+        "minimum_terrain_margin": 22.494504061827953,
+        "nominal_endpoint_to_grid": [
+          0.0,
+          0.0
+        ],
+        "reference_grid_endpoint": [
+          2303.125,
+          23.0
+        ],
+        "reference_grid_start": [
+          2294.53125,
+          24.0
+        ],
+        "start_drift": [
+          0.0,
+          0.0
+        ],
+        "start_drift_norm": 0.0,
+        "step_index": 94,
+        "terminal_fraction": 1.0
+      },
+      {
+        "continuous_nominal_endpoint": [
+          2311.71875,
+          22.0
+        ],
+        "continuous_start": [
+          2303.125,
+          23.0
+        ],
+        "first_invalid_sample": null,
+        "minimum_los_margin": Infinity,
+        "minimum_terrain_margin": 21.61186650903451,
+        "nominal_endpoint_to_grid": [
+          0.0,
+          0.0
+        ],
+        "reference_grid_endpoint": [
+          2311.71875,
+          22.0
+        ],
+        "reference_grid_start": [
+          2303.125,
+          23.0
+        ],
+        "start_drift": [
+          0.0,
+          0.0
+        ],
+        "start_drift_norm": 0.0,
+        "step_index": 95,
+        "terminal_fraction": 1.0
+      },
+      {
+        "continuous_nominal_endpoint": [
+          2320.3125,
+          21.0
+        ],
+        "continuous_start": [
+          2311.71875,
+          22.0
+        ],
+        "first_invalid_sample": null,
+        "minimum_los_margin": Infinity,
+        "minimum_terrain_margin": 20.704173420785153,
+        "nominal_endpoint_to_grid": [
+          0.0,
+          0.0
+        ],
+        "reference_grid_endpoint": [
+          2320.3125,
+          21.0
+        ],
+        "reference_grid_start": [
+          2311.71875,
+          22.0
+        ],
+        "start_drift": [
+          0.0,
+          0.0
+        ],
+        "start_drift_norm": 0.0,
+        "step_index": 96,
+        "terminal_fraction": 1.0
+      },
+      {
+        "continuous_nominal_endpoint": [
+          2328.90625,
+          20.0
+        ],
+        "continuous_start": [
+          2320.3125,
+          21.0
+        ],
+        "first_invalid_sample": null,
+        "minimum_los_margin": Infinity,
+        "minimum_terrain_margin": 19.776186700495895,
+        "nominal_endpoint_to_grid": [
+          0.0,
+          0.0
+        ],
+        "reference_grid_endpoint": [
+          2328.90625,
+          20.0
+        ],
+        "reference_grid_start": [
+          2320.3125,
+          21.0
+        ],
+        "start_drift": [
+          0.0,
+          0.0
+        ],
+        "start_drift_norm": 0.0,
+        "step_index": 97,
+        "terminal_fraction": 1.0
+      },
+      {
+        "continuous_nominal_endpoint": [
+          2337.5,
+          19.0
+        ],
+        "continuous_start": [
+          2328.90625,
+          20.0
+        ],
+        "first_invalid_sample": null,
+        "minimum_los_margin": Infinity,
+        "minimum_terrain_margin": 18.831915675603387,
+        "nominal_endpoint_to_grid": [
+          0.0,
+          0.0
+        ],
+        "reference_grid_endpoint": [
+          2337.5,
+          19.0
+        ],
+        "reference_grid_start": [
+          2328.90625,
+          20.0
+        ],
+        "start_drift": [
+          0.0,
+          0.0
+        ],
+        "start_drift_norm": 0.0,
+        "step_index": 98,
+        "terminal_fraction": 1.0
+      },
+      {
+        "continuous_nominal_endpoint": [
+          2346.09375,
+          18.0
+        ],
+        "continuous_start": [
+          2337.5,
+          19.0
+        ],
+        "first_invalid_sample": null,
+        "minimum_los_margin": Infinity,
+        "minimum_terrain_margin": 17.874697088864373,
+        "nominal_endpoint_to_grid": [
+          0.0,
+          0.0
+        ],
+        "reference_grid_endpoint": [
+          2346.09375,
+          18.0
+        ],
+        "reference_grid_start": [
+          2337.5,
+          19.0
+        ],
+        "start_drift": [
+          0.0,
+          0.0
+        ],
+        "start_drift_norm": 0.0,
+        "step_index": 99,
+        "terminal_fraction": 1.0
+      },
+      {
+        "continuous_nominal_endpoint": [
+          2354.6875,
+          17.0
+        ],
+        "continuous_start": [
+          2346.09375,
+          18.0
+        ],
+        "first_invalid_sample": null,
+        "minimum_los_margin": Infinity,
+        "minimum_terrain_margin": 16.90727694458771,
+        "nominal_endpoint_to_grid": [
+          0.0,
+          0.0
+        ],
+        "reference_grid_endpoint": [
+          2354.6875,
+          17.0
+        ],
+        "reference_grid_start": [
+          2346.09375,
+          18.0
+        ],
+        "start_drift": [
+          0.0,
+          0.0
+        ],
+        "start_drift_norm": 0.0,
+        "step_index": 100,
+        "terminal_fraction": 1.0
+      },
+      {
+        "continuous_nominal_endpoint": [
+          2363.28125,
+          16.0
+        ],
+        "continuous_start": [
+          2354.6875,
+          17.0
+        ],
+        "first_invalid_sample": null,
+        "minimum_los_margin": Infinity,
+        "minimum_terrain_margin": 15.93189061917982,
+        "nominal_endpoint_to_grid": [
+          0.0,
+          0.0
+        ],
+        "reference_grid_endpoint": [
+          2363.28125,
+          16.0
+        ],
+        "reference_grid_start": [
+          2354.6875,
+          17.0
+        ],
+        "start_drift": [
+          0.0,
+          0.0
+        ],
+        "start_drift_norm": 0.0,
+        "step_index": 101,
+        "terminal_fraction": 1.0
+      },
+      {
+        "continuous_nominal_endpoint": [
+          2371.875,
+          15.0
+        ],
+        "continuous_start": [
+          2363.28125,
+          16.0
+        ],
+        "first_invalid_sample": null,
+        "minimum_los_margin": Infinity,
+        "minimum_terrain_margin": 14.950338623252751,
+        "nominal_endpoint_to_grid": [
+          0.0,
+          0.0
+        ],
+        "reference_grid_endpoint": [
+          2371.875,
+          15.0
+        ],
+        "reference_grid_start": [
+          2363.28125,
+          16.0
+        ],
+        "start_drift": [
+          0.0,
+          0.0
+        ],
+        "start_drift_norm": 0.0,
+        "step_index": 102,
+        "terminal_fraction": 1.0
+      },
+      {
+        "continuous_nominal_endpoint": [
+          2380.46875,
+          14.0
+        ],
+        "continuous_start": [
+          2371.875,
+          15.0
+        ],
+        "first_invalid_sample": null,
+        "minimum_los_margin": Infinity,
+        "minimum_terrain_margin": 13.964056265038781,
+        "nominal_endpoint_to_grid": [
+          0.0,
+          0.0
+        ],
+        "reference_grid_endpoint": [
+          2380.46875,
+          14.0
+        ],
+        "reference_grid_start": [
+          2371.875,
+          15.0
+        ],
+        "start_drift": [
+          0.0,
+          0.0
+        ],
+        "start_drift_norm": 0.0,
+        "step_index": 103,
+        "terminal_fraction": 1.0
+      },
+      {
+        "continuous_nominal_endpoint": [
+          2389.0625,
+          13.0
+        ],
+        "continuous_start": [
+          2380.46875,
+          14.0
+        ],
+        "first_invalid_sample": null,
+        "minimum_los_margin": Infinity,
+        "minimum_terrain_margin": 12.97417619246529,
+        "nominal_endpoint_to_grid": [
+          0.0,
+          0.0
+        ],
+        "reference_grid_endpoint": [
+          2389.0625,
+          13.0
+        ],
+        "reference_grid_start": [
+          2380.46875,
+          14.0
+        ],
+        "start_drift": [
+          0.0,
+          0.0
+        ],
+        "start_drift_norm": 0.0,
+        "step_index": 104,
+        "terminal_fraction": 1.0
+      },
+      {
+        "continuous_nominal_endpoint": [
+          2397.65625,
+          12.0
+        ],
+        "continuous_start": [
+          2389.0625,
+          13.0
+        ],
+        "first_invalid_sample": null,
+        "minimum_los_margin": Infinity,
+        "minimum_terrain_margin": 11.98158337800332,
+        "nominal_endpoint_to_grid": [
+          0.0,
+          0.0
+        ],
+        "reference_grid_endpoint": [
+          2397.65625,
+          12.0
+        ],
+        "reference_grid_start": [
+          2389.0625,
+          13.0
+        ],
+        "start_drift": [
+          0.0,
+          0.0
+        ],
+        "start_drift_norm": 0.0,
+        "step_index": 105,
+        "terminal_fraction": 1.0
+      },
+      {
+        "continuous_nominal_endpoint": [
+          2406.25,
+          11.0
+        ],
+        "continuous_start": [
+          2397.65625,
+          12.0
+        ],
+        "first_invalid_sample": null,
+        "minimum_los_margin": Infinity,
+        "minimum_terrain_margin": 10.986962560766559,
+        "nominal_endpoint_to_grid": [
+          0.0,
+          0.0
+        ],
+        "reference_grid_endpoint": [
+          2406.25,
+          11.0
+        ],
+        "reference_grid_start": [
+          2397.65625,
+          12.0
+        ],
+        "start_drift": [
+          0.0,
+          0.0
+        ],
+        "start_drift_norm": 0.0,
+        "step_index": 106,
+        "terminal_fraction": 1.0
+      },
+      {
+        "continuous_nominal_endpoint": [
+          2414.84375,
+          10.0
+        ],
+        "continuous_start": [
+          2406.25,
+          11.0
+        ],
+        "first_invalid_sample": null,
+        "minimum_los_margin": Infinity,
+        "minimum_terrain_margin": 9.990838486093116,
+        "nominal_endpoint_to_grid": [
+          0.0,
+          0.0
+        ],
+        "reference_grid_endpoint": [
+          2414.84375,
+          10.0
+        ],
+        "reference_grid_start": [
+          2406.25,
+          11.0
+        ],
+        "start_drift": [
+          0.0,
+          0.0
+        ],
+        "start_drift_norm": 0.0,
+        "step_index": 107,
+        "terminal_fraction": 1.0
+      },
+      {
+        "continuous_nominal_endpoint": [
+          2423.4375,
+          9.0
+        ],
+        "continuous_start": [
+          2414.84375,
+          10.0
+        ],
+        "first_invalid_sample": null,
+        "minimum_los_margin": Infinity,
+        "minimum_terrain_margin": 8.993609500309887,
+        "nominal_endpoint_to_grid": [
+          0.0,
+          0.0
+        ],
+        "reference_grid_endpoint": [
+          2423.4375,
+          9.0
+        ],
+        "reference_grid_start": [
+          2414.84375,
+          10.0
+        ],
+        "start_drift": [
+          0.0,
+          0.0
+        ],
+        "start_drift_norm": 0.0,
+        "step_index": 108,
+        "terminal_fraction": 1.0
+      },
+      {
+        "continuous_nominal_endpoint": [
+          2432.03125,
+          8.0
+        ],
+        "continuous_start": [
+          2423.4375,
+          9.0
+        ],
+        "first_invalid_sample": null,
+        "minimum_los_margin": Infinity,
+        "minimum_terrain_margin": 7.995575186035823,
+        "nominal_endpoint_to_grid": [
+          0.0,
+          0.0
+        ],
+        "reference_grid_endpoint": [
+          2432.03125,
+          8.0
+        ],
+        "reference_grid_start": [
+          2423.4375,
+          9.0
+        ],
+        "start_drift": [
+          0.0,
+          0.0
+        ],
+        "start_drift_norm": 0.0,
+        "step_index": 109,
+        "terminal_fraction": 1.0
+      },
+      {
+        "continuous_nominal_endpoint": [
+          2440.625,
+          7.0
+        ],
+        "continuous_start": [
+          2432.03125,
+          8.0
+        ],
+        "first_invalid_sample": null,
+        "minimum_los_margin": Infinity,
+        "minimum_terrain_margin": 6.996958779992524,
+        "nominal_endpoint_to_grid": [
+          0.0,
+          0.0
+        ],
+        "reference_grid_endpoint": [
+          2440.625,
+          7.0
+        ],
+        "reference_grid_start": [
+          2432.03125,
+          8.0
+        ],
+        "start_drift": [
+          0.0,
+          0.0
+        ],
+        "start_drift_norm": 0.0,
+        "step_index": 110,
+        "terminal_fraction": 1.0
+      },
+      {
+        "continuous_nominal_endpoint": [
+          2449.21875,
+          6.0
+        ],
+        "continuous_start": [
+          2440.625,
+          7.0
+        ],
+        "first_invalid_sample": null,
+        "minimum_los_margin": Infinity,
+        "minimum_terrain_margin": 5.997925118555578,
+        "nominal_endpoint_to_grid": [
+          0.0,
+          0.0
+        ],
+        "reference_grid_endpoint": [
+          2449.21875,
+          6.0
+        ],
+        "reference_grid_start": [
+          2440.625,
+          7.0
+        ],
+        "start_drift": [
+          0.0,
+          0.0
+        ],
+        "start_drift_norm": 0.0,
+        "step_index": 111,
+        "terminal_fraction": 1.0
+      },
+      {
+        "continuous_nominal_endpoint": [
+          2457.8125,
+          5.0
+        ],
+        "continuous_start": [
+          2449.21875,
+          6.0
+        ],
+        "first_invalid_sample": null,
+        "minimum_los_margin": Infinity,
+        "minimum_terrain_margin": 4.998594821941762,
+        "nominal_endpoint_to_grid": [
+          0.0,
+          0.0
+        ],
+        "reference_grid_endpoint": [
+          2457.8125,
+          5.0
+        ],
+        "reference_grid_start": [
+          2449.21875,
+          6.0
+        ],
+        "start_drift": [
+          0.0,
+          0.0
+        ],
+        "start_drift_norm": 0.0,
+        "step_index": 112,
+        "terminal_fraction": 1.0
+      },
+      {
+        "continuous_nominal_endpoint": [
+          2466.40625,
+          4.0
+        ],
+        "continuous_start": [
+          2457.8125,
+          5.0
+        ],
+        "first_invalid_sample": null,
+        "minimum_los_margin": Infinity,
+        "minimum_terrain_margin": 3.999055369296244,
+        "nominal_endpoint_to_grid": [
+          0.0,
+          0.0
+        ],
+        "reference_grid_endpoint": [
+          2466.40625,
+          4.0
+        ],
+        "reference_grid_start": [
+          2457.8125,
+          5.0
+        ],
+        "start_drift": [
+          0.0,
+          0.0
+        ],
+        "start_drift_norm": 0.0,
+        "step_index": 113,
+        "terminal_fraction": 1.0
+      },
+      {
+        "continuous_nominal_endpoint": [
+          2475.0,
+          3.0
+        ],
+        "continuous_start": [
+          2466.40625,
+          4.0
+        ],
+        "first_invalid_sample": null,
+        "minimum_los_margin": Infinity,
+        "minimum_terrain_margin": 2.9993696447411478,
+        "nominal_endpoint_to_grid": [
+          0.0,
+          0.0
+        ],
+        "reference_grid_endpoint": [
+          2475.0,
+          3.0
+        ],
+        "reference_grid_start": [
+          2466.40625,
+          4.0
+        ],
+        "start_drift": [
+          0.0,
+          0.0
+        ],
+        "start_drift_norm": 0.0,
+        "step_index": 114,
+        "terminal_fraction": 1.0
+      },
+      {
+        "continuous_nominal_endpoint": [
+          2483.59375,
+          2.0
+        ],
+        "continuous_start": [
+          2475.0,
+          3.0
+        ],
+        "first_invalid_sample": null,
+        "minimum_los_margin": Infinity,
+        "minimum_terrain_margin": 1.9995824568837393,
+        "nominal_endpoint_to_grid": [
+          0.0,
+          0.0
+        ],
+        "reference_grid_endpoint": [
+          2483.59375,
+          2.0
+        ],
+        "reference_grid_start": [
+          2475.0,
+          3.0
+        ],
+        "start_drift": [
+          0.0,
+          0.0
+        ],
+        "start_drift_norm": 0.0,
+        "step_index": 115,
+        "terminal_fraction": 1.0
+      },
+      {
+        "continuous_nominal_endpoint": [
+          2490.077841717932,
+          1.2454875091860673
+        ],
+        "continuous_start": [
+          2483.59375,
+          2.0
+        ],
+        "first_invalid_sample": null,
+        "minimum_los_margin": Infinity,
+        "minimum_terrain_margin": 1.245183006669355,
+        "nominal_endpoint_to_grid": [
+          0.0,
+          0.0
+        ],
+        "reference_grid_endpoint": [
+          2490.077841717932,
+          1.2454875091860673
+        ],
+        "reference_grid_start": [
+          2483.59375,
+          2.0
+        ],
+        "start_drift": [
+          0.0,
+          0.0
+        ],
+        "start_drift_norm": 0.0,
+        "step_index": 116,
+        "terminal_fraction": 0.9999999999999998
+      }
+    ],
+    "trajectory": [
+      [
+        524.21875,
+        199.23868423896081
+      ],
+      [
+        532.8125,
+        199.0
+      ],
+      [
+        558.59375,
+        198.0
+      ],
+      [
+        584.375,
+        197.0
+      ],
+      [
+        610.15625,
+        196.0
+      ],
+      [
+        635.9375,
+        195.0
+      ],
+      [
+        661.71875,
+        194.0
+      ],
+      [
+        687.5,
+        193.0
+      ],
+      [
+        713.28125,
+        192.0
+      ],
+      [
+        739.0625,
+        191.0
+      ],
+      [
+        764.84375,
+        190.0
+      ],
+      [
+        790.625,
+        189.0
+      ],
+      [
+        816.40625,
+        188.0
+      ],
+      [
+        842.1875,
+        187.0
+      ],
+      [
+        867.96875,
+        186.0
+      ],
+      [
+        893.75,
+        185.0
+      ],
+      [
+        919.53125,
+        184.0
+      ],
+      [
+        945.3125,
+        183.0
+      ],
+      [
+        971.09375,
+        182.0
+      ],
+      [
+        996.875,
+        181.0
+      ],
+      [
+        1022.65625,
+        180.0
+      ],
+      [
+        1048.4375,
+        179.0
+      ],
+      [
+        1074.21875,
+        178.0
+      ],
+      [
+        1100.0,
+        177.0
+      ],
+      [
+        1125.78125,
+        176.0
+      ],
+      [
+        1151.5625,
+        175.0
+      ],
+      [
+        1177.34375,
+        174.0
+      ],
+      [
+        1203.125,
+        173.0
+      ],
+      [
+        1228.90625,
+        172.0
+      ],
+      [
+        1254.6875,
+        171.0
+      ],
+      [
+        1280.46875,
+        170.0
+      ],
+      [
+        1306.25,
+        169.0
+      ],
+      [
+        1332.03125,
+        168.0
+      ],
+      [
+        1357.8125,
+        167.0
+      ],
+      [
+        1383.59375,
+        166.0
+      ],
+      [
+        1409.375,
+        165.0
+      ],
+      [
+        1435.15625,
+        164.0
+      ],
+      [
+        1460.9375,
+        163.0
+      ],
+      [
+        1486.71875,
+        162.0
+      ],
+      [
+        1512.5,
+        161.0
+      ],
+      [
+        1538.28125,
+        160.0
+      ],
+      [
+        1564.0625,
+        159.0
+      ],
+      [
+        1581.25,
+        158.0
+      ],
+      [
+        1589.84375,
+        157.0
+      ],
+      [
+        1607.03125,
+        154.0
+      ],
+      [
+        1624.21875,
+        150.0
+      ],
+      [
+        1641.40625,
+        145.0
+      ],
+      [
+        1667.1875,
+        137.0
+      ],
+      [
+        1684.375,
+        131.0
+      ],
+      [
+        1701.5625,
+        125.0
+      ],
+      [
+        1718.75,
+        119.0
+      ],
+      [
+        1735.9375,
+        113.0
+      ],
+      [
+        1761.71875,
+        105.0
+      ],
+      [
+        1787.5,
+        98.0
+      ],
+      [
+        1796.09375,
+        96.0
+      ],
+      [
+        1804.6875,
+        94.0
+      ],
+      [
+        1813.28125,
+        92.0
+      ],
+      [
+        1821.875,
+        90.0
+      ],
+      [
+        1847.65625,
+        85.0
+      ],
+      [
+        1864.84375,
+        82.0
+      ],
+      [
+        1882.03125,
+        79.0
+      ],
+      [
+        1907.8125,
+        75.0
+      ],
+      [
+        1933.59375,
+        71.0
+      ],
+      [
+        1959.375,
+        67.0
+      ],
+      [
+        1985.15625,
+        63.0
+      ],
+      [
+        2010.9375,
+        59.0
+      ],
+      [
+        2036.71875,
+        55.0
+      ],
+      [
+        2062.5,
+        51.0
+      ],
+      [
+        2071.09375,
+        50.0
+      ],
+      [
+        2079.6875,
+        49.0
+      ],
+      [
+        2088.28125,
+        48.0
+      ],
+      [
+        2096.875,
+        47.0
+      ],
+      [
+        2105.46875,
+        46.0
+      ],
+      [
+        2114.0625,
+        45.0
+      ],
+      [
+        2122.65625,
+        44.0
+      ],
+      [
+        2131.25,
+        43.0
+      ],
+      [
+        2139.84375,
+        42.0
+      ],
+      [
+        2148.4375,
+        41.0
+      ],
+      [
+        2157.03125,
+        40.0
+      ],
+      [
+        2165.625,
+        39.0
+      ],
+      [
+        2174.21875,
+        38.0
+      ],
+      [
+        2182.8125,
+        37.0
+      ],
+      [
+        2191.40625,
+        36.0
+      ],
+      [
+        2200.0,
+        35.0
+      ],
+      [
+        2208.59375,
+        34.0
+      ],
+      [
+        2217.1875,
+        33.0
+      ],
+      [
+        2225.78125,
+        32.0
+      ],
+      [
+        2234.375,
+        31.0
+      ],
+      [
+        2242.96875,
+        30.0
+      ],
+      [
+        2251.5625,
+        29.0
+      ],
+      [
+        2260.15625,
+        28.0
+      ],
+      [
+        2268.75,
+        27.0
+      ],
+      [
+        2277.34375,
+        26.0
+      ],
+      [
+        2285.9375,
+        25.0
+      ],
+      [
+        2294.53125,
+        24.0
+      ],
+      [
+        2303.125,
+        23.0
+      ],
+      [
+        2311.71875,
+        22.0
+      ],
+      [
+        2320.3125,
+        21.0
+      ],
+      [
+        2328.90625,
+        20.0
+      ],
+      [
+        2337.5,
+        19.0
+      ],
+      [
+        2346.09375,
+        18.0
+      ],
+      [
+        2354.6875,
+        17.0
+      ],
+      [
+        2363.28125,
+        16.0
+      ],
+      [
+        2371.875,
+        15.0
+      ],
+      [
+        2380.46875,
+        14.0
+      ],
+      [
+        2389.0625,
+        13.0
+      ],
+      [
+        2397.65625,
+        12.0
+      ],
+      [
+        2406.25,
+        11.0
+      ],
+      [
+        2414.84375,
+        10.0
+      ],
+      [
+        2423.4375,
+        9.0
+      ],
+      [
+        2432.03125,
+        8.0
+      ],
+      [
+        2440.625,
+        7.0
+      ],
+      [
+        2449.21875,
+        6.0
+      ],
+      [
+        2457.8125,
+        5.0
+      ],
+      [
+        2466.40625,
+        4.0
+      ],
+      [
+        2475.0,
+        3.0
+      ],
+      [
+        2483.59375,
+        2.0
+      ],
+      [
+        2490.077841717932,
+        1.2454875091860673
+      ]
+    ],
+    "violation": null
+  },
+  "export_status": {
+    "code": "OK",
+    "failed_checks": [],
+    "message": "All result bundles exported",
+    "success": true,
+    "warnings": []
+  },
+  "figure_count": 7,
+  "fresh_successor_follower_solve": true,
+  "generated_at_utc": "2026-07-30T20:21:37.455951+00:00",
+  "mission_cost": 0.5884600927814934,
+  "mission_pod": 0.13280247178016036,
+  "mission_time": 114.42828395599211,
+  "outer_search_repeated": false,
+  "scenario": "two_hill",
+  "schema_name": "SuccessorScenarioRegeneration",
+  "schema_version": "1.0.0",
+  "selected_sensor_z": 1500.0,
+  "sensor_selection_role": "representative_fixed_sensor",
+  "switching_point": [
+    524.21875,
+    199.23868423896081
+  ],
+  "transition_model": "successor_grid_physical_edge",
+  "visualization_status": {
+    "code": "OK",
+    "failed_checks": [],
+    "message": "All required figures generated",
+    "success": true,
+    "warnings": []
+  }
+}

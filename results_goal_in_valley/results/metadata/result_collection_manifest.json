@@ -1,0 +1,125 @@
+{
+  "bundle_exports": [
+    {
+      "array_count": 14,
+      "bundle_name": "geometry",
+      "category": "geometry",
+      "export_seconds": 0.0033148000366054475,
+      "json_path": "C:\\Users\\jeffe\\Desktop\\git\\glider_hybrid_control\\results_goal_in_valley\\results\\geometry\\geometry_bundle.json",
+      "npz_path": "C:\\Users\\jeffe\\Desktop\\git\\glider_hybrid_control\\results_goal_in_valley\\results\\geometry\\geometry_bundle.npz",
+      "status": "exported"
+    },
+    {
+      "array_count": 3,
+      "bundle_name": "detection",
+      "category": "geometry",
+      "export_seconds": 0.0015591999981552362,
+      "json_path": "C:\\Users\\jeffe\\Desktop\\git\\glider_hybrid_control\\results_goal_in_valley\\results\\geometry\\detection_bundle.json",
+      "npz_path": "C:\\Users\\jeffe\\Desktop\\git\\glider_hybrid_control\\results_goal_in_valley\\results\\geometry\\detection_bundle.npz",
+      "status": "exported"
+    },
+    {
+      "array_count": 30,
+      "bundle_name": "stage_cost",
+      "category": "cost",
+      "export_seconds": 9.98172689997591,
+      "json_path": "C:\\Users\\jeffe\\Desktop\\git\\glider_hybrid_control\\results_goal_in_valley\\results\\cost\\stage_cost_bundle.json",
+      "npz_path": "C:\\Users\\jeffe\\Desktop\\git\\glider_hybrid_control\\results_goal_in_valley\\results\\cost\\stage_cost_bundle.npz",
+      "status": "exported"
+    },
+    {
+      "array_count": 6,
+      "bundle_name": "projected_cost",
+      "category": "cost",
+      "export_seconds": 0.015508199983742088,
+      "json_path": "C:\\Users\\jeffe\\Desktop\\git\\glider_hybrid_control\\results_goal_in_valley\\results\\cost\\projected_cost_bundle.json",
+      "npz_path": "C:\\Users\\jeffe\\Desktop\\git\\glider_hybrid_control\\results_goal_in_valley\\results\\cost\\projected_cost_bundle.npz",
+      "status": "exported"
+    },
+    {
+      "array_count": 16,
+      "bundle_name": "bellman",
+      "category": "bellman",
+      "export_seconds": 0.0206756999832578,
+      "json_path": "C:\\Users\\jeffe\\Desktop\\git\\glider_hybrid_control\\results_goal_in_valley\\results\\bellman\\bellman_bundle.json",
+      "npz_path": "C:\\Users\\jeffe\\Desktop\\git\\glider_hybrid_control\\results_goal_in_valley\\results\\bellman\\bellman_bundle.npz",
+      "status": "exported"
+    },
+    {
+      "array_count": 10,
+      "bundle_name": "bellman_response",
+      "category": "bellman",
+      "export_seconds": 0.0014905999996699393,
+      "json_path": "C:\\Users\\jeffe\\Desktop\\git\\glider_hybrid_control\\results_goal_in_valley\\results\\bellman\\bellman_response_bundle.json",
+      "npz_path": "C:\\Users\\jeffe\\Desktop\\git\\glider_hybrid_control\\results_goal_in_valley\\results\\bellman\\bellman_response_bundle.npz",
+      "status": "exported"
+    },
+    {
+      "array_count": 28,
+      "bundle_name": "stackelberg",
+      "category": "stackelberg",
+      "export_seconds": 0.012206800049170852,
+      "json_path": "C:\\Users\\jeffe\\Desktop\\git\\glider_hybrid_control\\results_goal_in_valley\\results\\stackelberg\\stackelberg_bundle.json",
+      "npz_path": "C:\\Users\\jeffe\\Desktop\\git\\glider_hybrid_control\\results_goal_in_valley\\results\\stackelberg\\stackelberg_bundle.npz",
+      "status": "exported"
+    }
+  ],
+  "complete": true,
+  "execution_time_seconds": 10.09324449999258,
+  "future_visualization_input_policy": "exported_files_only",
+  "missing_bundles": [],
+  "producer_phase": 10,
+  "provenance": {
+    "configuration_hash_sha256": "afc41b07ed24e3617585b258f498e70a4e7149e191c7bd4b10b05f0b73e633b2",
+    "continuous_validation": {
+      "checked": true,
+      "feasible": true,
+      "goal_miss": 10.000000000000066,
+      "reached_goal": true,
+      "violation": null
+    },
+    "generated_at_utc": "2026-07-29T23:14:49.536839+00:00",
+    "numerical_validation": {
+      "dynamic_tolerance": 1e-06,
+      "goal_radius": 10.0,
+      "los_tolerance": 3.0,
+      "objective_tolerance": 1e-08,
+      "segment_check_count": 9,
+      "solver_tolerance": 1e-06,
+      "terrain_tolerance": 1e-06
+    },
+    "random_seed": 20260722,
+    "resolution": {
+      "action": {
+        "gamma_count": 20,
+        "v_count": 5
+      },
+      "spatial": {
+        "h_count": 201,
+        "h_spacing": 1.0,
+        "z_count": 467,
+        "z_spacing": 8.583690987124463
+      }
+    },
+    "schema_name": "ResultProvenance",
+    "schema_version": "1.0.0",
+    "script_identifier": "p1b_4D/stackelberg_security_problem.ipynb",
+    "script_version": "1.0.0",
+    "source_control": {
+      "source_commit": "827b0e1026eb5e81de166a8f49c0d38d5017b959",
+      "working_tree_dirty": true,
+      "working_tree_identifier": "827b0e1026eb5e81de166a8f49c0d38d5017b959-dirty"
+    },
+    "transition_model": "successor_grid_physical_edge"
+  },
+  "schema_name": "StandardResultCollection",
+  "schema_version": "1.0.0",
+  "standard_directories": {
+    "bellman": "bellman",
+    "cost": "cost",
+    "geometry": "geometry",
+    "logs": "logs",
+    "metadata": "metadata",
+    "stackelberg": "stackelberg"
+  }
+}

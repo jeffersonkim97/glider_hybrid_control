@@ -1,0 +1,24 @@
+{
+  "sensor_position_m": [
+    2500.0,
+    500.0,
+    7.7548415663444015
+  ],
+  "defender_objective": 0.07921986193707949,
+  "defender_pod_normalized": 0.018104946595649984,
+  "coverage_volume_normalized": 0.629254100009945,
+  "coverage_volume_m3": 680187500.0,
+  "mission_pod": 0.018269825413799956,
+  "mission_hazard": 0.018438779681369068,
+  "attacker_objective": 0.33517014630790604,
+  "mission_time_s": 144.22599843682366,
+  "switching_point_m": [
+    900.0,
+    300.0,
+    259.4061085009261
+  ],
+  "goal_distance_m": 14.999999999999378,
+  "validation_passed": true,
+  "feasible": true,
+  "error": null
+}

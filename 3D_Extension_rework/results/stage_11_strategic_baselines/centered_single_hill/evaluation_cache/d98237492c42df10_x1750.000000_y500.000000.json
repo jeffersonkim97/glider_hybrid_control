@@ -1,0 +1,24 @@
+{
+  "sensor_position_m": [
+    1750.0,
+    500.0,
+    NaN
+  ],
+  "defender_objective": -Infinity,
+  "defender_pod_normalized": NaN,
+  "coverage_volume_normalized": NaN,
+  "coverage_volume_m3": NaN,
+  "mission_pod": NaN,
+  "mission_hazard": NaN,
+  "attacker_objective": NaN,
+  "mission_time_s": NaN,
+  "switching_point_m": [
+    NaN,
+    NaN,
+    NaN
+  ],
+  "goal_distance_m": NaN,
+  "validation_passed": false,
+  "feasible": false,
+  "error": "RuntimeError: No sensor-ray/terrain tangent contacts were found"
+}
