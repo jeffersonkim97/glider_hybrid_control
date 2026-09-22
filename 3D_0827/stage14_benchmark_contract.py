@@ -31,18 +31,32 @@ ROOT = Path(__file__).resolve().parent
 SCHEMA_VERSION = "stage14.0-v2"
 CANONICAL_RESOLUTION = (25.0, 25.0, 5.0)
 
-# Frozen before Stage-14 profiling.  These are the already validated fine-grid
-# notebook values, not values learned from a newly instrumented run.
+# Re-derived 2026-09-18 by enumerating CANONICAL_DEFENDER_X_MAP at
+# CANONICAL_RESOLUTION with build_terrain("centered_cube"), i.e. exactly what
+# stage14_1_profile_worker runs.  Two corrections are folded in:
+#
+#   1. The previous values named sensor [7.5, 0, 0] as action 2, but the
+#      Defender action set in this repository is (5, 6, 7, 8, 9, 10) and has no
+#      7.5.  They were produced by an action set that no longer exists, so the
+#      identity fields could never be reproduced from this source tree.
+#   2. virtual_connection.build_virtual_connections applied its motion-primitive
+#      stencil only to candidates landing exactly on an x-y lattice
+#      intersection, which made the model report infeasible as the lattice was
+#      refined.  With the stencil applied unconditionally the Attacker reaches a
+#      mission 6.6 s faster at the same hazard: J_A 7.194589506 -> 7.179870899.
+#      The Defender's selected action is unchanged by that correction.
+#
+# Regenerate with stage14_1_profile_worker; do not hand-edit.
 FROZEN_CANONICAL_SOLUTION = {
     "feasible": True,
-    "selected_defender_action_id": 2,
-    "selected_sensor_position_map": [7.5, 0.0, 0.0],
-    "selected_attacker_candidate_id": 26,
-    "attacker_objective": 0.944086144839464,
-    "defender_objective_pod": 0.7814861193516704,
-    "mission_time_s": 81.25366155073556,
-    "cumulative_hazard": 1.520905739469603,
-    "detection_probability": 0.7814861193516704,
+    "selected_defender_action_id": 3,
+    "selected_sensor_position_map": [8.0, 0.0, 0.0],
+    "selected_attacker_candidate_id": 25,
+    "attacker_objective": 7.179870899415687,
+    "defender_objective_pod": 0.9999991726296762,
+    "mission_time_s": 78.47972310852555,
+    "cumulative_hazard": 14.005013450380838,
+    "detection_probability": 0.9999991726296762,
 }
 
 SOLVER_SOURCE_FILES = (
