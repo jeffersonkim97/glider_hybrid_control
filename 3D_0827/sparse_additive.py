@@ -120,25 +120,34 @@ class SparseAdditiveRun:
 def _batch_edge_hazard(
     starts: np.ndarray,
     ends: np.ndarray,
-    duration_s: float,
+    duration_s: float | np.ndarray,
     hazard_field: GlideDetectionHazardModel,
     quadrature_resolution: int,
     physical_scale: PhysicalScale,
 ) -> tuple[np.ndarray, np.ndarray]:
-    """Vectorized equivalent of the Stage-7 trapezoidal edge integral."""
+    """Vectorized equivalent of the Stage-7 trapezoidal edge integral.
+
+    ``duration_s`` may be one value for the whole batch, as the sweep uses it -
+    every edge there shares a motion offset - or one value per edge, which lets a
+    caller batch edges that leave the same state along different offsets.
+    """
     if not len(starts):
         return np.empty(0, dtype=float), np.empty(0, dtype=np.int64)
     fractions = np.linspace(0.0, 1.0, quadrature_resolution)
-    spacing_s = duration_s / (quadrature_resolution - 1)
-    weights = np.full(quadrature_resolution, spacing_s, dtype=float)
-    weights[[0, -1]] *= 0.5
+    durations = np.broadcast_to(
+        np.asarray(duration_s, dtype=float).reshape(-1), (len(starts),),
+    )
+    spacing_s = durations / (quadrature_resolution - 1)
+    weights = np.repeat(spacing_s[:, None], quadrature_resolution, axis=1)
+    weights[:, 0] *= 0.5
+    weights[:, -1] *= 0.5
     displacement = ends - starts
     positions = (
         starts[:, None, :]
         + fractions[None, :, None] * displacement[:, None, :]
     )
     velocity = (
-        displacement * physical_scale.meters_per_map_unit / duration_s
+        displacement * physical_scale.meters_per_map_unit / durations[:, None]
     )
     sensor = hazard_field.sensor.as_array()
     sensor_delta_m = (
@@ -190,7 +199,7 @@ def _batch_edge_hazard(
         * radial_velocity**2
         * inverse_range_fourth
     )
-    hazard = np.sum((radar_rate + doppler_rate) * weights[None, :], axis=1)
+    hazard = np.sum((radar_rate + doppler_rate) * weights, axis=1)
     return hazard, np.count_nonzero(visible, axis=1).astype(np.int64)
 
 

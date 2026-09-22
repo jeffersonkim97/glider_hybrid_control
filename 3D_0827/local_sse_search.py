@@ -77,6 +77,7 @@ class LocalSSESearchResult:
     iterations: tuple[LocalSearchIteration, ...]
     runtime_decomposition_s: dict[str, float]
     peak_memory: dict[str, Any] | None = None
+    exact_attacker_verification_required: bool = True
 
     def as_dict(self) -> dict[str, Any]:
         return asdict(self)
@@ -108,9 +109,34 @@ def run_local_sse_search(
     configuration: DefenderNeighborhoodConfig = DefenderNeighborhoodConfig(),
     *,
     leader_payoff_tolerance: float = 1.0e-12,
+    require_exact_attacker_verification: bool = True,
 ) -> LocalSSESearchResult:
-    """Climb by strict improvement until all required neighbors certify local SSE."""
+    """Climb by strict improvement until all required neighbors certify local SSE.
+
+    With ``require_exact_attacker_verification`` left at ``True`` the search only
+    terminates on a certified local SSE, which is what the exact solver needs.
+    An approximate Attacker solver sets it to ``False``: it still reports its own
+    responses honestly as inexact, and the result still carries
+    ``local_sse_verified=False``, but the climb is no longer blocked by a standard
+    no approximation can meet.  Genuine unknowns - a crashed, timed-out or
+    out-of-memory evaluation - keep blocking in both modes.
+    """
     tolerance = float(leader_payoff_tolerance)
+    require_exact = bool(require_exact_attacker_verification)
+
+    def infeasibility_known(evaluation: LocalDefenderEvaluation) -> bool:
+        return evaluation.status == "model_infeasible" and (
+            evaluation.exact_attacker_best_response_verified or not require_exact
+        )
+
+    def comparison_ready(evaluation: LocalDefenderEvaluation) -> bool:
+        return bool(evaluation.feasible) and (
+            not require_exact
+            or (
+                evaluation.exact_attacker_best_response_verified
+                and evaluation.strong_tie_break_verified
+            )
+        )
     if not np.isfinite(tolerance) or tolerance < 0.0:
         raise ValueError("leader_payoff_tolerance must be finite and nonnegative")
     if initial_defender_action_id not in topology.action_ids:
@@ -159,10 +185,7 @@ def run_local_sse_search(
     # ascent cannot start there.  Treat the configured neighborhood as a
     # feasibility-restoration phase instead of incorrectly declaring the
     # local problem infeasible after evaluating only the initial action.
-    if (
-        current.status == "model_infeasible"
-        and current.exact_attacker_best_response_verified
-    ):
+    if infeasibility_known(current):
         recovery_attempted = True
         neighborhood_started = perf_counter()
         recovery_neighbor_ids = topology.neighbors(current_id, configuration)
@@ -172,21 +195,14 @@ def run_local_sse_search(
         )
         recovery_feasible = tuple(
             evaluation for evaluation in recovery_evaluations
-            if (
-                evaluation.feasible
-                and evaluation.exact_attacker_best_response_verified
-                and evaluation.strong_tie_break_verified
-            )
+            if comparison_ready(evaluation)
         )
         recovery_feasible_ids = tuple(
             evaluation.action_id for evaluation in recovery_feasible
         )
         recovery_infeasible_ids = tuple(
             evaluation.action_id for evaluation in recovery_evaluations
-            if (
-                evaluation.status == "model_infeasible"
-                and evaluation.exact_attacker_best_response_verified
-            )
+            if infeasibility_known(evaluation)
         )
         classified_ids = set(recovery_feasible_ids) | set(recovery_infeasible_ids)
         recovery_unknown_ids = tuple(
@@ -224,10 +240,7 @@ def run_local_sse_search(
                 "diagnostic": evaluation.diagnostic,
             }
             for action_id, evaluation in cache.items()
-            if (
-                evaluation.status == "model_infeasible"
-                and evaluation.exact_attacker_best_response_verified
-            )
+            if infeasibility_known(evaluation)
         )
         unknown_diagnostics = tuple(
             {
@@ -236,10 +249,7 @@ def run_local_sse_search(
                 "diagnostic": evaluation.diagnostic,
             }
             for action_id, evaluation in cache.items()
-            if not (
-                evaluation.status == "model_infeasible"
-                and evaluation.exact_attacker_best_response_verified
-            )
+            if not infeasibility_known(evaluation)
         )
         return LocalSSESearchResult(
             initial_defender_action_id=current_id,
@@ -288,6 +298,7 @@ def run_local_sse_search(
                     0.0, total - evaluation_s - neighborhood_s
                 ),
             },
+            exact_attacker_verification_required=require_exact,
         )
 
     termination_status = "uncertified"
@@ -305,14 +316,18 @@ def run_local_sse_search(
             topology,
             configuration,
             leader_payoff_tolerance=tolerance,
+            require_exact_attacker_verification=require_exact,
         )
         verification_s += perf_counter() - verification_started
         current = cache[current_id]
-        if (
-            verification.unknown_neighbor_diagnostics
-            or not verification.exact_attacker_responses_verified
-            or not verification.strong_tie_breaking_verified
-        ):
+        blocked = bool(verification.unknown_neighbor_diagnostics) or (
+            require_exact
+            and (
+                not verification.exact_attacker_responses_verified
+                or not verification.strong_tie_breaking_verified
+            )
+        )
+        if blocked:
             chosen = None
             improvement = 0.0
             termination_status = "required_neighbor_comparison_unknown"
@@ -335,7 +350,10 @@ def run_local_sse_search(
                 termination_status = (
                     "isolated_feasible_local_sse"
                     if verification.isolated_feasible_local_solution
-                    else "certified_local_sse"
+                    else (
+                        "certified_local_sse" if require_exact
+                        else "approximate_local_sse"
+                    )
                 )
         iteration_records.append(LocalSearchIteration(
             iteration=len(iteration_records),
@@ -361,8 +379,14 @@ def run_local_sse_search(
         current = get_evaluation(current_id)
 
     final = cache[current_id]
-    certified = bool(
+    strictly_certified = bool(
         final_verification is not None and final_verification.local_sse_verified
+    )
+    # What the search is willing to return.  ``local_sse_verified`` below still
+    # reports the strict answer, so an approximate run never claims certification.
+    certified = strictly_certified if require_exact else bool(
+        final_verification is not None
+        and final_verification.local_optimum_under_supplied_evaluations
     )
     total = perf_counter() - started
     accounted = evaluation_s + neighborhood_s + verification_s
@@ -419,15 +443,15 @@ def run_local_sse_search(
             if certified and final_verification is not None else None
         ),
         termination_status=termination_status,
-        local_sse_verified=certified,
+        local_sse_verified=strictly_certified,
         attacker_exactness_verified=bool(
-            certified and all(
+            strictly_certified and all(
                 evaluation.exact_attacker_best_response_verified
                 for evaluation in cache.values() if evaluation.feasible
             )
         ),
         strong_tie_break_verified=bool(
-            certified and all(
+            strictly_certified and all(
                 evaluation.strong_tie_break_verified
                 for evaluation in cache.values() if evaluation.feasible
             )
@@ -453,6 +477,7 @@ def run_local_sse_search(
             "local_verification_s": verification_s,
             "search_control_residual_s": max(0.0, total - accounted),
         },
+        exact_attacker_verification_required=require_exact,
     )
 
 

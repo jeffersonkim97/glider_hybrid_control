@@ -308,6 +308,14 @@ class LocalSSEVerification:
     global_condition_equivalent: bool
     comparison_scope: str
     neighborhood_metadata: dict[str, Any]
+    # Whether exactness of the Attacker responses was *required* to certify.  An
+    # approximate Attacker solver reports its responses honestly as inexact; it
+    # simply is not held to a standard it cannot meet.  The two flags above stay
+    # truthful either way, so an approximate run is never mistaken for an exact one.
+    exact_attacker_verification_required: bool = True
+    # Local optimality with respect to the evaluations actually supplied, which is
+    # the strongest statement available when those evaluations are approximate.
+    local_optimum_under_supplied_evaluations: bool = False
 
     def as_dict(self) -> dict[str, Any]:
         return asdict(self)
@@ -320,9 +328,11 @@ def verify_local_sse(
     configuration: DefenderNeighborhoodConfig = DefenderNeighborhoodConfig(),
     *,
     leader_payoff_tolerance: float = 1.0e-12,
+    require_exact_attacker_verification: bool = True,
 ) -> LocalSSEVerification:
     """Purely verify a candidate against all required configured neighbors."""
     tolerance = _nonnegative_tolerance(leader_payoff_tolerance)
+    require_exact = bool(require_exact_attacker_verification)
     normalized = dict(evaluations)
     if any(action_id != evaluation.action_id for action_id, evaluation in normalized.items()):
         raise ValueError("evaluation mapping keys must equal evaluation action IDs")
@@ -338,7 +348,7 @@ def verify_local_sse(
         if evaluation is None:
             unknown.append((neighbor_id, "evaluation_missing"))
         elif evaluation.status == "model_infeasible":
-            if evaluation.exact_attacker_best_response_verified:
+            if evaluation.exact_attacker_best_response_verified or not require_exact:
                 infeasible.append((neighbor_id, evaluation.diagnostic))
             else:
                 unknown.append((neighbor_id, "infeasibility_not_exactly_verified"))
@@ -346,19 +356,24 @@ def verify_local_sse(
             feasible_neighbors.append(evaluation)
         else:
             unknown.append((neighbor_id, evaluation.status))
-    candidate_ready = bool(
+    # Strict readiness always reports the honest exactness picture; the relaxed
+    # one is what an approximate search is allowed to climb on.
+    strict_candidate_ready = bool(
         candidate is not None
         and candidate.feasible
         and candidate.exact_attacker_best_response_verified
         and candidate.strong_tie_break_verified
     )
+    candidate_ready = strict_candidate_ready if require_exact else bool(
+        candidate is not None and candidate.feasible
+    )
     all_exact = bool(
-        candidate_ready
+        strict_candidate_ready
         and all(item.exact_attacker_best_response_verified for item in feasible_neighbors)
         and not unknown
     )
     all_strong = bool(
-        candidate_ready
+        strict_candidate_ready
         and all(item.strong_tie_break_verified for item in feasible_neighbors)
         and not unknown
     )
@@ -381,12 +396,13 @@ def verify_local_sse(
         equal = ()
     isolated = bool(candidate_ready and not feasible_neighbors and not unknown)
     local_verified = bool(
-        candidate_ready
+        strict_candidate_ready
         and all_exact
         and all_strong
         and not improving
         and not unknown
     )
+    local_optimum_supplied = bool(candidate_ready and not improving and not unknown)
     return LocalSSEVerification(
         candidate_action_id=int(candidate_action_id),
         candidate_defender_value=candidate_value,
@@ -408,6 +424,8 @@ def verify_local_sse(
             "configuration": configuration.as_metadata(),
             "topology": topology.as_metadata(),
         },
+        exact_attacker_verification_required=require_exact,
+        local_optimum_under_supplied_evaluations=local_optimum_supplied,
     )
 
 

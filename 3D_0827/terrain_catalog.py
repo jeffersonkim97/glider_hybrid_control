@@ -26,6 +26,33 @@ def _centered_cube(bounds: MapBounds) -> CompositeTerrainMap:
     )
 
 
+def _centered_cube_half_height(bounds: MapBounds) -> CompositeTerrainMap:
+    """The centred cube at half height, same footprint.
+
+    The full-height cube tops out at 4.0 against a lattice ceiling of 5.0, so the
+    tangent surface it casts runs out of headroom: measured at 50 m, half of the
+    traced surface sits above the ceiling and the admissible switching set is cut
+    off flat at exactly 5.00.  Halving the height leaves three map units of
+    clearance instead of one, so the surface ends where the geometry ends rather
+    than where the box does.  The footprint is unchanged, so the horizontal
+    occlusion - which is what separates the admissible arc from the start-shadowed
+    one - stays comparable to the full-height case.
+    """
+    return CompositeTerrainMap(
+        bounds=bounds,
+        boxes=(
+            BoxObstacle(
+                center_x=0.0,
+                center_y=0.0,
+                width_x=4.0,
+                width_y=4.0,
+                height=2.0,
+            ),
+        ),
+        category_id="centered_cube_half_height",
+    )
+
+
 def _offset_cube(bounds: MapBounds, *, center_y: float, category_id: str) -> CompositeTerrainMap:
     return CompositeTerrainMap(
         bounds=bounds,
@@ -77,6 +104,7 @@ def _stepped_pyramid(bounds: MapBounds) -> CompositeTerrainMap:
 
 TERRAIN_LABELS: dict[str, str] = {
     "centered_cube": "Centered cube",
+    "centered_cube_half_height": "Centered cube - half height",
     "offset_cube_left": "Offset cube - left",
     "offset_cube_right": "Offset cube - right",
     "stepped_pyramid": "Stepped pyramid (box approximation)",
@@ -85,6 +113,7 @@ TERRAIN_LABELS: dict[str, str] = {
 
 _TERRAIN_BUILDERS: dict[str, Callable[[MapBounds], CompositeTerrainMap]] = {
     "centered_cube": _centered_cube,
+    "centered_cube_half_height": _centered_cube_half_height,
     "offset_cube_left": lambda bounds: _offset_cube(
         bounds,
         center_y=-3.0,

@@ -85,6 +85,9 @@ class TangentContour:
     boundary_candidate_count: int
     closed: bool = True
     discarded_ground_candidate_count: int = 0
+    # Candidates dropped for repeating the previous ray's direction; see
+    # trace_terrain_tangent_contour.  Zero for a well-conditioned silhouette.
+    duplicate_direction_candidate_count: int = 0
 
     def __post_init__(self) -> None:
         minimum_count = 3 if self.closed else 2
@@ -98,6 +101,8 @@ class TangentContour:
             raise ValueError("boundary_candidate_count must equal the retained ray count")
         if self.discarded_ground_candidate_count < 0:
             raise ValueError("discarded ground-candidate count cannot be negative")
+        if self.duplicate_direction_candidate_count < 0:
+            raise ValueError("duplicate-direction candidate count cannot be negative")
 
     @property
     def tangent_points(self) -> FloatArray:
@@ -397,8 +402,18 @@ def trace_terrain_tangent_contour(
     )
     discarded_ground_count = len(ordered_candidates) - len(elevated_candidates)
 
-    rays = tuple(
-        LOSRay(
+    # Boundary refinement can land two consecutive candidates on the same ray -
+    # the flatter the silhouette, the more often, because the boundary it is
+    # bisecting is more nearly parallel to the probe grid.  A repeated direction
+    # adds no geometry: the ruled surface through the contour is identical with or
+    # without it, and every point it could contribute is already on the kept ray.
+    # It does break TangentContour's own validation, which requires adjacent rays
+    # to differ, so it is dropped here rather than by weakening that check, which
+    # exists to catch contours that really have collapsed.
+    rays: list[LOSRay] = []
+    duplicate_direction_count = 0
+    for candidate in elevated_candidates:
+        ray = LOSRay(
             origin=sensor,
             tangent_point=Point3D(
                 x=float(candidate.hit.point[0]),
@@ -409,15 +424,20 @@ def trace_terrain_tangent_contour(
                 np.arctan2(candidate.direction[1], candidate.direction[0])
             ),
         )
-        for candidate in elevated_candidates
-    )
+        if rays and float(
+            np.dot(rays[-1].unit_direction, ray.unit_direction)
+        ) >= 1.0 - 1.0e-14:
+            duplicate_direction_count += 1
+            continue
+        rays.append(ray)
     return TangentContour(
         origin=sensor,
-        rays=rays,
+        rays=tuple(rays),
         probe_ray_count=probe_grid_size**2,
-        boundary_candidate_count=len(elevated_candidates),
+        boundary_candidate_count=len(rays),
         closed=False,
         discarded_ground_candidate_count=discarded_ground_count,
+        duplicate_direction_candidate_count=duplicate_direction_count,
     )
 
 
