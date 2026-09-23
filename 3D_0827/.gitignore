@@ -6,3 +6,7 @@ r1_full_test_cartesian_discretization/data/
 r1_full_test_cartesian_discretization/figure/
 r2_discretization_sweeps/data/
 r2_discretization_sweeps/figure/
+
+# R3 results, same rule as R1 and R2: source and README only.
+r3_neighbourhood_radius/data/
+r3_neighbourhood_radius/figure/

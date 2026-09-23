@@ -33,6 +33,8 @@ from matplotlib.ticker import (
 ROOT = Path(__file__).resolve().parent
 DATA = ROOT / "r2_discretization_sweeps" / "data"
 OUTPUT = ROOT / "r2_discretization_sweeps" / "figure"
+RADIUS_DATA = ROOT / "r3_neighbourhood_radius" / "data"
+RADIUS_OUTPUT = ROOT / "r3_neighbourhood_radius" / "figure"
 
 SERIES = (
     ("Exact, total", "exact_s", "#1C5770", "o", "-"),
@@ -60,7 +62,8 @@ def _power_law(x: np.ndarray, y: np.ndarray) -> tuple[float, float, float]:
 
 def figure_axis(
     records: list[dict[str, Any]], key: str, title: str, x_title: str, stem: str,
-    *, log: bool = True,
+    *, log: bool = True, output: Path = OUTPUT, integer_x: bool = False,
+    legend_loc: str = "upper right",
 ) -> str:
     rows = sorted(records, key=lambda r: r[key])
     x = np.asarray([r[key] for r in rows], dtype=float)
@@ -93,8 +96,17 @@ def figure_axis(
         # Even ticks, not the measured steps: on a linear axis 10 and 12.5 sit
         # close enough that their labels collide.  The markers still show where
         # the measurements are.
-        axes.xaxis.set_major_locator(MaxNLocator(nbins=8, steps=[1, 2, 2.5, 5, 10]))
-        axes.xaxis.set_major_formatter(FuncFormatter(lambda v, _pos: f"{v:g}"))
+        if integer_x:
+            # r is a count of lattice steps; every value it can take is measured,
+            # so label them all rather than letting the locator invent halves.
+            axes.set_xlim(0.0, float(x.max()) + 0.5)
+            axes.set_xticks(x)
+            axes.set_xticklabels([f"{v:g}" for v in x])
+        else:
+            axes.xaxis.set_major_locator(
+                MaxNLocator(nbins=8, steps=[1, 2, 2.5, 5, 10])
+            )
+            axes.xaxis.set_major_formatter(FuncFormatter(lambda v, _pos: f"{v:g}"))
         axes.yaxis.set_major_formatter(
             FuncFormatter(lambda v, _pos: f"{v:,.0f}")
         )
@@ -107,14 +119,14 @@ def figure_axis(
     axes.set_axisbelow(True)
     for side in ("top", "right"):
         axes.spines[side].set_visible(False)
-    # Upper right: every series falls to the right, so that corner is the one
-    # region no curve passes through on either axis.
-    axes.legend(loc="upper right", frameon=True, framealpha=0.9,
+    # Whichever corner the series leave free: they fall to the right on the two
+    # discretization axes and rise to the right on the radius axis.
+    axes.legend(loc=legend_loc, frameon=True, framealpha=0.9,
                 edgecolor="none", fontsize=9)
 
     figure.tight_layout()
-    OUTPUT.mkdir(parents=True, exist_ok=True)
-    figure.savefig(OUTPUT / f"{stem}.png", bbox_inches="tight")
+    output.mkdir(parents=True, exist_ok=True)
+    figure.savefig(output / f"{stem}.png", bbox_inches="tight")
     plt.close(figure)
     return stem
 
@@ -138,6 +150,9 @@ def main() -> None:
     heading = json.loads(
         (DATA / "heading_sweep_fixed_defender.json").read_text(encoding="utf-8")
     )
+    radius = json.loads(
+        (RADIUS_DATA / "r_sweep_50m.json").read_text(encoding="utf-8")
+    )
     written = []
     # Both scalings of the same measurements: log-log separates the coarse end,
     # where the series sit within a factor of two of one another, while the
@@ -158,8 +173,20 @@ def main() -> None:
             "heading step [deg]  (finer to the left)",
             f"2_heading_discretization_vs_time{suffix}", log=log,
         ))
+        # r rises to the right, unlike the two discretization axes, so the free
+        # corner is the upper left; and every value r takes is measured, so the
+        # linear panel labels all seven rather than inventing half-steps.
+        written.append(figure_axis(
+            radius, "r_neighbor",
+            "Defender neighbourhood radius against computation time\n"
+            "full local SSE; dx = 50 m; heading 5 deg; 20,000 episodes",
+            "Chebyshev neighbourhood radius r  (wider to the right)",
+            f"3_neighbourhood_radius_vs_time{suffix}", log=log,
+            output=RADIUS_OUTPUT, integer_x=True, legend_loc="upper left",
+        ))
     report(spatial, "dx_m", "Cartesian axis, full local SSE (console only)")
     report(heading, "dpsi_deg", "Heading axis, fixed Defender")
+    report(radius, "r_neighbor", "Neighbourhood radius axis, full local SSE")
     print("\nwrote: " + ", ".join(written))
 
 
