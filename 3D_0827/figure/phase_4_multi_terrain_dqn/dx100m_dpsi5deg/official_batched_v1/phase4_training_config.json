@@ -1,0 +1,62 @@
+{
+  "condition": {
+    "spatial_resolution_m": 100.0,
+    "heading_spacing_deg": 5.0,
+    "r_neighbor": 1,
+    "terrain_category": "centered_cube",
+    "hazard_weight": null,
+    "time_weight": null,
+    "defender_goal_margin_map": 1.0
+  },
+  "training_config": {
+    "episodes": 60000,
+    "gamma": 1.0,
+    "replay_capacity": 50000,
+    "replay_warmup": 2000,
+    "batch_size": 128,
+    "optimizer": "AdamW",
+    "learning_rate": 0.0003,
+    "loss": "huber",
+    "epsilon_start": 1.0,
+    "epsilon_end": 0.05,
+    "epsilon_decay_fraction": 0.6,
+    "target_update_steps": 1000,
+    "updates_per_environment_step": 1,
+    "gradient_clip_norm": 10.0,
+    "evaluation_interval_episodes": 1500,
+    "seeds": [
+      0,
+      1,
+      2
+    ],
+    "device": "cuda",
+    "config_id": "p1b-phase4-training-v1",
+    "epsilon_decay_definition": "linear by environment step over episodes * maximum DAG steps * epsilon_decay_fraction"
+  },
+  "execution_config": {
+    "episode_batch_size": 8,
+    "optimization_prefetch_batches": 8,
+    "optimizer_updates_per_vector_step": 1,
+    "checkpoint_interval_episodes": 1500,
+    "evaluation_interval_episodes": 6000,
+    "execution_id": "p1b-phase4-vectorized-episodes-v1",
+    "maximum_optimizer_updates_per_environment_step": 0.125,
+    "target_network_sync_basis": "environment steps, preserving the approved 1000-step cadence"
+  },
+  "observation_config": {
+    "local_window_extent_m": 2000.0,
+    "local_window_shape_cells": [
+      21,
+      21
+    ],
+    "local_window_orientation": "heading_aligned",
+    "schema_id": "p1b-terrain-observation-v1",
+    "sample_spacing_m": [
+      100.0,
+      100.0
+    ],
+    "parameter_origin": "new_design_choice_confirmed_by_user"
+  },
+  "require_cuda_for_official_training": true,
+  "checkpoint_selection": "maximize validation success rate, then minimize validation median relative J_A error, then minimize validation maximum error; earliest wins ties"
+}

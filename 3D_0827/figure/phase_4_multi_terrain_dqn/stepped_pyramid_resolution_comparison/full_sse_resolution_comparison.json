@@ -1,0 +1,136 @@
+{
+  "rows": [
+    {
+      "spatial_resolution_m": 10.0,
+      "heading_spacing_deg": 5.0,
+      "r_neighbor": 1,
+      "terrain": "stepped_pyramid",
+      "bellman_sensor": [
+        5.0,
+        -0.09999999999999964,
+        0.0
+      ],
+      "dqn_sensor": [
+        5.5,
+        0.40000000000000036,
+        0.0
+      ],
+      "bellman_J_A": 0.1905579273169366,
+      "dqn_J_A": 0.28840276393294056,
+      "J_A_absolute_difference": 0.09784483661600396,
+      "J_A_relative_difference_percent": 51.34650549240499,
+      "bellman_J_D": 0.017983914962944124,
+      "dqn_J_D": 0.18465033669856187,
+      "J_D_absolute_difference": 0.16666642173561774,
+      "J_D_relative_difference_percent": 926.7527236368394,
+      "bellman_full_sse_sec": 1128.5263660000055,
+      "dqn_full_sse_sec": 324.1128647000005,
+      "bellman_over_dqn_speedup": 3.481893157942286,
+      "bellman_defender_evaluations": 12,
+      "dqn_defender_evaluations": 32,
+      "selected_defender_action_match": false,
+      "exact_replay_for_plot_sec_excluded_from_benchmark": 79.31488349998835,
+      "source": "D:/git/git_research/glider_hybrid_control/3D_0827/figure/phase_4_multi_terrain_dqn/dx10m_dpsi5deg/official_batched_v1/full_sse/full_sse_stepped_pyramid_comparison.json",
+      "interactive_3d_html": "D:/git/git_research/glider_hybrid_control/3D_0827/figure/phase_4_multi_terrain_dqn/dx10m_dpsi5deg/official_batched_v1/full_sse/full_sse_stepped_pyramid_3d.html"
+    },
+    {
+      "spatial_resolution_m": 25.0,
+      "heading_spacing_deg": 5.0,
+      "r_neighbor": 1,
+      "terrain": "stepped_pyramid",
+      "bellman_sensor": [
+        4.75,
+        0.0,
+        0.0
+      ],
+      "dqn_sensor": [
+        5.25,
+        0.0,
+        0.0
+      ],
+      "bellman_J_A": 0.18853345814395567,
+      "dqn_J_A": 0.19725082982865094,
+      "J_A_absolute_difference": 0.008717371684695274,
+      "J_A_relative_difference_percent": 4.623779657210277,
+      "bellman_J_D": 0.016032678013772315,
+      "dqn_J_D": 0.02334912650071858,
+      "J_D_absolute_difference": 0.007316448486946264,
+      "J_D_relative_difference_percent": 45.63460003788091,
+      "bellman_full_sse_sec": 98.06271669999842,
+      "dqn_full_sse_sec": 56.39746549999836,
+      "bellman_over_dqn_speedup": 1.7387787878517567,
+      "bellman_defender_evaluations": 12,
+      "dqn_defender_evaluations": 12,
+      "selected_defender_action_match": false,
+      "exact_replay_for_plot_sec_excluded_from_benchmark": 7.032754600018961,
+      "source": "D:/git/git_research/glider_hybrid_control/3D_0827/figure/phase_4_multi_terrain_dqn/dx25m_dpsi5deg/official_batched_v1/full_sse/full_sse_stepped_pyramid_comparison.json",
+      "interactive_3d_html": "D:/git/git_research/glider_hybrid_control/3D_0827/figure/phase_4_multi_terrain_dqn/dx25m_dpsi5deg/official_batched_v1/full_sse/full_sse_stepped_pyramid_3d.html"
+    },
+    {
+      "spatial_resolution_m": 50.0,
+      "heading_spacing_deg": 5.0,
+      "r_neighbor": 1,
+      "terrain": "stepped_pyramid",
+      "bellman_sensor": [
+        7.0,
+        0.0,
+        0.0
+      ],
+      "dqn_sensor": [
+        7.0,
+        0.0,
+        0.0
+      ],
+      "bellman_J_A": 0.30798945592544963,
+      "dqn_J_A": 0.338227489274806,
+      "J_A_absolute_difference": 0.030238033349356375,
+      "J_A_relative_difference_percent": 9.817879400610273,
+      "bellman_J_D": 0.2165809069744426,
+      "dqn_J_D": 0.23313359326646335,
+      "J_D_absolute_difference": 0.016552686292020752,
+      "J_D_relative_difference_percent": 7.642726463406137,
+      "bellman_full_sse_sec": 70.45365829998627,
+      "dqn_full_sse_sec": 71.68311220000032,
+      "bellman_over_dqn_speedup": 0.9828487650398912,
+      "bellman_defender_evaluations": 21,
+      "dqn_defender_evaluations": 21,
+      "selected_defender_action_match": true,
+      "exact_replay_for_plot_sec_excluded_from_benchmark": 3.157088800013298,
+      "source": "D:/git/git_research/glider_hybrid_control/3D_0827/figure/phase_4_multi_terrain_dqn/dx50m_dpsi5deg/official_batched_v1/full_sse/full_sse_stepped_pyramid_comparison.json",
+      "interactive_3d_html": "D:/git/git_research/glider_hybrid_control/3D_0827/figure/phase_4_multi_terrain_dqn/dx50m_dpsi5deg/official_batched_v1/full_sse/full_sse_stepped_pyramid_3d.html"
+    },
+    {
+      "spatial_resolution_m": 100.0,
+      "heading_spacing_deg": 5.0,
+      "r_neighbor": 1,
+      "terrain": "stepped_pyramid",
+      "bellman_sensor": [
+        7.0,
+        0.0,
+        0.0
+      ],
+      "dqn_sensor": [
+        4.0,
+        0.0,
+        0.0
+      ],
+      "bellman_J_A": 0.33204714212397257,
+      "dqn_J_A": 0.20227568777349225,
+      "J_A_absolute_difference": 0.12977145435048032,
+      "J_A_relative_difference_percent": 39.08223799800965,
+      "bellman_J_D": 0.24364011354367196,
+      "dqn_J_D": 0.03762721260185322,
+      "J_D_absolute_difference": 0.20601290094181873,
+      "J_D_relative_difference_percent": 84.55623252896382,
+      "bellman_full_sse_sec": 29.95015799999237,
+      "dqn_full_sse_sec": 37.413823499984574,
+      "bellman_over_dqn_speedup": 0.8005104851153403,
+      "bellman_defender_evaluations": 12,
+      "dqn_defender_evaluations": 9,
+      "selected_defender_action_match": false,
+      "exact_replay_for_plot_sec_excluded_from_benchmark": 2.350953400018625,
+      "source": "D:/git/git_research/glider_hybrid_control/3D_0827/figure/phase_4_multi_terrain_dqn/dx100m_dpsi5deg/official_batched_v1/full_sse/full_sse_stepped_pyramid_comparison.json",
+      "interactive_3d_html": "D:/git/git_research/glider_hybrid_control/3D_0827/figure/phase_4_multi_terrain_dqn/dx100m_dpsi5deg/official_batched_v1/full_sse/full_sse_stepped_pyramid_3d.html"
+    }
+  ]
+}

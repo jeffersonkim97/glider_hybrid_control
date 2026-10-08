@@ -1,0 +1,35 @@
+{
+  "purpose": "terrain-only interactive 3D plots for Phase 16.4",
+  "training_terrains": [
+    "centered_cube",
+    "centered_cube_half_height",
+    "offset_cube_left"
+  ],
+  "stepped_pyramid_role": "held-out VALIDATION_SIMPLE terrain",
+  "plots": [
+    {
+      "terrain_category": "centered_cube",
+      "dataset_split": "TRAIN_SIMPLE",
+      "training_used": true,
+      "output_html": "D:/git/git_research/glider_hybrid_control/3D_0827/figure/phase_4_multi_terrain_dqn/terrain_only_3d/terrain_only_centered_cube_3d.html"
+    },
+    {
+      "terrain_category": "centered_cube_half_height",
+      "dataset_split": "TRAIN_SIMPLE",
+      "training_used": true,
+      "output_html": "D:/git/git_research/glider_hybrid_control/3D_0827/figure/phase_4_multi_terrain_dqn/terrain_only_3d/terrain_only_centered_cube_half_height_3d.html"
+    },
+    {
+      "terrain_category": "offset_cube_left",
+      "dataset_split": "TRAIN_SIMPLE",
+      "training_used": true,
+      "output_html": "D:/git/git_research/glider_hybrid_control/3D_0827/figure/phase_4_multi_terrain_dqn/terrain_only_3d/terrain_only_offset_cube_left_3d.html"
+    },
+    {
+      "terrain_category": "stepped_pyramid",
+      "dataset_split": "VALIDATION_SIMPLE",
+      "training_used": false,
+      "output_html": "D:/git/git_research/glider_hybrid_control/3D_0827/figure/phase_4_multi_terrain_dqn/terrain_only_3d/terrain_only_stepped_pyramid_3d.html"
+    }
+  ]
+}

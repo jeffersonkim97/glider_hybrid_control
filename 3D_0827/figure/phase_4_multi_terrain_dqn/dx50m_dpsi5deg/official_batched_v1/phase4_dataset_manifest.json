@@ -1,0 +1,667 @@
+{
+  "schema": "p1b-phase4-dataset-v1",
+  "design_status": "user_approved_2026-10-03",
+  "terrain_definitions": {
+    "centered_cube": {
+      "category": "centered_cube",
+      "bounds": {
+        "x_min": -10.0,
+        "x_max": 10.0,
+        "y_min": -8.0,
+        "y_max": 8.0
+      },
+      "ground_z": 0.0,
+      "boxes": [
+        {
+          "center_x": 0.0,
+          "center_y": 0.0,
+          "width_x": 4.0,
+          "width_y": 4.0,
+          "height": 4.0,
+          "base_z": 0.0
+        }
+      ],
+      "sha256": "2cb3ed85fd1f35495a04ae637fc79561cdd882e17a8e7f305820c1bec1d251d5"
+    },
+    "centered_cube_half_height": {
+      "category": "centered_cube_half_height",
+      "bounds": {
+        "x_min": -10.0,
+        "x_max": 10.0,
+        "y_min": -8.0,
+        "y_max": 8.0
+      },
+      "ground_z": 0.0,
+      "boxes": [
+        {
+          "center_x": 0.0,
+          "center_y": 0.0,
+          "width_x": 4.0,
+          "width_y": 4.0,
+          "height": 2.0,
+          "base_z": 0.0
+        }
+      ],
+      "sha256": "8f83bccbf9dbfb66a9b17709b31df88a5ebbe3a5e4c86579d65f5df56c40384f"
+    },
+    "offset_cube_left": {
+      "category": "offset_cube_left",
+      "bounds": {
+        "x_min": -10.0,
+        "x_max": 10.0,
+        "y_min": -8.0,
+        "y_max": 8.0
+      },
+      "ground_z": 0.0,
+      "boxes": [
+        {
+          "center_x": 0.0,
+          "center_y": -3.0,
+          "width_x": 4.0,
+          "width_y": 4.0,
+          "height": 4.0,
+          "base_z": 0.0
+        }
+      ],
+      "sha256": "307cc1a3b8565e78311cce8789e2a3a4fe9bc8295d6ef0fe09889f850b9b397d"
+    },
+    "offset_cube_right": {
+      "category": "offset_cube_right",
+      "bounds": {
+        "x_min": -10.0,
+        "x_max": 10.0,
+        "y_min": -8.0,
+        "y_max": 8.0
+      },
+      "ground_z": 0.0,
+      "boxes": [
+        {
+          "center_x": 0.0,
+          "center_y": 3.0,
+          "width_x": 4.0,
+          "width_y": 4.0,
+          "height": 4.0,
+          "base_z": 0.0
+        }
+      ],
+      "sha256": "9394dba295d708d94cc4b74a98f3fab502105064e77c271b3891202a1dd8e5c7"
+    },
+    "stepped_pyramid": {
+      "category": "stepped_pyramid",
+      "bounds": {
+        "x_min": -10.0,
+        "x_max": 10.0,
+        "y_min": -8.0,
+        "y_max": 8.0
+      },
+      "ground_z": 0.0,
+      "boxes": [
+        {
+          "center_x": 0.0,
+          "center_y": 0.0,
+          "width_x": 6.0,
+          "width_y": 6.0,
+          "height": 1.25,
+          "base_z": 0.0
+        },
+        {
+          "center_x": 0.0,
+          "center_y": 0.0,
+          "width_x": 4.5,
+          "width_y": 4.5,
+          "height": 1.25,
+          "base_z": 1.25
+        },
+        {
+          "center_x": 0.0,
+          "center_y": 0.0,
+          "width_x": 3.0,
+          "width_y": 3.0,
+          "height": 1.5,
+          "base_z": 2.5
+        }
+      ],
+      "sha256": "6820a6ca0b61e29cf260485568d787d96668c53634b23e6e227f2b6bdf475c95"
+    }
+  },
+  "sensor_distribution": {
+    "x_map": [
+      3.25,
+      5.0,
+      6.75
+    ],
+    "y_map": [
+      -3.75,
+      0.0,
+      3.75
+    ],
+    "z_map": 0.0,
+    "sampling": "uniform terrain, then uniform sensor position",
+    "neural_input_policy": "scenario and terrain IDs are metadata only; sensing geometry enters through the approved Phase 16.2 hazard channels"
+  },
+  "splits": {
+    "TRAIN_SIMPLE": [
+      {
+        "scenario_id": "train_simple__centered_cube__xp3p25_ym3p75_zp0p00",
+        "split": "TRAIN_SIMPLE",
+        "terrain_category": "centered_cube",
+        "sensor_map": [
+          3.25,
+          -3.75,
+          0.0
+        ],
+        "terrain_hash": "2cb3ed85fd1f35495a04ae637fc79561cdd882e17a8e7f305820c1bec1d251d5"
+      },
+      {
+        "scenario_id": "train_simple__centered_cube__xp3p25_yp0p00_zp0p00",
+        "split": "TRAIN_SIMPLE",
+        "terrain_category": "centered_cube",
+        "sensor_map": [
+          3.25,
+          0.0,
+          0.0
+        ],
+        "terrain_hash": "2cb3ed85fd1f35495a04ae637fc79561cdd882e17a8e7f305820c1bec1d251d5"
+      },
+      {
+        "scenario_id": "train_simple__centered_cube__xp3p25_yp3p75_zp0p00",
+        "split": "TRAIN_SIMPLE",
+        "terrain_category": "centered_cube",
+        "sensor_map": [
+          3.25,
+          3.75,
+          0.0
+        ],
+        "terrain_hash": "2cb3ed85fd1f35495a04ae637fc79561cdd882e17a8e7f305820c1bec1d251d5"
+      },
+      {
+        "scenario_id": "train_simple__centered_cube__xp5p00_ym3p75_zp0p00",
+        "split": "TRAIN_SIMPLE",
+        "terrain_category": "centered_cube",
+        "sensor_map": [
+          5.0,
+          -3.75,
+          0.0
+        ],
+        "terrain_hash": "2cb3ed85fd1f35495a04ae637fc79561cdd882e17a8e7f305820c1bec1d251d5"
+      },
+      {
+        "scenario_id": "train_simple__centered_cube__xp5p00_yp0p00_zp0p00",
+        "split": "TRAIN_SIMPLE",
+        "terrain_category": "centered_cube",
+        "sensor_map": [
+          5.0,
+          0.0,
+          0.0
+        ],
+        "terrain_hash": "2cb3ed85fd1f35495a04ae637fc79561cdd882e17a8e7f305820c1bec1d251d5"
+      },
+      {
+        "scenario_id": "train_simple__centered_cube__xp5p00_yp3p75_zp0p00",
+        "split": "TRAIN_SIMPLE",
+        "terrain_category": "centered_cube",
+        "sensor_map": [
+          5.0,
+          3.75,
+          0.0
+        ],
+        "terrain_hash": "2cb3ed85fd1f35495a04ae637fc79561cdd882e17a8e7f305820c1bec1d251d5"
+      },
+      {
+        "scenario_id": "train_simple__centered_cube__xp6p75_ym3p75_zp0p00",
+        "split": "TRAIN_SIMPLE",
+        "terrain_category": "centered_cube",
+        "sensor_map": [
+          6.75,
+          -3.75,
+          0.0
+        ],
+        "terrain_hash": "2cb3ed85fd1f35495a04ae637fc79561cdd882e17a8e7f305820c1bec1d251d5"
+      },
+      {
+        "scenario_id": "train_simple__centered_cube__xp6p75_yp0p00_zp0p00",
+        "split": "TRAIN_SIMPLE",
+        "terrain_category": "centered_cube",
+        "sensor_map": [
+          6.75,
+          0.0,
+          0.0
+        ],
+        "terrain_hash": "2cb3ed85fd1f35495a04ae637fc79561cdd882e17a8e7f305820c1bec1d251d5"
+      },
+      {
+        "scenario_id": "train_simple__centered_cube__xp6p75_yp3p75_zp0p00",
+        "split": "TRAIN_SIMPLE",
+        "terrain_category": "centered_cube",
+        "sensor_map": [
+          6.75,
+          3.75,
+          0.0
+        ],
+        "terrain_hash": "2cb3ed85fd1f35495a04ae637fc79561cdd882e17a8e7f305820c1bec1d251d5"
+      },
+      {
+        "scenario_id": "train_simple__centered_cube_half_height__xp3p25_ym3p75_zp0p00",
+        "split": "TRAIN_SIMPLE",
+        "terrain_category": "centered_cube_half_height",
+        "sensor_map": [
+          3.25,
+          -3.75,
+          0.0
+        ],
+        "terrain_hash": "8f83bccbf9dbfb66a9b17709b31df88a5ebbe3a5e4c86579d65f5df56c40384f"
+      },
+      {
+        "scenario_id": "train_simple__centered_cube_half_height__xp3p25_yp0p00_zp0p00",
+        "split": "TRAIN_SIMPLE",
+        "terrain_category": "centered_cube_half_height",
+        "sensor_map": [
+          3.25,
+          0.0,
+          0.0
+        ],
+        "terrain_hash": "8f83bccbf9dbfb66a9b17709b31df88a5ebbe3a5e4c86579d65f5df56c40384f"
+      },
+      {
+        "scenario_id": "train_simple__centered_cube_half_height__xp3p25_yp3p75_zp0p00",
+        "split": "TRAIN_SIMPLE",
+        "terrain_category": "centered_cube_half_height",
+        "sensor_map": [
+          3.25,
+          3.75,
+          0.0
+        ],
+        "terrain_hash": "8f83bccbf9dbfb66a9b17709b31df88a5ebbe3a5e4c86579d65f5df56c40384f"
+      },
+      {
+        "scenario_id": "train_simple__centered_cube_half_height__xp5p00_ym3p75_zp0p00",
+        "split": "TRAIN_SIMPLE",
+        "terrain_category": "centered_cube_half_height",
+        "sensor_map": [
+          5.0,
+          -3.75,
+          0.0
+        ],
+        "terrain_hash": "8f83bccbf9dbfb66a9b17709b31df88a5ebbe3a5e4c86579d65f5df56c40384f"
+      },
+      {
+        "scenario_id": "train_simple__centered_cube_half_height__xp5p00_yp0p00_zp0p00",
+        "split": "TRAIN_SIMPLE",
+        "terrain_category": "centered_cube_half_height",
+        "sensor_map": [
+          5.0,
+          0.0,
+          0.0
+        ],
+        "terrain_hash": "8f83bccbf9dbfb66a9b17709b31df88a5ebbe3a5e4c86579d65f5df56c40384f"
+      },
+      {
+        "scenario_id": "train_simple__centered_cube_half_height__xp5p00_yp3p75_zp0p00",
+        "split": "TRAIN_SIMPLE",
+        "terrain_category": "centered_cube_half_height",
+        "sensor_map": [
+          5.0,
+          3.75,
+          0.0
+        ],
+        "terrain_hash": "8f83bccbf9dbfb66a9b17709b31df88a5ebbe3a5e4c86579d65f5df56c40384f"
+      },
+      {
+        "scenario_id": "train_simple__centered_cube_half_height__xp6p75_ym3p75_zp0p00",
+        "split": "TRAIN_SIMPLE",
+        "terrain_category": "centered_cube_half_height",
+        "sensor_map": [
+          6.75,
+          -3.75,
+          0.0
+        ],
+        "terrain_hash": "8f83bccbf9dbfb66a9b17709b31df88a5ebbe3a5e4c86579d65f5df56c40384f"
+      },
+      {
+        "scenario_id": "train_simple__centered_cube_half_height__xp6p75_yp0p00_zp0p00",
+        "split": "TRAIN_SIMPLE",
+        "terrain_category": "centered_cube_half_height",
+        "sensor_map": [
+          6.75,
+          0.0,
+          0.0
+        ],
+        "terrain_hash": "8f83bccbf9dbfb66a9b17709b31df88a5ebbe3a5e4c86579d65f5df56c40384f"
+      },
+      {
+        "scenario_id": "train_simple__centered_cube_half_height__xp6p75_yp3p75_zp0p00",
+        "split": "TRAIN_SIMPLE",
+        "terrain_category": "centered_cube_half_height",
+        "sensor_map": [
+          6.75,
+          3.75,
+          0.0
+        ],
+        "terrain_hash": "8f83bccbf9dbfb66a9b17709b31df88a5ebbe3a5e4c86579d65f5df56c40384f"
+      },
+      {
+        "scenario_id": "train_simple__offset_cube_left__xp3p25_ym3p75_zp0p00",
+        "split": "TRAIN_SIMPLE",
+        "terrain_category": "offset_cube_left",
+        "sensor_map": [
+          3.25,
+          -3.75,
+          0.0
+        ],
+        "terrain_hash": "307cc1a3b8565e78311cce8789e2a3a4fe9bc8295d6ef0fe09889f850b9b397d"
+      },
+      {
+        "scenario_id": "train_simple__offset_cube_left__xp3p25_yp0p00_zp0p00",
+        "split": "TRAIN_SIMPLE",
+        "terrain_category": "offset_cube_left",
+        "sensor_map": [
+          3.25,
+          0.0,
+          0.0
+        ],
+        "terrain_hash": "307cc1a3b8565e78311cce8789e2a3a4fe9bc8295d6ef0fe09889f850b9b397d"
+      },
+      {
+        "scenario_id": "train_simple__offset_cube_left__xp3p25_yp3p75_zp0p00",
+        "split": "TRAIN_SIMPLE",
+        "terrain_category": "offset_cube_left",
+        "sensor_map": [
+          3.25,
+          3.75,
+          0.0
+        ],
+        "terrain_hash": "307cc1a3b8565e78311cce8789e2a3a4fe9bc8295d6ef0fe09889f850b9b397d"
+      },
+      {
+        "scenario_id": "train_simple__offset_cube_left__xp5p00_ym3p75_zp0p00",
+        "split": "TRAIN_SIMPLE",
+        "terrain_category": "offset_cube_left",
+        "sensor_map": [
+          5.0,
+          -3.75,
+          0.0
+        ],
+        "terrain_hash": "307cc1a3b8565e78311cce8789e2a3a4fe9bc8295d6ef0fe09889f850b9b397d"
+      },
+      {
+        "scenario_id": "train_simple__offset_cube_left__xp5p00_yp0p00_zp0p00",
+        "split": "TRAIN_SIMPLE",
+        "terrain_category": "offset_cube_left",
+        "sensor_map": [
+          5.0,
+          0.0,
+          0.0
+        ],
+        "terrain_hash": "307cc1a3b8565e78311cce8789e2a3a4fe9bc8295d6ef0fe09889f850b9b397d"
+      },
+      {
+        "scenario_id": "train_simple__offset_cube_left__xp5p00_yp3p75_zp0p00",
+        "split": "TRAIN_SIMPLE",
+        "terrain_category": "offset_cube_left",
+        "sensor_map": [
+          5.0,
+          3.75,
+          0.0
+        ],
+        "terrain_hash": "307cc1a3b8565e78311cce8789e2a3a4fe9bc8295d6ef0fe09889f850b9b397d"
+      },
+      {
+        "scenario_id": "train_simple__offset_cube_left__xp6p75_ym3p75_zp0p00",
+        "split": "TRAIN_SIMPLE",
+        "terrain_category": "offset_cube_left",
+        "sensor_map": [
+          6.75,
+          -3.75,
+          0.0
+        ],
+        "terrain_hash": "307cc1a3b8565e78311cce8789e2a3a4fe9bc8295d6ef0fe09889f850b9b397d"
+      },
+      {
+        "scenario_id": "train_simple__offset_cube_left__xp6p75_yp0p00_zp0p00",
+        "split": "TRAIN_SIMPLE",
+        "terrain_category": "offset_cube_left",
+        "sensor_map": [
+          6.75,
+          0.0,
+          0.0
+        ],
+        "terrain_hash": "307cc1a3b8565e78311cce8789e2a3a4fe9bc8295d6ef0fe09889f850b9b397d"
+      },
+      {
+        "scenario_id": "train_simple__offset_cube_left__xp6p75_yp3p75_zp0p00",
+        "split": "TRAIN_SIMPLE",
+        "terrain_category": "offset_cube_left",
+        "sensor_map": [
+          6.75,
+          3.75,
+          0.0
+        ],
+        "terrain_hash": "307cc1a3b8565e78311cce8789e2a3a4fe9bc8295d6ef0fe09889f850b9b397d"
+      }
+    ],
+    "VALIDATION_SIMPLE": [
+      {
+        "scenario_id": "validation_simple__offset_cube_right__xp3p25_ym3p75_zp0p00",
+        "split": "VALIDATION_SIMPLE",
+        "terrain_category": "offset_cube_right",
+        "sensor_map": [
+          3.25,
+          -3.75,
+          0.0
+        ],
+        "terrain_hash": "9394dba295d708d94cc4b74a98f3fab502105064e77c271b3891202a1dd8e5c7"
+      },
+      {
+        "scenario_id": "validation_simple__offset_cube_right__xp3p25_yp0p00_zp0p00",
+        "split": "VALIDATION_SIMPLE",
+        "terrain_category": "offset_cube_right",
+        "sensor_map": [
+          3.25,
+          0.0,
+          0.0
+        ],
+        "terrain_hash": "9394dba295d708d94cc4b74a98f3fab502105064e77c271b3891202a1dd8e5c7"
+      },
+      {
+        "scenario_id": "validation_simple__offset_cube_right__xp3p25_yp3p75_zp0p00",
+        "split": "VALIDATION_SIMPLE",
+        "terrain_category": "offset_cube_right",
+        "sensor_map": [
+          3.25,
+          3.75,
+          0.0
+        ],
+        "terrain_hash": "9394dba295d708d94cc4b74a98f3fab502105064e77c271b3891202a1dd8e5c7"
+      },
+      {
+        "scenario_id": "validation_simple__offset_cube_right__xp5p00_ym3p75_zp0p00",
+        "split": "VALIDATION_SIMPLE",
+        "terrain_category": "offset_cube_right",
+        "sensor_map": [
+          5.0,
+          -3.75,
+          0.0
+        ],
+        "terrain_hash": "9394dba295d708d94cc4b74a98f3fab502105064e77c271b3891202a1dd8e5c7"
+      },
+      {
+        "scenario_id": "validation_simple__offset_cube_right__xp5p00_yp0p00_zp0p00",
+        "split": "VALIDATION_SIMPLE",
+        "terrain_category": "offset_cube_right",
+        "sensor_map": [
+          5.0,
+          0.0,
+          0.0
+        ],
+        "terrain_hash": "9394dba295d708d94cc4b74a98f3fab502105064e77c271b3891202a1dd8e5c7"
+      },
+      {
+        "scenario_id": "validation_simple__offset_cube_right__xp5p00_yp3p75_zp0p00",
+        "split": "VALIDATION_SIMPLE",
+        "terrain_category": "offset_cube_right",
+        "sensor_map": [
+          5.0,
+          3.75,
+          0.0
+        ],
+        "terrain_hash": "9394dba295d708d94cc4b74a98f3fab502105064e77c271b3891202a1dd8e5c7"
+      },
+      {
+        "scenario_id": "validation_simple__offset_cube_right__xp6p75_ym3p75_zp0p00",
+        "split": "VALIDATION_SIMPLE",
+        "terrain_category": "offset_cube_right",
+        "sensor_map": [
+          6.75,
+          -3.75,
+          0.0
+        ],
+        "terrain_hash": "9394dba295d708d94cc4b74a98f3fab502105064e77c271b3891202a1dd8e5c7"
+      },
+      {
+        "scenario_id": "validation_simple__offset_cube_right__xp6p75_yp0p00_zp0p00",
+        "split": "VALIDATION_SIMPLE",
+        "terrain_category": "offset_cube_right",
+        "sensor_map": [
+          6.75,
+          0.0,
+          0.0
+        ],
+        "terrain_hash": "9394dba295d708d94cc4b74a98f3fab502105064e77c271b3891202a1dd8e5c7"
+      },
+      {
+        "scenario_id": "validation_simple__offset_cube_right__xp6p75_yp3p75_zp0p00",
+        "split": "VALIDATION_SIMPLE",
+        "terrain_category": "offset_cube_right",
+        "sensor_map": [
+          6.75,
+          3.75,
+          0.0
+        ],
+        "terrain_hash": "9394dba295d708d94cc4b74a98f3fab502105064e77c271b3891202a1dd8e5c7"
+      },
+      {
+        "scenario_id": "validation_simple__stepped_pyramid__xp3p25_ym3p75_zp0p00",
+        "split": "VALIDATION_SIMPLE",
+        "terrain_category": "stepped_pyramid",
+        "sensor_map": [
+          3.25,
+          -3.75,
+          0.0
+        ],
+        "terrain_hash": "6820a6ca0b61e29cf260485568d787d96668c53634b23e6e227f2b6bdf475c95"
+      },
+      {
+        "scenario_id": "validation_simple__stepped_pyramid__xp3p25_yp0p00_zp0p00",
+        "split": "VALIDATION_SIMPLE",
+        "terrain_category": "stepped_pyramid",
+        "sensor_map": [
+          3.25,
+          0.0,
+          0.0
+        ],
+        "terrain_hash": "6820a6ca0b61e29cf260485568d787d96668c53634b23e6e227f2b6bdf475c95"
+      },
+      {
+        "scenario_id": "validation_simple__stepped_pyramid__xp3p25_yp3p75_zp0p00",
+        "split": "VALIDATION_SIMPLE",
+        "terrain_category": "stepped_pyramid",
+        "sensor_map": [
+          3.25,
+          3.75,
+          0.0
+        ],
+        "terrain_hash": "6820a6ca0b61e29cf260485568d787d96668c53634b23e6e227f2b6bdf475c95"
+      },
+      {
+        "scenario_id": "validation_simple__stepped_pyramid__xp5p00_ym3p75_zp0p00",
+        "split": "VALIDATION_SIMPLE",
+        "terrain_category": "stepped_pyramid",
+        "sensor_map": [
+          5.0,
+          -3.75,
+          0.0
+        ],
+        "terrain_hash": "6820a6ca0b61e29cf260485568d787d96668c53634b23e6e227f2b6bdf475c95"
+      },
+      {
+        "scenario_id": "validation_simple__stepped_pyramid__xp5p00_yp0p00_zp0p00",
+        "split": "VALIDATION_SIMPLE",
+        "terrain_category": "stepped_pyramid",
+        "sensor_map": [
+          5.0,
+          0.0,
+          0.0
+        ],
+        "terrain_hash": "6820a6ca0b61e29cf260485568d787d96668c53634b23e6e227f2b6bdf475c95"
+      },
+      {
+        "scenario_id": "validation_simple__stepped_pyramid__xp5p00_yp3p75_zp0p00",
+        "split": "VALIDATION_SIMPLE",
+        "terrain_category": "stepped_pyramid",
+        "sensor_map": [
+          5.0,
+          3.75,
+          0.0
+        ],
+        "terrain_hash": "6820a6ca0b61e29cf260485568d787d96668c53634b23e6e227f2b6bdf475c95"
+      },
+      {
+        "scenario_id": "validation_simple__stepped_pyramid__xp6p75_ym3p75_zp0p00",
+        "split": "VALIDATION_SIMPLE",
+        "terrain_category": "stepped_pyramid",
+        "sensor_map": [
+          6.75,
+          -3.75,
+          0.0
+        ],
+        "terrain_hash": "6820a6ca0b61e29cf260485568d787d96668c53634b23e6e227f2b6bdf475c95"
+      },
+      {
+        "scenario_id": "validation_simple__stepped_pyramid__xp6p75_yp0p00_zp0p00",
+        "split": "VALIDATION_SIMPLE",
+        "terrain_category": "stepped_pyramid",
+        "sensor_map": [
+          6.75,
+          0.0,
+          0.0
+        ],
+        "terrain_hash": "6820a6ca0b61e29cf260485568d787d96668c53634b23e6e227f2b6bdf475c95"
+      },
+      {
+        "scenario_id": "validation_simple__stepped_pyramid__xp6p75_yp3p75_zp0p00",
+        "split": "VALIDATION_SIMPLE",
+        "terrain_category": "stepped_pyramid",
+        "sensor_map": [
+          6.75,
+          3.75,
+          0.0
+        ],
+        "terrain_hash": "6820a6ca0b61e29cf260485568d787d96668c53634b23e6e227f2b6bdf475c95"
+      }
+    ],
+    "RESERVED_PHASE5_TEST": []
+  },
+  "counts": {
+    "training_terrains": 3,
+    "validation_terrains": 2,
+    "sensors_per_terrain": 9,
+    "training_scenarios": 27,
+    "validation_scenarios": 18,
+    "reserved_phase5_scenarios": 0
+  },
+  "leakage_check": {
+    "passed": true,
+    "identity": "terrain definition hash plus exact sensor position"
+  },
+  "fixed_non_target_variables": [
+    "attacker start",
+    "goal",
+    "glider physics",
+    "objective",
+    "detection model",
+    "terminal rule",
+    "transition feasibility"
+  ],
+  "phase5_policy": "namespace reserved but empty; complex unseen terrain composition requires a separate Phase 16.5 approval",
+  "manifest_sha256": "d28c2f4abbfe68624317815d83a0f255f5a4f6f9a76f867fde2940c181285625"
+}

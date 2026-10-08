@@ -1,0 +1,153 @@
+{
+  "format": "p1b-phase4-generalized-dqn-v1",
+  "official_checkpoint": "3D_RL_DQN/checkpoints/phase4_multi_terrain/dx100m_dpsi5deg/official_batched_v1/phase4_official_generalized.pt",
+  "selected_seed": 2,
+  "selected_episode": 36000,
+  "selection_validation": {
+    "case_count": 18,
+    "success_count": 18,
+    "success_rate": 1.0,
+    "median_relative_error": 0.00402444084618175,
+    "maximum_relative_error": 0.1619060694531433,
+    "mean_inference_runtime_sec": 0.11016575555064871
+  },
+  "dataset_manifest_sha256": "d28c2f4abbfe68624317815d83a0f255f5a4f6f9a76f867fde2940c181285625",
+  "condition": {
+    "spatial_resolution_m": 100.0,
+    "heading_spacing_deg": 5.0,
+    "r_neighbor": 1,
+    "terrain_category": "centered_cube",
+    "hazard_weight": null,
+    "time_weight": null,
+    "defender_goal_margin_map": 1.0
+  },
+  "compatibility": {
+    "spatial_discretization_m": 100.0,
+    "angular_discretization_deg": 5.0,
+    "observation_schema_id": "p1b-terrain-observation-v1",
+    "scalar_shape": [
+      8
+    ],
+    "spatial_shape": [
+      7,
+      21,
+      21
+    ],
+    "action_catalog_id": "p1b-heading-action-catalog-v1:94142da398e7d2ba5cac27c4ba31ca52f26fda13d32439bb8bb4dbd98d7c718c"
+  },
+  "network_config": {
+    "spatial_channels": 7,
+    "spatial_height": 21,
+    "spatial_width": 21,
+    "scalar_features": 8,
+    "action_count": 72,
+    "convolution_channels": [
+      32,
+      64,
+      64
+    ],
+    "spatial_embedding": 256,
+    "scalar_hidden": [
+      64,
+      64
+    ],
+    "fusion_hidden": 256,
+    "activation": "relu",
+    "architecture_id": "p1b-two-branch-dqn-v1"
+  },
+  "training_config": {
+    "episodes": 60000,
+    "gamma": 1.0,
+    "replay_capacity": 50000,
+    "replay_warmup": 2000,
+    "batch_size": 128,
+    "optimizer": "AdamW",
+    "learning_rate": 0.0003,
+    "loss": "huber",
+    "epsilon_start": 1.0,
+    "epsilon_end": 0.05,
+    "epsilon_decay_fraction": 0.6,
+    "target_update_steps": 1000,
+    "updates_per_environment_step": 1,
+    "gradient_clip_norm": 10.0,
+    "evaluation_interval_episodes": 1500,
+    "seeds": [
+      0,
+      1,
+      2
+    ],
+    "device": "cuda",
+    "config_id": "p1b-phase4-training-v1",
+    "epsilon_decay_definition": "linear by environment step over episodes * maximum DAG steps * epsilon_decay_fraction"
+  },
+  "execution_config": {
+    "episode_batch_size": 8,
+    "optimization_prefetch_batches": 8,
+    "optimizer_updates_per_vector_step": 1,
+    "checkpoint_interval_episodes": 1500,
+    "evaluation_interval_episodes": 6000,
+    "execution_id": "p1b-phase4-vectorized-episodes-v1",
+    "maximum_optimizer_updates_per_environment_step": 0.125,
+    "target_network_sync_basis": "environment steps, preserving the approved 1000-step cadence"
+  },
+  "model_contract": {
+    "condition": {
+      "spatial_resolution_m": 100.0,
+      "heading_spacing_deg": 5.0,
+      "r_neighbor": 1,
+      "terrain_category": "centered_cube",
+      "hazard_weight": null,
+      "time_weight": null,
+      "defender_goal_margin_map": 1.0
+    },
+    "dataset_manifest_sha256": "d28c2f4abbfe68624317815d83a0f255f5a4f6f9a76f867fde2940c181285625",
+    "observation_config": {
+      "local_window_extent_m": 2000.0,
+      "local_window_shape_cells": [
+        21,
+        21
+      ],
+      "local_window_orientation": "heading_aligned",
+      "schema_id": "p1b-terrain-observation-v1",
+      "sample_spacing_m": [
+        100.0,
+        100.0
+      ],
+      "parameter_origin": "new_design_choice_confirmed_by_user"
+    },
+    "normalization": "fixed deterministic physical scaling; no fitted statistics",
+    "action_catalog_id": "p1b-heading-action-catalog-v1:94142da398e7d2ba5cac27c4ba31ca52f26fda13d32439bb8bb4dbd98d7c718c",
+    "attacker_objective": {
+      "hazard_weight": 0.5,
+      "time_weight": 0.5,
+      "hazard_reference": 1.0,
+      "time_reference_s": 221.23893805309734,
+      "objective_id": "attacker_hazard_time_v2"
+    },
+    "glider": {
+      "aircraft_name": "Schleicher Ka 6 CR",
+      "mass_kg": 304.0,
+      "best_glide_speed_mps": 22.22222222222222,
+      "best_glide_ratio": 10.0,
+      "powered_speed_mps": 22.22222222222222,
+      "maximum_bank_deg": 30.0,
+      "gravity_mps2": 9.81,
+      "switch_energy_loss_height_m": 10.0,
+      "goal_tolerance_m": 25.0,
+      "source_url": "https://mobilit.belgium.be/sites/default/files/domain/Aviation/Veiligheid/Verslagen%20voorvallen/2010/2010_5.pdf"
+    },
+    "detection": {
+      "range_floor_m": 10.0,
+      "radar_coefficient": 13000000.0,
+      "doppler_coefficient": 33250.0,
+      "rcs_min": 0.1,
+      "rcs_max": 1.0,
+      "radar_rate_scale": 1.0,
+      "radial_velocity_rate_scale": 1.0
+    },
+    "physical_scale": {
+      "meters_per_map_unit": 100.0
+    },
+    "bellman_contract_sha256": "a24faced5dda76d403ef805c68028e3e1cfdafa704c33ac68ffffa437f8de89b"
+  }
+}

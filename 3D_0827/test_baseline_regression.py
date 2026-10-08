@@ -173,7 +173,11 @@ class BaselineRegressionTests(unittest.TestCase):
 
     def test_reference_notebook_is_unchanged(self) -> None:
         notebook = Path(__file__).with_name("3D_bellman_0827.ipynb")
-        digest = hashlib.sha256(notebook.read_bytes()).hexdigest()
+        # Git may check text files out with CRLF on Windows.  Hash the canonical
+        # LF representation so the freeze checks notebook content rather than the
+        # platform's working-tree line-ending convention.
+        canonical_bytes = notebook.read_bytes().replace(b"\r\n", b"\n")
+        digest = hashlib.sha256(canonical_bytes).hexdigest()
         self.assertEqual(digest, REFERENCE_NOTEBOOK_SHA256)
 
     def test_canonical_numerical_regression(self) -> None:

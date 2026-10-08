@@ -1029,11 +1029,14 @@ def solve_glide_mdp(
     q_cost = evaluation.cost if reached else None
 
     readout = None
+    switching_inference_seconds = 0.0
     if read_switching and candidates is not None and candidates.by_state_id:
+        started = perf_counter()
         readout = _switching_readout(
             mdp, table, candidates, value, evaluation_id,
             max_steps=config.max_steps,
         )
+        switching_inference_seconds = perf_counter() - started
 
     return GlideSolveResult(
         condition_label=scene.condition.label,
@@ -1067,6 +1070,7 @@ def solve_glide_mdp(
             "detection_probability": hazard_to_detection_probability(
                 evaluation.cumulative_hazard,
             ),
+            "switching_inference_seconds": switching_inference_seconds,
             "hazard_evaluations": mdp.hazard_evaluations,
         },
     )

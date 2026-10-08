@@ -20,7 +20,7 @@ for it) and run only the matching block below. Do not run both.
    no separate "install Python" step is needed.
 3. Installs the pinned dependencies from `p1b/requirements.txt` into that
    venv: the core symbolic/notebook stack (casadi, numpy, scipy,
-   matplotlib, nbformat/nbclient/ipykernel, plotly) plus the RL groundwork
+   matplotlib, nbformat/nbclient/ipykernel/ipywidgets, plotly) plus the RL groundwork
    stack (torch, gymnasium, stable-baselines3) used by `p1b_rl`. One
    `uv pip install -r` call installs everything -- there is no separate RL
    install step.
@@ -30,11 +30,16 @@ for it) and run only the matching block below. Do not run both.
 
 Safe to re-run: each step checks whether it's already done before acting.
 
-**GPU note**: `torch==2.13.0` here is pinned to the CPU-only build (this
-project's own state-space is small enough that CPU training is fine, and
-CPU wheels are the same across every OS/machine). If a target machine has
-a CUDA GPU you want to use, install a CUDA build of the *same* torch
-version separately after this setup instead of changing the pin here.
+**GPU note**: the portable requirements pin `torch==2.14.0`. On the validated
+Windows RTX 5070 machine, replace it with the official CUDA 13.0 wheel after
+the normal setup step:
+
+```powershell
+uv pip install --cache-dir .\.uv-cache --python .\.venv_p1b\Scripts\python.exe --reinstall "torch==2.14.0+cu130" --index-url https://download.pytorch.org/whl/cu130
+```
+
+The Phase 16.3 code selects `cuda` only when `torch.cuda.is_available()` is
+true and records the actual PyTorch/CUDA/device versions with the run.
 
 ---
 
@@ -56,7 +61,7 @@ uv venv .venv_p1b
 uv pip install --python .venv_p1b\Scripts\python.exe -r p1b\requirements.txt
 
 # 4. Sanity check
-.venv_p1b\Scripts\python.exe -c "import casadi, numpy, scipy, matplotlib, nbformat, nbclient, torch, gymnasium, stable_baselines3; print('OK:', casadi.__version__, numpy.__version__, scipy.__version__, torch.__version__, gymnasium.__version__, stable_baselines3.__version__)"
+.venv_p1b\Scripts\python.exe -c "import casadi, numpy, scipy, matplotlib, nbformat, nbclient, ipywidgets, torch, gymnasium, stable_baselines3; print('OK:', casadi.__version__, numpy.__version__, scipy.__version__, torch.__version__, gymnasium.__version__, stable_baselines3.__version__)"
 ```
 
 To run the notebook headlessly afterward: `.venv_p1b\Scripts\python.exe execute_casadi_nb.py`
@@ -84,7 +89,7 @@ uv venv .venv_p1b
 uv pip install --python .venv_p1b/bin/python -r p1b/requirements.txt
 
 # 4. Sanity check
-.venv_p1b/bin/python -c "import casadi, numpy, scipy, matplotlib, nbformat, nbclient, torch, gymnasium, stable_baselines3; print('OK:', casadi.__version__, numpy.__version__, scipy.__version__, torch.__version__, gymnasium.__version__, stable_baselines3.__version__)"
+.venv_p1b/bin/python -c "import casadi, numpy, scipy, matplotlib, nbformat, nbclient, ipywidgets, torch, gymnasium, stable_baselines3; print('OK:', casadi.__version__, numpy.__version__, scipy.__version__, torch.__version__, gymnasium.__version__, stable_baselines3.__version__)"
 ```
 
 To run the notebook headlessly afterward: `.venv_p1b/bin/python execute_casadi_nb.py`

@@ -1,0 +1,101 @@
+{
+  "phase": 4,
+  "stage": "16.4",
+  "purpose": "one shared condition-specific DQN across simple terrains",
+  "status": "failed_approved_generalization_criterion",
+  "condition": {
+    "spatial_resolution_m": 50.0,
+    "heading_spacing_deg": 5.0,
+    "r_neighbor": 1,
+    "terrain_category": "centered_cube",
+    "hazard_weight": null,
+    "time_weight": null,
+    "defender_goal_margin_map": 1.0
+  },
+  "dataset_manifest": "3D_0827/figure/phase_4_multi_terrain_dqn/dx50m_dpsi5deg/official_batched_v1/phase4_dataset_manifest.json",
+  "dataset_manifest_sha256": "d28c2f4abbfe68624317815d83a0f255f5a4f6f9a76f867fde2940c181285625",
+  "training_config_path": "3D_0827/figure/phase_4_multi_terrain_dqn/dx50m_dpsi5deg/official_batched_v1/phase4_training_config.json",
+  "execution_config": {
+    "episode_batch_size": 8,
+    "optimization_prefetch_batches": 8,
+    "optimizer_updates_per_vector_step": 1,
+    "checkpoint_interval_episodes": 1500,
+    "evaluation_interval_episodes": 6000,
+    "execution_id": "p1b-phase4-vectorized-episodes-v1",
+    "maximum_optimizer_updates_per_environment_step": 0.125,
+    "target_network_sync_basis": "environment steps, preserving the approved 1000-step cadence"
+  },
+  "bellman_reference_manifest": "3D_0827/figure/phase_4_multi_terrain_dqn/dx50m_dpsi5deg/official/phase4_bellman_reference_manifest.json",
+  "training_history": "3D_0827/figure/phase_4_multi_terrain_dqn/dx50m_dpsi5deg/official_batched_v1/phase4_training_history.json",
+  "evaluation_history": "3D_0827/figure/phase_4_multi_terrain_dqn/dx50m_dpsi5deg/official_batched_v1/phase4_evaluation_history.json",
+  "generalized_model_manifest": "3D_0827/figure/phase_4_multi_terrain_dqn/dx50m_dpsi5deg/official_batched_v1/phase4_generalized_model_manifest.json",
+  "official_checkpoint": "3D_RL_DQN/checkpoints/phase4_multi_terrain/dx50m_dpsi5deg/official_batched_v1/phase4_official_generalized.pt",
+  "runtime_metadata": {
+    "compatibility": {
+      "spatial_discretization_m": 50.0,
+      "angular_discretization_deg": 5.0,
+      "observation_schema_id": "p1b-terrain-observation-v1",
+      "scalar_shape": [
+        8
+      ],
+      "spatial_shape": [
+        7,
+        21,
+        21
+      ],
+      "action_catalog_id": "p1b-heading-action-catalog-v1:94142da398e7d2ba5cac27c4ba31ca52f26fda13d32439bb8bb4dbd98d7c718c"
+    },
+    "action_catalog_id": "p1b-heading-action-catalog-v1:94142da398e7d2ba5cac27c4ba31ca52f26fda13d32439bb8bb4dbd98d7c718c",
+    "terrain_scene_count": 3,
+    "scenario_count": 27,
+    "reference_cache_path": "3D_0827/figure/phase_4_multi_terrain_dqn/dx50m_dpsi5deg/official/phase4_bellman_reference_manifest.json",
+    "bellman_contract_sha256": "a24faced5dda76d403ef805c68028e3e1cfdafa704c33ac68ffffa437f8de89b",
+    "observation_cache_entries_per_scenario": 2048,
+    "surface_cache_entries_per_terrain": 200000,
+    "action_row_cache_entries_per_terrain": 50000,
+    "observation_backend": "exact_batched_aabb_cuda",
+    "retained_training_terrain_scene_count": 3,
+    "retained_training_scenario_count": 27,
+    "lazy_validation_terrain_scene_count": 2,
+    "lazy_validation_scenario_count": 18,
+    "evaluation_batch_size": 1024
+  },
+  "quality": {
+    "all_validation_cases_goal_reaching_and_feasible": true,
+    "validation_record_count": 54,
+    "median_relative_J_A_error": 0.02346473624929877,
+    "maximum_relative_J_A_error": 0.2690025242396457,
+    "median_threshold": 0.1,
+    "every_case_threshold": 0.2,
+    "passed": false,
+    "evaluated_for_official_run": true
+  },
+  "device": {
+    "requested": "cuda",
+    "require_cuda": true,
+    "torch_version": "2.14.0+cu130",
+    "cuda_runtime": "13.0",
+    "cuda_available": true,
+    "cuda_device": "NVIDIA GeForce RTX 5070"
+  },
+  "runtime_sec": {
+    "training_total": 6069.469935500005,
+    "evaluation_total": 1818.5761024999665
+  },
+  "visualizations": [
+    "3D_0827/figure/phase_4_multi_terrain_dqn/dx50m_dpsi5deg/official_batched_v1/phase4_training_terrain_gallery.png",
+    "3D_0827/figure/phase_4_multi_terrain_dqn/dx50m_dpsi5deg/official_batched_v1/phase4_validation_terrain_gallery.png",
+    "3D_0827/figure/phase_4_multi_terrain_dqn/dx50m_dpsi5deg/official_batched_v1/phase4_sampling_distribution.png",
+    "3D_0827/figure/phase_4_multi_terrain_dqn/dx50m_dpsi5deg/official_batched_v1/phase4_learning_curve.png",
+    "3D_0827/figure/phase_4_multi_terrain_dqn/dx50m_dpsi5deg/official_batched_v1/phase4_train_validation_gap.png",
+    "3D_0827/figure/phase_4_multi_terrain_dqn/dx50m_dpsi5deg/official_batched_v1/phase4_per_terrain_evaluation.png",
+    "3D_0827/figure/phase_4_multi_terrain_dqn/dx50m_dpsi5deg/official_batched_v1/phase4_representative_trajectories.png",
+    "3D_0827/figure/phase_4_multi_terrain_dqn/dx50m_dpsi5deg/official_batched_v1/phase4_overfitting_diagnostic.png"
+  ],
+  "scope_limits": {
+    "phase5_complex_unseen_test_performed": false,
+    "local_sse_integration_performed": false,
+    "cross_discretization_model": false,
+    "final_computational_regime_claim": false
+  }
+}
