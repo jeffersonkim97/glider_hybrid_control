@@ -4186,6 +4186,296 @@ Implement **Phase 8 only**. Begin by loading the latest frozen Phase-7 raw JSON,
 
 ---
 
+# Phase 16.4 Extension Design Record — Environment, Mission, Sensor, and Early-Stopping Variation
+
+## Status and Scope
+
+This section records the user/team design discussion and the repository-grounded audit performed on 2026-10-08. It is a requirements and brainstorming record only. It does not authorize implementation, retraining, or modification of the frozen Phase-16 results. No item in this section is to be implemented until the user gives an explicit implementation instruction.
+
+The proposed extensions are:
+
+1. variation of environment/terrain type,
+2. variation of launch/start point,
+3. variation of goal point or goal region,
+4. variation of a fixed single-sensor position,
+5. a training stopping rule based on approved approximation quality and stable validation performance.
+
+## Frozen Physical Interpretation of the Current Attacker
+
+The Attacker is an abstract standoff-weapon or mothership/daughtership model. Only the daughtership is tracked as the Attacker after separation.
+
+The current hybrid model remains a single irreversible transition from powered mode to glide mode.
+
+The physical/modeling interpretation is:
+
+- the powered vehicle travels from the launch point to one switching point,
+- the powered trajectory is a straight line,
+- at the switching point the daughtership/standoff weapon separates, or the Attacker irreversibly shuts down propulsion,
+- after switching, the Attacker is unpowered,
+- the glide phase can only descend and is subject to the existing glide-control, turn, terrain, energy, and reachability constraints,
+- after entering glide mode, the Attacker may exploit any later terrain occlusion encountered along the glide trajectory,
+- LOS may change from hidden to visible to hidden multiple times during one glide trajectory without causing another mode switch.
+
+Complex terrain, multiple obstacles, corridors, and repeated LOS changes do not by themselves invalidate the one-switch model. LOS state changes and physical mode switching are distinct events.
+
+### Alternative Fixed-Wing Interpretation
+
+A fixed-wing UAS that repeatedly turns its engine off and on to minimize probability of detection is a materially different reversible hybrid model. That model would require multiple switches plus physical rules such as minimum dwell time, restart delay/cost, fuel/energy accounting, acoustic transients, or an explicit switching penalty. Without these constraints, the optimizer could produce unrealistic step-to-step chattering.
+
+The reversible fixed-wing model is a possible later extension or sensitivity study. It must not silently replace the current one-way abstract standoff/daughtership model.
+
+## Current Powered-Phase and Switching Contract Confirmed from Code
+
+The existing implementation confirms the following:
+
+- StraightPoweredPhaseModel connects the fixed mission launch point to a switching point with one constant-speed straight segment.
+- Powered feasibility checks that this segment does not intersect terrain and that it produces a valid horizontal arrival heading.
+- Switching candidates are sampled from the sensor-centered terrain LOS tangent surface and snapped to the glide lattice.
+- Candidates are retained only if they are powered-feasible and lie in the goal-backward-reachable glide set.
+- The powered contribution to J_A currently uses zero hazard and normalized powered-flight time only.
+- A DQN episode starts at a sampled switching state in glide mode. It does not simulate the powered segment step by step.
+- Final switching-state selection adds the authoritative powered cost to the learned or exact glide cost.
+
+The user confirmed that switching candidates should remain restricted to the LOS tangent surface associated with terrain visible from the sensor. Terrain hidden behind the visible horizon is not intended to contribute a separate initial switching surface, although it may provide later occlusion during the glide trajectory.
+
+## Environment / Terrain Variation Requirements
+
+### Training Terrain Families
+
+Training is intended to include defined terrain families and/or procedurally generated arrangements of multiple boxes. Corridor generation may be constructed naturally from box arrangements.
+
+The requested corridor/wall cases include all of the following:
+
+1. parallel-wall straight corridor,
+2. L-shaped corridor,
+3. U-shaped corridor,
+4. branching corridor with possible dead ends,
+5. walls of different heights.
+
+Additional procedural variation may include box count, box position, footprint, height, spacing, gap width, corridor width, orientation, and topology/connectivity.
+
+### Expected Qualitative Behavior
+
+No outcome is assumed in advance.
+
+- A corridor aligned with the sensor may expose a glide attacker for a long interval and increase detection probability.
+- A corridor whose walls occlude the sensor may instead provide a protected route.
+- A wall may allow an intelligent attacker to remain behind it.
+- An intelligent defender may favor the end of a wall or a position with visibility of multiple sides, but this is a hypothesis to test rather than a conclusion to encode.
+- Defender-disadvantage cases in which the sensor sees very little of the reachable region remain valid scenarios and must not be discarded merely because J_D is small.
+
+### Final Unseen Test Terrain
+
+The intended final generalization test is not limited to another box layout. Candidate final tests include an unseen urban closed mesh and a mountainous height map or DEM-like terrain.
+
+Training/validation/test separation must be performed by terrain geometry or terrain-generation seed, not only by new sensor or goal coordinates on a training terrain. A coordinate-only split measures position interpolation but does not establish terrain generalization.
+
+## Current Observation Contract Confirmed from Code
+
+The current DQN observation is not an unrestricted global terrain map.
+
+It contains:
+
+- a heading-aligned 2,000 m by 2,000 m attacker-centered window,
+- a fixed 21 by 21 spatial grid,
+- 100 m sample spacing,
+- one terrain-clearance channel,
+- five sensor/hazard geometry channels,
+- one in-domain validity channel,
+- four ego scalar features,
+- four goal-vector and goal-distance scalar features.
+
+The current attacker graph domain is approximately 1,600 m by 800 m. Although the observation window's total width exceeds each map dimension, the window is centered on the Attacker and extends only 1,000 m in each heading-aligned direction. Terrain at the far side of the domain can therefore fall outside the observation when the Attacker is near an edge.
+
+The fixed 100 m observation sampling is too coarse to reliably represent sub-100 m corridors, narrow gaps, thin urban buildings, or fine mountain ridges. A goal vector alone does not reveal a distant wall, branch, or dead end outside the terrain window.
+
+### Observation Design Options Still Open
+
+Before corridor/mesh implementation, the user must select or approve an observation design. Candidate designs are:
+
+1. retain the 2 km window and increase its resolution, such as 41 by 41 or 81 by 81,
+2. use a high-resolution local channel plus a low-resolution global channel,
+3. use a map-wide resampled global channel,
+4. adopt another representation suitable for both procedural boxes and arbitrary mesh/height-map terrain.
+
+A multiscale local-plus-global observation is the current working suggestion, not an approved implementation decision. The minimum corridor width that must be represented is also unresolved and should drive the local sampling resolution.
+
+## Goal and Start Variation
+
+### Current Goal and Start Behavior
+
+The current Phase-16 configuration fixes the launch/start at (-8, 0, 0) map units and the goal at (8, 0, 0) map units.
+
+The current goal is a continuous physical point. It is not snapped to the lattice. A lattice state is terminal when it lies inside the inclusive three-dimensional 25 m goal sphere.
+
+The fixed goal aligns with every tested 10/25/50/100 m lattice. An arbitrary continuous goal will not have that property. At 50 m or 100 m, some sampled goal points can have no lattice state inside the 25 m terminal sphere, producing no terminal state and no goal-backward-reachable graph.
+
+### Requested Variation
+
+- Define an allowed physical goal region.
+- Sample a goal within that region according to the final approved scenario-generation design.
+- Vary the physical launch/start position within an approved launch region.
+- Continue to provide the relative goal vector to the DQN observation.
+
+### Goal Terminal Definition Still Open
+
+The cross-resolution goal rule must be frozen before implementation. Options include:
+
+1. restrict goals to coordinates aligned with every tested lattice,
+2. snap each physical goal to the condition-specific lattice,
+3. define the physical goal region itself as the terminal set,
+4. increase terminal tolerance as a function of discretization.
+
+Using the same physical goal region as the terminal set is the current working suggestion because it preserves the mission definition across discretizations. It is not yet approved.
+
+### Computational Consequence of Goal Variation
+
+The current goal-backward-reachable graph is sensor-independent and is shared across all sensors for one terrain because the goal is fixed. Goal variation changes the terminal set and requires a different reachability graph for each terrain-instance and goal-definition pair.
+
+The existing Phase-16.4 runtime cache is keyed only by terrain category. A goal-varying implementation must change scene/graph reuse to be keyed by at least terrain instance plus goal definition. Start and sensor variations may reuse that graph; goal variation may not.
+
+## Sensor Variation
+
+The sensor remains a single sensor, stationary for the entire episode, sampled from an approved potential-sensor region, and fixed after the episode begins. Multiple sensors are a later extension and are outside the present change.
+
+The current code does not sample a continuous sensor region. It uses nine fixed locations from x = {3.25, 5.0, 6.75}, y = {-3.75, 0.0, 3.75}, and z = 0 map units. Continuous or larger discrete sensor variation requires a new scenario-generation contract.
+
+## Proposed Scenario Sampling Strategy
+
+Naive fully independent uniform sampling of terrain, start, goal, and sensor is not the preferred default. It can produce a training set dominated by trivial or geometrically redundant cases.
+
+The working proposal is constrained sampling with geometry-based stratification:
+
+1. choose terrain family,
+2. choose or generate a terrain instance,
+3. choose a geometry/difficulty bin,
+4. sample a goal from the allowed goal region,
+5. sample a launch point from the allowed launch region,
+6. sample a sensor from the allowed potential-sensor region,
+7. apply the approved geometric and mission-validity checks.
+
+Candidate bins include low visibility, mixed visibility, high visibility, and defender-disadvantage or near-zero-visibility cases.
+
+Difficulty bins should be defined by inexpensive geometry metrics rather than post-hoc Bellman J_A or J_D so that training-scenario generation does not require solving every proposed case first. Defender-disadvantage cases remain in the distribution with an explicit quota and separate reporting.
+
+The exact sampling weights, geometry metric, and whether tuples are generated on demand or drawn from a finite scenario bank remain open decisions.
+
+### Finite Scenario Bank vs On-the-Fly Generation
+
+Fully regenerating terrain and goal geometry every episode is computationally expensive because goal changes require a new reachability graph. A finite bank of approved terrain/goal/start/sensor tuples, with graph sharing across tuples that have the same terrain and goal, is the current working suggestion. The size and resampling policy of that bank are unresolved.
+
+## Failure-Episode Contract — Current Mismatch and Required Decision
+
+The user stated that failure episodes should be learned rather than silently discarded. The current code does not implement that behavior.
+
+Current behavior is:
+
+- switching candidates outside the goal-backward-reachable set are removed,
+- DQN actions are restricted to successors that remain goal-backward reachable,
+- a scenario with no admissible switching state raises during setup,
+- an infeasible Bellman reference raises during setup,
+- official training therefore does not expose the policy to physically valid but goal-unreachable branches.
+
+To train meaningful failure episodes, the action/state contract would need to include physically feasible goal-unreachable transitions and define failure termination and cost for altitude exhaustion, unreachable dead ends, horizon exhaustion, collision if represented, and absence of an admissible switching candidate.
+
+An explicit failure terminal cost is necessary. With the current negative stage-cost reward, terminating early without a failure penalty could be incorrectly preferred because it avoids future cost.
+
+Before implementation, the user must distinguish:
+
+1. invalid mission geometry that should be rejected or resampled,
+2. a physically impossible mission that should be represented as failure,
+3. a feasible mission in which the learned policy chooses a failing branch,
+4. a mission with no LOS-tangent switching candidate.
+
+Any expanded failure action space and terminal cost must be applied identically to Bellman and DQN if exact approximation-quality comparison is retained.
+
+## Powered-Phase Occlusion Issue Introduced by Start/Sensor Variation
+
+The current powered objective always supplies zero hazard. The powered feasibility test checks terrain collision, but it does not explicitly verify that every point of the launch-to-switch segment remains hidden from the sensor.
+
+The fixed baseline geometry was designed around a terrain-hidden powered phase and LOS-tangent switching. Once launch and sensor locations vary, that assumption is no longer automatically guaranteed.
+
+Before implementation, one of the following must be approved:
+
+1. sample only scenarios/candidates whose complete powered segment satisfies the intended occlusion assumption,
+2. calculate powered-phase acoustic/visual hazard when the segment is exposed,
+3. allow exposure with an explicitly defined powered-phase penalty.
+
+The current user-stated physical intent favors option 1, but this has not yet been frozen as an implementation rule.
+
+## Early-Stopping Requirements
+
+### Confirmed Direction
+
+The research comparison should measure the wall-clock training time required to first reach the approved approximation accuracy, rather than training every seed for an identical fixed episode count. Different seeds may therefore stop after different episode counts.
+
+Raw per-episode training J_A alone is not sufficient when terrain, start, goal, and sensor vary. Scenario difficulty changes the absolute J_A scale and can create a false plateau. The stopping decision should use a fixed held-out validation suite and Bellman-relative J_A error.
+
+The approved quality thresholds remain:
+
+- validation median Bellman-relative J_A error no greater than 10%,
+- validation maximum Bellman-relative J_A error no greater than 20%.
+
+Training may stop successfully only when both are true:
+
+1. the approved quality thresholds are satisfied,
+2. recent validation performance is stable within the approved change band.
+
+A low-quality plateau is not successful convergence. If validation plateaus without meeting the accuracy thresholds, training continues unchanged to the maximum episode budget. If the maximum budget is reached without satisfying the quality gate, the seed is recorded as a training failure.
+
+### Working Parameter Proposal — Not Yet Frozen
+
+The current candidate parameters are:
+
+- evaluation interval: 1,500 episodes,
+- minimum training budget: 12,000 episodes,
+- stability window: latest four validation evaluations,
+- maximum allowed change: 1%,
+- quality median threshold: 10%,
+- quality every-case threshold: 20%,
+- failure-plateau behavior: continue to maximum episodes.
+
+The user agreed to reduce the old 6,000-episode evaluation spacing, require a minimum training budget, retain the 10%/20% quality gate, continue low-quality plateaus to the maximum budget, permit different seed stopping episodes, and compare time-to-approved-accuracy. The exact 1,500/12,000/four-evaluation/1% tuple remains a working proposal until explicitly frozen.
+
+## Required Reporting for the Extension
+
+When implementation is later authorized, report at minimum:
+
+- actual stopping episode per seed,
+- wall-clock time to the first checkpoint satisfying the full stop rule,
+- whether a seed stopped successfully or hit the maximum budget,
+- validation median and maximum Bellman-relative J_A error at stop,
+- per-terrain-family and per-difficulty-bin quality,
+- goal-reaching/failure counts under the approved expanded failure contract,
+- train/validation/test geometry identities and generation seeds,
+- start, goal, and sensor sampling provenance,
+- observation coverage/resolution used by the trained model,
+- reusable graph/cache counts by terrain-goal pair.
+
+## Open User Decisions Before Implementation
+
+No implementation should begin until the following are resolved or explicitly deferred:
+
+1. minimum corridor/gap width that the observation must resolve,
+2. local/global/multiscale observation architecture,
+3. point-goal versus physical goal-region terminal definition,
+4. exact start and goal regions,
+5. exact potential-sensor region and sampling distribution,
+6. geometry-based difficulty metric and bin weights,
+7. finite scenario-bank size versus on-the-fly generation,
+8. invalid mission versus learnable failure semantics,
+9. expanded failure action space and terminal failure cost,
+10. powered-segment occlusion validation versus powered hazard modeling,
+11. exact early-stopping interval, minimum budget, patience/window, and stability percentage,
+12. urban mesh and mountain height-map ingestion/observation backend.
+
+## Implementation Gate
+
+This design record does not authorize code changes. Answering the open questions also does not by itself authorize implementation. Codex must wait for an explicit user instruction to implement, retrain, or run the extended experiment.
+
+---
+
+
 # Development Rule
 
 Detailed Codex instructions will be constructed **one phase at a time**.
