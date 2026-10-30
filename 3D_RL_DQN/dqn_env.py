@@ -38,23 +38,35 @@ class ObservationTensorCache:
         self.batch_builder = batch_builder
         self.max_entries = None if max_entries is None else int(max_entries)
         self._values: OrderedDict[int, TensorReadyObservation] = OrderedDict()
+        self._requests = 0
+        self._cache_hits = 0
+        self._batch_reuses = 0
+        self._cache_misses = 0
+        self._builds = 0
+        self._evictions = 0
 
     def get(self, state_id: int) -> TensorReadyObservation:
         return self.get_many((int(state_id),))[0]
 
     def get_many(self, state_ids: Iterable[int]) -> list[TensorReadyObservation]:
         ids = tuple(int(value) for value in state_ids)
+        self._requests += len(ids)
         resolved: dict[int, TensorReadyObservation] = {}
         missing: list[int] = []
+        pending: set[int] = set()
         for state_id in ids:
-            if state_id in resolved:
+            if state_id in resolved or state_id in pending:
+                self._batch_reuses += 1
                 continue
             cached = self._values.get(state_id)
             if cached is None:
                 missing.append(state_id)
+                pending.add(state_id)
+                self._cache_misses += 1
             else:
                 self._values.move_to_end(state_id)
                 resolved[state_id] = cached
+                self._cache_hits += 1
         if missing:
             if self.batch_builder is None:
                 converted_values = []
@@ -65,6 +77,7 @@ class ObservationTensorCache:
                 converted_values = self.batch_builder.build_many(missing)
             if len(converted_values) != len(missing):
                 raise RuntimeError("batch observation builder returned the wrong count")
+            self._builds += len(converted_values)
             for state_id, converted in zip(missing, converted_values):
                 converted.scalar.setflags(write=False)
                 converted.spatial.setflags(write=False)
@@ -72,12 +85,37 @@ class ObservationTensorCache:
                 self._values[state_id] = converted
                 if self.max_entries is not None and len(self._values) > self.max_entries:
                     self._values.popitem(last=False)
+                    self._evictions += 1
         return [resolved[state_id] for state_id in ids]
 
     def clear(self) -> None:
         """Drop derived tensors; a later access reconstructs the same values."""
 
         self._values.clear()
+
+    def reset_statistics(self) -> None:
+        self._requests = 0
+        self._cache_hits = 0
+        self._batch_reuses = 0
+        self._cache_misses = 0
+        self._builds = 0
+        self._evictions = 0
+
+    def statistics(self) -> dict[str, int | float | None]:
+        reusable = self._cache_hits + self._batch_reuses
+        return {
+            "max_entries": self.max_entries,
+            "cached_states": len(self._values),
+            "requests": self._requests,
+            "cache_hits": self._cache_hits,
+            "batch_reuses": self._batch_reuses,
+            "cache_misses": self._cache_misses,
+            "builds": self._builds,
+            "evictions": self._evictions,
+            "reuse_rate": (
+                reusable / self._requests if self._requests else 0.0
+            ),
+        }
 
     @property
     def cached_states(self) -> int:

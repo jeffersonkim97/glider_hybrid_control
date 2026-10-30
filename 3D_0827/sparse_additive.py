@@ -203,6 +203,22 @@ def _batch_edge_hazard(
     return hazard, np.count_nonzero(visible, axis=1).astype(np.int64)
 
 
+def _batch_segments_intersect_solid(
+    starts: np.ndarray,
+    ends: np.ndarray,
+    graph: BellmanGraph,
+) -> np.ndarray:
+    """Return the exact graph terrain-collision predicate for edge batches."""
+
+    accelerated = getattr(graph.terrain, "segments_intersect_solid_many", None)
+    if callable(accelerated):
+        return np.asarray(accelerated(starts, ends), dtype=bool)
+    return np.asarray([
+        graph.terrain.segment_intersects_solid(start, end)
+        for start, end in zip(starts, ends)
+    ], dtype=bool)
+
+
 def solve_sparse_additive_bellman(
     graph: BellmanGraph,
     start_state_ids: Sequence[int],
@@ -325,6 +341,23 @@ def solve_sparse_additive_bellman(
                     + target_altitude * grid.altitude_spacing_map,
                 ),
             ))
+            # Endpoint reachability alone is insufficient: a straight glide
+            # segment can cross an obstacle even when both endpoint states are
+            # valid.  The sparse reachability graph excludes exactly those
+            # edges, so apply the same terrain predicate before considering a
+            # Bellman candidate.  Without this filter the vectorized solver can
+            # store a successor that does not exist in graph.adjacency.
+            collision = _batch_segments_intersect_solid(starts, ends, graph)
+            collision_free = ~collision
+            if not np.any(collision_free):
+                continue
+            if not np.all(collision_free):
+                source_y = source_y[collision_free]
+                source_x = source_x[collision_free]
+                target_y = target_y[collision_free]
+                target_x = target_x[collision_free]
+                starts = starts[collision_free]
+                ends = ends[collision_free]
             hazard_start = perf_counter()
             hazards, visible_samples = _batch_edge_hazard(
                 starts,

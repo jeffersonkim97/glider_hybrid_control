@@ -340,6 +340,11 @@ def run_phase3(
     spatial_resolution_m: float = 100.0,
     heading_spacing_deg: float = 5.0,
 ) -> Path:
+    if device_override not in (None, "cuda"):
+        raise ValueError("Phase 16.3 smoke and official training require CUDA")
+    if not torch.cuda.is_available():
+        raise RuntimeError("Phase 16.3 smoke and official training require CUDA")
+    device_override = "cuda"
     canonical = (
         float(spatial_resolution_m) == 100.0
         and float(heading_spacing_deg) == 5.0
@@ -397,7 +402,7 @@ def run_phase3(
             target_update_steps=20,
             evaluation_interval_episodes=10,
             seeds=(0,),
-            device="cpu" if device_override is None else device_override,
+            device=device_override,
         )
     elif device_override is not None:
         values = training_config.as_dict()
@@ -688,8 +693,8 @@ def _parse_args() -> argparse.Namespace:
         help="run a nonofficial 20-episode CPU pipeline check",
     )
     parser.add_argument(
-        "--device", choices=("auto", "cpu", "cuda"), default=None,
-        help="override the approved auto device selection",
+        "--device", choices=("cuda",), default="cuda",
+        help="CUDA device required for smoke and official DQN training",
     )
     parser.add_argument(
         "--spatial-resolution-m", type=float, default=100.0,

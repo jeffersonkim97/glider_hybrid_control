@@ -92,14 +92,13 @@ exploration, greedy evaluation, and target maximization. Rewards are the
 negative authoritative glide-stage costs with `gamma=1.0`; final policies are
 scored through the existing authoritative `J_A` evaluator.
 
-Run the short CPU pipeline check without making an official pass/fail claim:
+Run the short CUDA pipeline check without making an official pass/fail claim:
 
 ```powershell
-& .\.venv_p1b\Scripts\python.exe .\3D_RL_DQN\phase3_single_terrain.py --smoke --device cpu
+& .\.venv_p1b\Scripts\python.exe .\3D_RL_DQN\phase3_single_terrain.py --smoke --device cuda
 ```
 
-Run the approved three-seed, 20,000-episode experiment with automatic CUDA/CPU
-selection:
+Run the approved three-seed, 20,000-episode experiment on CUDA:
 
 ```powershell
 & .\.venv_p1b\Scripts\python.exe .\3D_RL_DQN\phase3_single_terrain.py
@@ -140,9 +139,9 @@ RUN_PHASE_16_4 = False
 ```
 
 Set only the phases to run to `True`, then use **Run All**. The notebook imports
-the tested Python modules rather than duplicating solver or training logic. The
-official training guard requires a CUDA-enabled `.venv_p1b` kernel; smoke runs
-are allowed on CPU. Phase 16.4 resume is enabled independently with:
+the tested Python modules rather than duplicating solver or training logic. A
+CUDA-enabled `.venv_p1b` kernel is required for both smoke and official DQN
+runs. Phase 16.4 resume is enabled independently with:
 
 ```python
 REQUIRE_CUDA_FOR_TRAINING = True
@@ -224,6 +223,91 @@ evaluator for final `J_A`. The episode-6,000 model reproduced all 45 stored
 objectives, trajectories, switching states, and successful-candidate counts.
 Its full checkpoint evaluation fell from 391.93 s to 213.09 s (1.84x); nine
 stepped-pyramid sensor cases fell from 74.97 s to 31.20 s (2.40x).
+
+## Extended Phase 16.4 random-box pilot
+
+The frozen simple-terrain experiment remains unchanged.  The extension approved
+on 2026-10-19 uses a separate dataset and checkpoint namespace and adds:
+
+- a deterministic finite random-box terrain bank,
+- horizontal start sampling inside `r_sp = 100 m`,
+- common-lattice goal sampling inside `r_gp = 100 m`,
+- a physical spherical terminal radius of `50 m`,
+- geometry-ranked single-sensor sampling at 25% low, 50% mixed, and 25% high
+  visibility,
+- fused multiscale observation channels (`1,000 m / 41x41 / 25 m` local and
+  `2,000 m / 21x21 / 100 m` global),
+- physically feasible goal-unreachable actions for learnable failure branches,
+- a Bellman-reference-derived terminal failure cost,
+- a 5 m sampled-interior powered-segment occlusion requirement, and
+- validation-quality early stopping after at least 10,000 episodes, using the
+  latest three 100%-successful evaluations, a window-median and latest-median
+  Bellman-relative error no greater than 10%, and a median-error range no
+  greater than 10 percentage points. Final-model acceptance additionally uses
+  median error no greater than 10% and P90 error no greater than 30%; maximum
+  error is reported but is not a hard gate.
+
+Generate the finite bank, CPU smoke audit, and interactive 3D bank visualization
+without importing PyTorch:
+
+```powershell
+& .\.venv_p1b\Scripts\python.exe .\3D_RL_DQN\phase4_extended_pilot.py
+```
+
+The outputs are written under
+`3D_0827/figure/phase_4_extended_random_boxes/pilot_v1/`.
+
+The master notebook exposes the same extension through three independent
+switches: `RUN_EXTENDED_PILOT_VISUALIZATION`, `RUN_EXTENDED_PREPARATION`, and
+`RUN_EXTENDED_TRAINING`. Leave all three `False` unless that operation should
+run. If preparation and training are both `True`, training runs once and
+includes preparation. `EXTENDED_TRAINING_SMOKE = True` selects the short CUDA
+pipeline check; official training uses the regular 60,000-episode
+maximum with early stopping.
+
+Prepare all condition-specific scenes and filtered Bellman references without
+starting DQN training:
+
+```powershell
+& .\.venv_p1b\Scripts\python.exe .\3D_RL_DQN\phase4_extended_training.py `
+  --prepare-only --device cuda --spatial-resolution-m 25
+```
+
+Run the short CUDA end-to-end training smoke:
+
+```powershell
+& .\.venv_p1b\Scripts\python.exe .\3D_RL_DQN\phase4_extended_training.py `
+  --smoke --device cuda
+```
+
+Run or resume the official CUDA experiment:
+
+```powershell
+& .\.venv_p1b\Scripts\python.exe .\3D_RL_DQN\phase4_extended_training.py
+```
+
+Run only seed 0 for the first official check with `--seeds 0`. Later runs can
+use `--seeds 1 2` without changing the approved three-seed training contract.
+Subset summaries use seed-specific filenames so they do not overwrite the
+eventual three-seed summary.
+
+The result separates pure episode/replay/optimizer time, scheduled evaluation,
+resume-checkpoint I/O, post-training evaluation, final-checkpoint I/O, and total
+measured seed runtime. The legacy `training_runtime_sec` field is retained as an
+alias for training-loop wall time and includes scheduled evaluation and resume
+checkpoint writes.
+
+The official runner uses seeds 0, 1, and 2 and a maximum of 60,000 episodes per
+seed.  It evaluates every 1,500 episodes and stops a seed only after 12,000
+episodes when four consecutive validations vary by no more than 1%, median
+Bellman-relative `J_A` error is at most 10%, every-case error is at most 20%, and
+all validation missions reach the goal.  A low-quality plateau continues to the
+maximum budget and is recorded as a failed seed.
+
+Scenarios with no powered-occluded, goal-reachable switching candidate are kept
+in the manifest as mission-level failures and excluded from replay because no
+glide episode can begin.  Policy-selected dead ends, altitude exhaustion, and
+horizon exhaustion remain learnable terminal failures.
 
 The notebook is the recommended runner. The same backend can also be invoked
 directly:

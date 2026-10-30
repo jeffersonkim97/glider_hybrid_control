@@ -143,9 +143,38 @@ def masked_bootstrap_values(
     return torch.where(done, torch.zeros_like(values), values)
 
 
+def masked_double_dqn_bootstrap_values(
+    policy_q_values: Tensor,
+    target_q_values: Tensor,
+    feasible_mask: Tensor,
+    terminal: Tensor,
+) -> Tensor:
+    """Select next actions online and evaluate them with the target network."""
+
+    if policy_q_values.shape != target_q_values.shape:
+        raise ValueError("policy and target Q-value shapes must match")
+    if policy_q_values.shape != feasible_mask.shape:
+        raise ValueError("Q-values and feasible_mask must have identical shapes")
+    done = terminal.to(dtype=torch.bool).reshape(-1)
+    if done.shape[0] != policy_q_values.shape[0]:
+        raise ValueError("terminal batch length must match Q-value rows")
+    mask = feasible_mask.to(dtype=torch.bool)
+    invalid_nonterminal = (~done) & (~mask.any(dim=1))
+    if torch.any(invalid_nonterminal):
+        raise ValueError("a nonterminal bootstrap row has no feasible action")
+    safe_mask = mask.clone()
+    safe_mask[done, 0] = True
+    selected_actions = policy_q_values.masked_fill(
+        ~safe_mask, torch.finfo(policy_q_values.dtype).min,
+    ).argmax(dim=1)
+    values = target_q_values.gather(1, selected_actions[:, None]).squeeze(1)
+    return torch.where(done, torch.zeros_like(values), values)
+
+
 __all__ = [
     "DQNNetworkConfig",
     "TerrainDQN",
     "masked_bootstrap_values",
+    "masked_double_dqn_bootstrap_values",
     "masked_greedy_actions",
 ]

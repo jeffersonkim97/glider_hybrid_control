@@ -1109,8 +1109,9 @@ Phase 2 is not complete if:
   `abs(J_A_DQN - J_A_Bellman) / abs(J_A_Bellman)`. Evaluate both objectives only
   with the authoritative common evaluator.
 - **Device preparation:** the current Windows RTX 5070 environment was
-  validated with `torch 2.14.0+cu130`; Phase 3 must retain automatic CPU/CUDA
-  selection and log the actual runtime device.
+  validated with `torch 2.14.0+cu130`. The earlier automatic CPU/CUDA rule was
+  superseded by the user's 2026-10-21 direction: all DQN smoke and official
+  training runs require CUDA and must log the actual runtime device.
 - **Gate B — neural architecture/configuration:** approved by the user on
   2026-10-02. Use the Phase 2 `(7, 21, 21)` spatial tensor with convolution
   channels `32 -> 64 -> 64` (3x3 kernels, stride 1 then 2 then 2), flatten to a
@@ -4411,31 +4412,41 @@ The research comparison should measure the wall-clock training time required to 
 
 Raw per-episode training J_A alone is not sufficient when terrain, start, goal, and sensor vary. Scenario difficulty changes the absolute J_A scale and can create a false plateau. The stopping decision should use a fixed held-out validation suite and Bellman-relative J_A error.
 
-The approved quality thresholds remain:
+The approved 2026-10-30 quality thresholds are:
 
-- validation median Bellman-relative J_A error no greater than 10%,
-- validation maximum Bellman-relative J_A error no greater than 20%.
+- every evaluation in the latest-three window has 100% trajectory success,
+- the median of the three validation-median Bellman-relative J_A errors is no
+  greater than 10%,
+- the latest validation-median error is no greater than 10%,
+- the range of the three validation-median errors is no greater than 10
+  percentage points.
 
-Training may stop successfully only when both are true:
-
-1. the approved quality thresholds are satisfied,
-2. recent validation performance is stable within the approved change band.
+Final-model acceptance additionally requires 100% success, median error no
+greater than 10%, and P90 error no greater than 30% using the conservative
+`higher` percentile method. Maximum error is reported but is not a hard gate.
 
 A low-quality plateau is not successful convergence. If validation plateaus without meeting the accuracy thresholds, training continues unchanged to the maximum episode budget. If the maximum budget is reached without satisfying the quality gate, the seed is recorded as a training failure.
 
-### Working Parameter Proposal — Not Yet Frozen
+### Approved Parameters - Revised and Frozen 2026-10-30
 
-The current candidate parameters are:
+The approved parameters are:
 
 - evaluation interval: 1,500 episodes,
-- minimum training budget: 12,000 episodes,
-- stability window: latest four validation evaluations,
-- maximum allowed change: 1%,
-- quality median threshold: 10%,
-- quality every-case threshold: 20%,
+- minimum training budget: 10,000 episodes (the first eligible evaluation is
+  episode 10,500 under the 1,500-episode evaluation cadence),
+- stability and quality window: latest three validation evaluations,
+- maximum median-error range across that window: 10 percentage points,
+- median of the three validation medians: no greater than 10%,
+- latest validation median: no greater than 10%,
+- final-model P90 threshold: 30% using percentile method `higher`,
+- maximum error: report only,
 - failure-plateau behavior: continue to maximum episodes.
 
-The user agreed to reduce the old 6,000-episode evaluation spacing, require a minimum training budget, retain the 10%/20% quality gate, continue low-quality plateaus to the maximum budget, permit different seed stopping episodes, and compare time-to-approved-accuracy. The exact 1,500/12,000/four-evaluation/1% tuple remains a working proposal until explicitly frozen.
+Every evaluation in the latest-three window must have 100% goal-reaching
+success. One temporary median-error excursion is permitted when the window
+median and latest median are each no greater than 10% and the full range is no
+greater than 10 percentage points. The user froze this revised rule on
+2026-10-30 before opening the sealed final ID/OOD test terrain.
 
 ## Required Reporting for the Extension
 
@@ -4471,7 +4482,99 @@ No implementation should begin until the following are resolved or explicitly de
 
 ## Implementation Gate
 
-This design record does not authorize code changes. Answering the open questions also does not by itself authorize implementation. Codex must wait for an explicit user instruction to implement, retrain, or run the extended experiment.
+The original 2026-10-08 design record did not authorize code changes. On
+2026-10-19 the user supplied the decisions below and then explicitly instructed
+Codex to proceed. That instruction authorized implementation and smoke
+validation of the extended pilot. It did not cause the long three-seed official
+training experiment to be started automatically.
+
+### User-Approved Extension Decisions — 2026-10-19
+
+- Minimum corridor width remains unresolved and is deferred because the first
+  pilot terrain family is random boxes.
+- Use a multiscale observation.
+- Sample the launch point in a horizontal disk of radius `r_sp = 100 m` centered
+  on the current launch point. Keep launch altitude fixed for the pilot.
+- Sample the goal point in a horizontal disk of radius `r_gp = 100 m` centered
+  on the current goal point. Keep goal altitude fixed for the pilot.
+- Use a physical spherical terminal region of radius `50 m` around the sampled
+  goal point.
+- Use one fixed sensor per episode with 25% low-visibility, 50% mixed-visibility,
+  and 25% high-visibility sampling.
+- Expose physically feasible goal-unreachable glide actions so policy-selected
+  dead ends can become learnable failure episodes.
+- Reject invalid generated geometry; record no-switching-candidate cases as
+  mission-level failures; apply the same explicit terminal failure-cost contract
+  to Bellman and DQN comparisons.
+- Require the powered launch-to-switch segment interior to remain terrain
+  occluded from the sensor.
+- The original 2026-10-19 stopping tuple was superseded on 2026-10-30. The
+  revised rule inspects the latest three evaluations, requires 100% success,
+  requires both the window median and latest median error to be no greater than
+  10%, and permits a median-error range up to 10 percentage points. Maximum
+  error is report-only; final-model acceptance uses P90 error no greater than
+  30%.
+- Use random boxes for the first pilot and use a finite reproducible scenario
+  bank.
+
+### Implemented Pilot Contract — 2026-10-19
+
+- The local observation covers `1,000 m x 1,000 m` on a `41 x 41` grid
+  (`25 m` sampling). The global observation covers `2,000 m x 2,000 m` on a
+  `21 x 21` grid (`100 m` sampling). The global seven channels are resampled
+  onto the local grid and concatenated with the local seven channels, producing
+  a `14 x 41 x 41` tensor plus the existing eight scalar features.
+- The finite pilot bank contains four training terrain instances and two
+  terrain-disjoint validation instances. Each terrain has one low-, two mixed-,
+  and one high-visibility sensor scenario, for 16 training and 8 validation
+  scenarios before mission-level feasibility classification.
+- Random-box geometry, start, goal, sensor, visibility score, generation seed,
+  split, geometry hash, and terrain-goal graph-cache key are persisted in a
+  versioned manifest.
+- Goal samples are restricted to map-unit lattice points shared by all planned
+  `100/50/25/10/5 m` conditions inside the approved goal disk. This preserves
+  the same physical goal point across resolutions while guaranteeing a terminal
+  lattice state inside the approved `50 m` terminal sphere.
+- Sensor visibility strata use the fraction of a fixed relevant-airspace probe
+  set visible through terrain. Candidate sensors are ranked within each terrain;
+  the selection therefore does not require Bellman solves.
+- The powered occlusion implementation checks all interior samples at no more
+  than `5 m` spacing. Launch and switching endpoints are excluded because the
+  launch lies on the ground/base boundary and the switch lies on the LOS tangent
+  boundary. This is a numerical certification tolerance, not a symbolic
+  continuous-geometry proof.
+- The expanded DQN action catalog includes all physically feasible glide edges,
+  including targets outside the goal-backward-reachable set. The exact Bellman
+  reference continues to solve the goal-reaching graph; the explicit terminal
+  failure cost makes failure branches worse than the valid-reference envelope.
+- The terminal failure cost is the maximum finite filtered Bellman `J_A` in the
+  condition-specific bank plus `max(1.0, 10% of its magnitude)`.
+- Scenarios with no powered-occluded, goal-reachable switching candidate remain
+  in the manifest as mission-level failures and are excluded from replay because
+  no glide episode exists. They are reported separately rather than silently
+  resampled away.
+- Existing Phase 16.4 observations, checkpoints, result folders, and default
+  training behavior remain unchanged. The extension uses new schema, output,
+  run, and checkpoint namespaces.
+- A `100 m` CPU smoke audit passed for dataset, scene, terminal, powered
+  occlusion, multiscale observation, and expanded failure-action construction.
+  The audit retained 65 of 122 switching candidates after powered occlusion and
+  found 153 additional physically feasible failure-branch edges over the first
+  20 switching states.
+- The master notebook's extended-pilot-only path also passed at its default
+  `25 m` setting without importing PyTorch. It produced 1,152 terminal states,
+  retained 440 of 765 powered-occluded switching candidates, and exposed 71
+  additional failure-branch edges over the first 20 switching states.
+- On 2026-10-21, the `25 m / 5 degree` extended CUDA smoke completed all six
+  episodes, two checkpoint evaluations, and best/final checkpoint writes on an
+  RTX 5070. The user then directed that every DQN smoke and official training
+  run use CUDA; CPU remains available only for Bellman preparation and the
+  PyTorch-independent dataset/geometry audit.
+- Before official training, runtime reporting was split into pure training,
+  scheduled evaluation, resume-checkpoint I/O, post-training evaluation, final
+  checkpoint I/O, and total measured seed runtime. Official execution is staged:
+  seed 0 runs first, while seeds 1 and 2 remain part of the approved final
+  reproducibility study.
 
 ---
 

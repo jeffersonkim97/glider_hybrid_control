@@ -36,7 +36,12 @@ from aabb_gpu_observation import ExactBatchedAABBGPUObservationBuilder
 from attacker_br_problem import AttackerBRProblem
 from dqn_action_catalog import HeadingActionCatalog, SharedActionRowCache
 from dqn_env import DQNAttackerEnv, ObservationTensorCache
-from dqn_model import DQNNetworkConfig, TerrainDQN, masked_bootstrap_values
+from dqn_model import (
+    DQNNetworkConfig,
+    TerrainDQN,
+    masked_bootstrap_values,
+    masked_double_dqn_bootstrap_values,
+)
 from dqn_training import (
     CompatibilitySignature,
     DQNTrainingConfig,
@@ -56,11 +61,17 @@ from phase4_dataset import (
     specs_from_manifest,
 )
 from phase4_replay import MultiScenarioBatch, MultiScenarioReplayBuffer
+from phase4_early_stopping import (
+    EarlyStoppingConfig,
+    EarlyStoppingDecision,
+    EarlyStoppingTracker,
+    ValidationPoint,
+)
 from terrain_observation import ObservationConfig, TerrainObservationBuilder
 
 
 PHASE4_CHECKPOINT_FORMAT = "p1b-phase4-generalized-dqn-v1"
-PHASE4_OBSERVATION_CACHE_ENTRIES = 2_048
+PHASE4_OBSERVATION_CACHE_ENTRIES = 4_096
 PHASE4_SURFACE_CACHE_ENTRIES_PER_TERRAIN = 200_000
 PHASE4_ACTION_ROW_CACHE_ENTRIES_PER_TERRAIN = 50_000
 PHASE4_EVALUATION_BATCH_SIZE = 1_024
@@ -168,6 +179,9 @@ class ScenarioRuntime:
     starts: tuple[int, ...]
     cache: ObservationTensorCache
     reference: BellmanReference
+    # Zero preserves every frozen Phase 16.4 result.  Extended failure-learning
+    # contexts set a positive reference-derived terminal cost.
+    failure_terminal_cost: float = 0.0
 
 
 @dataclass
@@ -204,6 +218,10 @@ class Phase4ExecutionConfig:
     evaluation_interval_episodes: int = (
         PHASE4_DEFERRED_EVALUATION_INTERVAL_EPISODES
     )
+    target_sync_basis: str = "environment_steps"
+    td_target_estimator: str = "dqn"
+    n_step_return: int = 1
+    replay_sampling: str = "uniform"
     execution_id: str = "p1b-phase4-vectorized-episodes-v1"
 
     def __post_init__(self) -> None:
@@ -213,18 +231,49 @@ class Phase4ExecutionConfig:
             int(self.optimizer_updates_per_vector_step),
             int(self.checkpoint_interval_episodes),
             int(self.evaluation_interval_episodes),
+            int(self.n_step_return),
         ) < 1:
             raise ValueError("Phase 16.4 execution counts must be positive")
+        if self.target_sync_basis not in {
+            "environment_steps", "optimization_steps",
+        }:
+            raise ValueError(
+                "target_sync_basis must be 'environment_steps' or "
+                "'optimization_steps'"
+            )
+        if self.td_target_estimator not in {"dqn", "double_dqn"}:
+            raise ValueError(
+                "td_target_estimator must be 'dqn' or 'double_dqn'"
+            )
+        if self.replay_sampling not in {"uniform", "altitude_stratified"}:
+            raise ValueError(
+                "replay_sampling must be 'uniform' or 'altitude_stratified'"
+            )
 
     def as_dict(self) -> dict[str, Any]:
         result = asdict(self)
+        basis = result.pop("target_sync_basis")
+        estimator = result.pop("td_target_estimator")
+        n_step_return = result.pop("n_step_return")
+        replay_sampling = result.pop("replay_sampling")
         result["maximum_optimizer_updates_per_environment_step"] = (
             float(self.optimizer_updates_per_vector_step)
             / float(self.episode_batch_size)
         )
-        result["target_network_sync_basis"] = (
-            "environment steps, preserving the approved 1000-step cadence"
-        )
+        result["target_network_sync_basis"] = {
+            "environment_steps": (
+                "environment steps, preserving the approved 1000-step cadence"
+            ),
+            "optimization_steps": (
+                "optimization steps, matching DQNTrainingConfig.target_update_steps"
+            ),
+        }[basis]
+        if estimator != "dqn":
+            result["td_target_estimator"] = estimator
+        if n_step_return != 1:
+            result["n_step_return"] = int(n_step_return)
+        if replay_sampling != "uniform":
+            result["replay_sampling"] = replay_sampling
         return result
 
 
@@ -266,6 +315,61 @@ class _EpisodeSlot:
     steps: int = 0
     reached_goal: bool = False
     ended: bool = False
+    pending_replay: list["_PendingReplayStep"] = field(default_factory=list)
+
+
+@dataclass(frozen=True)
+class _PendingReplayStep:
+    state_id: int
+    action_id: int
+    reward: float
+    next_state_id: int
+    terminal: bool
+    next_feasible_mask: np.ndarray
+    sampling_stratum: int
+
+
+def _drain_n_step_replay(
+    replay: MultiScenarioReplayBuffer,
+    slot: _EpisodeSlot,
+    *,
+    n_step_return: int,
+    gamma: float,
+    flush: bool,
+) -> int:
+    """Move every ready prefix from one episode slot into replay."""
+
+    horizon = int(n_step_return)
+    if horizon < 1:
+        raise ValueError("n_step_return must be positive")
+    emitted = 0
+    while slot.pending_replay and (
+        len(slot.pending_replay) >= horizon or flush
+    ):
+        count = min(horizon, len(slot.pending_replay))
+        window = slot.pending_replay[:count]
+        reward = sum(
+            float(gamma) ** offset * float(item.reward)
+            for offset, item in enumerate(window)
+        )
+        first = window[0]
+        last = window[-1]
+        replay.add(
+            scenario_index=slot.scenario_index,
+            state_id=first.state_id,
+            action_id=first.action_id,
+            reward=reward,
+            next_state_id=last.next_state_id,
+            terminal=last.terminal,
+            next_feasible_mask=last.next_feasible_mask,
+            bootstrap_steps=count,
+            sampling_stratum=first.sampling_stratum,
+        )
+        slot.pending_replay.pop(0)
+        emitted += 1
+        if not flush:
+            break
+    return emitted
 
 
 @dataclass(frozen=True)
@@ -278,6 +382,7 @@ class _PreparedOptimizationBatches:
     rewards: Tensor
     terminal: Tensor
     next_masks: Tensor
+    bootstrap_steps: Tensor
 
     @property
     def count(self) -> int:
@@ -566,6 +671,7 @@ def _synchronize(device: torch.device) -> None:
 def evaluate_policy_batched(
     network: TerrainDQN, context: ScenarioRuntime, device: torch.device,
     *, batch_size: int = PHASE4_EVALUATION_BATCH_SIZE,
+    observation_cache: ObservationTensorCache | None = None,
 ) -> PolicyEvaluation:
     """Evaluate every switching start in synchronized neural-network batches."""
 
@@ -578,6 +684,7 @@ def evaluate_policy_batched(
     stopped = reached.copy()
     was_training = network.training
     network.eval()
+    selected_cache = context.cache if observation_cache is None else observation_cache
     started = perf_counter()
     try:
         horizon = max(1, int(context.problem.grid.altitude_count) - 1)
@@ -607,7 +714,7 @@ def evaluate_policy_batched(
             q_parts: list[np.ndarray] = []
             for offset in range(0, len(active), int(batch_size)):
                 indices = active[offset:offset + int(batch_size)]
-                observations = context.cache.get_many(
+                observations = selected_cache.get_many(
                     states[index] for index in indices
                 )
                 spatial = torch.from_numpy(np.stack(
@@ -739,25 +846,48 @@ def _prepare_optimization_batches(
         next_masks=torch.from_numpy(np.stack(
             [batch.next_feasible_masks for batch in batches], axis=0,
         )).to(device),
+        bootstrap_steps=torch.from_numpy(np.stack(
+            [batch.bootstrap_steps for batch in batches], axis=0,
+        )).to(device),
     )
 
 
 def _optimize_prepared(
     policy: TerrainDQN, target: TerrainDQN,
     optimizer: torch.optim.Optimizer, prepared: _PreparedOptimizationBatches,
-    index: int, config: DQNTrainingConfig,
+    index: int, config: DQNTrainingConfig, td_target_estimator: str = "dqn",
 ) -> float:
     selected = int(index)
     predicted = policy(
         prepared.spatial[selected], prepared.scalar[selected],
     ).gather(1, prepared.actions[selected, :, None]).squeeze(1)
     with torch.no_grad():
-        next_q = target(
+        target_next_q = target(
             prepared.next_spatial[selected], prepared.next_scalar[selected],
         )
-        expected = prepared.rewards[selected] + config.gamma * masked_bootstrap_values(
-            next_q, prepared.next_masks[selected], prepared.terminal[selected],
+        if td_target_estimator == "double_dqn":
+            policy_next_q = policy(
+                prepared.next_spatial[selected], prepared.next_scalar[selected],
+            )
+            bootstrap = masked_double_dqn_bootstrap_values(
+                policy_next_q,
+                target_next_q,
+                prepared.next_masks[selected],
+                prepared.terminal[selected],
+            )
+        elif td_target_estimator == "dqn":
+            bootstrap = masked_bootstrap_values(
+                target_next_q,
+                prepared.next_masks[selected],
+                prepared.terminal[selected],
+            )
+        else:
+            raise ValueError("unsupported TD target estimator")
+        discount = torch.pow(
+            torch.full_like(bootstrap, float(config.gamma)),
+            prepared.bootstrap_steps[selected].to(dtype=bootstrap.dtype),
         )
+        expected = prepared.rewards[selected] + discount * bootstrap
     loss = F.smooth_l1_loss(predicted, expected)
     optimizer.zero_grad(set_to_none=True)
     loss.backward()
@@ -776,10 +906,20 @@ def _cpu_state_dict(network: TerrainDQN) -> dict[str, Tensor]:
 def evaluate_scenarios(
     network: TerrainDQN, contexts: Iterable[ScenarioRuntime],
     device: torch.device, *, clear_after_each: bool = False,
+    isolate_cache_context_ids: frozenset[int] = frozenset(),
 ) -> list[dict[str, Any]]:
     records: list[dict[str, Any]] = []
     for context in contexts:
-        evaluation = evaluate_policy_batched(network, context, device)
+        isolated_cache = None
+        if id(context) in isolate_cache_context_ids:
+            isolated_cache = ObservationTensorCache(
+                context.builder,
+                max_entries=context.cache.max_entries,
+                batch_builder=context.cache.batch_builder,
+            )
+        evaluation = evaluate_policy_batched(
+            network, context, device, observation_cache=isolated_cache,
+        )
         bellman = float(context.reference.attacker_objective)
         dqn = evaluation.attacker_objective
         absolute = None if dqn is None else abs(float(dqn) - bellman)
@@ -804,6 +944,8 @@ def evaluate_scenarios(
         })
         if clear_after_each:
             context.problem.clear_runtime_caches()
+        if isolated_cache is not None:
+            isolated_cache.clear()
     return records
 
 
@@ -844,6 +986,7 @@ def evaluate_phase4_suite(
 
     records = evaluate_scenarios(
         network, training_contexts, device, clear_after_each=True,
+        isolate_cache_context_ids=frozenset(map(id, training_contexts)),
     )
     _clear_surface_caches(training_contexts)
     by_terrain: dict[str, list[Phase4ScenarioSpec]] = defaultdict(list)
@@ -1009,8 +1152,17 @@ def train_phase4_seed(
     condition_template: ComputationCondition | None = None,
     reference_path: Path | None = None,
     execution_config: Phase4ExecutionConfig | None = None,
+    early_stopping_config: EarlyStoppingConfig | None = None,
 ) -> dict[str, Any]:
     execution_config = execution_config or approved_phase4_execution_config()
+    if (
+        early_stopping_config is not None
+        and execution_config.evaluation_interval_episodes
+        != early_stopping_config.evaluation_interval_episodes
+    ):
+        raise ValueError(
+            "execution and early-stopping evaluation intervals must match"
+        )
     seed_everything(seed)
     device = select_device(training_config.device)
     policy = TerrainDQN(network_config).to(device)
@@ -1034,6 +1186,11 @@ def train_phase4_seed(
     best_snapshot: dict[str, Any] | None = None
     start_episode = 0
     runtime_profile = Phase4RuntimeProfile()
+    early_stopping_tracker = (
+        None if early_stopping_config is None
+        else EarlyStoppingTracker(early_stopping_config)
+    )
+    final_stop_decision: EarlyStoppingDecision | None = None
     context_ids = [context.spec.scenario_id for context in training_contexts]
     validation_specs = tuple(validation_specs)
     use_lazy_validation = bool(validation_specs)
@@ -1044,7 +1201,12 @@ def train_phase4_seed(
 
     def evaluate_all(selected_network: TerrainDQN) -> list[dict[str, Any]]:
         if not use_lazy_validation:
-            return evaluate_scenarios(selected_network, evaluation_contexts, device)
+            return evaluate_scenarios(
+                selected_network,
+                evaluation_contexts,
+                device,
+                isolate_cache_context_ids=frozenset(map(id, training_contexts)),
+            )
         return evaluate_phase4_suite(
             selected_network, training_contexts, validation_specs,
             condition_template, reference_path=reference_path,
@@ -1052,6 +1214,7 @@ def train_phase4_seed(
         )
     resume_path = checkpoint_dir / f"phase4_seed{seed}_resume.pt"
     complete_path = run_dir / f"phase4_seed{seed}_complete.json"
+    progress_path = run_dir / f"phase4_seed{seed}_progress.json"
     if resume and complete_path.exists():
         completed = json.loads(complete_path.read_text(encoding="utf-8"))
         completed_contract = {
@@ -1100,6 +1263,32 @@ def train_phase4_seed(
         runtime_profile = Phase4RuntimeProfile.from_dict(
             payload.get("runtime_profile_sec")
         )
+        if progress_path.exists():
+            stored_progress = json.loads(progress_path.read_text(encoding="utf-8"))
+            if (
+                int(stored_progress.get("seed", -1)) == seed
+                and int(stored_progress.get("episode", -1)) == start_episode
+            ):
+                prior_training_runtime_sec = float(
+                    stored_progress.get(
+                        "training_wall_runtime_sec",
+                        stored_progress.get(
+                            "elapsed_sec", prior_training_runtime_sec,
+                        ),
+                    )
+                )
+                runtime_profile = Phase4RuntimeProfile.from_dict(
+                    stored_progress.get("runtime_profile_sec")
+                )
+        if early_stopping_tracker is not None:
+            for stored_snapshot in history.evaluations:
+                validation = stored_snapshot[VALIDATION_SIMPLE]
+                final_stop_decision = early_stopping_tracker.update(ValidationPoint(
+                    episode=int(stored_snapshot["episode"]),
+                    success_rate=float(validation["success_rate"]),
+                    median_relative_error=validation["median_relative_error"],
+                    maximum_relative_error=validation["maximum_relative_error"],
+                ))
         print(f"Resuming Phase 16.4 seed {seed} at episode {start_episode}", flush=True)
 
     by_terrain: dict[str, list[int]] = defaultdict(list)
@@ -1114,8 +1303,13 @@ def train_phase4_seed(
         training_config.episodes * max_episode_steps
         * training_config.epsilon_decay_fraction
     ))
+    target_sync_counter = (
+        optimization_steps
+        if execution_config.target_sync_basis == "optimization_steps"
+        else environment_steps
+    )
     last_target_sync_bucket = (
-        environment_steps // training_config.target_update_steps
+        target_sync_counter // training_config.target_update_steps
     )
     started = perf_counter()
     completed_episodes = start_episode
@@ -1211,17 +1405,30 @@ def train_phase4_seed(
                 truncated = bool(
                     slot.steps >= max_episode_steps and not terminated
                 )
-                if truncated:
-                    raise RuntimeError(
-                        "authoritative DAG exceeded its derived horizon"
-                    )
                 ended = bool(terminated or truncated)
                 reward = -float(transition.stage_cost)
-                replay.add(
-                    scenario_index=slot.scenario_index,
-                    state_id=slot.state_id, action_id=action_id,
-                    reward=reward, next_state_id=next_state_id,
-                    terminal=ended, next_feasible_mask=next_mask,
+                context = training_contexts[slot.scenario_index]
+                if ended and not reached_goal:
+                    reward -= float(context.failure_terminal_cost)
+                slot.pending_replay.append(_PendingReplayStep(
+                    state_id=slot.state_id,
+                    action_id=action_id,
+                    reward=reward,
+                    next_state_id=next_state_id,
+                    terminal=ended,
+                    next_feasible_mask=np.asarray(
+                        next_mask, dtype=np.bool_,
+                    ).copy(),
+                    sampling_stratum=int(
+                        context.problem.state(slot.state_id).altitude_index
+                    ),
+                ))
+                _drain_n_step_replay(
+                    replay,
+                    slot,
+                    n_step_return=execution_config.n_step_return,
+                    gamma=training_config.gamma,
+                    flush=ended,
                 )
                 environment_steps += 1
                 slot.glide_return += reward
@@ -1233,7 +1440,10 @@ def train_phase4_seed(
                     execution_config.optimizer_updates_per_vector_step
                 ):
                     pending_replay_batches.append(
-                        replay.sample(training_config.batch_size)
+                        replay.sample_stratified(training_config.batch_size)
+                        if execution_config.replay_sampling
+                        == "altitude_stratified"
+                        else replay.sample(training_config.batch_size)
                     )
             runtime_profile.environment_transition_and_replay_sec += (
                 perf_counter() - transition_started
@@ -1256,7 +1466,7 @@ def train_phase4_seed(
                 for batch_index in range(prepared.count):
                     loss = _optimize_prepared(
                         policy, target, optimizer, prepared, batch_index,
-                        training_config,
+                        training_config, execution_config.td_target_estimator,
                     )
                     optimization_steps += 1
                     history.optimization_step.append(optimization_steps)
@@ -1265,8 +1475,13 @@ def train_phase4_seed(
                 runtime_profile.dqn_forward_backward_optimizer_sec += (
                     perf_counter() - optimization_started
                 )
+            target_sync_counter = (
+                optimization_steps
+                if execution_config.target_sync_basis == "optimization_steps"
+                else environment_steps
+            )
             target_sync_bucket = (
-                environment_steps // training_config.target_update_steps
+                target_sync_counter // training_config.target_update_steps
             )
             if target_sync_bucket > last_target_sync_bucket:
                 target.load_state_dict(policy.state_dict())
@@ -1308,6 +1523,15 @@ def train_phase4_seed(
                 completed_episodes, records, evaluation_runtime,
             )
             history.evaluations.append(snapshot)
+            if early_stopping_tracker is not None:
+                validation = snapshot[VALIDATION_SIMPLE]
+                final_stop_decision = early_stopping_tracker.update(ValidationPoint(
+                    episode=completed_episodes,
+                    success_rate=float(validation["success_rate"]),
+                    median_relative_error=validation["median_relative_error"],
+                    maximum_relative_error=validation["maximum_relative_error"],
+                ))
+                snapshot["early_stopping"] = asdict(final_stop_decision)
             key = _selection_key(snapshot)
             if best_key is None or key > best_key:
                 best_key = key
@@ -1337,6 +1561,15 @@ def train_phase4_seed(
             )
             _atomic_torch_save(resume_path, payload)
             runtime_profile.checkpoint_save_sec += perf_counter() - save_started
+            elapsed_after_save = (
+                prior_training_runtime_sec + perf_counter() - started
+            )
+            pure_training_runtime = max(
+                0.0,
+                elapsed_after_save
+                - runtime_profile.checkpoint_evaluation_sec
+                - runtime_profile.checkpoint_save_sec,
+            )
             latest_validation = (
                 None if snapshot is None
                 else snapshot[VALIDATION_SIMPLE]
@@ -1344,16 +1577,24 @@ def train_phase4_seed(
             progress = {
                 "seed": seed, "episode": completed_episodes,
                 "episodes_total": training_config.episodes,
-                "device": str(device), "elapsed_sec": elapsed,
+                "device": str(device), "elapsed_sec": elapsed_after_save,
+                "training_wall_runtime_sec": elapsed_after_save,
+                "pure_training_runtime_sec": pure_training_runtime,
                 "best_episode": best_episode,
                 "evaluation_performed": evaluate_now,
                 "latest_validation": latest_validation,
                 "execution_config": execution_config.as_dict(),
                 "runtime_profile_sec": runtime_profile.as_dict(),
+                "early_stopping": (
+                    None if final_stop_decision is None
+                    else asdict(final_stop_decision)
+                ),
                 "resume_checkpoint": _relative(resume_path),
             }
-            _write_json(run_dir / f"phase4_seed{seed}_progress.json", progress)
+            _write_json(progress_path, progress)
             print(json.dumps(progress, indent=2), flush=True)
+        if final_stop_decision is not None and final_stop_decision.stop:
+            break
 
     training_runtime_sec = prior_training_runtime_sec + perf_counter() - started
     final_model_state = _cpu_state_dict(policy)
@@ -1377,8 +1618,13 @@ def train_phase4_seed(
         "compatibility": compatibility.as_dict(),
         "model_contract": model_contract,
         "execution_config": execution_config.as_dict(),
+        "early_stopping_config": (
+            None if early_stopping_config is None
+            else early_stopping_config.as_dict()
+        ),
         "runtime_profile_sec": runtime_profile.as_dict(),
     }
+    final_checkpoint_save_started = perf_counter()
     _atomic_torch_save(best_path, {
         **common, "kind": "best_validation_checkpoint",
         "episode": best_episode, "model_state_dict": best_model_state,
@@ -1386,10 +1632,22 @@ def train_phase4_seed(
     })
     _atomic_torch_save(final_path, {
         **common, "kind": "final_training_state",
-        "episode": training_config.episodes,
+        "episode": completed_episodes,
         "model_state_dict": final_model_state,
         "optimizer_state_dict": deepcopy(optimizer.state_dict()),
     })
+    final_checkpoint_save_sec = perf_counter() - final_checkpoint_save_started
+    pure_training_runtime_sec = max(
+        0.0,
+        training_runtime_sec
+        - runtime_profile.checkpoint_evaluation_sec
+        - runtime_profile.checkpoint_save_sec,
+    )
+    measured_seed_runtime_sec = (
+        training_runtime_sec
+        + runtime_profile.post_training_evaluation_sec
+        + final_checkpoint_save_sec
+    )
     result = {
         "seed": seed, "device": str(device),
         "dataset_manifest_sha256": dataset_hash,
@@ -1397,11 +1655,38 @@ def train_phase4_seed(
         "network_config": network_config.as_dict(),
         "compatibility": compatibility.as_dict(),
         "model_contract": model_contract,
+        "episodes_completed": completed_episodes,
+        "early_stopping_decision": (
+            None if final_stop_decision is None
+            else asdict(final_stop_decision)
+        ),
         "best_episode": best_episode,
         "best_checkpoint": _relative(best_path),
         "final_checkpoint": _relative(final_path),
         "training_runtime_sec": training_runtime_sec,
+        "training_wall_runtime_sec": training_runtime_sec,
+        "pure_training_runtime_sec": pure_training_runtime_sec,
         "evaluation_runtime_sec": evaluation_runtime_sec,
+        "checkpoint_evaluation_runtime_sec": (
+            runtime_profile.checkpoint_evaluation_sec
+        ),
+        "checkpoint_io_runtime_sec": runtime_profile.checkpoint_save_sec,
+        "post_training_evaluation_runtime_sec": (
+            runtime_profile.post_training_evaluation_sec
+        ),
+        "final_checkpoint_io_runtime_sec": final_checkpoint_save_sec,
+        "measured_seed_runtime_sec": measured_seed_runtime_sec,
+        "runtime_accounting": {
+            "training_wall_includes": (
+                "episode generation, replay/optimization, scheduled checkpoint "
+                "evaluation, and resume-checkpoint I/O"
+            ),
+            "pure_training_excludes": (
+                "scheduled evaluation and all measured checkpoint I/O"
+            ),
+            "post_training_evaluation_in_training_wall": False,
+            "final_checkpoint_io_in_training_wall": False,
+        },
         "environment_steps": environment_steps,
         "optimization_steps": optimization_steps,
         "execution_config": execution_config.as_dict(),
@@ -1411,11 +1696,18 @@ def train_phase4_seed(
             training_contexts[index].spec.scenario_id: count
             for index, count in replay.scenario_counts().items()
         },
+        "replay_sampling_stratum_counts": {
+            str(key): count for key, count in replay.stratum_counts().items()
+        },
         "episode_training_scenario_counts": dict(sorted(
             (name, history.scenario_id.count(name)) for name in set(history.scenario_id)
         )),
         "cached_observation_states": {
             context.spec.scenario_id: context.cache.cached_states
+            for context in training_contexts
+        },
+        "observation_cache_statistics": {
+            context.spec.scenario_id: context.cache.statistics()
             for context in training_contexts
         },
         "best_snapshot": best_snapshot,
@@ -1708,12 +2000,14 @@ def run_phase4(
 ) -> Path:
     """Run or resume the approved Phase 16.4 experiment."""
 
-    if require_cuda and not smoke and not torch.cuda.is_available():
+    if not torch.cuda.is_available():
         raise RuntimeError(
-            "Phase 16.4 official training requires CUDA; no CPU fallback is allowed"
+            "Phase 16.4 smoke and official training require CUDA"
         )
-    if require_cuda and not smoke and device != "cuda":
-        raise ValueError("Phase 16.4 official training must request device='cuda'")
+    if device != "cuda":
+        raise ValueError(
+            "Phase 16.4 smoke and official training must request device='cuda'"
+        )
     tag = _condition_tag(spatial_resolution_m, heading_spacing_deg)
     approved_execution = approved_phase4_execution_config(smoke=smoke)
     execution_config = Phase4ExecutionConfig(
@@ -1959,7 +2253,7 @@ def run_phase4(
         "quality": quality,
         "device": {
             "requested": device,
-            "require_cuda": require_cuda and not smoke,
+            "require_cuda": True,
             "torch_version": torch.__version__,
             "cuda_runtime": torch.version.cuda,
             "cuda_available": torch.cuda.is_available(),
@@ -1991,8 +2285,7 @@ def _parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
     parser.add_argument("--smoke", action="store_true")
     parser.add_argument("--no-resume", action="store_true")
-    parser.add_argument("--device", choices=("cpu", "cuda", "auto"), default="cuda")
-    parser.add_argument("--allow-cpu", action="store_true")
+    parser.add_argument("--device", choices=("cuda",), default="cuda")
     parser.add_argument("--spatial-resolution-m", type=float, default=25.0)
     parser.add_argument("--heading-spacing-deg", type=float, default=5.0)
     parser.add_argument("--episode-batch-size", type=int)
@@ -2008,7 +2301,7 @@ if __name__ == "__main__":
         smoke=arguments.smoke,
         resume=not arguments.no_resume,
         device=arguments.device,
-        require_cuda=not arguments.allow_cpu,
+        require_cuda=True,
         spatial_resolution_m=arguments.spatial_resolution_m,
         heading_spacing_deg=arguments.heading_spacing_deg,
         episode_batch_size=arguments.episode_batch_size,

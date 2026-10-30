@@ -21,6 +21,7 @@ from dqn_model import (
     DQNNetworkConfig,
     TerrainDQN,
     masked_bootstrap_values,
+    masked_double_dqn_bootstrap_values,
     masked_greedy_actions,
 )
 from dqn_replay import ReplayBuffer
@@ -112,6 +113,18 @@ class Phase3DQNTests(unittest.TestCase):
         actual = masked_bootstrap_values(q, mask, torch.tensor([True]))
         self.assertEqual(float(actual.item()), 0.0)
 
+    def test_double_dqn_selects_online_action_and_uses_target_value(self) -> None:
+        policy_q = torch.tensor([[1.0, 5.0, 3.0], [9.0, 8.0, 7.0]])
+        target_q = torch.tensor([[10.0, 2.0, 4.0], [6.0, 5.0, 4.0]])
+        mask = torch.tensor([
+            [True, True, True],
+            [False, False, False],
+        ])
+        actual = masked_double_dqn_bootstrap_values(
+            policy_q, target_q, mask, torch.tensor([False, True]),
+        )
+        torch.testing.assert_close(actual, torch.tensor([2.0, 0.0]))
+
     def test_environment_observation_reward_and_terminal_match_phase1(self) -> None:
         start_id = int(self.oracle.glide_state_ids[0])
         env = DQNAttackerEnv(
@@ -200,6 +213,20 @@ class Phase3DQNTests(unittest.TestCase):
         self.assertEqual(cache.cached_states, 1)
         np.testing.assert_array_equal(cache.get(first_state).scalar, expected)
         self.assertEqual(cache.cached_states, 1)
+
+    def test_observation_cache_deduplicates_missing_states_and_reports_churn(self) -> None:
+        cache = ObservationTensorCache(self.builder, max_entries=1)
+        first_state, second_state = map(int, self.oracle.glide_state_ids[:2])
+        duplicated = cache.get_many((first_state, first_state))
+        np.testing.assert_array_equal(duplicated[0].spatial, duplicated[1].spatial)
+        first_statistics = cache.statistics()
+        self.assertEqual(first_statistics["requests"], 2)
+        self.assertEqual(first_statistics["builds"], 1)
+        self.assertEqual(first_statistics["batch_reuses"], 1)
+        cache.get(second_state)
+        statistics = cache.statistics()
+        self.assertEqual(statistics["evictions"], 1)
+        self.assertEqual(statistics["cached_states"], 1)
 
     def test_checkpoint_rejects_incompatible_signature(self) -> None:
         network = TerrainDQN(self.network_config)

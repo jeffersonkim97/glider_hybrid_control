@@ -33,7 +33,11 @@ from phase4_dataset import (
 )
 from phase4_multi_terrain import (
     BellmanReference,
+    Phase4ExecutionConfig,
     ScenarioRuntime,
+    _EpisodeSlot,
+    _PendingReplayStep,
+    _drain_n_step_replay,
     approved_phase4_execution_config,
     approved_phase4_training_config,
     evaluate_policy_batched,
@@ -105,6 +109,39 @@ class Phase4DatasetTests(unittest.TestCase):
             execution.as_dict()["maximum_optimizer_updates_per_environment_step"],
             0.125,
         )
+        self.assertEqual(
+            execution.as_dict()["target_network_sync_basis"],
+            "environment steps, preserving the approved 1000-step cadence",
+        )
+        optimizer_sync = Phase4ExecutionConfig(
+            target_sync_basis="optimization_steps",
+        )
+        self.assertEqual(
+            optimizer_sync.as_dict()["target_network_sync_basis"],
+            "optimization steps, matching DQNTrainingConfig.target_update_steps",
+        )
+        with self.assertRaises(ValueError):
+            Phase4ExecutionConfig(target_sync_basis="episodes")
+        double_dqn = Phase4ExecutionConfig(td_target_estimator="double_dqn")
+        self.assertEqual(
+            double_dqn.as_dict()["td_target_estimator"], "double_dqn",
+        )
+        with self.assertRaises(ValueError):
+            Phase4ExecutionConfig(td_target_estimator="unknown")
+        three_step = Phase4ExecutionConfig(n_step_return=3)
+        self.assertEqual(three_step.as_dict()["n_step_return"], 3)
+        self.assertNotIn("n_step_return", execution.as_dict())
+        with self.assertRaises(ValueError):
+            Phase4ExecutionConfig(n_step_return=0)
+        stratified = Phase4ExecutionConfig(
+            replay_sampling="altitude_stratified",
+        )
+        self.assertEqual(
+            stratified.as_dict()["replay_sampling"], "altitude_stratified",
+        )
+        self.assertNotIn("replay_sampling", execution.as_dict())
+        with self.assertRaises(ValueError):
+            Phase4ExecutionConfig(replay_sampling="unknown")
 
     def test_master_notebook_exposes_all_four_phase_switches(self) -> None:
         notebook_path = project_paths.DQN_DIR / "Phase16_DQN_Terrain_Generalization.ipynb"
@@ -185,6 +222,71 @@ class Phase4DatasetTests(unittest.TestCase):
 
 
 class Phase4ReplayTests(unittest.TestCase):
+    def test_three_step_returns_and_terminal_tails_are_aggregated(self) -> None:
+        replay = MultiScenarioReplayBuffer(capacity=8, action_count=4, seed=7)
+        slot = _EpisodeSlot(
+            episode_number=1,
+            scenario_index=2,
+            start_state_id=10,
+            state_id=10,
+            epsilon_at_start=0.0,
+            pending_replay=[
+                _PendingReplayStep(
+                    10, 0, -1.0, 11, False, np.ones(4, bool), 3,
+                ),
+                _PendingReplayStep(
+                    11, 1, -2.0, 12, False, np.ones(4, bool), 2,
+                ),
+                _PendingReplayStep(
+                    12, 2, -4.0, 13, True, np.zeros(4, dtype=np.bool_), 1,
+                ),
+            ],
+        )
+        emitted = _drain_n_step_replay(
+            replay, slot, n_step_return=3, gamma=0.5, flush=True,
+        )
+        self.assertEqual(emitted, 3)
+        self.assertEqual(slot.pending_replay, [])
+        batch = replay.sample(3)
+        rows = {
+            int(state): (
+                float(reward), int(steps), bool(terminal), int(next_state)
+            )
+            for state, reward, steps, terminal, next_state in zip(
+                batch.state_ids,
+                batch.rewards,
+                batch.bootstrap_steps,
+                batch.terminal,
+                batch.next_state_ids,
+            )
+        }
+        self.assertEqual(rows[10], (-3.0, 3, True, 13))
+        self.assertEqual(rows[11], (-4.0, 2, True, 13))
+        self.assertEqual(rows[12], (-4.0, 1, True, 13))
+
+    def test_altitude_stratified_sampling_balances_populated_strata(self) -> None:
+        replay = MultiScenarioReplayBuffer(capacity=100, action_count=2, seed=4)
+        for index in range(90):
+            replay.add(
+                scenario_index=0, state_id=index, action_id=0, reward=-1.0,
+                next_state_id=index + 1, terminal=False,
+                next_feasible_mask=np.ones(2, dtype=np.bool_),
+                sampling_stratum=0,
+            )
+        for index in range(90, 100):
+            replay.add(
+                scenario_index=0, state_id=index, action_id=0, reward=-1.0,
+                next_state_id=index + 1, terminal=False,
+                next_feasible_mask=np.ones(2, dtype=np.bool_),
+                sampling_stratum=1,
+            )
+        batch = replay.sample_stratified(20)
+        lower = np.count_nonzero(batch.state_ids < 90)
+        upper = np.count_nonzero(batch.state_ids >= 90)
+        self.assertEqual((lower, upper), (10, 10))
+        restored = MultiScenarioReplayBuffer.from_state_dict(replay.state_dict())
+        self.assertEqual(restored.stratum_counts(), {0: 90, 1: 10})
+
     def test_mixed_scenario_replay_preserves_scenario_qualification(self) -> None:
         replay = MultiScenarioReplayBuffer(capacity=4, action_count=3, seed=2)
         for scenario_index in (0, 1):
@@ -213,6 +315,7 @@ class Phase4ReplayTests(unittest.TestCase):
         batch = restored.sample(1)
         self.assertEqual(int(batch.scenario_indices[0]), 2)
         self.assertTrue(bool(batch.terminal[0]))
+        self.assertEqual(int(batch.bootstrap_steps[0]), 1)
         np.testing.assert_array_equal(batch.next_feasible_masks[0], np.zeros(4, bool))
 
     def test_replay_cannot_silently_store_invalid_nonterminal_mask(self) -> None:
@@ -320,9 +423,13 @@ class Phase4EvaluationTests(unittest.TestCase):
         )
         context.cache.clear()
         problem.clear_runtime_caches()
+        isolated_cache = ObservationTensorCache(builder)
         batched = evaluate_policy_batched(
             network, context, torch.device("cpu"), batch_size=32,
+            observation_cache=isolated_cache,
         )
+        self.assertEqual(context.cache.cached_states, 0)
+        self.assertGreater(isolated_cache.cached_states, 0)
         self.assertEqual(serial.success, batched.success)
         self.assertEqual(serial.switching_state_id, batched.switching_state_id)
         self.assertEqual(serial.trajectory, batched.trajectory)
