@@ -1,0 +1,135 @@
+Phase-6 G2 scene ready: terrain=001, Defender actions=2736, seed=1163 at (4.75, -1.4499999999999997, 0.0)
+Running exact powered-occluded Local-SSE...
+  Exact BR action=1163 sensor=(4.75, -1.4499999999999997, 0.0)
+    feasible=True J_A=0.17136924832665673 J_D=0.006976907550809671 wall=170.892s checkpoint=1
+  Exact BR action=1086 sensor=(4.65, -1.5499999999999998, 0.0)
+    feasible=True J_A=0.17186915637216696 J_D=0.006298179072937622 wall=159.795s checkpoint=2
+  Exact BR action=1087 sensor=(4.65, -1.4499999999999997, 0.0)
+    feasible=True J_A=0.17116854459281744 J_D=0.0065782206533276065 wall=166.809s checkpoint=3
+  Exact BR action=1088 sensor=(4.65, -1.3499999999999996, 0.0)
+    feasible=True J_A=0.17154299425540603 J_D=0.007321915042625077 wall=154.534s checkpoint=4
+  Exact BR action=1162 sensor=(4.75, -1.5499999999999998, 0.0)
+    feasible=True J_A=0.17102755086136845 J_D=0.006298048665544624 wall=174.247s checkpoint=5
+  Exact BR action=1164 sensor=(4.75, -1.3499999999999996, 0.0)
+    feasible=True J_A=0.1718105561343227 J_D=0.007373161400797228 wall=175.835s checkpoint=6
+  Exact BR action=1238 sensor=(4.85, -1.5499999999999998, 0.0)
+    feasible=True J_A=0.1712349098642778 J_D=0.006710069315083793 wall=165.446s checkpoint=7
+  Exact BR action=1239 sensor=(4.85, -1.4499999999999997, 0.0)
+    feasible=True J_A=0.1716662995443743 J_D=0.007086734158111623 wall=163.745s checkpoint=8
+  Exact BR action=1240 sensor=(4.85, -1.3499999999999996, 0.0)
+    feasible=True J_A=0.1720157911536253 J_D=0.007780521367307515 wall=185.896s checkpoint=9
+  Exact BR action=1165 sensor=(4.75, -1.25, 0.0)
+    feasible=True J_A=0.17219332875235466 J_D=0.008132771353287764 wall=169.418s checkpoint=10
+  Exact BR action=1241 sensor=(4.85, -1.25, 0.0)
+    feasible=True J_A=0.17243657943537422 J_D=0.008615198754643666 wall=172.548s checkpoint=11
+  Exact BR action=1315 sensor=(4.95, -1.4499999999999997, 0.0)
+    feasible=True J_A=0.17188618739549416 J_D=0.007523297284896539 wall=171.855s checkpoint=12
+  Exact BR action=1316 sensor=(4.95, -1.3499999999999996, 0.0)
+    feasible=True J_A=0.17227269306961357 J_D=0.00829019658983686 wall=168.671s checkpoint=13
+  Exact BR action=1317 sensor=(4.95, -1.25, 0.0)
+    feasible=True J_A=0.17340560887045608 J_D=0.008747107494176098 wall=169.367s checkpoint=14
+  Exact BR action=1242 sensor=(4.85, -1.15, 0.0)
+    feasible=True J_A=0.17301074293648588 J_D=0.009270515510805606 wall=170.654s checkpoint=15
+  Exact BR action=1318 sensor=(4.95, -1.15, 0.0)
+    feasible=True J_A=0.17327172177210776 J_D=0.009787499431763167 wall=171.675s checkpoint=16
+  Exact BR action=1392 sensor=(5.05, -1.3499999999999996, 0.0)
+    feasible=True J_A=0.1726182270193209 J_D=0.009395703613652384 wall=165.118s checkpoint=17
+  Exact BR action=1393 sensor=(5.05, -1.25, 0.0)
+    feasible=True J_A=0.17311036979089947 J_D=0.009467902369349664 wall=160.030s checkpoint=18
+  Exact BR action=1394 sensor=(5.05, -1.15, 0.0)
+    feasible=True J_A=0.17359910267328027 J_D=0.010435640541163695 wall=161.789s checkpoint=19
+  Exact BR action=1319 sensor=(4.95, -1.0499999999999998, 0.0)
+    feasible=True J_A=0.1738048136548247 J_D=0.010842685313213809 wall=160.468s checkpoint=20
+  Exact BR action=1395 sensor=(5.05, -1.0499999999999998, 0.0)
+    feasible=True J_A=0.1737336098545124 J_D=0.01055469688090817 wall=160.989s checkpoint=21
+  Exact BR action=1469 sensor=(5.15, -1.25, 0.0)
+    feasible=True J_A=0.17344363528353746 J_D=0.010127902724552856 wall=158.521s checkpoint=22
+  Exact BR action=1470 sensor=(5.15, -1.15, 0.0)
+    feasible=True J_A=0.17395763721133717 J_D=0.011144972191866151 wall=163.493s checkpoint=23
+  Exact BR action=1471 sensor=(5.15, -1.0499999999999998, 0.0)
+    feasible=True J_A=0.17413981366486303 J_D=0.011358203353845017 wall=157.918s checkpoint=24
+  Exact BR action=1396 sensor=(5.05, -0.9499999999999997, 0.0)
+    feasible=True J_A=0.17432027369699093 J_D=0.011714959630494653 wall=152.875s checkpoint=25
+  Exact BR action=1472 sensor=(5.15, -0.9499999999999997, 0.0)
+    feasible=True J_A=0.1747508465328065 J_D=0.011719725080524053 wall=154.384s checkpoint=26
+  Exact BR action=1546 sensor=(5.25, -1.15, 0.0)
+    feasible=True J_A=0.17445880081910994 J_D=0.012551028698734078 wall=158.202s checkpoint=27
+  Exact BR action=1547 sensor=(5.25, -1.0499999999999998, 0.0)
+    feasible=True J_A=0.1745391194781038 J_D=0.011301145118417275 wall=155.565s checkpoint=28
+  Exact BR action=1548 sensor=(5.25, -0.9499999999999997, 0.0)
+    feasible=True J_A=0.1751416448031576 J_D=0.012491859736449678 wall=149.742s checkpoint=29
+  Exact BR action=1545 sensor=(5.25, -1.25, 0.0)
+    feasible=True J_A=0.17383731696904714 J_D=0.011132877770103139 wall=157.371s checkpoint=30
+  Exact BR action=1621 sensor=(5.35, -1.25, 0.0)
+    feasible=True J_A=0.17429983300704255 J_D=0.012237033581270259 wall=162.753s checkpoint=31
+  Exact BR action=1622 sensor=(5.35, -1.15, 0.0)
+    feasible=True J_A=0.1749173493553592 J_D=0.013456200131078346 wall=164.721s checkpoint=32
+  Exact BR action=1623 sensor=(5.35, -1.0499999999999998, 0.0)
+    feasible=True J_A=0.17493967213929232 J_D=0.012318501785221096 wall=159.735s checkpoint=33
+  Exact BR action=1697 sensor=(5.45, -1.25, 0.0)
+    feasible=True J_A=0.17479490929103375 J_D=0.01321458557635243 wall=159.452s checkpoint=34
+  Exact BR action=1698 sensor=(5.45, -1.15, 0.0)
+    feasible=True J_A=0.17534660183439865 J_D=0.010326083052664654 wall=160.899s checkpoint=35
+  Exact BR action=1699 sensor=(5.45, -1.0499999999999998, 0.0)
+    feasible=True J_A=0.17546919664928307 J_D=0.01288662171620698 wall=159.417s checkpoint=36
+Exact Local-SSE complete: action=1622, evaluations=36, benchmark=5999.106s, current_process_wall=5999.106s
+Loading frozen DQN only after exact search...
+Warming the complete approximate Local-SSE path (excluded)...
+  DQN BR action=1163 sensor=(4.75, -1.4499999999999997, 0.0) J_A=0.178602 J_D=0.006698 candidates=3314 wall=78.548s
+  DQN BR action=1086 sensor=(4.65, -1.5499999999999998, 0.0) J_A=0.178274 J_D=0.008105 candidates=2830 wall=57.041s
+  DQN BR action=1087 sensor=(4.65, -1.4499999999999997, 0.0) J_A=0.178717 J_D=0.008982 candidates=2850 wall=63.453s
+  DQN BR action=1088 sensor=(4.65, -1.3499999999999996, 0.0) J_A=0.179224 J_D=0.009987 candidates=2762 wall=67.870s
+  DQN BR action=1162 sensor=(4.75, -1.5499999999999998, 0.0) J_A=0.178490 J_D=0.008533 candidates=3333 wall=79.640s
+  DQN BR action=1164 sensor=(4.75, -1.3499999999999996, 0.0) J_A=0.178824 J_D=0.007587 candidates=3290 wall=74.917s
+  DQN BR action=1238 sensor=(4.85, -1.5499999999999998, 0.0) J_A=0.178725 J_D=0.008998 candidates=2866 wall=74.745s
+  DQN BR action=1239 sensor=(4.85, -1.4499999999999997, 0.0) J_A=0.178546 J_D=0.007035 candidates=2874 wall=80.936s
+  DQN BR action=1240 sensor=(4.85, -1.3499999999999996, 0.0) J_A=0.178922 J_D=0.007780 candidates=2854 wall=90.176s
+  DQN BR action=1011 sensor=(4.55, -1.4499999999999997, 0.0) J_A=0.178494 J_D=0.008541 candidates=3104 wall=106.514s
+  DQN BR action=1012 sensor=(4.55, -1.3499999999999996, 0.0) J_A=0.178974 J_D=0.009492 candidates=2978 wall=108.486s
+  DQN BR action=1013 sensor=(4.55, -1.25, 0.0) J_A=0.179525 J_D=0.010583 candidates=2882 wall=112.403s
+  DQN BR action=1089 sensor=(4.65, -1.25, 0.0) J_A=0.181359 J_D=0.009330 candidates=2615 wall=108.166s
+  DQN BR action=1165 sensor=(4.75, -1.25, 0.0) J_A=0.179252 J_D=0.008435 candidates=3169 wall=132.177s
+  DQN BR action=936 sensor=(4.45, -1.3499999999999996, 0.0) J_A=0.178743 J_D=0.009035 candidates=2934 wall=138.694s
+  DQN BR action=937 sensor=(4.45, -1.25, 0.0) J_A=0.179265 J_D=0.010069 candidates=2811 wall=141.873s
+  DQN BR action=938 sensor=(4.45, -1.15, 0.0) J_A=0.179548 J_D=0.008576 candidates=2862 wall=153.568s
+  DQN BR action=1014 sensor=(4.55, -1.15, 0.0) J_A=0.179556 J_D=0.009038 candidates=2889 wall=167.664s
+  DQN BR action=1090 sensor=(4.65, -1.15, 0.0) J_A=0.179645 J_D=0.009214 candidates=2672 wall=171.450s
+Running warm frozen-DQN approximate Local-SSE...
+  DQN BR action=1163 sensor=(4.75, -1.4499999999999997, 0.0) J_A=0.178602 J_D=0.006698 candidates=3314 wall=186.683s
+  DQN BR action=1086 sensor=(4.65, -1.5499999999999998, 0.0) J_A=0.178274 J_D=0.008105 candidates=2830 wall=180.287s
+  DQN BR action=1087 sensor=(4.65, -1.4499999999999997, 0.0) J_A=0.178717 J_D=0.008982 candidates=2850 wall=178.689s
+  DQN BR action=1088 sensor=(4.65, -1.3499999999999996, 0.0) J_A=0.179224 J_D=0.009987 candidates=2762 wall=170.529s
+  DQN BR action=1162 sensor=(4.75, -1.5499999999999998, 0.0) J_A=0.178490 J_D=0.008533 candidates=3333 wall=196.358s
+  DQN BR action=1164 sensor=(4.75, -1.3499999999999996, 0.0) J_A=0.178824 J_D=0.007587 candidates=3290 wall=196.727s
+  DQN BR action=1238 sensor=(4.85, -1.5499999999999998, 0.0) J_A=0.178725 J_D=0.008998 candidates=2866 wall=179.252s
+  DQN BR action=1239 sensor=(4.85, -1.4499999999999997, 0.0) J_A=0.178546 J_D=0.007035 candidates=2874 wall=191.815s
+  DQN BR action=1240 sensor=(4.85, -1.3499999999999996, 0.0) J_A=0.178922 J_D=0.007780 candidates=2854 wall=178.831s
+  DQN BR action=1011 sensor=(4.55, -1.4499999999999997, 0.0) J_A=0.178494 J_D=0.008541 candidates=3104 wall=196.121s
+  DQN BR action=1012 sensor=(4.55, -1.3499999999999996, 0.0) J_A=0.178974 J_D=0.009492 candidates=2978 wall=199.889s
+  DQN BR action=1013 sensor=(4.55, -1.25, 0.0) J_A=0.179525 J_D=0.010583 candidates=2882 wall=208.788s
+  DQN BR action=1089 sensor=(4.65, -1.25, 0.0) J_A=0.181359 J_D=0.009330 candidates=2615 wall=192.471s
+  DQN BR action=1165 sensor=(4.75, -1.25, 0.0) J_A=0.179252 J_D=0.008435 candidates=3169 wall=212.277s
+  DQN BR action=936 sensor=(4.45, -1.3499999999999996, 0.0) J_A=0.178743 J_D=0.009035 candidates=2934 wall=199.949s
+  DQN BR action=937 sensor=(4.45, -1.25, 0.0) J_A=0.179265 J_D=0.010069 candidates=2811 wall=212.040s
+  DQN BR action=938 sensor=(4.45, -1.15, 0.0) J_A=0.179548 J_D=0.008576 candidates=2862 wall=237.094s
+  DQN BR action=1014 sensor=(4.55, -1.15, 0.0) J_A=0.179556 J_D=0.009038 candidates=2889 wall=227.456s
+  DQN BR action=1090 sensor=(4.65, -1.15, 0.0) J_A=0.179645 J_D=0.009214 candidates=2672 wall=213.654s
+DQN Local-SSE complete: action=1013, evaluations=19, wall=3787.477s (warm-up 2022.959s excluded)
+  Exact BR action=1013 sensor=(4.55, -1.25, 0.0)
+    feasible=True J_A=0.17176021041726924 J_D=0.007753072828564867 wall=266.924s checkpoint=37
+  Exact BR action=936 sensor=(4.45, -1.3499999999999996, 0.0)
+    feasible=True J_A=0.17119447200523186 J_D=0.006629733030082591 wall=271.932s checkpoint=38
+  Exact BR action=937 sensor=(4.45, -1.25, 0.0)
+    feasible=True J_A=0.1715949784149411 J_D=0.0074251167495488785 wall=262.928s checkpoint=39
+  Exact BR action=938 sensor=(4.45, -1.15, 0.0)
+    feasible=True J_A=0.17208205142004634 J_D=0.007912002109170785 wall=253.261s checkpoint=40
+  Exact BR action=1012 sensor=(4.55, -1.3499999999999996, 0.0)
+    feasible=True J_A=0.17134749274924804 J_D=0.006933699029277377 wall=257.932s checkpoint=41
+  Exact BR action=1014 sensor=(4.55, -1.15, 0.0)
+    feasible=True J_A=0.17224324533982383 J_D=0.008231787665202184 wall=264.902s checkpoint=42
+  Exact BR action=1089 sensor=(4.65, -1.25, 0.0)
+    feasible=True J_A=0.17260353887138405 J_D=0.006745306253263172 wall=255.978s checkpoint=43
+  Exact BR action=1090 sensor=(4.65, -1.15, 0.0)
+    feasible=True J_A=0.17242468369676278 J_D=0.008591611965144649 wall=265.533s checkpoint=44
+Wrote D:\git\git_research\glider_hybrid_control\3D_RL_DQN\runs\phase6_g2_local_sse\final_id_001\dx10m_dpsi5deg_r1\phase6_g2_local_sse_pilot.json
+D:\git\git_research\glider_hybrid_control\3D_RL_DQN\runs\phase6_g2_local_sse\final_id_001\dx10m_dpsi5deg_r1\phase6_g2_local_sse_pilot.json

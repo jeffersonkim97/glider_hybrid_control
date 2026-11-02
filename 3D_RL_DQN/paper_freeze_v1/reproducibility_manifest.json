@@ -1,0 +1,899 @@
+{
+  "schema": "p1b-paper-reproducibility-freeze-v1",
+  "generated_at_utc": "2026-11-02T00:55:16.157172+00:00",
+  "source_parent_commit": "b438bef190de5a61a3b2acc1647a32c2ad888665",
+  "source_branch": "main",
+  "configuration_authority": "immutable training summary and final checkpoint payload",
+  "software_hardware": {
+    "python": "3.14.6 (main, Jun 23 2026, 15:20:04) [MSC v.1944 64 bit (AMD64)]",
+    "platform": "Windows-11-10.0.26300-SP0",
+    "numpy": "2.5.0",
+    "torch": "2.14.0+cu130",
+    "gymnasium": "1.3.0",
+    "cuda_runtime": "13.0",
+    "cudnn": 92400,
+    "cuda_available": true,
+    "gpu_from_torch": "NVIDIA GeForce RTX 5070",
+    "nvidia_smi": {
+      "available": true,
+      "name": "NVIDIA GeForce RTX 5070",
+      "driver_version": "621.01",
+      "memory_total_mib": 12227
+    }
+  },
+  "timing_contract": {
+    "bellman_first": "main exact Local-SSE after shared setup",
+    "dqn_first": "empty problem caches after shared setup/checkpoint load",
+    "dqn_repeated": "identical query with retained problem caches",
+    "excluded_online": [
+      "offline training",
+      "scene and graph construction",
+      "checkpoint loading",
+      "CUDA initialization",
+      "post-hoc exact DQN-neighborhood audit"
+    ]
+  },
+  "models": [
+    {
+      "condition": {
+        "spatial_resolution_m": 100.0,
+        "heading_spacing_deg": 5.0,
+        "tag": "dx100m_dpsi5deg"
+      },
+      "checkpoint": {
+        "path": "3D_RL_DQN/checkpoints/phase4_extended_random_boxes/training_v2/g2_generalization/dx100m_dpsi5deg/seed0_ep10000_v1/phase4_seed0_final.pt",
+        "sha256": "030b9d165d60cad0bbf052cde27b2ee7e4a31c7793f6768d8f612ed8887b6d18",
+        "size_bytes": 25797239,
+        "kind": "final checkpoint used by Phase 5--7 evaluation"
+      },
+      "source_manifests": {
+        "training_summary": {
+          "path": "3D_0827/figure/phase_4_extended_random_boxes/training_v2/g2_generalization/dx100m_dpsi5deg/seed0_ep10000_v1/g2_training_summary.json",
+          "sha256": "8076a9c807ee908d3993dedd4b52fafc83824bed8d868bb29ff0b4657dfbc3b7"
+        },
+        "preparation": {
+          "path": "3D_0827/figure/phase_4_extended_random_boxes/training_v2/g2_generalization/dx100m_dpsi5deg/seed0_ep10000_v1/g2_preparation.json",
+          "sha256": "f1eef97a498ae3abab200e07ec879059b128be3f2b548d8e4713188890a67f35"
+        },
+        "dataset": {
+          "path": "3D_0827/figure/phase_4_extended_random_boxes/training_v2/g2_generalization/dx100m_dpsi5deg/seed0_ep10000_v1/g2_dataset_manifest.json",
+          "sha256": "1c0c9f83384e2b687a66e9848c18e578928d914dcc590ad548e2998255f827b6"
+        }
+      },
+      "algorithm": {
+        "name": "1-step Double DQN",
+        "learning_rate": 0.0003,
+        "target_update_optimizer_steps": 500,
+        "replay_sampling": "uniform",
+        "n_step_return": 1
+      },
+      "training_config": {
+        "episodes": 10000,
+        "gamma": 1.0,
+        "replay_capacity": 50000,
+        "replay_warmup": 2000,
+        "batch_size": 128,
+        "optimizer": "AdamW",
+        "learning_rate": 0.0003,
+        "loss": "huber",
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.05,
+        "epsilon_decay_fraction": 0.6,
+        "target_update_steps": 500,
+        "updates_per_environment_step": 1,
+        "gradient_clip_norm": 10.0,
+        "evaluation_interval_episodes": 1000,
+        "seeds": [
+          0
+        ],
+        "device": "cuda",
+        "config_id": "p1b-phase4-training-v2-g2-seed0-v1",
+        "epsilon_decay_definition": "linear by environment step over episodes * maximum DAG steps * epsilon_decay_fraction"
+      },
+      "execution_config": {
+        "episode_batch_size": 8,
+        "optimization_prefetch_batches": 8,
+        "optimizer_updates_per_vector_step": 1,
+        "checkpoint_interval_episodes": 1000,
+        "evaluation_interval_episodes": 1000,
+        "execution_id": "p1b-phase4-training-v2-g2-seed0-execution-v1",
+        "maximum_optimizer_updates_per_environment_step": 0.125,
+        "target_network_sync_basis": "optimization steps, matching DQNTrainingConfig.target_update_steps",
+        "td_target_estimator": "double_dqn"
+      },
+      "early_stopping": {
+        "evaluation_interval_episodes": 1000,
+        "minimum_episodes": 3000,
+        "stability_evaluations": 3,
+        "median_error_range_threshold": 0.05,
+        "median_relative_error_threshold": 0.1,
+        "maximum_relative_error_threshold": 0.2,
+        "maximum_episodes": 10000,
+        "parameter_origin": "user_approved_2026-10-23",
+        "median_error_range_unit": "absolute proportion (0.05 = 5 percentage points)",
+        "quality_window_policy": "all recent stability evaluations must pass success, median-error, and maximum-error gates",
+        "failure_plateau_policy": "continue_to_maximum_episodes"
+      },
+      "network_config": {
+        "spatial_channels": 14,
+        "spatial_height": 41,
+        "spatial_width": 41,
+        "scalar_features": 8,
+        "action_count": 72,
+        "convolution_channels": [
+          32,
+          64,
+          64
+        ],
+        "spatial_embedding": 256,
+        "scalar_hidden": [
+          64,
+          64
+        ],
+        "fusion_hidden": 256,
+        "activation": "relu",
+        "architecture_id": "p1b-two-branch-dqn-multiscale-fused-v1",
+        "trainable_parameter_count": 2147624
+      },
+      "optimizer_param_groups_from_checkpoint": [
+        {
+          "lr": 0.0003,
+          "betas": [
+            0.9,
+            0.999
+          ],
+          "eps": 1e-08,
+          "weight_decay": 0.01,
+          "amsgrad": false,
+          "maximize": false,
+          "foreach": null,
+          "capturable": false,
+          "differentiable": false,
+          "fused": null,
+          "decoupled_weight_decay": true,
+          "parameter_tensor_count": 16
+        }
+      ],
+      "measured_training": {
+        "seed": 0,
+        "device": "cuda",
+        "episodes_completed": 10000,
+        "best_episode": 7000,
+        "training_runtime_sec": 284.7629622000004,
+        "training_wall_runtime_sec": 284.7629622000004,
+        "pure_training_runtime_sec": 210.44933449999917,
+        "evaluation_runtime_sec": 57.6991936000004,
+        "checkpoint_evaluation_runtime_sec": 57.6991936000004,
+        "checkpoint_io_runtime_sec": 16.614434100000835,
+        "post_training_evaluation_runtime_sec": 7.5607693000001746,
+        "final_checkpoint_io_runtime_sec": 0.9262264999997569,
+        "measured_seed_runtime_sec": 293.24995800000033,
+        "environment_steps": 40732,
+        "optimization_steps": 5935,
+        "replay_size": 40732
+      },
+      "configuration_source": "immutable run summary plus optimizer state stored in the final checkpoint; not current source defaults"
+    },
+    {
+      "condition": {
+        "spatial_resolution_m": 50.0,
+        "heading_spacing_deg": 5.0,
+        "tag": "dx50m_dpsi5deg"
+      },
+      "checkpoint": {
+        "path": "3D_RL_DQN/checkpoints/phase4_extended_random_boxes/training_v2/g2_generalization/dx50m_dpsi5deg/seed0_ep10000_v1/phase4_seed0_final.pt",
+        "sha256": "c2f0898cf75d2360fc459580f8e93f8ea8c2e52ec4ca3c840ba95d055601041d",
+        "size_bytes": 25797239,
+        "kind": "final checkpoint used by Phase 5--7 evaluation"
+      },
+      "source_manifests": {
+        "training_summary": {
+          "path": "3D_0827/figure/phase_4_extended_random_boxes/training_v2/g2_generalization/dx50m_dpsi5deg/seed0_ep10000_v1/g2_training_summary.json",
+          "sha256": "64029fdd62a1e2d4924b9516e60abd7102439ea5afbd37be86779c423f8b4da0"
+        },
+        "preparation": {
+          "path": "3D_0827/figure/phase_4_extended_random_boxes/training_v2/g2_generalization/dx50m_dpsi5deg/seed0_ep10000_v1/g2_preparation.json",
+          "sha256": "e7cf5930210152e6a0d4dd5ca8e58a763cffdad4f370bc11507eae9c386fbb4f"
+        },
+        "dataset": {
+          "path": "3D_0827/figure/phase_4_extended_random_boxes/training_v2/g2_generalization/dx50m_dpsi5deg/seed0_ep10000_v1/g2_dataset_manifest.json",
+          "sha256": "1c0c9f83384e2b687a66e9848c18e578928d914dcc590ad548e2998255f827b6"
+        }
+      },
+      "algorithm": {
+        "name": "1-step Double DQN",
+        "learning_rate": 0.0003,
+        "target_update_optimizer_steps": 500,
+        "replay_sampling": "uniform",
+        "n_step_return": 1
+      },
+      "training_config": {
+        "episodes": 10000,
+        "gamma": 1.0,
+        "replay_capacity": 50000,
+        "replay_warmup": 2000,
+        "batch_size": 128,
+        "optimizer": "AdamW",
+        "learning_rate": 0.0003,
+        "loss": "huber",
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.05,
+        "epsilon_decay_fraction": 0.6,
+        "target_update_steps": 500,
+        "updates_per_environment_step": 1,
+        "gradient_clip_norm": 10.0,
+        "evaluation_interval_episodes": 1000,
+        "seeds": [
+          0
+        ],
+        "device": "cuda",
+        "config_id": "p1b-phase4-training-v2-g2-seed0-v1",
+        "epsilon_decay_definition": "linear by environment step over episodes * maximum DAG steps * epsilon_decay_fraction"
+      },
+      "execution_config": {
+        "episode_batch_size": 8,
+        "optimization_prefetch_batches": 8,
+        "optimizer_updates_per_vector_step": 1,
+        "checkpoint_interval_episodes": 1000,
+        "evaluation_interval_episodes": 1000,
+        "execution_id": "p1b-phase4-training-v2-g2-seed0-execution-v1",
+        "maximum_optimizer_updates_per_environment_step": 0.125,
+        "target_network_sync_basis": "optimization steps, matching DQNTrainingConfig.target_update_steps",
+        "td_target_estimator": "double_dqn"
+      },
+      "early_stopping": {
+        "evaluation_interval_episodes": 1000,
+        "minimum_episodes": 3000,
+        "stability_evaluations": 3,
+        "median_error_range_threshold": 0.05,
+        "median_relative_error_threshold": 0.1,
+        "maximum_relative_error_threshold": 0.2,
+        "maximum_episodes": 10000,
+        "parameter_origin": "user_approved_2026-10-23",
+        "median_error_range_unit": "absolute proportion (0.05 = 5 percentage points)",
+        "quality_window_policy": "all recent stability evaluations must pass success, median-error, and maximum-error gates",
+        "failure_plateau_policy": "continue_to_maximum_episodes"
+      },
+      "network_config": {
+        "spatial_channels": 14,
+        "spatial_height": 41,
+        "spatial_width": 41,
+        "scalar_features": 8,
+        "action_count": 72,
+        "convolution_channels": [
+          32,
+          64,
+          64
+        ],
+        "spatial_embedding": 256,
+        "scalar_hidden": [
+          64,
+          64
+        ],
+        "fusion_hidden": 256,
+        "activation": "relu",
+        "architecture_id": "p1b-two-branch-dqn-multiscale-fused-v1",
+        "trainable_parameter_count": 2147624
+      },
+      "optimizer_param_groups_from_checkpoint": [
+        {
+          "lr": 0.0003,
+          "betas": [
+            0.9,
+            0.999
+          ],
+          "eps": 1e-08,
+          "weight_decay": 0.01,
+          "amsgrad": false,
+          "maximize": false,
+          "foreach": null,
+          "capturable": false,
+          "differentiable": false,
+          "fused": null,
+          "decoupled_weight_decay": true,
+          "parameter_tensor_count": 16
+        }
+      ],
+      "measured_training": {
+        "seed": 0,
+        "device": "cuda",
+        "episodes_completed": 10000,
+        "best_episode": 5000,
+        "training_runtime_sec": 846.7539503999997,
+        "training_wall_runtime_sec": 846.7539503999997,
+        "pure_training_runtime_sec": 544.7739361999938,
+        "evaluation_runtime_sec": 262.85889010000574,
+        "checkpoint_evaluation_runtime_sec": 262.85889010000574,
+        "checkpoint_io_runtime_sec": 39.12112410000009,
+        "post_training_evaluation_runtime_sec": 26.18192799999997,
+        "final_checkpoint_io_runtime_sec": 0.9843909999999596,
+        "measured_seed_runtime_sec": 873.9202693999996,
+        "environment_steps": 74917,
+        "optimization_steps": 12002,
+        "replay_size": 50000
+      },
+      "configuration_source": "immutable run summary plus optimizer state stored in the final checkpoint; not current source defaults"
+    },
+    {
+      "condition": {
+        "spatial_resolution_m": 25.0,
+        "heading_spacing_deg": 10.0,
+        "tag": "dx25m_dpsi10deg"
+      },
+      "checkpoint": {
+        "path": "3D_RL_DQN/checkpoints/phase4_extended_random_boxes/training_v2/g2_generalization/dx25m_dpsi10deg/seed0_ep10000_v1/phase4_seed0_final.pt",
+        "sha256": "39bd586763a5c3dbacef42cc00c1b74b69b5aedba4304ff589844af7987f5d7b",
+        "size_bytes": 25686775,
+        "kind": "final checkpoint used by Phase 5--7 evaluation"
+      },
+      "source_manifests": {
+        "training_summary": {
+          "path": "3D_0827/figure/phase_4_extended_random_boxes/training_v2/g2_generalization/dx25m_dpsi10deg/seed0_ep10000_v1/g2_training_summary.json",
+          "sha256": "758e47502a3b7437921ea65de43d219d7b28d6d1e1dea006029118e3a8522568"
+        },
+        "preparation": {
+          "path": "3D_0827/figure/phase_4_extended_random_boxes/training_v2/g2_generalization/dx25m_dpsi10deg/seed0_ep10000_v1/g2_preparation.json",
+          "sha256": "ae62c357f4021bd6bf8f04df8e237c9be0116dc87edf94943f7c51fba879505e"
+        },
+        "dataset": {
+          "path": "3D_0827/figure/phase_4_extended_random_boxes/training_v2/g2_generalization/dx25m_dpsi10deg/seed0_ep10000_v1/g2_dataset_manifest.json",
+          "sha256": "1c0c9f83384e2b687a66e9848c18e578928d914dcc590ad548e2998255f827b6"
+        }
+      },
+      "algorithm": {
+        "name": "1-step Double DQN",
+        "learning_rate": 0.0003,
+        "target_update_optimizer_steps": 500,
+        "replay_sampling": "uniform",
+        "n_step_return": 1
+      },
+      "training_config": {
+        "episodes": 10000,
+        "gamma": 1.0,
+        "replay_capacity": 50000,
+        "replay_warmup": 2000,
+        "batch_size": 128,
+        "optimizer": "AdamW",
+        "learning_rate": 0.0003,
+        "loss": "huber",
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.05,
+        "epsilon_decay_fraction": 0.6,
+        "target_update_steps": 500,
+        "updates_per_environment_step": 1,
+        "gradient_clip_norm": 10.0,
+        "evaluation_interval_episodes": 1000,
+        "seeds": [
+          0
+        ],
+        "device": "cuda",
+        "config_id": "p1b-phase4-training-v2-g2-seed0-v1",
+        "epsilon_decay_definition": "linear by environment step over episodes * maximum DAG steps * epsilon_decay_fraction"
+      },
+      "execution_config": {
+        "episode_batch_size": 8,
+        "optimization_prefetch_batches": 8,
+        "optimizer_updates_per_vector_step": 1,
+        "checkpoint_interval_episodes": 1000,
+        "evaluation_interval_episodes": 1000,
+        "execution_id": "p1b-phase4-training-v2-g2-seed0-execution-v1",
+        "maximum_optimizer_updates_per_environment_step": 0.125,
+        "target_network_sync_basis": "optimization steps, matching DQNTrainingConfig.target_update_steps",
+        "td_target_estimator": "double_dqn"
+      },
+      "early_stopping": {
+        "evaluation_interval_episodes": 1000,
+        "minimum_episodes": 10000,
+        "stability_evaluations": 3,
+        "median_error_range_threshold": 0.1,
+        "median_relative_error_threshold": 0.1,
+        "maximum_relative_error_threshold": 0.2,
+        "maximum_episodes": 10000,
+        "parameter_origin": "user_approved_2026-10-30",
+        "median_error_range_unit": "absolute proportion (0.10 = 10 percentage points)",
+        "quality_window_policy": "all recent evaluations must have 100% success; the median of their median relative errors and the latest median relative error must be at most 10%; their median-error range must be at most 10 percentage points",
+        "maximum_error_policy": "report_only_not_a_stopping_gate",
+        "final_model_acceptance": {
+          "success_rate_minimum": 1.0,
+          "median_relative_error_maximum": 0.1,
+          "p90_relative_error_maximum": 0.3,
+          "p90_method": "higher",
+          "maximum_relative_error_policy": "report_only"
+        },
+        "failure_plateau_policy": "continue_to_maximum_episodes"
+      },
+      "network_config": {
+        "spatial_channels": 14,
+        "spatial_height": 41,
+        "spatial_width": 41,
+        "scalar_features": 8,
+        "action_count": 36,
+        "convolution_channels": [
+          32,
+          64,
+          64
+        ],
+        "spatial_embedding": 256,
+        "scalar_hidden": [
+          64,
+          64
+        ],
+        "fusion_hidden": 256,
+        "activation": "relu",
+        "architecture_id": "p1b-two-branch-dqn-multiscale-fused-v1",
+        "trainable_parameter_count": 2138372
+      },
+      "optimizer_param_groups_from_checkpoint": [
+        {
+          "lr": 0.0003,
+          "betas": [
+            0.9,
+            0.999
+          ],
+          "eps": 1e-08,
+          "weight_decay": 0.01,
+          "amsgrad": false,
+          "maximize": false,
+          "foreach": null,
+          "capturable": false,
+          "differentiable": false,
+          "fused": null,
+          "decoupled_weight_decay": true,
+          "parameter_tensor_count": 16
+        }
+      ],
+      "measured_training": {
+        "seed": 0,
+        "device": "cuda",
+        "episodes_completed": 10000,
+        "best_episode": 10000,
+        "training_runtime_sec": 1852.0824909999974,
+        "training_wall_runtime_sec": 1852.0824909999974,
+        "pure_training_runtime_sec": 1071.5531849000035,
+        "evaluation_runtime_sec": 737.5523562999952,
+        "checkpoint_evaluation_runtime_sec": 737.5523562999952,
+        "checkpoint_io_runtime_sec": 42.97694979999869,
+        "post_training_evaluation_runtime_sec": 75.57986140000139,
+        "final_checkpoint_io_runtime_sec": 4.176659900000232,
+        "measured_seed_runtime_sec": 1931.839012299999,
+        "environment_steps": 157040,
+        "optimization_steps": 24068,
+        "replay_size": 50000
+      },
+      "configuration_source": "immutable run summary plus optimizer state stored in the final checkpoint; not current source defaults"
+    },
+    {
+      "condition": {
+        "spatial_resolution_m": 25.0,
+        "heading_spacing_deg": 5.0,
+        "tag": "dx25m_dpsi5deg"
+      },
+      "checkpoint": {
+        "path": "3D_RL_DQN/checkpoints/phase4_extended_random_boxes/training_v2/g2_generalization/dx25m_dpsi5deg/seed0_ep10000_v1/phase4_seed0_final.pt",
+        "sha256": "cea13352ab8665d881598e2cd4de16b16803e88294c901ef81a69f205e93021b",
+        "size_bytes": 25797239,
+        "kind": "final checkpoint used by Phase 5--7 evaluation"
+      },
+      "source_manifests": {
+        "training_summary": {
+          "path": "3D_0827/figure/phase_4_extended_random_boxes/training_v2/g2_generalization/dx25m_dpsi5deg/seed0_ep10000_v1/g2_training_summary.json",
+          "sha256": "8aa4f8b26355c36e584afba0085423cf10cfd422e11522a443ef0d52a8d80cbf"
+        },
+        "preparation": {
+          "path": "3D_0827/figure/phase_4_extended_random_boxes/training_v2/g2_generalization/dx25m_dpsi5deg/seed0_ep10000_v1/g2_preparation.json",
+          "sha256": "6c5219d11a322bb6fe73a16254f6575a7612cf4e848289a91b2c156bcef7d07f"
+        },
+        "dataset": {
+          "path": "3D_0827/figure/phase_4_extended_random_boxes/training_v2/g2_generalization/dx25m_dpsi5deg/seed0_ep10000_v1/g2_dataset_manifest.json",
+          "sha256": "1c0c9f83384e2b687a66e9848c18e578928d914dcc590ad548e2998255f827b6"
+        }
+      },
+      "algorithm": {
+        "name": "1-step Double DQN",
+        "learning_rate": 0.0003,
+        "target_update_optimizer_steps": 500,
+        "replay_sampling": "uniform",
+        "n_step_return": 1
+      },
+      "training_config": {
+        "episodes": 10000,
+        "gamma": 1.0,
+        "replay_capacity": 50000,
+        "replay_warmup": 2000,
+        "batch_size": 128,
+        "optimizer": "AdamW",
+        "learning_rate": 0.0003,
+        "loss": "huber",
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.05,
+        "epsilon_decay_fraction": 0.6,
+        "target_update_steps": 500,
+        "updates_per_environment_step": 1,
+        "gradient_clip_norm": 10.0,
+        "evaluation_interval_episodes": 1000,
+        "seeds": [
+          0
+        ],
+        "device": "cuda",
+        "config_id": "p1b-phase4-training-v2-g2-seed0-v1",
+        "epsilon_decay_definition": "linear by environment step over episodes * maximum DAG steps * epsilon_decay_fraction"
+      },
+      "execution_config": {
+        "episode_batch_size": 8,
+        "optimization_prefetch_batches": 8,
+        "optimizer_updates_per_vector_step": 1,
+        "checkpoint_interval_episodes": 1000,
+        "evaluation_interval_episodes": 1000,
+        "execution_id": "p1b-phase4-training-v2-g2-seed0-execution-v1",
+        "maximum_optimizer_updates_per_environment_step": 0.125,
+        "target_network_sync_basis": "optimization steps, matching DQNTrainingConfig.target_update_steps",
+        "td_target_estimator": "double_dqn"
+      },
+      "early_stopping": {
+        "evaluation_interval_episodes": 1000,
+        "minimum_episodes": 3000,
+        "stability_evaluations": 3,
+        "median_error_range_threshold": 0.05,
+        "median_relative_error_threshold": 0.1,
+        "maximum_relative_error_threshold": 0.2,
+        "maximum_episodes": 10000,
+        "parameter_origin": "user_approved_2026-10-23",
+        "median_error_range_unit": "absolute proportion (0.05 = 5 percentage points)",
+        "quality_window_policy": "all recent stability evaluations must pass success, median-error, and maximum-error gates",
+        "failure_plateau_policy": "continue_to_maximum_episodes"
+      },
+      "network_config": {
+        "spatial_channels": 14,
+        "spatial_height": 41,
+        "spatial_width": 41,
+        "scalar_features": 8,
+        "action_count": 72,
+        "convolution_channels": [
+          32,
+          64,
+          64
+        ],
+        "spatial_embedding": 256,
+        "scalar_hidden": [
+          64,
+          64
+        ],
+        "fusion_hidden": 256,
+        "activation": "relu",
+        "architecture_id": "p1b-two-branch-dqn-multiscale-fused-v1",
+        "trainable_parameter_count": 2147624
+      },
+      "optimizer_param_groups_from_checkpoint": [
+        {
+          "lr": 0.0003,
+          "betas": [
+            0.9,
+            0.999
+          ],
+          "eps": 1e-08,
+          "weight_decay": 0.01,
+          "amsgrad": false,
+          "maximize": false,
+          "foreach": null,
+          "capturable": false,
+          "differentiable": false,
+          "fused": null,
+          "decoupled_weight_decay": true,
+          "parameter_tensor_count": 16
+        }
+      ],
+      "measured_training": {
+        "seed": 0,
+        "device": "cuda",
+        "episodes_completed": 10000,
+        "best_episode": 9000,
+        "training_runtime_sec": 2744.3276193,
+        "training_wall_runtime_sec": 2744.3276193,
+        "pure_training_runtime_sec": 1227.1820535999996,
+        "evaluation_runtime_sec": 1473.2741282000025,
+        "checkpoint_evaluation_runtime_sec": 1473.2741282000025,
+        "checkpoint_io_runtime_sec": 43.87143749999814,
+        "post_training_evaluation_runtime_sec": 174.35681730000033,
+        "final_checkpoint_io_runtime_sec": 1.2757871000012528,
+        "measured_seed_runtime_sec": 2919.9602237000017,
+        "environment_steps": 143804,
+        "optimization_steps": 23887,
+        "replay_size": 50000
+      },
+      "configuration_source": "immutable run summary plus optimizer state stored in the final checkpoint; not current source defaults"
+    },
+    {
+      "condition": {
+        "spatial_resolution_m": 25.0,
+        "heading_spacing_deg": 2.5,
+        "tag": "dx25m_dpsi2p5deg"
+      },
+      "checkpoint": {
+        "path": "3D_RL_DQN/checkpoints/phase4_extended_random_boxes/training_v2/g2_generalization/dx25m_dpsi2p5deg/seed0_ep10000_v1/phase4_seed0_final.pt",
+        "sha256": "45e877518aa75833eb6b1e55a48b4aad37ab498e1acc470bb3902a806aa6af60",
+        "size_bytes": 26019895,
+        "kind": "final checkpoint used by Phase 5--7 evaluation"
+      },
+      "source_manifests": {
+        "training_summary": {
+          "path": "3D_0827/figure/phase_4_extended_random_boxes/training_v2/g2_generalization/dx25m_dpsi2p5deg/seed0_ep10000_v1/g2_training_summary.json",
+          "sha256": "b4be17d27d983b7d5f81b68eba781b9eb16ed4df049444ee6dd9ceb9cc6cd7c8"
+        },
+        "preparation": {
+          "path": "3D_0827/figure/phase_4_extended_random_boxes/training_v2/g2_generalization/dx25m_dpsi2p5deg/seed0_ep10000_v1/g2_preparation.json",
+          "sha256": "a538323b2c07e04374aa2c24144f260b17cf4267ba14c150828768d59b400e68"
+        },
+        "dataset": {
+          "path": "3D_0827/figure/phase_4_extended_random_boxes/training_v2/g2_generalization/dx25m_dpsi2p5deg/seed0_ep10000_v1/g2_dataset_manifest.json",
+          "sha256": "1c0c9f83384e2b687a66e9848c18e578928d914dcc590ad548e2998255f827b6"
+        }
+      },
+      "algorithm": {
+        "name": "1-step Double DQN",
+        "learning_rate": 0.0003,
+        "target_update_optimizer_steps": 500,
+        "replay_sampling": "uniform",
+        "n_step_return": 1
+      },
+      "training_config": {
+        "episodes": 10000,
+        "gamma": 1.0,
+        "replay_capacity": 50000,
+        "replay_warmup": 2000,
+        "batch_size": 128,
+        "optimizer": "AdamW",
+        "learning_rate": 0.0003,
+        "loss": "huber",
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.05,
+        "epsilon_decay_fraction": 0.6,
+        "target_update_steps": 500,
+        "updates_per_environment_step": 1,
+        "gradient_clip_norm": 10.0,
+        "evaluation_interval_episodes": 1000,
+        "seeds": [
+          0
+        ],
+        "device": "cuda",
+        "config_id": "p1b-phase4-training-v2-g2-seed0-v1",
+        "epsilon_decay_definition": "linear by environment step over episodes * maximum DAG steps * epsilon_decay_fraction"
+      },
+      "execution_config": {
+        "episode_batch_size": 8,
+        "optimization_prefetch_batches": 8,
+        "optimizer_updates_per_vector_step": 1,
+        "checkpoint_interval_episodes": 1000,
+        "evaluation_interval_episodes": 1000,
+        "execution_id": "p1b-phase4-training-v2-g2-seed0-execution-v1",
+        "maximum_optimizer_updates_per_environment_step": 0.125,
+        "target_network_sync_basis": "optimization steps, matching DQNTrainingConfig.target_update_steps",
+        "td_target_estimator": "double_dqn"
+      },
+      "early_stopping": {
+        "evaluation_interval_episodes": 1000,
+        "minimum_episodes": 10000,
+        "stability_evaluations": 3,
+        "median_error_range_threshold": 0.1,
+        "median_relative_error_threshold": 0.1,
+        "maximum_relative_error_threshold": 0.2,
+        "maximum_episodes": 10000,
+        "parameter_origin": "user_approved_2026-10-30",
+        "median_error_range_unit": "absolute proportion (0.10 = 10 percentage points)",
+        "quality_window_policy": "all recent evaluations must have 100% success; the median of their median relative errors and the latest median relative error must be at most 10%; their median-error range must be at most 10 percentage points",
+        "maximum_error_policy": "report_only_not_a_stopping_gate",
+        "final_model_acceptance": {
+          "success_rate_minimum": 1.0,
+          "median_relative_error_maximum": 0.1,
+          "p90_relative_error_maximum": 0.3,
+          "p90_method": "higher",
+          "maximum_relative_error_policy": "report_only"
+        },
+        "failure_plateau_policy": "continue_to_maximum_episodes"
+      },
+      "network_config": {
+        "spatial_channels": 14,
+        "spatial_height": 41,
+        "spatial_width": 41,
+        "scalar_features": 8,
+        "action_count": 144,
+        "convolution_channels": [
+          32,
+          64,
+          64
+        ],
+        "spatial_embedding": 256,
+        "scalar_hidden": [
+          64,
+          64
+        ],
+        "fusion_hidden": 256,
+        "activation": "relu",
+        "architecture_id": "p1b-two-branch-dqn-multiscale-fused-v1",
+        "trainable_parameter_count": 2166128
+      },
+      "optimizer_param_groups_from_checkpoint": [
+        {
+          "lr": 0.0003,
+          "betas": [
+            0.9,
+            0.999
+          ],
+          "eps": 1e-08,
+          "weight_decay": 0.01,
+          "amsgrad": false,
+          "maximize": false,
+          "foreach": null,
+          "capturable": false,
+          "differentiable": false,
+          "fused": null,
+          "decoupled_weight_decay": true,
+          "parameter_tensor_count": 16
+        }
+      ],
+      "measured_training": {
+        "seed": 0,
+        "device": "cuda",
+        "episodes_completed": 10000,
+        "best_episode": 10000,
+        "training_runtime_sec": 2748.4584821000026,
+        "training_wall_runtime_sec": 2748.4584821000026,
+        "pure_training_runtime_sec": 932.6838197999932,
+        "evaluation_runtime_sec": 1771.652245500005,
+        "checkpoint_evaluation_runtime_sec": 1771.652245500005,
+        "checkpoint_io_runtime_sec": 44.12241680000443,
+        "post_training_evaluation_runtime_sec": 102.84544449999885,
+        "final_checkpoint_io_runtime_sec": 4.677322299998195,
+        "measured_seed_runtime_sec": 2855.9812488999996,
+        "environment_steps": 93346,
+        "optimization_steps": 15919,
+        "replay_size": 50000
+      },
+      "configuration_source": "immutable run summary plus optimizer state stored in the final checkpoint; not current source defaults"
+    },
+    {
+      "condition": {
+        "spatial_resolution_m": 10.0,
+        "heading_spacing_deg": 5.0,
+        "tag": "dx10m_dpsi5deg"
+      },
+      "checkpoint": {
+        "path": "3D_RL_DQN/checkpoints/phase4_extended_random_boxes/training_v2/g2_generalization/dx10m_dpsi5deg/seed0_ep10000_v1/phase4_seed0_final.pt",
+        "sha256": "1d3dad6004a37bbe74d23e7af1a3a4c33e3b1793617a2695c28036be1004e618",
+        "size_bytes": 25797239,
+        "kind": "final checkpoint used by Phase 5--7 evaluation"
+      },
+      "source_manifests": {
+        "training_summary": {
+          "path": "3D_0827/figure/phase_4_extended_random_boxes/training_v2/g2_generalization/dx10m_dpsi5deg/seed0_ep10000_v1/g2_training_summary.json",
+          "sha256": "899c51556606215d490535f2df63d3d6db898dc6914438af5acb31ba8e64e6a2"
+        },
+        "preparation": {
+          "path": "3D_0827/figure/phase_4_extended_random_boxes/training_v2/g2_generalization/dx10m_dpsi5deg/seed0_ep10000_v1/g2_preparation.json",
+          "sha256": "1fb0f532fed1b1643a1c48d7bc9a434697a311b2f2364504a3b01fbb6143968b"
+        },
+        "dataset": {
+          "path": "3D_0827/figure/phase_4_extended_random_boxes/training_v2/g2_generalization/dx10m_dpsi5deg/seed0_ep10000_v1/g2_dataset_manifest.json",
+          "sha256": "1c0c9f83384e2b687a66e9848c18e578928d914dcc590ad548e2998255f827b6"
+        }
+      },
+      "algorithm": {
+        "name": "1-step Double DQN",
+        "learning_rate": 0.0003,
+        "target_update_optimizer_steps": 500,
+        "replay_sampling": "uniform",
+        "n_step_return": 1
+      },
+      "training_config": {
+        "episodes": 10000,
+        "gamma": 1.0,
+        "replay_capacity": 50000,
+        "replay_warmup": 2000,
+        "batch_size": 128,
+        "optimizer": "AdamW",
+        "learning_rate": 0.0003,
+        "loss": "huber",
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.05,
+        "epsilon_decay_fraction": 0.6,
+        "target_update_steps": 500,
+        "updates_per_environment_step": 1,
+        "gradient_clip_norm": 10.0,
+        "evaluation_interval_episodes": 1000,
+        "seeds": [
+          0
+        ],
+        "device": "cuda",
+        "config_id": "p1b-phase4-training-v2-g2-seed0-v1",
+        "epsilon_decay_definition": "linear by environment step over episodes * maximum DAG steps * epsilon_decay_fraction"
+      },
+      "execution_config": {
+        "episode_batch_size": 8,
+        "optimization_prefetch_batches": 8,
+        "optimizer_updates_per_vector_step": 1,
+        "checkpoint_interval_episodes": 1000,
+        "evaluation_interval_episodes": 1000,
+        "execution_id": "p1b-phase4-training-v2-g2-seed0-execution-v1",
+        "maximum_optimizer_updates_per_environment_step": 0.125,
+        "target_network_sync_basis": "optimization steps, matching DQNTrainingConfig.target_update_steps",
+        "td_target_estimator": "double_dqn"
+      },
+      "early_stopping": {
+        "evaluation_interval_episodes": 1000,
+        "minimum_episodes": 3000,
+        "stability_evaluations": 3,
+        "median_error_range_threshold": 0.05,
+        "median_relative_error_threshold": 0.1,
+        "maximum_relative_error_threshold": 0.2,
+        "maximum_episodes": 10000,
+        "parameter_origin": "user_approved_2026-10-23",
+        "median_error_range_unit": "absolute proportion (0.05 = 5 percentage points)",
+        "quality_window_policy": "all recent stability evaluations must pass success, median-error, and maximum-error gates",
+        "failure_plateau_policy": "continue_to_maximum_episodes"
+      },
+      "network_config": {
+        "spatial_channels": 14,
+        "spatial_height": 41,
+        "spatial_width": 41,
+        "scalar_features": 8,
+        "action_count": 72,
+        "convolution_channels": [
+          32,
+          64,
+          64
+        ],
+        "spatial_embedding": 256,
+        "scalar_hidden": [
+          64,
+          64
+        ],
+        "fusion_hidden": 256,
+        "activation": "relu",
+        "architecture_id": "p1b-two-branch-dqn-multiscale-fused-v1",
+        "trainable_parameter_count": 2147624
+      },
+      "optimizer_param_groups_from_checkpoint": [
+        {
+          "lr": 0.0003,
+          "betas": [
+            0.9,
+            0.999
+          ],
+          "eps": 1e-08,
+          "weight_decay": 0.01,
+          "amsgrad": false,
+          "maximize": false,
+          "foreach": null,
+          "capturable": false,
+          "differentiable": false,
+          "fused": null,
+          "decoupled_weight_decay": true,
+          "parameter_tensor_count": 16
+        }
+      ],
+      "measured_training": {
+        "seed": 0,
+        "device": "cuda",
+        "episodes_completed": 10000,
+        "best_episode": 10000,
+        "training_runtime_sec": 54262.1800606,
+        "training_wall_runtime_sec": 54262.1800606,
+        "pure_training_runtime_sec": 4699.543701899995,
+        "evaluation_runtime_sec": 49488.47610460001,
+        "checkpoint_evaluation_runtime_sec": 49488.47610460001,
+        "checkpoint_io_runtime_sec": 74.16025409999565,
+        "post_training_evaluation_runtime_sec": 23110.050669699995,
+        "final_checkpoint_io_runtime_sec": 14.370294499996817,
+        "measured_seed_runtime_sec": 77386.6010248,
+        "environment_steps": 355793,
+        "optimization_steps": 59641,
+        "replay_size": 50000
+      },
+      "configuration_source": "immutable run summary plus optimizer state stored in the final checkpoint; not current source defaults"
+    }
+  ],
+  "artifact_policy": {
+    "included_records": 168,
+    "included_size_bytes": 232926309,
+    "phase5_html": "omitted as regenerable; raw JSON and code retained"
+  }
+}

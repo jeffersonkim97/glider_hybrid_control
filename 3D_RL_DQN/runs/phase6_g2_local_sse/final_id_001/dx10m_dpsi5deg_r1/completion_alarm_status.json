@@ -1,0 +1,7 @@
+{
+    "schema":  "p1b-phase6-completion-alarm-v1",
+    "status":  "triggered",
+    "triggered_local":  "2026-10-31T17:38:49.9035191-04:00",
+    "result_path":  "D:\\git\\git_research\\glider_hybrid_control\\3D_RL_DQN\\runs\\phase6_g2_local_sse\\final_id_001\\dx10m_dpsi5deg_r1\\phase6_g2_local_sse_pilot.json",
+    "url":  "https://www.youtube.com/watch?v=2i-STzGbCl4\u0026t=8s"
+}

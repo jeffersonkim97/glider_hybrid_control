@@ -1,0 +1,19 @@
+﻿{
+    "current_step":  "none",
+    "completed_steps":  5,
+    "updated_at":  "2026-11-01T15:03:07.9430191-05:00",
+    "external_trial_command_fragments":  [
+                                             "Final_10302026",
+                                             "baselines_fw.py",
+                                             "runs/long10"
+                                         ],
+    "process_id":  9636,
+    "state":  "complete",
+    "waiting_for_external_process_ids":  [
+
+                                         ],
+    "raw_data_policy":  "preserve per-radius JSON, Markdown, exact cache, and log",
+    "schema":  "p1b-phase7-neighbor-dpsi5-orchestration-v1",
+    "message":  "",
+    "total_steps":  5
+}

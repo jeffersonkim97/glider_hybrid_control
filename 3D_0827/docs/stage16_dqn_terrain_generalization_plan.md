@@ -4636,7 +4636,22 @@ No later phase should be implemented before the current phase command has been r
   - with gradient-training time conservatively left unchanged, the projected 60,000-episode three-seed design is now about 20.78 h total (6.93 h per seed), down from 27.16 h after the observation-only optimization,
   - episode 6,000 validation was 18/18 goal-reaching with 13.02% median and 97.95% maximum Bellman-relative `J_A` error; it became the validation-selected best checkpoint but still failed the approved 10% median / 20% every-case criterion,
   - the original 60,000-episode, three-seed design remains incomplete and is not running.
-- Detailed Phase 5 command: CREATED — pending user review / execution-time unseen-test design gates
-- Detailed Phase 6 command: CREATED — pending user review / execution-time integration gates
-- Detailed Phase 7 command: CREATED — pending user review / execution-time Monte Carlo design gates
+- Detailed Phase 5 command: IMPLEMENTED AND FROZEN FOR G2 FINAL-ID EVALUATION (2026-10-30)
+  - frozen checkpoints were evaluated on terrain-disjoint final-ID random-box missions without retraining, fine-tuning, or checkpoint selection,
+  - final follower-BR acceptance uses 100% success on feasible missions, median Bellman-relative `J_A` error at most 10%, and P90 error at most 30%,
+  - mission infeasibility is separated from DQN policy failure and approximation error.
+- Detailed Phase 6 command: PAPER-READY BELLMAN–DQN PRIMARY INTEGRATION PILOT COMPLETE (2026-10-31)
+  - the exact Bellman and frozen generalized-DQN attacker-BR backends were run through the same `r=1` Local-SSE defender search on unseen final-ID Terrain 001,
+  - the completed pilot covers `dx=100/50/25/10 m` with `dpsi=5 deg`; immutable raw JSON files, aggregate CSV/JSON/Markdown, 300-dpi figures, search traces, and interactive 3D solution plots are available,
+  - primary DQN timing is the first Local-SSE solve with empty problem caches after scene/checkpoint setup; repeated identical-query timing is secondary only,
+  - all four conditions pass the same-sensor `J_A <= 10%` diagnostic, but only `dx=100 m` passes the exact Bellman local-neighbor certificate, where Bellman is faster on the first solve,
+  - consequently no observed Phase-6 pilot condition is both first-solve faster and leader-decision admissible; this is a one-terrain integration finding, not a Phase-7 regime boundary,
+  - the paper-primary Bellman-versus-generalized-DQN comparison is complete; the legacy case-specific Tabular Q-learning comparison is explicitly deferred to the Phase-7 secondary baseline, so the original strict three-backend Phase-6 exit item remains intentionally unclaimed.
+- Detailed Phase 7 command: CONTROLLED COMPUTATIONAL-CONDITION PILOT COMPLETE (2026-11-01)
+  - spatial sweep: `dx=100/50/25/10 m` at `dpsi=5 deg`, `r=1`,
+  - angular sweep: `dpsi=10/5/2.5 deg` at `dx=25 m`, `r=1`,
+  - neighborhood sweeps: `r=1..5` at `dx=25 m` for both `dpsi=10 deg` and `5 deg`,
+  - every condition reports Bellman/DQN first-solve timing, repeated DQN timing, same-sensor `J_A` error, signed exact `J_D` gap, exact Local-SSE certificate, and selected-action match independently,
+  - final checkpoints, immutable run summaries, raw Phase 5–7 results, and artifact hashes are frozen under `3D_RL_DQN/paper_freeze_v1/`,
+  - multi-terrain Local-SSE repetitions, OOD terrain evidence, resource-use instrumentation, and the final regime/break-even analysis remain Phase-8 inputs rather than completed Phase-7 claims.
 - Detailed Phase 8 command: CREATED — pending user review / final regime-threshold design gates

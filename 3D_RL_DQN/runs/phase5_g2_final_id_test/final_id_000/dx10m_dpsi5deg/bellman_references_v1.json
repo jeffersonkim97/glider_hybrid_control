@@ -1,0 +1,124 @@
+{
+  "schema": "p1b-phase4-extended-filtered-bellman-reference-v1",
+  "dataset_manifest_sha256": "9c9d66042418fdbacec31f05a96f4c3d239abacf45486d37dbc50a97b43abe03",
+  "condition": {
+    "spatial_resolution_m": 10.0,
+    "heading_spacing_deg": 5.0
+  },
+  "source_contract_sha256": "c2d96e61cac008f5991f6b8c2f5a5d28adaa6df6d3177d08ba61c99d543e5ef5",
+  "references": [
+    {
+      "scenario_id": "final_test_random_box_id__g2_random_boxes_final_id_000__high__2313799eadb0",
+      "feasible": false,
+      "attacker_objective": null,
+      "switching_state_id": null,
+      "trajectory": [],
+      "runtime_sec": 2.5000008463393897e-06,
+      "timing": {
+        "T_total_s": 2.7999994927085936e-06,
+        "mission_failure_no_powered_occluded_switch": 1.0
+      }
+    },
+    {
+      "scenario_id": "final_test_random_box_id__g2_random_boxes_final_id_000__low__91e6629e718a",
+      "feasible": true,
+      "attacker_objective": 0.17320081237155616,
+      "switching_state_id": 9998354,
+      "trajectory": [
+        9998354,
+        9048455,
+        8121601,
+        7194817,
+        6268033,
+        5318135,
+        4368167,
+        3406533,
+        2421714,
+        1425232,
+        405493
+      ],
+      "runtime_sec": 171.27187790000062,
+      "timing": {
+        "T_total_s": 171.27187790000062,
+        "T_sparse_bellman_s": 166.34835659999953,
+        "active_state_count": 19591225.0,
+        "active_edge_count": 273255706.0
+      }
+    },
+    {
+      "scenario_id": "final_test_random_box_id__g2_random_boxes_final_id_000__mixed__58a5cad6492c",
+      "feasible": true,
+      "attacker_objective": 0.17601890148032423,
+      "switching_state_id": 18389018,
+      "trajectory": [
+        18389018,
+        17462090,
+        16535162,
+        15608377,
+        14658479,
+        13708366,
+        12711880,
+        11715473,
+        10719065,
+        9734250,
+        8783851,
+        7833451,
+        6883051,
+        5932942,
+        4982830,
+        4055834,
+        3140571,
+        2213357,
+        1286141,
+        358925
+      ],
+      "runtime_sec": 162.11662690000048,
+      "timing": {
+        "T_total_s": 162.11662690000048,
+        "T_sparse_bellman_s": 160.54518069999904,
+        "active_state_count": 18702803.0,
+        "active_edge_count": 259276507.0
+      }
+    },
+    {
+      "scenario_id": "final_test_random_box_id__g2_random_boxes_final_id_000__mixed__8af4980c1b5d",
+      "feasible": true,
+      "attacker_objective": 0.1916768232980333,
+      "switching_state_id": 25009274,
+      "trajectory": [
+        25009274,
+        24059230,
+        23109118,
+        22147485,
+        21139334,
+        20188863,
+        19238391,
+        18230246,
+        17279775,
+        16329303,
+        15378831,
+        14382425,
+        13386017,
+        12435619,
+        11485219,
+        10534819,
+        9584419,
+        8634455,
+        7719123,
+        6791909,
+        5911352,
+        4984065,
+        4056777,
+        3129489,
+        2202201
+      ],
+      "runtime_sec": 176.66834090000157,
+      "timing": {
+        "T_total_s": 176.66834090000157,
+        "T_sparse_bellman_s": 171.46603669999968,
+        "active_state_count": 20386395.0,
+        "active_edge_count": 285125459.0
+      }
+    }
+  ]
+}

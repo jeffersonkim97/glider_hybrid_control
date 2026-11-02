@@ -1,0 +1,308 @@
+{
+  "schema": "p1b-phase5-g2-final-id-test-v1",
+  "status": "complete",
+  "manifest_sha256": "fcd8e20debd7ba674ce4546ced91e724735ec04984f263da3f23b8052e7e0ba7",
+  "condition": {
+    "spatial_resolution_m": 25.0,
+    "heading_spacing_deg": 5.0
+  },
+  "checkpoint": {
+    "path": "3D_RL_DQN/checkpoints/phase4_extended_random_boxes/training_v2/g2_generalization/dx25m_dpsi5deg/seed0_ep10000_v1/phase4_seed0_final.pt",
+    "sha256": "cea13352ab8665d881598e2cd4de16b16803e88294c901ef81a69f205e93021b",
+    "kind": "final_training_state",
+    "episode": 10000,
+    "training_dataset_manifest_sha256": "f3736fe50298b5dd25a8cf37d32317b9b2d54a3d9d52a73cad7af3214e049886"
+  },
+  "runtime_metadata": {
+    "schema": "p1b-phase4-training-v2-g2-generalization-v1",
+    "condition": {
+      "spatial_resolution_m": 25.0,
+      "heading_spacing_deg": 5.0
+    },
+    "compatibility": {
+      "spatial_discretization_m": 25.0,
+      "angular_discretization_deg": 5.0,
+      "observation_schema_id": "p1b-terrain-observation-multiscale-v1",
+      "scalar_shape": [
+        8
+      ],
+      "spatial_shape": [
+        14,
+        41,
+        41
+      ],
+      "action_catalog_id": "p1b-heading-action-catalog-v1:94142da398e7d2ba5cac27c4ba31ca52f26fda13d32439bb8bb4dbd98d7c718c"
+    },
+    "graph_cache_count": 1,
+    "scenario_count_requested": 4,
+    "scenario_count_trainable": 3,
+    "training_scenario_count": 0,
+    "validation_scenario_count": 0,
+    "mission_failure_count": 1,
+    "mission_failures": [
+      {
+        "scenario_id": "final_test_random_box_id__g2_random_boxes_final_id_002__low__dc42ad263933",
+        "split": "FINAL_TEST_RANDOM_BOX_ID",
+        "terrain_category": "g2_random_boxes_final_id_002",
+        "visibility_class": "low",
+        "reason": "no_powered_occluded_goal_reachable_switching_candidate"
+      }
+    ],
+    "reference_cache": "D:\\git\\git_research\\glider_hybrid_control\\3D_RL_DQN\\runs\\phase5_g2_final_id_test\\final_id_002\\dx25m_dpsi5deg\\bellman_references_v1.json",
+    "source_contract_sha256": "c2d96e61cac008f5991f6b8c2f5a5d28adaa6df6d3177d08ba61c99d543e5ef5",
+    "action_space": "exact_goal_backward_reachable_adjacency",
+    "powered_occlusion_required": true,
+    "observation_backend": "exact_batched_aabb_cuda",
+    "observation_cache_entries_per_context": 4096
+  },
+  "mission_failures": [
+    {
+      "scenario_id": "final_test_random_box_id__g2_random_boxes_final_id_002__low__dc42ad263933",
+      "split": "FINAL_TEST_RANDOM_BOX_ID",
+      "terrain_category": "g2_random_boxes_final_id_002",
+      "visibility_class": "low",
+      "reason": "no_powered_occluded_goal_reachable_switching_candidate"
+    }
+  ],
+  "timing_sec": {
+    "runtime_and_bellman_setup_wall": 86.111831299997,
+    "bellman_reference_runtime_sum": 74.22056239999802,
+    "checkpoint_load": 0.0201424999977462,
+    "dqn_evaluation_wall": 19.574646400003985,
+    "dqn_inference_runtime_sum": 19.457351000004564,
+    "checkpoint_load_excluded": 0.01953250000224216,
+    "dqn_cold_evaluation_wall_excluded": 19.574646400003985,
+    "dqn_cold_inference_runtime_sum_excluded": 19.457351000004564,
+    "dqn_warmup_wall_excluded": 19.08891069999663,
+    "dqn_warm_steady_state_evaluation_wall": 10.06689170000027,
+    "dqn_warm_steady_state_inference_runtime_sum": 10.063528899998346
+  },
+  "records": [
+    {
+      "scenario_id": "final_test_random_box_id__g2_random_boxes_final_id_002__mixed__cb9e12e5675b",
+      "split": "FINAL_TEST_RANDOM_BOX_ID",
+      "terrain_category": "g2_random_boxes_final_id_002",
+      "sensor_map": [
+        3.3891485200357376,
+        -3.654843158863982,
+        0.0
+      ],
+      "bellman_J_A": 0.15582682052899002,
+      "bellman_trajectory": [
+        820725,
+        671473,
+        522146,
+        377571,
+        228242,
+        79057
+      ],
+      "bellman_runtime_sec": 39.37255919999734,
+      "dqn": {
+        "success": true,
+        "switching_state_id": 993024,
+        "trajectory": [
+          993024,
+          857814,
+          722598,
+          573409,
+          414935,
+          247028,
+          79124
+        ],
+        "reached_goal": true,
+        "trajectory_feasible": true,
+        "attacker_objective": 0.15858601466277486,
+        "glide_cost": 0.126436897421572,
+        "powered_cost": 0.03214911724120287,
+        "candidate_successes": 3452,
+        "candidate_count": 3452,
+        "inference_runtime_sec": 9.678461800001969,
+        "status": "success"
+      },
+      "dqn_edge_hazards": [
+        0.00010500798609380438,
+        0.0,
+        2.292264121714492e-05,
+        0.0006214718085133922,
+        0.0007845018073681529,
+        0.00046104990967971507,
+        0.00046104990967971507
+      ],
+      "absolute_error": 0.002759194133784837,
+      "relative_error": 0.01770679863978561
+    },
+    {
+      "scenario_id": "final_test_random_box_id__g2_random_boxes_final_id_002__mixed__7b38a405f2f3",
+      "split": "FINAL_TEST_RANDOM_BOX_ID",
+      "terrain_category": "g2_random_boxes_final_id_002",
+      "sensor_map": [
+        6.217361931910369,
+        0.1521124657311903,
+        0.0
+      ],
+      "bellman_J_A": 0.23239023635858358,
+      "bellman_trajectory": [
+        1134790,
+        976247,
+        812949,
+        654407,
+        505010,
+        355397,
+        229120,
+        79362
+      ],
+      "bellman_runtime_sec": 17.716172799999185,
+      "dqn": {
+        "success": true,
+        "switching_state_id": 1915991,
+        "trajectory": [
+          1915991,
+          1761552,
+          1607184,
+          1452816,
+          1275545,
+          1126154,
+          971784,
+          822173,
+          644897,
+          505012,
+          355397,
+          205781,
+          79364
+        ],
+        "reached_goal": true,
+        "trajectory_feasible": true,
+        "attacker_objective": 0.25789599623355736,
+        "glide_cost": 0.1892934318705668,
+        "powered_cost": 0.06860256436299056,
+        "candidate_successes": 986,
+        "candidate_count": 986,
+        "inference_runtime_sec": 5.567490000001271,
+        "status": "success"
+      },
+      "dqn_edge_hazards": [
+        0.0,
+        0.0,
+        0.0,
+        0.0003932256605146577,
+        0.0022204698480545633,
+        0.0008407220280375058,
+        0.0028581106517641744,
+        0.0019060829872489904,
+        0.013207721572049538,
+        0.0024901869594348537,
+        0.0016951108425471493,
+        0.10573041425082677,
+        0.10573041425082677
+      ],
+      "absolute_error": 0.025505759874973777,
+      "relative_error": 0.1097540080626184
+    },
+    {
+      "scenario_id": "final_test_random_box_id__g2_random_boxes_final_id_002__high__6d09583bddbe",
+      "split": "FINAL_TEST_RANDOM_BOX_ID",
+      "terrain_category": "g2_random_boxes_final_id_002",
+      "sensor_map": [
+        4.921885247316403,
+        2.81043915281451,
+        0.0
+      ],
+      "bellman_J_A": 0.1531477938687496,
+      "bellman_trajectory": [
+        975814,
+        826418,
+        677233,
+        522864,
+        378291,
+        228677,
+        79061
+      ],
+      "bellman_runtime_sec": 17.13183040000149,
+      "dqn": {
+        "success": true,
+        "switching_state_id": 2238696,
+        "trajectory": [
+          2238696,
+          2084328,
+          1929960,
+          1775592,
+          1621224,
+          1471898,
+          1322570,
+          1168200,
+          1013832,
+          864221,
+          686945,
+          537554,
+          383184,
+          228816,
+          74448
+        ],
+        "reached_goal": true,
+        "trajectory_feasible": true,
+        "attacker_objective": 0.17041846746028144,
+        "glide_cost": 0.10377181910846013,
+        "powered_cost": 0.0666466483518213,
+        "candidate_successes": 797,
+        "candidate_count": 797,
+        "inference_runtime_sec": 4.211399200001324,
+        "status": "success"
+      },
+      "dqn_edge_hazards": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0022371564719008688,
+        0.0010633709036684958,
+        0.0013016921003077115,
+        0.005044927879116491,
+        0.0022104419739707895,
+        0.0011086829527359177,
+        0.00017882798523558458,
+        0.0002949501279008225,
+        0.0004328157738860699,
+        0.0004328157738860699
+      ],
+      "absolute_error": 0.017270673591531838,
+      "relative_error": 0.11277128553567747
+    }
+  ],
+  "trajectory_html": "3D_RL_DQN/runs/phase5_g2_final_id_test/final_id_002/dx25m_dpsi5deg/trajectory_comparison_3d.html",
+  "acceptance": {
+    "accepted": false,
+    "success_rate": 1.0,
+    "median_relative_error": 0.1097540080626184,
+    "p90_relative_error": 0.11277128553567747,
+    "maximum_relative_error": 0.11277128553567747
+  },
+  "metrics": {
+    "generated_case_count": 4,
+    "mission_feasible_case_count": 3,
+    "mission_feasibility_rate": 0.75,
+    "mission_failure_count": 1,
+    "policy_successful_case_count": 3,
+    "policy_success_rate_on_feasible_missions": 1.0,
+    "median_relative_error": 0.1097540080626184,
+    "p90_relative_error_higher": 0.11277128553567747,
+    "maximum_relative_error": 0.11277128553567747
+  },
+  "timing_policy": {
+    "reported_dqn_computation_time": "dqn_warm_steady_state_evaluation_wall",
+    "excluded": [
+      "scene_graph_build",
+      "Bellman reference construction",
+      "checkpoint load",
+      "CUDA first-use initialization",
+      "observation/action/cache warm-up"
+    ],
+    "included": "steady-state greedy policy rollout over every admissible switching candidate and final authoritative trajectory scoring"
+  },
+  "trajectory_html_by_sensor": {
+    "low": "3D_RL_DQN/runs/phase5_g2_final_id_test/final_id_002/dx25m_dpsi5deg/trajectory_low_3d.html",
+    "mixed_a": "3D_RL_DQN/runs/phase5_g2_final_id_test/final_id_002/dx25m_dpsi5deg/trajectory_mixed_a_3d.html",
+    "mixed_b": "3D_RL_DQN/runs/phase5_g2_final_id_test/final_id_002/dx25m_dpsi5deg/trajectory_mixed_b_3d.html",
+    "high": "3D_RL_DQN/runs/phase5_g2_final_id_test/final_id_002/dx25m_dpsi5deg/trajectory_high_3d.html"
+  }
+}

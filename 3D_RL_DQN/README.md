@@ -247,6 +247,209 @@ on 2026-10-19 uses a separate dataset and checkpoint namespace and adds:
   median error no greater than 10% and P90 error no greater than 30%; maximum
   error is reported but is not a hard gate.
 
+## G2 final-ID evaluation interpretation
+
+This section records the interpretation frozen during the first unseen G2
+final-ID test on 2026-10-30. It distinguishes the Phase-5 attacker-BR
+generalization test from the later Stackelberg leader search.
+
+### Performance metrics
+
+For each mission-feasible sensor case, both Bellman and DQN trajectories are
+rescored by the same authoritative attacker-objective evaluator. The per-case
+Bellman-relative error is
+
+```text
+e_i = abs(J_A,DQN(i) - J_A,Bellman(i)) / abs(J_A,Bellman(i)).
+```
+
+Mission feasibility, policy success, and approximation accuracy are separate:
+
+1. **Mission feasibility:** at least one powered-occluded, goal-reachable
+   switching state exists.
+2. **DQN policy success:** on a feasible mission, the DQN rollout reaches the
+   goal and passes the authoritative trajectory checks.
+3. **Approximation accuracy:** only successful, feasible cases contribute an
+   `e_i` value.
+
+The median is the middle `e_i` after sorting and describes typical-case
+accuracy without allowing one extreme case to dominate the statistic. P90 is
+the 90th percentile and describes tail reliability: approximately 90% of
+evaluated cases should have an error no greater than this value. The project
+uses NumPy's conservative `method="higher"`. Consequently, when only three
+cases are feasible, P90 equals the maximum error; with sixteen feasible cases,
+it is approximately the second-worst ordered error.
+
+The frozen final-model gate is:
+
+```text
+policy success on feasible missions = 100%
+median Bellman-relative J_A error   <= 10%
+P90 Bellman-relative J_A error      <= 30%
+maximum error                        report only
+```
+
+These are follower-BR quality metrics. They do not by themselves certify a
+Stackelberg solution or measure the defender objective `J_D`.
+
+### Meaning of Low, Mixed A, Mixed B, and High
+
+The four cases on one terrain share the same terrain, start, and goal. Only the
+fixed single-sensor position changes. The generator samples 96 candidate
+sensors in the approved sensor region. For each candidate it measures the
+fraction of valid terrain probes with an unblocked segment to the sensor. It
+then ranks the 96 candidates on that terrain and defines:
+
+- **Low:** bottom visibility quartile;
+- **Mixed:** middle two visibility quartiles;
+- **High:** top visibility quartile.
+
+One Low, two Mixed, and one High candidate are sampled, giving the approved
+25%/50%/25% mixture. Mixed A and Mixed B are merely the two independently
+selected members of the same middle pool; A/B does not encode sensor type,
+difficulty order, or visibility order. Low and High are also relative to the
+candidate distribution on that terrain, not fixed absolute visibility
+thresholds.
+
+For final-ID terrain 000 the frozen cases are:
+
+| Case | Sensor position [m] | Visibility fraction |
+|---|---:|---:|
+| Low | `(501.2, -170.4, 0)` | 0.512 |
+| Mixed A | `(508.1, 133.8, 0)` | 0.600 |
+| Mixed B | `(571.4, -26.7, 0)` | 0.592 |
+| High | `(613.2, 299.1, 0)` | 0.656 |
+
+The High case is mission-infeasible at 100/50/25/10 m. A valid switching state
+must originate on the sensor-specific LOS tangent surface, survive lattice and
+physical-feasibility filtering, have a goal-reachable glide continuation, and
+have an entirely terrain-occluded straight powered segment from launch to
+switch. No candidate satisfies that conjunction for this sensor geometry.
+Bellman and DQN therefore both lack a trajectory or switching point. This is a
+mission-level feasibility result, not a DQN policy failure. High visibility is
+not universally infeasible; this result is specific to this terrain, mission,
+and sensor geometry.
+
+### Why visibility strata are used before Stackelberg integration
+
+Low/Mixed/High stratification was introduced to prevent random training and
+validation banks from being dominated by one common visibility regime. It
+forces the generalized attacker-BR model to see, and later be diagnosed on, a
+range of sensing geometries. The four cases are therefore balanced follower-BR
+training/evaluation slices. They are **not** four defender actions that replace
+the Stackelberg optimization, and the best of the four must not be reported as
+the Stackelberg solution.
+
+The intended hierarchy remains:
+
+```text
+Defender leader selects/evaluates sensor position d
+    -> Bellman or frozen DQN computes attacker BR(d)
+    -> the common evaluator computes J_A and J_D
+    -> the outer local/global defender search selects its sensor placement
+```
+
+Phase 5 validates whether the frozen DQN can serve as the inner attacker-BR
+backend on unseen terrain and sensor positions. Phase 6 integrates that backend
+into the same Local-SSE/Stackelberg search used by Bellman. Phase 7 performs the
+computational-condition sweep. Once integrated, every sensor position visited
+by the defender search must receive a BR evaluation; visibility class is only a
+diagnostic label and does not select the final defender strategy.
+
+Under the current finite-game formulation, the defender feasible set `D`
+contains only sensor placements with a nonempty switching-state set. The
+final-ID-000 High case would therefore lie outside `D` and cannot be assigned a
+Stackelberg `J_D` under the current contract. Before claiming an end-to-end
+Stackelberg result on unfiltered sensor regions, the project must retain one of
+the following explicit interpretations:
+
+1. restrict `D` to sensor placements for which the attacker mission is
+   feasible, as in the current formulation;
+2. define a defender/attacker payoff for no-launch or mission-denial cases; or
+3. relax powered occlusion from a hard constraint and model powered exposure
+   and its detection cost.
+
+Until that modeling decision changes, infeasible cases remain useful for
+reporting mission-feasibility rate, but they are excluded from Bellman-relative
+`J_A` accuracy and from the Stackelberg objective comparison.
+
+## Phase 6 paper-ready Local-SSE closeout
+
+Phase 6 uses the frozen G2 checkpoint without retraining, fine-tuning, or
+checkpoint selection. Exact Bellman and frozen-DQN attacker-BR backends were
+integrated into the same deterministic `r=1` defender Local-SSE search on the
+unseen final-ID Terrain 001 at `dx=100/50/25/10 m` and `dpsi=5 deg`.
+
+The primary DQN deployment time is the first Local-SSE solve after scene and
+checkpoint setup with empty scenario, observation, and structural action-row
+caches. The repeated identical-query time with retained caches is reported only
+as a secondary latency diagnostic. Offline training, scene construction,
+checkpoint loading, and the post-hoc exact-neighbor certificate are excluded
+from both Bellman and DQN solve timings.
+
+| dx | Bellman first solve | DQN first solve | same-sensor J_A error | exact J_D regret | exact local certificate |
+|---:|---:|---:|---:|---:|:---:|
+| 100 m | 50.889 s | 65.014 s | 0.00% | 0.00% | PASS |
+| 50 m | 131.597 s | 51.062 s | 6.72% | 79.70% | FAIL |
+| 25 m | 961.422 s | 116.917 s | 8.23% | 90.42% | FAIL |
+| 10 m | 5999.106 s | 2022.959 s | 4.52% | 42.38% | FAIL |
+
+All four DQN responses pass the Phase-5 same-sensor `J_A <= 10%` diagnostic,
+but only `dx=100 m` preserves the exact Bellman Local-SSE sensor decision. At
+that condition Bellman is faster for the first solve. Therefore this pilot has
+no observed condition at which DQN is both first-solve faster and admissible as
+an exact leader-decision replacement. The separation between low follower
+objective error and high defender regret is the principal Phase-6 integration
+finding.
+
+This is one held-out terrain at one angular spacing and neighbor radius, not a
+break-even theorem or Monte Carlo regime boundary. Phase 7 must estimate that
+boundary over terrain/mission/sensor repetitions and additional computational
+conditions. Bellman versus generalized DQN is the primary paper comparison;
+the legacy case-specific Tabular Q-learning backend is explicitly deferred to
+the Phase-7 secondary baseline rather than being represented as a completed
+Phase-6 three-backend comparison.
+
+Rebuild the paper-ready tables and static figures from the immutable raw Phase-6
+JSON files, then rebuild the interactive 3D solutions, with:
+
+```powershell
+& .\.venv_p1b\Scripts\python.exe .\3D_RL_DQN\phase6_paper_3d.py
+& .\.venv_p1b\Scripts\python.exe .\3D_RL_DQN\phase6_paper_closeout.py
+```
+
+The versioned closeout manifest, CSV, report, 300-dpi figures, and self-contained
+3D HTML files are written under
+`3D_RL_DQN/runs/phase6_g2_local_sse/final_id_001/paper_closeout_v1/`.
+
+## Phase 7 controlled computational-condition sweeps
+
+Phase 7 keeps the frozen G2 checkpoints and the common Local-SSE contract while
+varying one computational condition at a time:
+
+- spatial: `dx=100/50/25/10 m`, `dpsi=5 deg`, `r=1`;
+- angular: `dpsi=10/5/2.5 deg`, `dx=25 m`, `r=1`;
+- neighborhood A: `r=1..5`, `dx=25 m`, `dpsi=10 deg`;
+- neighborhood B: `r=1..5`, `dx=25 m`, `dpsi=5 deg`.
+
+Each closeout reports Bellman and DQN timings, realized defender-evaluation
+counts, same-sensor `J_A` error, signed exact `J_D` gap, exact discrete Local-SSE
+certificate, and selected-action match as separate facts.  It does not assign
+an automatic Bellman/DQN adoption label.
+
+The paper reproducibility freeze is generated from the immutable run summaries
+and final checkpoint payloads, rather than from current source defaults:
+
+```powershell
+& .\.venv_p1b\Scripts\python.exe .\3D_RL_DQN\paper_reproducibility_freeze.py
+```
+
+The resulting full manifest, paper-ready hyperparameter CSV, artifact checksum
+index, software/hardware record, and freeze policy are written under
+`3D_RL_DQN/paper_freeze_v1/`.  Final evaluation checkpoints are versioned with
+Git LFS.  Regenerable Phase-5 interactive HTML files are excluded from the
+freeze; their raw JSON inputs and generation code are retained.
+
 Generate the finite bank, CPU smoke audit, and interactive 3D bank visualization
 without importing PyTorch:
 

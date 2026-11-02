@@ -1,0 +1,82 @@
+{
+  "schema": "p1b-phase4-extended-filtered-bellman-reference-v1",
+  "dataset_manifest_sha256": "fcd8e20debd7ba674ce4546ced91e724735ec04984f263da3f23b8052e7e0ba7",
+  "condition": {
+    "spatial_resolution_m": 50.0,
+    "heading_spacing_deg": 5.0
+  },
+  "source_contract_sha256": "c2d96e61cac008f5991f6b8c2f5a5d28adaa6df6d3177d08ba61c99d543e5ef5",
+  "references": [
+    {
+      "scenario_id": "final_test_random_box_id__g2_random_boxes_final_id_002__high__6d09583bddbe",
+      "feasible": true,
+      "attacker_objective": 0.153978837501054,
+      "switching_state_id": 134278,
+      "trajectory": [
+        134278,
+        96626,
+        59042,
+        21105
+      ],
+      "runtime_sec": 3.42220859999361,
+      "timing": {
+        "T_total_s": 3.42220859999361,
+        "T_sparse_bellman_s": 1.0241692999989027,
+        "active_state_count": 132001.0,
+        "active_edge_count": 4076987.0
+      }
+    },
+    {
+      "scenario_id": "final_test_random_box_id__g2_random_boxes_final_id_002__low__dc42ad263933",
+      "feasible": false,
+      "attacker_objective": null,
+      "switching_state_id": null,
+      "trajectory": [],
+      "runtime_sec": 2.1000014385208488e-06,
+      "timing": {
+        "T_total_s": 2.4000037228688598e-06,
+        "mission_failure_no_powered_occluded_switch": 1.0
+      }
+    },
+    {
+      "scenario_id": "final_test_random_box_id__g2_random_boxes_final_id_002__mixed__7b38a405f2f3",
+      "feasible": true,
+      "attacker_objective": 0.22716506536940428,
+      "switching_state_id": 219672,
+      "trajectory": [
+        219672,
+        177406,
+        135215,
+        94824,
+        59269,
+        21258
+      ],
+      "runtime_sec": 4.039613499997358,
+      "timing": {
+        "T_total_s": 4.039613499997358,
+        "T_sparse_bellman_s": 1.0328574999948614,
+        "active_state_count": 126045.0,
+        "active_edge_count": 3829247.0
+      }
+    },
+    {
+      "scenario_id": "final_test_random_box_id__g2_random_boxes_final_id_002__mixed__cb9e12e5675b",
+      "feasible": true,
+      "attacker_objective": 0.15674152738424882,
+      "switching_state_id": 133917,
+      "trajectory": [
+        133917,
+        96409,
+        58541,
+        21097
+      ],
+      "runtime_sec": 7.765958700001647,
+      "timing": {
+        "T_total_s": 7.765958700001647,
+        "T_sparse_bellman_s": 0.7133837000001222,
+        "active_state_count": 70386.0,
+        "active_edge_count": 1665534.0
+      }
+    }
+  ]
+}

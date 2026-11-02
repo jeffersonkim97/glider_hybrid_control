@@ -1,0 +1,10 @@
+{
+    "schema":  "p1b-phase6-background-process-v1",
+    "pid":  25108,
+    "started_local":  "2026-10-31T13:45:09.3054636-04:00",
+    "spatial_resolution_m":  10,
+    "stdout_log":  "D:\\git\\git_research\\glider_hybrid_control\\3D_RL_DQN\\runs\\phase6_g2_local_sse\\final_id_001\\dx10m_dpsi5deg_r1\\phase6_10m_20261031_134509.stdout.log",
+    "stderr_log":  "D:\\git\\git_research\\glider_hybrid_control\\3D_RL_DQN\\runs\\phase6_g2_local_sse\\final_id_001\\dx10m_dpsi5deg_r1\\phase6_10m_20261031_134509.stderr.log",
+    "exact_cache":  "D:\\git\\git_research\\glider_hybrid_control\\3D_RL_DQN\\runs\\phase6_g2_local_sse\\final_id_001\\dx10m_dpsi5deg_r1\\exact_response_cache.json",
+    "final_result":  "D:\\git\\git_research\\glider_hybrid_control\\3D_RL_DQN\\runs\\phase6_g2_local_sse\\final_id_001\\dx10m_dpsi5deg_r1\\phase6_g2_local_sse_pilot.json"
+}

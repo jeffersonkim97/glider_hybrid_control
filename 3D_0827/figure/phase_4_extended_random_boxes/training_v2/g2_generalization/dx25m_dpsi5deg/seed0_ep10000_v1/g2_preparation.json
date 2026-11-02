@@ -1,0 +1,57 @@
+{
+  "schema": "p1b-phase4-training-v2-g2-generalization-v1",
+  "status": "training_ready",
+  "dataset_manifest_sha256": "f3736fe50298b5dd25a8cf37d32317b9b2d54a3d9d52a73cad7af3214e049886",
+  "runtime_metadata": {
+    "schema": "p1b-phase4-training-v2-g2-generalization-v1",
+    "condition": {
+      "spatial_resolution_m": 25.0,
+      "heading_spacing_deg": 5.0
+    },
+    "compatibility": {
+      "spatial_discretization_m": 25.0,
+      "angular_discretization_deg": 5.0,
+      "observation_schema_id": "p1b-terrain-observation-multiscale-v1",
+      "scalar_shape": [
+        8
+      ],
+      "spatial_shape": [
+        14,
+        41,
+        41
+      ],
+      "action_catalog_id": "p1b-heading-action-catalog-v1:94142da398e7d2ba5cac27c4ba31ca52f26fda13d32439bb8bb4dbd98d7c718c"
+    },
+    "graph_cache_count": 12,
+    "scenario_count_requested": 48,
+    "scenario_count_trainable": 48,
+    "training_scenario_count": 32,
+    "validation_scenario_count": 16,
+    "mission_failure_count": 0,
+    "mission_failures": [],
+    "reference_cache": "D:\\git\\git_research\\glider_hybrid_control\\3D_0827\\figure\\phase_4_extended_random_boxes\\training_v2\\g2_generalization\\dx25m_dpsi5deg\\bellman_references_v1.json",
+    "source_contract_sha256": "800b01bff1c9abfab46111f5bffc64cb222949323cef5cbe780204712d0bad86",
+    "action_space": "exact_goal_backward_reachable_adjacency",
+    "powered_occlusion_required": true,
+    "observation_backend": "exact_batched_aabb_cuda",
+    "observation_cache_entries_per_context": 4096
+  },
+  "mission_failures": [],
+  "split_contract": {
+    "training": "eight random-box terrains; policy optimization only",
+    "validation": "four disjoint random-box terrains; checkpoint selection and early stopping only",
+    "final_test": "sealed and not instantiated; neither ID nor OOD test geometry is available to this runner"
+  },
+  "algorithm": {
+    "name": "1-step Double DQN",
+    "learning_rate": 0.0003,
+    "target_update_optimizer_steps": 500,
+    "replay_sampling": "uniform",
+    "n_step_return": 1
+  },
+  "episodes": 10000,
+  "evaluation_interval_episodes": 1000,
+  "seed": 0,
+  "device": "cuda",
+  "scope": "seed-0 G2 benchmark"
+}

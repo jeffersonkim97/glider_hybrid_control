@@ -1,0 +1,1833 @@
+{
+  "schema": "p1b-phase4-g2-random-box-benchmark-v2",
+  "status": "train_validation_frozen_final_test_sealed",
+  "config": {
+    "pilot": {
+      "map_bounds": [
+        -10.0,
+        10.0,
+        -8.0,
+        8.0
+      ],
+      "graph_bounds": [
+        -8.0,
+        8.0,
+        -4.0,
+        4.0
+      ],
+      "meters_per_map_unit": 100.0,
+      "start_center_map": [
+        -8.0,
+        0.0,
+        0.0
+      ],
+      "start_sampling_radius_m": 100.0,
+      "goal_center_map": [
+        8.0,
+        0.0,
+        0.0
+      ],
+      "goal_sampling_radius_m": 100.0,
+      "goal_terminal_radius_m": 50.0,
+      "sensor_x_range_map": [
+        3.25,
+        6.75
+      ],
+      "sensor_y_range_map": [
+        -3.75,
+        3.75
+      ],
+      "sensor_z_map": 0.0,
+      "visibility_mix": [
+        1,
+        2,
+        1
+      ],
+      "sensor_candidate_count": 96,
+      "minimum_box_gap_m": 25.0,
+      "extra_box_count_range": [
+        1,
+        4
+      ],
+      "parameter_origin": {
+        "start_sampling_radius_m": "user_approved_2026-10-19",
+        "goal_sampling_radius_m": "user_approved_2026-10-19",
+        "goal_terminal_radius_m": "user_approved_2026-10-19",
+        "visibility_mix": "user_approved_2026-10-19",
+        "terrain_family": "user_approved_random_boxes_2026-10-19",
+        "finite_scenario_bank": "user_approved_2026-10-19",
+        "bank_and_box_counts": "versioned_pilot_engineering_choice"
+      }
+    },
+    "training_terrain_count": 8,
+    "validation_terrain_count": 4,
+    "training_terrain_seed_base": 26401,
+    "validation_terrain_seed_base": 27401,
+    "training_mission_seed_base": 26501,
+    "validation_mission_seed_base": 27501,
+    "training_sensor_seed_base": 26601,
+    "validation_sensor_seed_base": 27601,
+    "final_id_test_terrain_count": 4,
+    "mission_pairs_per_terrain": 1,
+    "scenarios_per_mission": 4,
+    "training_resample_attempts": [
+      10,
+      0,
+      7,
+      0,
+      0,
+      0,
+      3,
+      3
+    ],
+    "validation_resample_attempts": [
+      1,
+      0,
+      0,
+      0
+    ],
+    "ignored_extended_pilot_bank_fields": {
+      "train_terrain_count": 8,
+      "validation_terrain_count": 4,
+      "terrain_seed": 16401,
+      "mission_seed": 16402,
+      "sensor_seed": 16403,
+      "reason": "G2 uses the explicit split-specific counts and seed bases stored at the top level"
+    },
+    "seed_policy": "explicit split-specific bases; split membership is invariant to the other split's size",
+    "mission_sensor_resampling": {
+      "terrain_geometry_changes": false,
+      "seed_stride": 100000,
+      "acceptance_rule": "all four low/mixed/mixed/high scenarios have at least one powered-occluded, goal-reachable switching candidate at every frozen feasibility resolution",
+      "feasibility_resolutions_m": [
+        100.0,
+        50.0,
+        25.0,
+        10.0
+      ]
+    },
+    "parameter_origin": "approved_G2_plan_2026-10-27_and_feasibility_resampling_approved_2026-10-28"
+  },
+  "split_policy": {
+    "training": "policy optimization only",
+    "validation": "checkpoint selection and stopping only",
+    "final_test": "not instantiated until model and condition freeze"
+  },
+  "counts": {
+    "training_terrains": 8,
+    "validation_terrains": 4,
+    "training_scenarios": 32,
+    "validation_scenarios": 16,
+    "reserved_final_id_test_terrains": 4
+  },
+  "splits": {
+    "TRAIN_SIMPLE": [
+      {
+        "scenario_id": "train_simple__g2_random_boxes_train_000__low__8c49c02cb83c",
+        "split": "TRAIN_SIMPLE",
+        "terrain_category": "g2_random_boxes_train_000",
+        "terrain_hash": "17d02eacb1f86156adf438e1b8d75b50764272c9034ecb0d1cf23e589cf5d7a3",
+        "start_map": [
+          -7.517784110645744,
+          -0.050038916924704455,
+          0.0
+        ],
+        "goal_map": [
+          8.0,
+          1.0,
+          0.0
+        ],
+        "goal_tolerance_m": 50.0,
+        "sensor_map": [
+          3.3958185469961126,
+          2.641676435623477,
+          0.0
+        ],
+        "visibility_class": "low",
+        "visibility_fraction": 0.6106870229007634,
+        "graph_cache_key": "541ba6aa7e66398a6754d0e0cf69818aab9cbf42017d8762a419477a1f7afa7c"
+      },
+      {
+        "scenario_id": "train_simple__g2_random_boxes_train_000__mixed__171fbdc80ba0",
+        "split": "TRAIN_SIMPLE",
+        "terrain_category": "g2_random_boxes_train_000",
+        "terrain_hash": "17d02eacb1f86156adf438e1b8d75b50764272c9034ecb0d1cf23e589cf5d7a3",
+        "start_map": [
+          -7.517784110645744,
+          -0.050038916924704455,
+          0.0
+        ],
+        "goal_map": [
+          8.0,
+          1.0,
+          0.0
+        ],
+        "goal_tolerance_m": 50.0,
+        "sensor_map": [
+          6.725841472162136,
+          1.642955011405502,
+          0.0
+        ],
+        "visibility_class": "mixed",
+        "visibility_fraction": 0.6106870229007634,
+        "graph_cache_key": "541ba6aa7e66398a6754d0e0cf69818aab9cbf42017d8762a419477a1f7afa7c"
+      },
+      {
+        "scenario_id": "train_simple__g2_random_boxes_train_000__mixed__86dc41f5a6df",
+        "split": "TRAIN_SIMPLE",
+        "terrain_category": "g2_random_boxes_train_000",
+        "terrain_hash": "17d02eacb1f86156adf438e1b8d75b50764272c9034ecb0d1cf23e589cf5d7a3",
+        "start_map": [
+          -7.517784110645744,
+          -0.050038916924704455,
+          0.0
+        ],
+        "goal_map": [
+          8.0,
+          1.0,
+          0.0
+        ],
+        "goal_tolerance_m": 50.0,
+        "sensor_map": [
+          5.042171457178997,
+          -0.5729997090203431,
+          0.0
+        ],
+        "visibility_class": "mixed",
+        "visibility_fraction": 0.6641221374045801,
+        "graph_cache_key": "541ba6aa7e66398a6754d0e0cf69818aab9cbf42017d8762a419477a1f7afa7c"
+      },
+      {
+        "scenario_id": "train_simple__g2_random_boxes_train_000__high__89cfc531b52e",
+        "split": "TRAIN_SIMPLE",
+        "terrain_category": "g2_random_boxes_train_000",
+        "terrain_hash": "17d02eacb1f86156adf438e1b8d75b50764272c9034ecb0d1cf23e589cf5d7a3",
+        "start_map": [
+          -7.517784110645744,
+          -0.050038916924704455,
+          0.0
+        ],
+        "goal_map": [
+          8.0,
+          1.0,
+          0.0
+        ],
+        "goal_tolerance_m": 50.0,
+        "sensor_map": [
+          5.455697986463716,
+          -1.0574880147038779,
+          0.0
+        ],
+        "visibility_class": "high",
+        "visibility_fraction": 0.7251908396946565,
+        "graph_cache_key": "541ba6aa7e66398a6754d0e0cf69818aab9cbf42017d8762a419477a1f7afa7c"
+      },
+      {
+        "scenario_id": "train_simple__g2_random_boxes_train_001__low__bb54095f72b7",
+        "split": "TRAIN_SIMPLE",
+        "terrain_category": "g2_random_boxes_train_001",
+        "terrain_hash": "533311cebf23d7e002677f6ab7c6c728aa2f2dbfe7173271d299c03251bb7b4e",
+        "start_map": [
+          -7.552917589996963,
+          -0.25580841995047077,
+          0.0
+        ],
+        "goal_map": [
+          7.0,
+          0.0,
+          0.0
+        ],
+        "goal_tolerance_m": 50.0,
+        "sensor_map": [
+          4.796591423888833,
+          -3.7197861519874436,
+          0.0
+        ],
+        "visibility_class": "low",
+        "visibility_fraction": 0.3875968992248062,
+        "graph_cache_key": "da32f9ad76f1fa734eaaa60981bb982f59e18bad12d7e221ce7636b445322530"
+      },
+      {
+        "scenario_id": "train_simple__g2_random_boxes_train_001__mixed__749a3b06ee36",
+        "split": "TRAIN_SIMPLE",
+        "terrain_category": "g2_random_boxes_train_001",
+        "terrain_hash": "533311cebf23d7e002677f6ab7c6c728aa2f2dbfe7173271d299c03251bb7b4e",
+        "start_map": [
+          -7.552917589996963,
+          -0.25580841995047077,
+          0.0
+        ],
+        "goal_map": [
+          7.0,
+          0.0,
+          0.0
+        ],
+        "goal_tolerance_m": 50.0,
+        "sensor_map": [
+          5.788978218320529,
+          1.863208450360883,
+          0.0
+        ],
+        "visibility_class": "mixed",
+        "visibility_fraction": 0.4806201550387597,
+        "graph_cache_key": "da32f9ad76f1fa734eaaa60981bb982f59e18bad12d7e221ce7636b445322530"
+      },
+      {
+        "scenario_id": "train_simple__g2_random_boxes_train_001__mixed__f15243a2db7a",
+        "split": "TRAIN_SIMPLE",
+        "terrain_category": "g2_random_boxes_train_001",
+        "terrain_hash": "533311cebf23d7e002677f6ab7c6c728aa2f2dbfe7173271d299c03251bb7b4e",
+        "start_map": [
+          -7.552917589996963,
+          -0.25580841995047077,
+          0.0
+        ],
+        "goal_map": [
+          7.0,
+          0.0,
+          0.0
+        ],
+        "goal_tolerance_m": 50.0,
+        "sensor_map": [
+          6.482631858581809,
+          -2.2813173389180794,
+          0.0
+        ],
+        "visibility_class": "mixed",
+        "visibility_fraction": 0.4573643410852713,
+        "graph_cache_key": "da32f9ad76f1fa734eaaa60981bb982f59e18bad12d7e221ce7636b445322530"
+      },
+      {
+        "scenario_id": "train_simple__g2_random_boxes_train_001__high__e9f7ae6b87a4",
+        "split": "TRAIN_SIMPLE",
+        "terrain_category": "g2_random_boxes_train_001",
+        "terrain_hash": "533311cebf23d7e002677f6ab7c6c728aa2f2dbfe7173271d299c03251bb7b4e",
+        "start_map": [
+          -7.552917589996963,
+          -0.25580841995047077,
+          0.0
+        ],
+        "goal_map": [
+          7.0,
+          0.0,
+          0.0
+        ],
+        "goal_tolerance_m": 50.0,
+        "sensor_map": [
+          6.4675411018511895,
+          -0.552999975646967,
+          0.0
+        ],
+        "visibility_class": "high",
+        "visibility_fraction": 0.5581395348837209,
+        "graph_cache_key": "da32f9ad76f1fa734eaaa60981bb982f59e18bad12d7e221ce7636b445322530"
+      },
+      {
+        "scenario_id": "train_simple__g2_random_boxes_train_002__low__d2adc0f9e29b",
+        "split": "TRAIN_SIMPLE",
+        "terrain_category": "g2_random_boxes_train_002",
+        "terrain_hash": "be88a3a538480781f82ae4eb9b530669854062753d7c5283eb47e743dd19fc2d",
+        "start_map": [
+          -7.147643929284195,
+          0.40121017782394364,
+          0.0
+        ],
+        "goal_map": [
+          8.0,
+          0.0,
+          0.0
+        ],
+        "goal_tolerance_m": 50.0,
+        "sensor_map": [
+          4.017941310095095,
+          0.5493230719178879,
+          0.0
+        ],
+        "visibility_class": "low",
+        "visibility_fraction": 0.5725190839694656,
+        "graph_cache_key": "be3fc56e9ba53bec15216a76fb73d0c82133fdf4b039e5df9aba424c2137e5f4"
+      },
+      {
+        "scenario_id": "train_simple__g2_random_boxes_train_002__mixed__1a856072102c",
+        "split": "TRAIN_SIMPLE",
+        "terrain_category": "g2_random_boxes_train_002",
+        "terrain_hash": "be88a3a538480781f82ae4eb9b530669854062753d7c5283eb47e743dd19fc2d",
+        "start_map": [
+          -7.147643929284195,
+          0.40121017782394364,
+          0.0
+        ],
+        "goal_map": [
+          8.0,
+          0.0,
+          0.0
+        ],
+        "goal_tolerance_m": 50.0,
+        "sensor_map": [
+          6.721608753945681,
+          0.7070951250259654,
+          0.0
+        ],
+        "visibility_class": "mixed",
+        "visibility_fraction": 0.7022900763358778,
+        "graph_cache_key": "be3fc56e9ba53bec15216a76fb73d0c82133fdf4b039e5df9aba424c2137e5f4"
+      },
+      {
+        "scenario_id": "train_simple__g2_random_boxes_train_002__mixed__a2e244e50e8b",
+        "split": "TRAIN_SIMPLE",
+        "terrain_category": "g2_random_boxes_train_002",
+        "terrain_hash": "be88a3a538480781f82ae4eb9b530669854062753d7c5283eb47e743dd19fc2d",
+        "start_map": [
+          -7.147643929284195,
+          0.40121017782394364,
+          0.0
+        ],
+        "goal_map": [
+          8.0,
+          0.0,
+          0.0
+        ],
+        "goal_tolerance_m": 50.0,
+        "sensor_map": [
+          4.919781168047605,
+          -0.9818845200309636,
+          0.0
+        ],
+        "visibility_class": "mixed",
+        "visibility_fraction": 0.7251908396946565,
+        "graph_cache_key": "be3fc56e9ba53bec15216a76fb73d0c82133fdf4b039e5df9aba424c2137e5f4"
+      },
+      {
+        "scenario_id": "train_simple__g2_random_boxes_train_002__high__efe9622de48b",
+        "split": "TRAIN_SIMPLE",
+        "terrain_category": "g2_random_boxes_train_002",
+        "terrain_hash": "be88a3a538480781f82ae4eb9b530669854062753d7c5283eb47e743dd19fc2d",
+        "start_map": [
+          -7.147643929284195,
+          0.40121017782394364,
+          0.0
+        ],
+        "goal_map": [
+          8.0,
+          0.0,
+          0.0
+        ],
+        "goal_tolerance_m": 50.0,
+        "sensor_map": [
+          3.6743112847193253,
+          -2.274891516938866,
+          0.0
+        ],
+        "visibility_class": "high",
+        "visibility_fraction": 0.7709923664122137,
+        "graph_cache_key": "be3fc56e9ba53bec15216a76fb73d0c82133fdf4b039e5df9aba424c2137e5f4"
+      },
+      {
+        "scenario_id": "train_simple__g2_random_boxes_train_003__low__fa95ca065812",
+        "split": "TRAIN_SIMPLE",
+        "terrain_category": "g2_random_boxes_train_003",
+        "terrain_hash": "3e44d226d060621bb0fd67e17bd669c97bf7194510ea3a51d69ee6c50f201728",
+        "start_map": [
+          -7.750108631368966,
+          -0.9114838780199419,
+          0.0
+        ],
+        "goal_map": [
+          8.0,
+          1.0,
+          0.0
+        ],
+        "goal_tolerance_m": 50.0,
+        "sensor_map": [
+          3.7941380533716083,
+          -0.3283014518938461,
+          0.0
+        ],
+        "visibility_class": "low",
+        "visibility_fraction": 0.48854961832061067,
+        "graph_cache_key": "08f1bf5d0acac32319a19547cbee148fe8f8b4f4cce53e436879f45a952e8526"
+      },
+      {
+        "scenario_id": "train_simple__g2_random_boxes_train_003__mixed__c60a3590a9e6",
+        "split": "TRAIN_SIMPLE",
+        "terrain_category": "g2_random_boxes_train_003",
+        "terrain_hash": "3e44d226d060621bb0fd67e17bd669c97bf7194510ea3a51d69ee6c50f201728",
+        "start_map": [
+          -7.750108631368966,
+          -0.9114838780199419,
+          0.0
+        ],
+        "goal_map": [
+          8.0,
+          1.0,
+          0.0
+        ],
+        "goal_tolerance_m": 50.0,
+        "sensor_map": [
+          6.747497224541245,
+          0.4905666965064359,
+          0.0
+        ],
+        "visibility_class": "mixed",
+        "visibility_fraction": 0.5343511450381679,
+        "graph_cache_key": "08f1bf5d0acac32319a19547cbee148fe8f8b4f4cce53e436879f45a952e8526"
+      },
+      {
+        "scenario_id": "train_simple__g2_random_boxes_train_003__mixed__25b4b4e0f1f4",
+        "split": "TRAIN_SIMPLE",
+        "terrain_category": "g2_random_boxes_train_003",
+        "terrain_hash": "3e44d226d060621bb0fd67e17bd669c97bf7194510ea3a51d69ee6c50f201728",
+        "start_map": [
+          -7.750108631368966,
+          -0.9114838780199419,
+          0.0
+        ],
+        "goal_map": [
+          8.0,
+          1.0,
+          0.0
+        ],
+        "goal_tolerance_m": 50.0,
+        "sensor_map": [
+          5.679159173867269,
+          -3.6721145335489562,
+          0.0
+        ],
+        "visibility_class": "mixed",
+        "visibility_fraction": 0.5190839694656488,
+        "graph_cache_key": "08f1bf5d0acac32319a19547cbee148fe8f8b4f4cce53e436879f45a952e8526"
+      },
+      {
+        "scenario_id": "train_simple__g2_random_boxes_train_003__high__64472b7d1576",
+        "split": "TRAIN_SIMPLE",
+        "terrain_category": "g2_random_boxes_train_003",
+        "terrain_hash": "3e44d226d060621bb0fd67e17bd669c97bf7194510ea3a51d69ee6c50f201728",
+        "start_map": [
+          -7.750108631368966,
+          -0.9114838780199419,
+          0.0
+        ],
+        "goal_map": [
+          8.0,
+          1.0,
+          0.0
+        ],
+        "goal_tolerance_m": 50.0,
+        "sensor_map": [
+          6.2173371624281515,
+          -1.5372796507516728,
+          0.0
+        ],
+        "visibility_class": "high",
+        "visibility_fraction": 0.5572519083969466,
+        "graph_cache_key": "08f1bf5d0acac32319a19547cbee148fe8f8b4f4cce53e436879f45a952e8526"
+      },
+      {
+        "scenario_id": "train_simple__g2_random_boxes_train_004__low__8195fb84bc54",
+        "split": "TRAIN_SIMPLE",
+        "terrain_category": "g2_random_boxes_train_004",
+        "terrain_hash": "b737b4dccc505d874d05a94ce7a481801d04bd11ab899a2dfb4adca38a01c53a",
+        "start_map": [
+          -7.690949419608477,
+          -0.1028519087920373,
+          0.0
+        ],
+        "goal_map": [
+          8.0,
+          0.0,
+          0.0
+        ],
+        "goal_tolerance_m": 50.0,
+        "sensor_map": [
+          3.8375756344312526,
+          -3.1798186380208406,
+          0.0
+        ],
+        "visibility_class": "low",
+        "visibility_fraction": 0.5348837209302325,
+        "graph_cache_key": "bde70b65bede8c2c7d2175d9f0b8ada96e5c3e042735eadc06a00c867e66f170"
+      },
+      {
+        "scenario_id": "train_simple__g2_random_boxes_train_004__mixed__4ceccbe39eeb",
+        "split": "TRAIN_SIMPLE",
+        "terrain_category": "g2_random_boxes_train_004",
+        "terrain_hash": "b737b4dccc505d874d05a94ce7a481801d04bd11ab899a2dfb4adca38a01c53a",
+        "start_map": [
+          -7.690949419608477,
+          -0.1028519087920373,
+          0.0
+        ],
+        "goal_map": [
+          8.0,
+          0.0,
+          0.0
+        ],
+        "goal_tolerance_m": 50.0,
+        "sensor_map": [
+          6.599667251201048,
+          0.11155253220427674,
+          0.0
+        ],
+        "visibility_class": "mixed",
+        "visibility_fraction": 0.6124031007751938,
+        "graph_cache_key": "bde70b65bede8c2c7d2175d9f0b8ada96e5c3e042735eadc06a00c867e66f170"
+      },
+      {
+        "scenario_id": "train_simple__g2_random_boxes_train_004__mixed__eab258151b09",
+        "split": "TRAIN_SIMPLE",
+        "terrain_category": "g2_random_boxes_train_004",
+        "terrain_hash": "b737b4dccc505d874d05a94ce7a481801d04bd11ab899a2dfb4adca38a01c53a",
+        "start_map": [
+          -7.690949419608477,
+          -0.1028519087920373,
+          0.0
+        ],
+        "goal_map": [
+          8.0,
+          0.0,
+          0.0
+        ],
+        "goal_tolerance_m": 50.0,
+        "sensor_map": [
+          5.80315664943521,
+          -0.20339965305697172,
+          0.0
+        ],
+        "visibility_class": "mixed",
+        "visibility_fraction": 0.627906976744186,
+        "graph_cache_key": "bde70b65bede8c2c7d2175d9f0b8ada96e5c3e042735eadc06a00c867e66f170"
+      },
+      {
+        "scenario_id": "train_simple__g2_random_boxes_train_004__high__04c0adee86b8",
+        "split": "TRAIN_SIMPLE",
+        "terrain_category": "g2_random_boxes_train_004",
+        "terrain_hash": "b737b4dccc505d874d05a94ce7a481801d04bd11ab899a2dfb4adca38a01c53a",
+        "start_map": [
+          -7.690949419608477,
+          -0.1028519087920373,
+          0.0
+        ],
+        "goal_map": [
+          8.0,
+          0.0,
+          0.0
+        ],
+        "goal_tolerance_m": 50.0,
+        "sensor_map": [
+          5.74439677294313,
+          3.567972226429678,
+          0.0
+        ],
+        "visibility_class": "high",
+        "visibility_fraction": 0.6821705426356589,
+        "graph_cache_key": "bde70b65bede8c2c7d2175d9f0b8ada96e5c3e042735eadc06a00c867e66f170"
+      },
+      {
+        "scenario_id": "train_simple__g2_random_boxes_train_005__low__519ed9c46dbe",
+        "split": "TRAIN_SIMPLE",
+        "terrain_category": "g2_random_boxes_train_005",
+        "terrain_hash": "c265962dc46eaf55c74411ac1783fb8efc253abcf380975e8a4623e8f6493e8a",
+        "start_map": [
+          -7.382553256247339,
+          0.5946350755561715,
+          0.0
+        ],
+        "goal_map": [
+          7.0,
+          0.0,
+          0.0
+        ],
+        "goal_tolerance_m": 50.0,
+        "sensor_map": [
+          4.759923180084791,
+          2.4859329531777172,
+          0.0
+        ],
+        "visibility_class": "low",
+        "visibility_fraction": 0.36220472440944884,
+        "graph_cache_key": "da763ac9c4da49e1ab86677625faaa7f4bfa9f017014bef72421ecbf78b0038a"
+      },
+      {
+        "scenario_id": "train_simple__g2_random_boxes_train_005__mixed__b69694201165",
+        "split": "TRAIN_SIMPLE",
+        "terrain_category": "g2_random_boxes_train_005",
+        "terrain_hash": "c265962dc46eaf55c74411ac1783fb8efc253abcf380975e8a4623e8f6493e8a",
+        "start_map": [
+          -7.382553256247339,
+          0.5946350755561715,
+          0.0
+        ],
+        "goal_map": [
+          7.0,
+          0.0,
+          0.0
+        ],
+        "goal_tolerance_m": 50.0,
+        "sensor_map": [
+          5.212192305174928,
+          -1.632504256406206,
+          0.0
+        ],
+        "visibility_class": "mixed",
+        "visibility_fraction": 0.5196850393700787,
+        "graph_cache_key": "da763ac9c4da49e1ab86677625faaa7f4bfa9f017014bef72421ecbf78b0038a"
+      },
+      {
+        "scenario_id": "train_simple__g2_random_boxes_train_005__mixed__4abd26e9d564",
+        "split": "TRAIN_SIMPLE",
+        "terrain_category": "g2_random_boxes_train_005",
+        "terrain_hash": "c265962dc46eaf55c74411ac1783fb8efc253abcf380975e8a4623e8f6493e8a",
+        "start_map": [
+          -7.382553256247339,
+          0.5946350755561715,
+          0.0
+        ],
+        "goal_map": [
+          7.0,
+          0.0,
+          0.0
+        ],
+        "goal_tolerance_m": 50.0,
+        "sensor_map": [
+          5.398486021678174,
+          -1.4265957207184061,
+          0.0
+        ],
+        "visibility_class": "mixed",
+        "visibility_fraction": 0.5196850393700787,
+        "graph_cache_key": "da763ac9c4da49e1ab86677625faaa7f4bfa9f017014bef72421ecbf78b0038a"
+      },
+      {
+        "scenario_id": "train_simple__g2_random_boxes_train_005__high__2ed1c13a2a02",
+        "split": "TRAIN_SIMPLE",
+        "terrain_category": "g2_random_boxes_train_005",
+        "terrain_hash": "c265962dc46eaf55c74411ac1783fb8efc253abcf380975e8a4623e8f6493e8a",
+        "start_map": [
+          -7.382553256247339,
+          0.5946350755561715,
+          0.0
+        ],
+        "goal_map": [
+          7.0,
+          0.0,
+          0.0
+        ],
+        "goal_tolerance_m": 50.0,
+        "sensor_map": [
+          4.362736857930383,
+          -2.4824933135790612,
+          0.0
+        ],
+        "visibility_class": "high",
+        "visibility_fraction": 0.6299212598425197,
+        "graph_cache_key": "da763ac9c4da49e1ab86677625faaa7f4bfa9f017014bef72421ecbf78b0038a"
+      },
+      {
+        "scenario_id": "train_simple__g2_random_boxes_train_006__low__961af558c37d",
+        "split": "TRAIN_SIMPLE",
+        "terrain_category": "g2_random_boxes_train_006",
+        "terrain_hash": "39564563e71a3786a8a37abd0c72ed49251b21d1f68e2c806807e5c0a4dcc3b8",
+        "start_map": [
+          -7.913542567244446,
+          0.06260047331166328,
+          0.0
+        ],
+        "goal_map": [
+          8.0,
+          0.0,
+          0.0
+        ],
+        "goal_tolerance_m": 50.0,
+        "sensor_map": [
+          5.217967285813282,
+          0.6003300767950881,
+          0.0
+        ],
+        "visibility_class": "low",
+        "visibility_fraction": 0.5864661654135338,
+        "graph_cache_key": "9cbb647b218bcd6bd11d84e62a19d8239a9b6e6bbf5ab448f80f67f9fbb462bb"
+      },
+      {
+        "scenario_id": "train_simple__g2_random_boxes_train_006__mixed__793f5a500891",
+        "split": "TRAIN_SIMPLE",
+        "terrain_category": "g2_random_boxes_train_006",
+        "terrain_hash": "39564563e71a3786a8a37abd0c72ed49251b21d1f68e2c806807e5c0a4dcc3b8",
+        "start_map": [
+          -7.913542567244446,
+          0.06260047331166328,
+          0.0
+        ],
+        "goal_map": [
+          8.0,
+          0.0,
+          0.0
+        ],
+        "goal_tolerance_m": 50.0,
+        "sensor_map": [
+          5.465573246044495,
+          1.7692579484138724,
+          0.0
+        ],
+        "visibility_class": "mixed",
+        "visibility_fraction": 0.6541353383458647,
+        "graph_cache_key": "9cbb647b218bcd6bd11d84e62a19d8239a9b6e6bbf5ab448f80f67f9fbb462bb"
+      },
+      {
+        "scenario_id": "train_simple__g2_random_boxes_train_006__mixed__e60c3ac4b1ba",
+        "split": "TRAIN_SIMPLE",
+        "terrain_category": "g2_random_boxes_train_006",
+        "terrain_hash": "39564563e71a3786a8a37abd0c72ed49251b21d1f68e2c806807e5c0a4dcc3b8",
+        "start_map": [
+          -7.913542567244446,
+          0.06260047331166328,
+          0.0
+        ],
+        "goal_map": [
+          8.0,
+          0.0,
+          0.0
+        ],
+        "goal_tolerance_m": 50.0,
+        "sensor_map": [
+          6.386035730067871,
+          -0.16895542514411677,
+          0.0
+        ],
+        "visibility_class": "mixed",
+        "visibility_fraction": 0.6390977443609023,
+        "graph_cache_key": "9cbb647b218bcd6bd11d84e62a19d8239a9b6e6bbf5ab448f80f67f9fbb462bb"
+      },
+      {
+        "scenario_id": "train_simple__g2_random_boxes_train_006__high__9a8d3e4b3093",
+        "split": "TRAIN_SIMPLE",
+        "terrain_category": "g2_random_boxes_train_006",
+        "terrain_hash": "39564563e71a3786a8a37abd0c72ed49251b21d1f68e2c806807e5c0a4dcc3b8",
+        "start_map": [
+          -7.913542567244446,
+          0.06260047331166328,
+          0.0
+        ],
+        "goal_map": [
+          8.0,
+          0.0,
+          0.0
+        ],
+        "goal_tolerance_m": 50.0,
+        "sensor_map": [
+          6.668222407041331,
+          -3.3969670367526446,
+          0.0
+        ],
+        "visibility_class": "high",
+        "visibility_fraction": 0.7142857142857143,
+        "graph_cache_key": "9cbb647b218bcd6bd11d84e62a19d8239a9b6e6bbf5ab448f80f67f9fbb462bb"
+      },
+      {
+        "scenario_id": "train_simple__g2_random_boxes_train_007__low__aa933b2f3c97",
+        "split": "TRAIN_SIMPLE",
+        "terrain_category": "g2_random_boxes_train_007",
+        "terrain_hash": "4f985b420a164be3ad1d9833786263dc05a3e23456af21fa0ffb65db247932f6",
+        "start_map": [
+          -7.234283284385484,
+          -0.047921333104765866,
+          0.0
+        ],
+        "goal_map": [
+          7.0,
+          0.0,
+          0.0
+        ],
+        "goal_tolerance_m": 50.0,
+        "sensor_map": [
+          4.805922220543318,
+          -3.6456925589971387,
+          0.0
+        ],
+        "visibility_class": "low",
+        "visibility_fraction": 0.5538461538461539,
+        "graph_cache_key": "7df7885a775cddaecac55e84d0c0f3cb53f3621a336ecfac826334e7d701d4d6"
+      },
+      {
+        "scenario_id": "train_simple__g2_random_boxes_train_007__mixed__c169b76774e2",
+        "split": "TRAIN_SIMPLE",
+        "terrain_category": "g2_random_boxes_train_007",
+        "terrain_hash": "4f985b420a164be3ad1d9833786263dc05a3e23456af21fa0ffb65db247932f6",
+        "start_map": [
+          -7.234283284385484,
+          -0.047921333104765866,
+          0.0
+        ],
+        "goal_map": [
+          7.0,
+          0.0,
+          0.0
+        ],
+        "goal_tolerance_m": 50.0,
+        "sensor_map": [
+          5.899887996193024,
+          0.5051613453863597,
+          0.0
+        ],
+        "visibility_class": "mixed",
+        "visibility_fraction": 0.6,
+        "graph_cache_key": "7df7885a775cddaecac55e84d0c0f3cb53f3621a336ecfac826334e7d701d4d6"
+      },
+      {
+        "scenario_id": "train_simple__g2_random_boxes_train_007__mixed__3a3a090fdc1f",
+        "split": "TRAIN_SIMPLE",
+        "terrain_category": "g2_random_boxes_train_007",
+        "terrain_hash": "4f985b420a164be3ad1d9833786263dc05a3e23456af21fa0ffb65db247932f6",
+        "start_map": [
+          -7.234283284385484,
+          -0.047921333104765866,
+          0.0
+        ],
+        "goal_map": [
+          7.0,
+          0.0,
+          0.0
+        ],
+        "goal_tolerance_m": 50.0,
+        "sensor_map": [
+          5.555251044902097,
+          -0.990382755775296,
+          0.0
+        ],
+        "visibility_class": "mixed",
+        "visibility_fraction": 0.5846153846153846,
+        "graph_cache_key": "7df7885a775cddaecac55e84d0c0f3cb53f3621a336ecfac826334e7d701d4d6"
+      },
+      {
+        "scenario_id": "train_simple__g2_random_boxes_train_007__high__27594f591410",
+        "split": "TRAIN_SIMPLE",
+        "terrain_category": "g2_random_boxes_train_007",
+        "terrain_hash": "4f985b420a164be3ad1d9833786263dc05a3e23456af21fa0ffb65db247932f6",
+        "start_map": [
+          -7.234283284385484,
+          -0.047921333104765866,
+          0.0
+        ],
+        "goal_map": [
+          7.0,
+          0.0,
+          0.0
+        ],
+        "goal_tolerance_m": 50.0,
+        "sensor_map": [
+          5.266998541027275,
+          3.2338417488402653,
+          0.0
+        ],
+        "visibility_class": "high",
+        "visibility_fraction": 0.6615384615384615,
+        "graph_cache_key": "7df7885a775cddaecac55e84d0c0f3cb53f3621a336ecfac826334e7d701d4d6"
+      }
+    ],
+    "VALIDATION_SIMPLE": [
+      {
+        "scenario_id": "validation_simple__g2_random_boxes_validation_000__low__e318f61f37ad",
+        "split": "VALIDATION_SIMPLE",
+        "terrain_category": "g2_random_boxes_validation_000",
+        "terrain_hash": "984b41abe12f3840dbe50d8e8843f221b42f4f4cbb90d944f0537092c88b739b",
+        "start_map": [
+          -7.332077895943794,
+          0.1207691509075885,
+          0.0
+        ],
+        "goal_map": [
+          8.0,
+          0.0,
+          0.0
+        ],
+        "goal_tolerance_m": 50.0,
+        "sensor_map": [
+          5.868958205702587,
+          -0.39873742300819615,
+          0.0
+        ],
+        "visibility_class": "low",
+        "visibility_fraction": 0.5037593984962406,
+        "graph_cache_key": "cfce7d3f3c6a6f08bdfd1cfd6c1b1e4c9ebd38295276e6ba4b7d3a9219c3ddf2"
+      },
+      {
+        "scenario_id": "validation_simple__g2_random_boxes_validation_000__mixed__69e829f1d699",
+        "split": "VALIDATION_SIMPLE",
+        "terrain_category": "g2_random_boxes_validation_000",
+        "terrain_hash": "984b41abe12f3840dbe50d8e8843f221b42f4f4cbb90d944f0537092c88b739b",
+        "start_map": [
+          -7.332077895943794,
+          0.1207691509075885,
+          0.0
+        ],
+        "goal_map": [
+          8.0,
+          0.0,
+          0.0
+        ],
+        "goal_tolerance_m": 50.0,
+        "sensor_map": [
+          5.778782606764759,
+          1.448175062464509,
+          0.0
+        ],
+        "visibility_class": "mixed",
+        "visibility_fraction": 0.6090225563909775,
+        "graph_cache_key": "cfce7d3f3c6a6f08bdfd1cfd6c1b1e4c9ebd38295276e6ba4b7d3a9219c3ddf2"
+      },
+      {
+        "scenario_id": "validation_simple__g2_random_boxes_validation_000__mixed__5732fb963918",
+        "split": "VALIDATION_SIMPLE",
+        "terrain_category": "g2_random_boxes_validation_000",
+        "terrain_hash": "984b41abe12f3840dbe50d8e8843f221b42f4f4cbb90d944f0537092c88b739b",
+        "start_map": [
+          -7.332077895943794,
+          0.1207691509075885,
+          0.0
+        ],
+        "goal_map": [
+          8.0,
+          0.0,
+          0.0
+        ],
+        "goal_tolerance_m": 50.0,
+        "sensor_map": [
+          3.7463487032668628,
+          -1.6792229313401372,
+          0.0
+        ],
+        "visibility_class": "mixed",
+        "visibility_fraction": 0.5488721804511278,
+        "graph_cache_key": "cfce7d3f3c6a6f08bdfd1cfd6c1b1e4c9ebd38295276e6ba4b7d3a9219c3ddf2"
+      },
+      {
+        "scenario_id": "validation_simple__g2_random_boxes_validation_000__high__83a6b58cf237",
+        "split": "VALIDATION_SIMPLE",
+        "terrain_category": "g2_random_boxes_validation_000",
+        "terrain_hash": "984b41abe12f3840dbe50d8e8843f221b42f4f4cbb90d944f0537092c88b739b",
+        "start_map": [
+          -7.332077895943794,
+          0.1207691509075885,
+          0.0
+        ],
+        "goal_map": [
+          8.0,
+          0.0,
+          0.0
+        ],
+        "goal_tolerance_m": 50.0,
+        "sensor_map": [
+          6.490148280661961,
+          1.4426060769116127,
+          0.0
+        ],
+        "visibility_class": "high",
+        "visibility_fraction": 0.6390977443609023,
+        "graph_cache_key": "cfce7d3f3c6a6f08bdfd1cfd6c1b1e4c9ebd38295276e6ba4b7d3a9219c3ddf2"
+      },
+      {
+        "scenario_id": "validation_simple__g2_random_boxes_validation_001__low__90559dfe1052",
+        "split": "VALIDATION_SIMPLE",
+        "terrain_category": "g2_random_boxes_validation_001",
+        "terrain_hash": "045ae20cd949a487fecc7d0306d0beb2afbecc2e7dca6b8d2442e0313c6e73b6",
+        "start_map": [
+          -7.7655311666790725,
+          -0.38174108343360635,
+          0.0
+        ],
+        "goal_map": [
+          8.0,
+          -1.0,
+          0.0
+        ],
+        "goal_tolerance_m": 50.0,
+        "sensor_map": [
+          3.3870368328692657,
+          2.8535127496595845,
+          0.0
+        ],
+        "visibility_class": "low",
+        "visibility_fraction": 0.42748091603053434,
+        "graph_cache_key": "e8374e9e9058cfe32aed917fd4812c0ebee041c5b59efe97ca35cf4716565315"
+      },
+      {
+        "scenario_id": "validation_simple__g2_random_boxes_validation_001__mixed__747f90c21e28",
+        "split": "VALIDATION_SIMPLE",
+        "terrain_category": "g2_random_boxes_validation_001",
+        "terrain_hash": "045ae20cd949a487fecc7d0306d0beb2afbecc2e7dca6b8d2442e0313c6e73b6",
+        "start_map": [
+          -7.7655311666790725,
+          -0.38174108343360635,
+          0.0
+        ],
+        "goal_map": [
+          8.0,
+          -1.0,
+          0.0
+        ],
+        "goal_tolerance_m": 50.0,
+        "sensor_map": [
+          6.113490759836356,
+          1.0622776885882521,
+          0.0
+        ],
+        "visibility_class": "mixed",
+        "visibility_fraction": 0.4961832061068702,
+        "graph_cache_key": "e8374e9e9058cfe32aed917fd4812c0ebee041c5b59efe97ca35cf4716565315"
+      },
+      {
+        "scenario_id": "validation_simple__g2_random_boxes_validation_001__mixed__f84151b33f4f",
+        "split": "VALIDATION_SIMPLE",
+        "terrain_category": "g2_random_boxes_validation_001",
+        "terrain_hash": "045ae20cd949a487fecc7d0306d0beb2afbecc2e7dca6b8d2442e0313c6e73b6",
+        "start_map": [
+          -7.7655311666790725,
+          -0.38174108343360635,
+          0.0
+        ],
+        "goal_map": [
+          8.0,
+          -1.0,
+          0.0
+        ],
+        "goal_tolerance_m": 50.0,
+        "sensor_map": [
+          5.658035888045414,
+          2.32255743919836,
+          0.0
+        ],
+        "visibility_class": "mixed",
+        "visibility_fraction": 0.4732824427480916,
+        "graph_cache_key": "e8374e9e9058cfe32aed917fd4812c0ebee041c5b59efe97ca35cf4716565315"
+      },
+      {
+        "scenario_id": "validation_simple__g2_random_boxes_validation_001__high__7b850a8b8b15",
+        "split": "VALIDATION_SIMPLE",
+        "terrain_category": "g2_random_boxes_validation_001",
+        "terrain_hash": "045ae20cd949a487fecc7d0306d0beb2afbecc2e7dca6b8d2442e0313c6e73b6",
+        "start_map": [
+          -7.7655311666790725,
+          -0.38174108343360635,
+          0.0
+        ],
+        "goal_map": [
+          8.0,
+          -1.0,
+          0.0
+        ],
+        "goal_tolerance_m": 50.0,
+        "sensor_map": [
+          3.4958234708908065,
+          -3.4460987436306247,
+          0.0
+        ],
+        "visibility_class": "high",
+        "visibility_fraction": 0.6106870229007634,
+        "graph_cache_key": "e8374e9e9058cfe32aed917fd4812c0ebee041c5b59efe97ca35cf4716565315"
+      },
+      {
+        "scenario_id": "validation_simple__g2_random_boxes_validation_002__low__45c657150868",
+        "split": "VALIDATION_SIMPLE",
+        "terrain_category": "g2_random_boxes_validation_002",
+        "terrain_hash": "1542d82cfcc64dacd8e5d229bd2941a72149f4fcd39d6e926b7d614db521687d",
+        "start_map": [
+          -7.80321957995807,
+          -0.36435252485071434,
+          0.0
+        ],
+        "goal_map": [
+          8.0,
+          1.0,
+          0.0
+        ],
+        "goal_tolerance_m": 50.0,
+        "sensor_map": [
+          6.4104746306920575,
+          2.8430933987823703,
+          0.0
+        ],
+        "visibility_class": "low",
+        "visibility_fraction": 0.4806201550387597,
+        "graph_cache_key": "6baa21a8a9aa09ae5be207ce89b0cf0722fbaabb1add9d88ba1fada6eb8f84df"
+      },
+      {
+        "scenario_id": "validation_simple__g2_random_boxes_validation_002__mixed__c5b186fe7a09",
+        "split": "VALIDATION_SIMPLE",
+        "terrain_category": "g2_random_boxes_validation_002",
+        "terrain_hash": "1542d82cfcc64dacd8e5d229bd2941a72149f4fcd39d6e926b7d614db521687d",
+        "start_map": [
+          -7.80321957995807,
+          -0.36435252485071434,
+          0.0
+        ],
+        "goal_map": [
+          8.0,
+          1.0,
+          0.0
+        ],
+        "goal_tolerance_m": 50.0,
+        "sensor_map": [
+          6.117158843787244,
+          -0.26552503181566944,
+          0.0
+        ],
+        "visibility_class": "mixed",
+        "visibility_fraction": 0.5968992248062015,
+        "graph_cache_key": "6baa21a8a9aa09ae5be207ce89b0cf0722fbaabb1add9d88ba1fada6eb8f84df"
+      },
+      {
+        "scenario_id": "validation_simple__g2_random_boxes_validation_002__mixed__dbc6485d6938",
+        "split": "VALIDATION_SIMPLE",
+        "terrain_category": "g2_random_boxes_validation_002",
+        "terrain_hash": "1542d82cfcc64dacd8e5d229bd2941a72149f4fcd39d6e926b7d614db521687d",
+        "start_map": [
+          -7.80321957995807,
+          -0.36435252485071434,
+          0.0
+        ],
+        "goal_map": [
+          8.0,
+          1.0,
+          0.0
+        ],
+        "goal_tolerance_m": 50.0,
+        "sensor_map": [
+          5.603027134784025,
+          -2.2651489545810373,
+          0.0
+        ],
+        "visibility_class": "mixed",
+        "visibility_fraction": 0.5968992248062015,
+        "graph_cache_key": "6baa21a8a9aa09ae5be207ce89b0cf0722fbaabb1add9d88ba1fada6eb8f84df"
+      },
+      {
+        "scenario_id": "validation_simple__g2_random_boxes_validation_002__high__a98060943055",
+        "split": "VALIDATION_SIMPLE",
+        "terrain_category": "g2_random_boxes_validation_002",
+        "terrain_hash": "1542d82cfcc64dacd8e5d229bd2941a72149f4fcd39d6e926b7d614db521687d",
+        "start_map": [
+          -7.80321957995807,
+          -0.36435252485071434,
+          0.0
+        ],
+        "goal_map": [
+          8.0,
+          1.0,
+          0.0
+        ],
+        "goal_tolerance_m": 50.0,
+        "sensor_map": [
+          5.101123606303647,
+          -2.14246774467042,
+          0.0
+        ],
+        "visibility_class": "high",
+        "visibility_fraction": 0.6201550387596899,
+        "graph_cache_key": "6baa21a8a9aa09ae5be207ce89b0cf0722fbaabb1add9d88ba1fada6eb8f84df"
+      },
+      {
+        "scenario_id": "validation_simple__g2_random_boxes_validation_003__low__fa005784ce27",
+        "split": "VALIDATION_SIMPLE",
+        "terrain_category": "g2_random_boxes_validation_003",
+        "terrain_hash": "6a8a584fe1c049567231732612152aa332617acd1966f5f3e96bf5af11143665",
+        "start_map": [
+          -7.785970718116017,
+          0.8929934295353442,
+          0.0
+        ],
+        "goal_map": [
+          8.0,
+          0.0,
+          0.0
+        ],
+        "goal_tolerance_m": 50.0,
+        "sensor_map": [
+          4.975872300244284,
+          -0.04493297661611706,
+          0.0
+        ],
+        "visibility_class": "low",
+        "visibility_fraction": 0.5227272727272727,
+        "graph_cache_key": "2825c52ce5d71d3ec8a08358e4917c817b8b7b214a67ac22a3c9df65c27efb4c"
+      },
+      {
+        "scenario_id": "validation_simple__g2_random_boxes_validation_003__mixed__12bf31b427f7",
+        "split": "VALIDATION_SIMPLE",
+        "terrain_category": "g2_random_boxes_validation_003",
+        "terrain_hash": "6a8a584fe1c049567231732612152aa332617acd1966f5f3e96bf5af11143665",
+        "start_map": [
+          -7.785970718116017,
+          0.8929934295353442,
+          0.0
+        ],
+        "goal_map": [
+          8.0,
+          0.0,
+          0.0
+        ],
+        "goal_tolerance_m": 50.0,
+        "sensor_map": [
+          5.742475139923087,
+          -0.17155797743553292,
+          0.0
+        ],
+        "visibility_class": "mixed",
+        "visibility_fraction": 0.5681818181818182,
+        "graph_cache_key": "2825c52ce5d71d3ec8a08358e4917c817b8b7b214a67ac22a3c9df65c27efb4c"
+      },
+      {
+        "scenario_id": "validation_simple__g2_random_boxes_validation_003__mixed__6efa4bf406c4",
+        "split": "VALIDATION_SIMPLE",
+        "terrain_category": "g2_random_boxes_validation_003",
+        "terrain_hash": "6a8a584fe1c049567231732612152aa332617acd1966f5f3e96bf5af11143665",
+        "start_map": [
+          -7.785970718116017,
+          0.8929934295353442,
+          0.0
+        ],
+        "goal_map": [
+          8.0,
+          0.0,
+          0.0
+        ],
+        "goal_tolerance_m": 50.0,
+        "sensor_map": [
+          6.036755084543983,
+          -2.114270093957852,
+          0.0
+        ],
+        "visibility_class": "mixed",
+        "visibility_fraction": 0.6742424242424242,
+        "graph_cache_key": "2825c52ce5d71d3ec8a08358e4917c817b8b7b214a67ac22a3c9df65c27efb4c"
+      },
+      {
+        "scenario_id": "validation_simple__g2_random_boxes_validation_003__high__451d61d05213",
+        "split": "VALIDATION_SIMPLE",
+        "terrain_category": "g2_random_boxes_validation_003",
+        "terrain_hash": "6a8a584fe1c049567231732612152aa332617acd1966f5f3e96bf5af11143665",
+        "start_map": [
+          -7.785970718116017,
+          0.8929934295353442,
+          0.0
+        ],
+        "goal_map": [
+          8.0,
+          0.0,
+          0.0
+        ],
+        "goal_tolerance_m": 50.0,
+        "sensor_map": [
+          6.693628312090178,
+          2.08905935536791,
+          0.0
+        ],
+        "visibility_class": "high",
+        "visibility_fraction": 0.7196969696969697,
+        "graph_cache_key": "2825c52ce5d71d3ec8a08358e4917c817b8b7b214a67ac22a3c9df65c27efb4c"
+      }
+    ]
+  },
+  "terrains": {
+    "g2_random_boxes_train_000": {
+      "terrain_instance_id": "g2_random_boxes_train_000",
+      "split": "TRAIN_SIMPLE",
+      "generation_seed": 26401,
+      "boxes": [
+        {
+          "center_x": 0.13049479216459559,
+          "center_y": 0.4893246767293091,
+          "width_x": 2.5739470961463105,
+          "width_y": 3.0109471982806006,
+          "height": 3.267348655236036,
+          "base_z": 0.0
+        },
+        {
+          "center_x": -2.7932033416494315,
+          "center_y": 3.1773365125227526,
+          "width_x": 1.9722292115033473,
+          "width_y": 0.8415152177226809,
+          "height": 3.8846851561731666,
+          "base_z": 0.0
+        }
+      ],
+      "terrain_hash": "17d02eacb1f86156adf438e1b8d75b50764272c9034ecb0d1cf23e589cf5d7a3"
+    },
+    "g2_random_boxes_train_001": {
+      "terrain_instance_id": "g2_random_boxes_train_001",
+      "split": "TRAIN_SIMPLE",
+      "generation_seed": 26402,
+      "boxes": [
+        {
+          "center_x": -0.4700969728314254,
+          "center_y": -0.09802351074272686,
+          "width_x": 2.556409245202131,
+          "width_y": 3.1692400853557428,
+          "height": 2.80981529400285,
+          "base_z": 0.0
+        },
+        {
+          "center_x": 2.4414354931990196,
+          "center_y": 2.581888758050521,
+          "width_x": 1.7487524003101378,
+          "width_y": 2.0940665109553787,
+          "height": 3.053190037744829,
+          "base_z": 0.0
+        },
+        {
+          "center_x": 2.936591634229954,
+          "center_y": -2.828710708743627,
+          "width_x": 1.583207067108962,
+          "width_y": 1.8039212216423874,
+          "height": 2.353451985559874,
+          "base_z": 0.0
+        },
+        {
+          "center_x": -4.281736374536251,
+          "center_y": 1.8532455338110756,
+          "width_x": 2.0994749011524974,
+          "width_y": 2.2429868931618895,
+          "height": 2.938970173911433,
+          "base_z": 0.0
+        },
+        {
+          "center_x": -3.766939240870812,
+          "center_y": -2.771211036945739,
+          "width_x": 0.8972091384829639,
+          "width_y": 1.5337836604528723,
+          "height": 2.58823305036399,
+          "base_z": 0.0
+        }
+      ],
+      "terrain_hash": "533311cebf23d7e002677f6ab7c6c728aa2f2dbfe7173271d299c03251bb7b4e"
+    },
+    "g2_random_boxes_train_002": {
+      "terrain_instance_id": "g2_random_boxes_train_002",
+      "split": "TRAIN_SIMPLE",
+      "generation_seed": 26403,
+      "boxes": [
+        {
+          "center_x": 0.4559942179274845,
+          "center_y": 0.747291516347762,
+          "width_x": 2.1478417826437317,
+          "width_y": 2.7284565227886364,
+          "height": 3.059304588552007,
+          "base_z": 0.0
+        },
+        {
+          "center_x": -4.428397311457413,
+          "center_y": 0.09967833542037052,
+          "width_x": 0.8764582919543964,
+          "width_y": 1.3838565087855543,
+          "height": 1.29543706754232,
+          "base_z": 0.0
+        }
+      ],
+      "terrain_hash": "be88a3a538480781f82ae4eb9b530669854062753d7c5283eb47e743dd19fc2d"
+    },
+    "g2_random_boxes_train_003": {
+      "terrain_instance_id": "g2_random_boxes_train_003",
+      "split": "TRAIN_SIMPLE",
+      "generation_seed": 26404,
+      "boxes": [
+        {
+          "center_x": 0.21913248120163242,
+          "center_y": 0.09605334025501322,
+          "width_x": 2.8930746742471554,
+          "width_y": 3.0391228200278904,
+          "height": 3.9264115465173104,
+          "base_z": 0.0
+        },
+        {
+          "center_x": -2.860189569020833,
+          "center_y": 2.716602929183832,
+          "width_x": 1.4051020334518387,
+          "width_y": 1.249753467181714,
+          "height": 1.2107289114756656,
+          "base_z": 0.0
+        },
+        {
+          "center_x": -2.992315120845736,
+          "center_y": -1.7190239872550768,
+          "width_x": 2.0344399723613384,
+          "width_y": 1.0808375521228568,
+          "height": 3.61283934782477,
+          "base_z": 0.0
+        },
+        {
+          "center_x": 2.2544537166992598,
+          "center_y": 2.4976553863295807,
+          "width_x": 1.9620026384517477,
+          "width_y": 0.9545060426992831,
+          "height": 1.4058262831431818,
+          "base_z": 0.0
+        },
+        {
+          "center_x": 0.09542695656328881,
+          "center_y": -2.836385577314919,
+          "width_x": 1.384316809489171,
+          "width_y": 1.8003422872761394,
+          "height": 1.9570819683961806,
+          "base_z": 0.0
+        }
+      ],
+      "terrain_hash": "3e44d226d060621bb0fd67e17bd669c97bf7194510ea3a51d69ee6c50f201728"
+    },
+    "g2_random_boxes_train_004": {
+      "terrain_instance_id": "g2_random_boxes_train_004",
+      "split": "TRAIN_SIMPLE",
+      "generation_seed": 26405,
+      "boxes": [
+        {
+          "center_x": 0.058145815128809564,
+          "center_y": 0.6663403880382814,
+          "width_x": 2.5151012383240383,
+          "width_y": 2.7755502746463914,
+          "height": 2.904693261802522,
+          "base_z": 0.0
+        },
+        {
+          "center_x": -1.4297305776144862,
+          "center_y": -2.815492316101656,
+          "width_x": 1.3075598809760465,
+          "width_y": 1.3042879632286153,
+          "height": 1.920134077177511,
+          "base_z": 0.0
+        },
+        {
+          "center_x": -2.2877721629210974,
+          "center_y": 1.3365351291486327,
+          "width_x": 1.1240920434926167,
+          "width_y": 1.271221152319987,
+          "height": 3.6235963476540176,
+          "base_z": 0.0
+        },
+        {
+          "center_x": -3.554851716778635,
+          "center_y": -2.534225572623934,
+          "width_x": 1.5219550504558454,
+          "width_y": 1.0130811086295664,
+          "height": 3.6777052975336675,
+          "base_z": 0.0
+        },
+        {
+          "center_x": 0.9887450054853089,
+          "center_y": -2.5657270336057287,
+          "width_x": 1.3026802714042023,
+          "width_y": 1.6551988128291402,
+          "height": 3.3638856858981265,
+          "base_z": 0.0
+        }
+      ],
+      "terrain_hash": "b737b4dccc505d874d05a94ce7a481801d04bd11ab899a2dfb4adca38a01c53a"
+    },
+    "g2_random_boxes_train_005": {
+      "terrain_instance_id": "g2_random_boxes_train_005",
+      "split": "TRAIN_SIMPLE",
+      "generation_seed": 26406,
+      "boxes": [
+        {
+          "center_x": -0.45054374338299175,
+          "center_y": -0.6180658134473542,
+          "width_x": 2.939116552315399,
+          "width_y": 2.464492245152691,
+          "height": 2.4641202479944346,
+          "base_z": 0.0
+        },
+        {
+          "center_x": -4.309466569725371,
+          "center_y": -0.21712896610933896,
+          "width_x": 2.04038733352956,
+          "width_y": 2.1885954060310198,
+          "height": 3.8856623095913267,
+          "base_z": 0.0
+        },
+        {
+          "center_x": 2.926031131707412,
+          "center_y": -0.1895792813059809,
+          "width_x": 1.6700899799422997,
+          "width_y": 1.8810950141466685,
+          "height": 3.70453348601036,
+          "base_z": 0.0
+        },
+        {
+          "center_x": 2.3756473115981915,
+          "center_y": 2.06261746785738,
+          "width_x": 2.088262889533395,
+          "width_y": 1.7721364244554947,
+          "height": 3.583145410268161,
+          "base_z": 0.0
+        },
+        {
+          "center_x": -4.469112296284442,
+          "center_y": 2.373373410874029,
+          "width_x": 0.9492392832874553,
+          "width_y": 1.2351521498477283,
+          "height": 3.9621628023892574,
+          "base_z": 0.0
+        }
+      ],
+      "terrain_hash": "c265962dc46eaf55c74411ac1783fb8efc253abcf380975e8a4623e8f6493e8a"
+    },
+    "g2_random_boxes_train_006": {
+      "terrain_instance_id": "g2_random_boxes_train_006",
+      "split": "TRAIN_SIMPLE",
+      "generation_seed": 26407,
+      "boxes": [
+        {
+          "center_x": -0.14163806325979078,
+          "center_y": -0.06557984310701159,
+          "width_x": 2.1584139525037145,
+          "width_y": 3.2026496535441913,
+          "height": 3.7531240569394386,
+          "base_z": 0.0
+        },
+        {
+          "center_x": -1.5402389546235487,
+          "center_y": 2.632572128726208,
+          "width_x": 1.0297487933651157,
+          "width_y": 1.3183549098496947,
+          "height": 1.918870814841891,
+          "base_z": 0.0
+        }
+      ],
+      "terrain_hash": "39564563e71a3786a8a37abd0c72ed49251b21d1f68e2c806807e5c0a4dcc3b8"
+    },
+    "g2_random_boxes_train_007": {
+      "terrain_instance_id": "g2_random_boxes_train_007",
+      "split": "TRAIN_SIMPLE",
+      "generation_seed": 26408,
+      "boxes": [
+        {
+          "center_x": -0.05018390849398602,
+          "center_y": 0.6174631257633145,
+          "width_x": 3.4371382529327965,
+          "width_y": 2.520631189919314,
+          "height": 3.98122820051836,
+          "base_z": 0.0
+        },
+        {
+          "center_x": 2.601469226754892,
+          "center_y": -2.901205151082571,
+          "width_x": 1.444931634725156,
+          "width_y": 0.939874372515371,
+          "height": 3.0020952276919615,
+          "base_z": 0.0
+        },
+        {
+          "center_x": -4.398755161411591,
+          "center_y": 0.32728732430839624,
+          "width_x": 1.5675411834271613,
+          "width_y": 2.0252165930748474,
+          "height": 1.2029475280092992,
+          "base_z": 0.0
+        },
+        {
+          "center_x": 0.39852125691244833,
+          "center_y": -2.830596371758399,
+          "width_x": 1.7123483148130982,
+          "width_y": 0.8552363269977693,
+          "height": 3.963132596485789,
+          "base_z": 0.0
+        },
+        {
+          "center_x": -3.0141059289857584,
+          "center_y": -2.7507786700507353,
+          "width_x": 0.8436376639061258,
+          "width_y": 1.0940886431559593,
+          "height": 1.794901681654847,
+          "base_z": 0.0
+        }
+      ],
+      "terrain_hash": "4f985b420a164be3ad1d9833786263dc05a3e23456af21fa0ffb65db247932f6"
+    },
+    "g2_random_boxes_validation_000": {
+      "terrain_instance_id": "g2_random_boxes_validation_000",
+      "split": "VALIDATION_SIMPLE",
+      "generation_seed": 27401,
+      "boxes": [
+        {
+          "center_x": -0.15289185449198572,
+          "center_y": -0.550030861009872,
+          "width_x": 2.893536156013808,
+          "width_y": 2.4247165303542566,
+          "height": 3.2915880015651493,
+          "base_z": 0.0
+        },
+        {
+          "center_x": 2.574475014676878,
+          "center_y": 0.5750032005213725,
+          "width_x": 1.2526185040848368,
+          "width_y": 1.6352678537852203,
+          "height": 3.7106311515734856,
+          "base_z": 0.0
+        },
+        {
+          "center_x": -1.6577605303111396,
+          "center_y": 2.8456907045062483,
+          "width_x": 1.4219756727420128,
+          "width_y": 1.669715737080342,
+          "height": 2.387781475806238,
+          "base_z": 0.0
+        },
+        {
+          "center_x": -3.5792847910545413,
+          "center_y": 2.6429776478271263,
+          "width_x": 1.495794369185893,
+          "width_y": 1.5057828924001364,
+          "height": 2.2259847143951372,
+          "base_z": 0.0
+        },
+        {
+          "center_x": -2.6043484954048677,
+          "center_y": -0.7938693239803967,
+          "width_x": 1.2938815849865801,
+          "width_y": 2.0770025750965075,
+          "height": 2.4436641348570323,
+          "base_z": 0.0
+        }
+      ],
+      "terrain_hash": "984b41abe12f3840dbe50d8e8843f221b42f4f4cbb90d944f0537092c88b739b"
+    },
+    "g2_random_boxes_validation_001": {
+      "terrain_instance_id": "g2_random_boxes_validation_001",
+      "split": "VALIDATION_SIMPLE",
+      "generation_seed": 27402,
+      "boxes": [
+        {
+          "center_x": -0.31705693346214725,
+          "center_y": -0.4187071261311149,
+          "width_x": 2.904328924070618,
+          "width_y": 2.7198288679918683,
+          "height": 3.436967169527711,
+          "base_z": 0.0
+        },
+        {
+          "center_x": -3.8112073235585617,
+          "center_y": -1.001860839639328,
+          "width_x": 0.8244337133168204,
+          "width_y": 1.663509415208063,
+          "height": 3.293165760314337,
+          "base_z": 0.0
+        },
+        {
+          "center_x": -0.691174447031774,
+          "center_y": 2.5605919080728086,
+          "width_x": 1.056426130659814,
+          "width_y": 0.9090701963464012,
+          "height": 1.8427473657784361,
+          "base_z": 0.0
+        },
+        {
+          "center_x": 1.8421851653210766,
+          "center_y": -2.502736292855896,
+          "width_x": 0.759403598223666,
+          "width_y": 0.846353430958916,
+          "height": 1.4324827706445142,
+          "base_z": 0.0
+        },
+        {
+          "center_x": 1.523231793371421,
+          "center_y": 2.364550122557117,
+          "width_x": 1.4471709378073165,
+          "width_y": 2.132119268638523,
+          "height": 3.8987544226996445,
+          "base_z": 0.0
+        }
+      ],
+      "terrain_hash": "045ae20cd949a487fecc7d0306d0beb2afbecc2e7dca6b8d2442e0313c6e73b6"
+    },
+    "g2_random_boxes_validation_002": {
+      "terrain_instance_id": "g2_random_boxes_validation_002",
+      "split": "VALIDATION_SIMPLE",
+      "generation_seed": 27403,
+      "boxes": [
+        {
+          "center_x": -0.0012175096703568311,
+          "center_y": 0.34728553207052615,
+          "width_x": 2.0004918934537956,
+          "width_y": 3.4546030309027893,
+          "height": 3.067546140231509,
+          "base_z": 0.0
+        },
+        {
+          "center_x": -3.527032798603432,
+          "center_y": 3.1966078979579677,
+          "width_x": 1.1715130139807246,
+          "width_y": 0.8227218185604234,
+          "height": 1.6763404551697403,
+          "base_z": 0.0
+        },
+        {
+          "center_x": 1.525934376635517,
+          "center_y": -3.108419111874644,
+          "width_x": 0.7770662054930384,
+          "width_y": 0.7834758771442404,
+          "height": 3.8676287374863456,
+          "base_z": 0.0
+        },
+        {
+          "center_x": -3.6063022391374053,
+          "center_y": 1.887971254698182,
+          "width_x": 1.7163812817438338,
+          "width_y": 1.2799060172456591,
+          "height": 2.6862126289984403,
+          "base_z": 0.0
+        },
+        {
+          "center_x": 2.70102476153476,
+          "center_y": 2.831193292981955,
+          "width_x": 2.1459823094028554,
+          "width_y": 1.3648797407676168,
+          "height": 3.50692456955744,
+          "base_z": 0.0
+        }
+      ],
+      "terrain_hash": "1542d82cfcc64dacd8e5d229bd2941a72149f4fcd39d6e926b7d614db521687d"
+    },
+    "g2_random_boxes_validation_003": {
+      "terrain_instance_id": "g2_random_boxes_validation_003",
+      "split": "VALIDATION_SIMPLE",
+      "generation_seed": 27404,
+      "boxes": [
+        {
+          "center_x": 0.2026559184907475,
+          "center_y": 0.04017452634844809,
+          "width_x": 3.0676912405215138,
+          "width_y": 3.4794115040132687,
+          "height": 3.0262141816648174,
+          "base_z": 0.0
+        },
+        {
+          "center_x": -2.7303617014584654,
+          "center_y": -1.046421178253751,
+          "width_x": 1.781881992525388,
+          "width_y": 1.8155371036869603,
+          "height": 2.0070093061494965,
+          "base_z": 0.0
+        }
+      ],
+      "terrain_hash": "6a8a584fe1c049567231732612152aa332617acd1966f5f3e96bf5af11143665"
+    }
+  },
+  "sealed_final_test_contract": {
+    "instantiated": false,
+    "random_box_id": {
+      "terrain_count": 4,
+      "seed_status": "not_generated",
+      "geometry_status": "not_generated"
+    },
+    "ood_families": [
+      "corridor_or_wall_procedural",
+      "stepped_pyramid",
+      "urban_mesh",
+      "mountain_height_map"
+    ],
+    "opening_condition": "DQN algorithm, training bank, stopping rule, computational condition, and selected checkpoint are frozen",
+    "prohibited_uses": [
+      "training",
+      "checkpoint_selection",
+      "early_stopping",
+      "hyperparameter_tuning"
+    ]
+  },
+  "manifest_sha256": "f3736fe50298b5dd25a8cf37d32317b9b2d54a3d9d52a73cad7af3214e049886"
+}

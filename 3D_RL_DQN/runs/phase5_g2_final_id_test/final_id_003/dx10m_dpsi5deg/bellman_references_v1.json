@@ -1,0 +1,148 @@
+{
+  "schema": "p1b-phase4-extended-filtered-bellman-reference-v1",
+  "dataset_manifest_sha256": "75cc70a4b25910558bf59afcd2210f6a6582d3af5b4a8a3d09ec0dce7b5d8c82",
+  "condition": {
+    "spatial_resolution_m": 10.0,
+    "heading_spacing_deg": 5.0
+  },
+  "source_contract_sha256": "c2d96e61cac008f5991f6b8c2f5a5d28adaa6df6d3177d08ba61c99d543e5ef5",
+  "references": [
+    {
+      "scenario_id": "final_test_random_box_id__g2_random_boxes_final_id_003__high__4f274c713a26",
+      "feasible": true,
+      "attacker_objective": 0.1649288536022504,
+      "switching_state_id": 11526908,
+      "trajectory": [
+        11526908,
+        10576943,
+        9626975,
+        8677007,
+        7761675,
+        6846411,
+        5954334,
+        5073847,
+        4193359,
+        3301278,
+        2397676,
+        1470746,
+        520702
+      ],
+      "runtime_sec": 184.8734637000016,
+      "timing": {
+        "T_total_s": 184.8734637000016,
+        "T_sparse_bellman_s": 150.04506309999852,
+        "active_state_count": 21265401.0,
+        "active_edge_count": 300247356.0
+      }
+    },
+    {
+      "scenario_id": "final_test_random_box_id__g2_random_boxes_final_id_003__low__0d0ff4af0d0a",
+      "feasible": true,
+      "attacker_objective": 0.17294057834653875,
+      "switching_state_id": 28961861,
+      "trajectory": [
+        28961861,
+        28034645,
+        27107429,
+        26180498,
+        25253570,
+        24303526,
+        23353414,
+        22403447,
+        21453334,
+        20491701,
+        19541299,
+        18590899,
+        17640499,
+        16690099,
+        15739699,
+        14789299,
+        13838899,
+        12888499,
+        11892016,
+        10941543,
+        9991071,
+        9040599,
+        8090127,
+        7139655,
+        6189183,
+        5238711,
+        4288239,
+        3337767
+      ],
+      "runtime_sec": 222.88075969999772,
+      "timing": {
+        "T_total_s": 222.88075969999772,
+        "T_sparse_bellman_s": 158.75909970000066,
+        "active_state_count": 21937070.0,
+        "active_edge_count": 310686394.0
+      }
+    },
+    {
+      "scenario_id": "final_test_random_box_id__g2_random_boxes_final_id_003__mixed__487a9ffaeb75",
+      "feasible": true,
+      "attacker_objective": 0.20461710293552607,
+      "switching_state_id": 12443180,
+      "trajectory": [
+        12443180,
+        11516329,
+        10566431,
+        9639577,
+        8724315,
+        7797529,
+        6870745,
+        5920847,
+        4970879,
+        4044025,
+        3140428,
+        2271394,
+        1355701,
+        440005
+      ],
+      "runtime_sec": 256.31749360000686,
+      "timing": {
+        "T_total_s": 256.31749360000686,
+        "T_sparse_bellman_s": 159.99170839999715,
+        "active_state_count": 22574877.0,
+        "active_edge_count": 320003628.0
+      }
+    },
+    {
+      "scenario_id": "final_test_random_box_id__g2_random_boxes_final_id_003__mixed__6f4da4272d4b",
+      "feasible": true,
+      "attacker_objective": 0.1773638480522038,
+      "switching_state_id": 22737308,
+      "trajectory": [
+        22737308,
+        21833644,
+        20906857,
+        19979930,
+        19122420,
+        18264971,
+        17349277,
+        16468783,
+        15541565,
+        14614349,
+        13687133,
+        12759917,
+        11832701,
+        10905485,
+        9943917,
+        8993515,
+        8043115,
+        7092715,
+        6142315,
+        5191915,
+        4241515,
+        3291115
+      ],
+      "runtime_sec": 188.94210369999928,
+      "timing": {
+        "T_total_s": 188.94210369999928,
+        "T_sparse_bellman_s": 154.48192520000157,
+        "active_state_count": 21880170.0,
+        "active_edge_count": 309761626.0
+      }
+    }
+  ]
+}

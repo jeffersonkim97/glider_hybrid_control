@@ -1,0 +1,866 @@
+{
+  "schema": "p1b-phase6-g2-exact-response-cache-v1",
+  "status": "complete",
+  "contract": {
+    "phase6_schema": "p1b-phase6-g2-local-sse-pilot-v1",
+    "terrain_index": 1,
+    "terrain_hash": "2eaf6800477678a9eb3389d2fe40966201a8d6911b21d90c1e6ab1cd08df8348",
+    "spatial_resolution_m": 25.0,
+    "heading_spacing_deg": 2.5,
+    "r_neighbor": 1,
+    "defender_grid_sha256": "aa881251337bb1b8363f23ae85794cbb580f5563c3d5d4dab908ff4f362f4b57",
+    "initial_action_id": 195,
+    "result_schema": "p1b-phase7-angular-local-sse-v1"
+  },
+  "completed_action_count": 29,
+  "last_completed_action_id": 229,
+  "responses": {
+    "163": {
+      "feasible": true,
+      "sensor_map": [
+        4.5,
+        -1.75,
+        0.0
+      ],
+      "attacker_objective": 0.16960594859239797,
+      "detection_probability": 0.009119588349023617,
+      "switching_state_id": 4460112,
+      "trajectory": [
+        4460112,
+        4171253,
+        3564434,
+        3255696,
+        2946960,
+        2638224,
+        2329488,
+        2020752,
+        1712016,
+        1403280,
+        1094544,
+        785808,
+        477072
+      ],
+      "candidate_count": 794,
+      "cooptimal_candidate_count": 2,
+      "strong_tie_break_verified": true,
+      "runtime_sec": 49.308415200001036,
+      "active_state_count": 2193706,
+      "active_edge_count": 150860755
+    },
+    "164": {
+      "feasible": true,
+      "sensor_map": [
+        4.5,
+        -1.5,
+        0.0
+      ],
+      "attacker_objective": 0.170576879059432,
+      "detection_probability": 0.011041873301665353,
+      "switching_state_id": 4460112,
+      "trajectory": [
+        4460112,
+        4171253,
+        3564434,
+        3255696,
+        2946960,
+        2638224,
+        2329488,
+        2020752,
+        1712016,
+        1403280,
+        1094544,
+        785808,
+        477072
+      ],
+      "candidate_count": 830,
+      "cooptimal_candidate_count": 2,
+      "strong_tie_break_verified": true,
+      "runtime_sec": 50.321485200001916,
+      "active_state_count": 2190877,
+      "active_edge_count": 150656405
+    },
+    "165": {
+      "feasible": true,
+      "sensor_map": [
+        4.5,
+        -1.25,
+        0.0
+      ],
+      "attacker_objective": 0.17167828056990625,
+      "detection_probability": 0.013217955630459754,
+      "switching_state_id": 4460112,
+      "trajectory": [
+        4460112,
+        4171253,
+        3564434,
+        3255696,
+        2946960,
+        2638224,
+        2329488,
+        2020752,
+        1712016,
+        1403280,
+        1094544,
+        785808,
+        477072
+      ],
+      "candidate_count": 846,
+      "cooptimal_candidate_count": 2,
+      "strong_tie_break_verified": true,
+      "runtime_sec": 48.6310029999986,
+      "active_state_count": 2187407,
+      "active_edge_count": 150376803
+    },
+    "194": {
+      "feasible": true,
+      "sensor_map": [
+        4.75,
+        -1.75,
+        0.0
+      ],
+      "attacker_objective": 0.17019772357697027,
+      "detection_probability": 0.01029165109542764,
+      "switching_state_id": 4460112,
+      "trajectory": [
+        4460112,
+        4171253,
+        3564434,
+        3255696,
+        2946960,
+        2638224,
+        2329488,
+        2020752,
+        1712016,
+        1403280,
+        1094544,
+        785808,
+        477072
+      ],
+      "candidate_count": 725,
+      "cooptimal_candidate_count": 2,
+      "strong_tie_break_verified": true,
+      "runtime_sec": 52.49473139999827,
+      "active_state_count": 2184838,
+      "active_edge_count": 150063837
+    },
+    "195": {
+      "feasible": true,
+      "sensor_map": [
+        4.75,
+        -1.5,
+        0.0
+      ],
+      "attacker_objective": 0.17138600993021988,
+      "detection_probability": 0.012640972172886717,
+      "switching_state_id": 4460112,
+      "trajectory": [
+        4460112,
+        4171253,
+        3564434,
+        3255696,
+        2946960,
+        2638224,
+        2329488,
+        2020752,
+        1712016,
+        1403280,
+        1094544,
+        785808,
+        477072
+      ],
+      "candidate_count": 879,
+      "cooptimal_candidate_count": 2,
+      "strong_tie_break_verified": true,
+      "runtime_sec": 49.179771099999925,
+      "active_state_count": 2182163,
+      "active_edge_count": 149868518
+    },
+    "196": {
+      "feasible": true,
+      "sensor_map": [
+        4.75,
+        -1.25,
+        0.0
+      ],
+      "attacker_objective": 0.17277151491165638,
+      "detection_probability": 0.015373166658596157,
+      "switching_state_id": 4460112,
+      "trajectory": [
+        4460112,
+        4171253,
+        3564434,
+        3255696,
+        2946960,
+        2638224,
+        2329488,
+        2020752,
+        1712016,
+        1403280,
+        1094544,
+        785808,
+        477072
+      ],
+      "candidate_count": 896,
+      "cooptimal_candidate_count": 2,
+      "strong_tie_break_verified": true,
+      "runtime_sec": 48.67384189999939,
+      "active_state_count": 2181401,
+      "active_edge_count": 149829544
+    },
+    "197": {
+      "feasible": true,
+      "sensor_map": [
+        4.75,
+        -1.0,
+        0.0
+      ],
+      "attacker_objective": 0.1743232153708662,
+      "detection_probability": 0.018424121860231058,
+      "switching_state_id": 4460112,
+      "trajectory": [
+        4460112,
+        4171253,
+        3564434,
+        3255696,
+        2946960,
+        2638224,
+        2329488,
+        2020752,
+        1712016,
+        1403280,
+        1094544,
+        785808,
+        477072
+      ],
+      "candidate_count": 826,
+      "cooptimal_candidate_count": 2,
+      "strong_tie_break_verified": true,
+      "runtime_sec": 49.27355270000044,
+      "active_state_count": 2176702,
+      "active_edge_count": 149457450
+    },
+    "198": {
+      "feasible": true,
+      "sensor_map": [
+        4.75,
+        -0.75,
+        0.0
+      ],
+      "attacker_objective": 0.1759633093512655,
+      "detection_probability": 0.021638600309344013,
+      "switching_state_id": 4460112,
+      "trajectory": [
+        4460112,
+        4171253,
+        3564434,
+        3255696,
+        2946960,
+        2638224,
+        2329488,
+        2020752,
+        1712016,
+        1403280,
+        1094544,
+        785808,
+        477072
+      ],
+      "candidate_count": 731,
+      "cooptimal_candidate_count": 2,
+      "strong_tie_break_verified": true,
+      "runtime_sec": 48.730386200000794,
+      "active_state_count": 2170148,
+      "active_edge_count": 148907059
+    },
+    "199": {
+      "feasible": true,
+      "sensor_map": [
+        4.75,
+        -0.5,
+        0.0
+      ],
+      "attacker_objective": 0.1775573101456082,
+      "detection_probability": 0.024752651568252557,
+      "switching_state_id": 4460112,
+      "trajectory": [
+        4460112,
+        4171253,
+        3564434,
+        3255696,
+        2946960,
+        2638224,
+        2329488,
+        2020752,
+        1712016,
+        1403280,
+        1094544,
+        785808,
+        477072
+      ],
+      "candidate_count": 727,
+      "cooptimal_candidate_count": 2,
+      "strong_tie_break_verified": true,
+      "runtime_sec": 48.45837089999986,
+      "active_state_count": 2168604,
+      "active_edge_count": 148803830
+    },
+    "225": {
+      "feasible": true,
+      "sensor_map": [
+        5.0,
+        -1.75,
+        0.0
+      ],
+      "attacker_objective": 0.17093362964397724,
+      "detection_probability": 0.011747244409766605,
+      "switching_state_id": 4460112,
+      "trajectory": [
+        4460112,
+        4151376,
+        3862517,
+        3255698,
+        2946960,
+        2638224,
+        2329488,
+        2020752,
+        1712016,
+        1403280,
+        1094544,
+        785808,
+        477072
+      ],
+      "candidate_count": 786,
+      "cooptimal_candidate_count": 2,
+      "strong_tie_break_verified": true,
+      "runtime_sec": 46.910098199998174,
+      "active_state_count": 2176366,
+      "active_edge_count": 149291508
+    },
+    "226": {
+      "feasible": true,
+      "sensor_map": [
+        5.0,
+        -1.5,
+        0.0
+      ],
+      "attacker_objective": 0.17240863013555413,
+      "detection_probability": 0.014658295098046722,
+      "switching_state_id": 4460112,
+      "trajectory": [
+        4460112,
+        4151376,
+        3862517,
+        3255698,
+        2946960,
+        2638224,
+        2329488,
+        2020752,
+        1712016,
+        1403280,
+        1094544,
+        785808,
+        477072
+      ],
+      "candidate_count": 820,
+      "cooptimal_candidate_count": 2,
+      "strong_tie_break_verified": true,
+      "runtime_sec": 45.749602799998684,
+      "active_state_count": 2174162,
+      "active_edge_count": 149132579
+    },
+    "227": {
+      "feasible": true,
+      "sensor_map": [
+        5.0,
+        -1.25,
+        0.0
+      ],
+      "attacker_objective": 0.1741768699939062,
+      "detection_probability": 0.018136781627565286,
+      "switching_state_id": 4460112,
+      "trajectory": [
+        4460112,
+        4151376,
+        3862517,
+        3255698,
+        2946960,
+        2638224,
+        2329488,
+        2020752,
+        1712016,
+        1403280,
+        1094544,
+        785808,
+        477072
+      ],
+      "candidate_count": 880,
+      "cooptimal_candidate_count": 2,
+      "strong_tie_break_verified": true,
+      "runtime_sec": 48.8501811999995,
+      "active_state_count": 2172406,
+      "active_edge_count": 149007775
+    },
+    "228": {
+      "feasible": true,
+      "sensor_map": [
+        5.0,
+        -1.0,
+        0.0
+      ],
+      "attacker_objective": 0.17621707684366172,
+      "detection_probability": 0.022135026959854965,
+      "switching_state_id": 4460112,
+      "trajectory": [
+        4460112,
+        4151376,
+        3862517,
+        3255698,
+        2946960,
+        2638224,
+        2329488,
+        2020752,
+        1712016,
+        1403280,
+        1094544,
+        785808,
+        477072
+      ],
+      "candidate_count": 708,
+      "cooptimal_candidate_count": 2,
+      "strong_tie_break_verified": true,
+      "runtime_sec": 40.84246520000306,
+      "active_state_count": 2169945,
+      "active_edge_count": 148829960
+    },
+    "229": {
+      "feasible": true,
+      "sensor_map": [
+        5.0,
+        -0.75,
+        0.0
+      ],
+      "attacker_objective": 0.1784401332163365,
+      "detection_probability": 0.026473074010401294,
+      "switching_state_id": 4460112,
+      "trajectory": [
+        4460112,
+        4151376,
+        3862517,
+        3255698,
+        2946960,
+        2638224,
+        2329488,
+        2020752,
+        1712016,
+        1403280,
+        1094544,
+        785808,
+        477072
+      ],
+      "candidate_count": 718,
+      "cooptimal_candidate_count": 2,
+      "strong_tie_break_verified": true,
+      "runtime_sec": 47.208196399999,
+      "active_state_count": 2163354,
+      "active_edge_count": 148275297
+    },
+    "230": {
+      "feasible": true,
+      "sensor_map": [
+        5.0,
+        -0.5,
+        0.0
+      ],
+      "attacker_objective": 0.1804284785384681,
+      "detection_probability": 0.020773139735447005,
+      "switching_state_id": 4460112,
+      "trajectory": [
+        4460112,
+        4189692,
+        3555501,
+        3246624,
+        2937888,
+        2629152,
+        2320416,
+        2011680,
+        1702944,
+        1394208,
+        1085472,
+        776736
+      ],
+      "candidate_count": 690,
+      "cooptimal_candidate_count": 2,
+      "strong_tie_break_verified": true,
+      "runtime_sec": 48.550991399999475,
+      "active_state_count": 2160333,
+      "active_edge_count": 148026962
+    },
+    "257": {
+      "feasible": true,
+      "sensor_map": [
+        5.25,
+        -1.5,
+        0.0
+      ],
+      "attacker_objective": 0.17370564794836463,
+      "detection_probability": 0.017453815365307965,
+      "switching_state_id": 4469329,
+      "trajectory": [
+        4469329,
+        3862514,
+        3255698,
+        2946960,
+        2638224,
+        2329488,
+        2020752,
+        1712016,
+        1403280,
+        1094544,
+        785808,
+        477072
+      ],
+      "candidate_count": 841,
+      "cooptimal_candidate_count": 2,
+      "strong_tie_break_verified": true,
+      "runtime_sec": 47.48467299999902,
+      "active_state_count": 2200053,
+      "active_edge_count": 151500634
+    },
+    "258": {
+      "feasible": true,
+      "sensor_map": [
+        5.25,
+        -1.25,
+        0.0
+      ],
+      "attacker_objective": 0.1756135626979607,
+      "detection_probability": 0.011489399202245629,
+      "switching_state_id": 2709656,
+      "trajectory": [
+        2709656,
+        2084254,
+        1458718,
+        1113396,
+        795294,
+        477198
+      ],
+      "candidate_count": 842,
+      "cooptimal_candidate_count": 2,
+      "strong_tie_break_verified": true,
+      "runtime_sec": 49.1098224999987,
+      "active_state_count": 2199421,
+      "active_edge_count": 151466384
+    },
+    "259": {
+      "feasible": true,
+      "sensor_map": [
+        5.25,
+        -1.0,
+        0.0
+      ],
+      "attacker_objective": 0.17741745002893544,
+      "detection_probability": 0.01504929718468903,
+      "switching_state_id": 2709656,
+      "trajectory": [
+        2709656,
+        2084254,
+        1458718,
+        1113396,
+        795294,
+        477198
+      ],
+      "candidate_count": 865,
+      "cooptimal_candidate_count": 2,
+      "strong_tie_break_verified": true,
+      "runtime_sec": 49.62231140000222,
+      "active_state_count": 2198096,
+      "active_edge_count": 151384720
+    },
+    "260": {
+      "feasible": true,
+      "sensor_map": [
+        5.25,
+        -0.75,
+        0.0
+      ],
+      "attacker_objective": 0.18013488880990153,
+      "detection_probability": 0.015096125717456376,
+      "switching_state_id": 3018393,
+      "trajectory": [
+        3018393,
+        2412289,
+        1749591,
+        1431486,
+        1113390,
+        795294,
+        477198
+      ],
+      "candidate_count": 771,
+      "cooptimal_candidate_count": 1,
+      "strong_tie_break_verified": true,
+      "runtime_sec": 51.60812799999985,
+      "active_state_count": 2192446,
+      "active_edge_count": 150913086
+    },
+    "261": {
+      "feasible": true,
+      "sensor_map": [
+        5.25,
+        -0.5,
+        0.0
+      ],
+      "attacker_objective": 0.1806263008349765,
+      "detection_probability": 0.015288528314744282,
+      "switching_state_id": 2700296,
+      "trajectory": [
+        2700296,
+        2102836,
+        1477438,
+        1132116,
+        814014,
+        495918,
+        177822
+      ],
+      "candidate_count": 762,
+      "cooptimal_candidate_count": 1,
+      "strong_tie_break_verified": true,
+      "runtime_sec": 53.344155700000556,
+      "active_state_count": 2190183,
+      "active_edge_count": 150737282
+    },
+    "319": {
+      "feasible": true,
+      "sensor_map": [
+        5.75,
+        -1.5,
+        0.0
+      ],
+      "attacker_objective": 0.17602218121144225,
+      "detection_probability": 0.012296916655238363,
+      "switching_state_id": 2709656,
+      "trajectory": [
+        2709656,
+        2084254,
+        1458718,
+        1113396,
+        795294,
+        477198
+      ],
+      "candidate_count": 781,
+      "cooptimal_candidate_count": 2,
+      "strong_tie_break_verified": true,
+      "runtime_sec": 55.72654869999678,
+      "active_state_count": 2154188,
+      "active_edge_count": 147295244
+    },
+    "320": {
+      "feasible": true,
+      "sensor_map": [
+        5.75,
+        -1.25,
+        0.0
+      ],
+      "attacker_objective": 0.17769985795531526,
+      "detection_probability": 0.015605455877417377,
+      "switching_state_id": 2709656,
+      "trajectory": [
+        2709656,
+        2084254,
+        1458718,
+        1113396,
+        795294,
+        477198
+      ],
+      "candidate_count": 908,
+      "cooptimal_candidate_count": 2,
+      "strong_tie_break_verified": true,
+      "runtime_sec": 59.62479080000048,
+      "active_state_count": 2155492,
+      "active_edge_count": 147431880
+    },
+    "321": {
+      "feasible": true,
+      "sensor_map": [
+        5.75,
+        -1.0,
+        0.0
+      ],
+      "attacker_objective": 0.18065429572329128,
+      "detection_probability": 0.01257246887284614,
+      "switching_state_id": 3018393,
+      "trajectory": [
+        3018393,
+        2411570,
+        1786174,
+        1477296,
+        1132116,
+        814014,
+        495918,
+        177822
+      ],
+      "candidate_count": 916,
+      "cooptimal_candidate_count": 1,
+      "strong_tie_break_verified": true,
+      "runtime_sec": 52.949824700001045,
+      "active_state_count": 2155216,
+      "active_edge_count": 147424647
+    },
+    "350": {
+      "feasible": true,
+      "sensor_map": [
+        6.0,
+        -1.5,
+        0.0
+      ],
+      "attacker_objective": 0.17689924145920305,
+      "detection_probability": 0.011086631054327181,
+      "switching_state_id": 2709656,
+      "trajectory": [
+        2709656,
+        2084254,
+        1458718,
+        1149840,
+        841104,
+        495924,
+        177822
+      ],
+      "candidate_count": 840,
+      "cooptimal_candidate_count": 2,
+      "strong_tie_break_verified": true,
+      "runtime_sec": 54.02684059999956,
+      "active_state_count": 2145167,
+      "active_edge_count": 146438822
+    },
+    "351": {
+      "feasible": true,
+      "sensor_map": [
+        6.0,
+        -1.25,
+        0.0
+      ],
+      "attacker_objective": 0.1786365995803121,
+      "detection_probability": 0.014516861409700627,
+      "switching_state_id": 2709656,
+      "trajectory": [
+        2709656,
+        2084254,
+        1458718,
+        1149840,
+        841104,
+        495924,
+        177822
+      ],
+      "candidate_count": 876,
+      "cooptimal_candidate_count": 2,
+      "strong_tie_break_verified": true,
+      "runtime_sec": 51.085855999997875,
+      "active_state_count": 2147592,
+      "active_edge_count": 146675217
+    },
+    "352": {
+      "feasible": true,
+      "sensor_map": [
+        6.0,
+        -1.0,
+        0.0
+      ],
+      "attacker_objective": 0.18192590870222777,
+      "detection_probability": 0.016478032607581593,
+      "switching_state_id": 3018393,
+      "trajectory": [
+        3018393,
+        2383628,
+        1776674,
+        1467936,
+        1159200,
+        814020,
+        495918,
+        177822
+      ],
+      "candidate_count": 892,
+      "cooptimal_candidate_count": 1,
+      "strong_tie_break_verified": true,
+      "runtime_sec": 58.59698109999954,
+      "active_state_count": 2144948,
+      "active_edge_count": 146462022
+    },
+    "381": {
+      "feasible": true,
+      "sensor_map": [
+        6.25,
+        -1.5,
+        0.0
+      ],
+      "attacker_objective": 0.17780864403628213,
+      "detection_probability": 0.012883637089479654,
+      "switching_state_id": 2709656,
+      "trajectory": [
+        2709656,
+        2084254,
+        1458718,
+        1149840,
+        841104,
+        495924,
+        177822
+      ],
+      "candidate_count": 862,
+      "cooptimal_candidate_count": 2,
+      "strong_tie_break_verified": true,
+      "runtime_sec": 57.59615209999902,
+      "active_state_count": 2132597,
+      "active_edge_count": 145295956
+    },
+    "382": {
+      "feasible": true,
+      "sensor_map": [
+        6.25,
+        -1.25,
+        0.0
+      ],
+      "attacker_objective": 0.18073722926185087,
+      "detection_probability": 0.016886389375184333,
+      "switching_state_id": 3018393,
+      "trajectory": [
+        3018393,
+        2392990,
+        1767454,
+        1458576,
+        1149840,
+        841104,
+        495924,
+        177822
+      ],
+      "candidate_count": 900,
+      "cooptimal_candidate_count": 1,
+      "strong_tie_break_verified": true,
+      "runtime_sec": 59.893714899997576,
+      "active_state_count": 2135083,
+      "active_edge_count": 145531903
+    },
+    "383": {
+      "feasible": true,
+      "sensor_map": [
+        6.25,
+        -1.0,
+        0.0
+      ],
+      "attacker_objective": 0.18152298496994257,
+      "detection_probability": 0.01979408756330127,
+      "switching_state_id": 2700296,
+      "trajectory": [
+        2700296,
+        2074894,
+        1467938,
+        1159200,
+        814020,
+        495918,
+        177822
+      ],
+      "candidate_count": 919,
+      "cooptimal_candidate_count": 1,
+      "strong_tie_break_verified": true,
+      "runtime_sec": 59.15768830000161,
+      "active_state_count": 2134727,
+      "active_edge_count": 145512270
+    }
+  }
+}

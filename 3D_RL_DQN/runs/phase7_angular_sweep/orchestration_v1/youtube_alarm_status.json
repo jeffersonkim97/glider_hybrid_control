@@ -1,0 +1,8 @@
+﻿{
+    "message":  "Angular sweep completed; the requested video was opened.",
+    "video_url":  "https://www.youtube.com/watch?v=2i-STzGbCl4\u0026t=8s",
+    "watcher_process_id":  36320,
+    "schema":  "p1b-phase7-youtube-completion-alarm-v1",
+    "state":  "opened",
+    "updated_at":  "2026-10-31T21:17:07.2951554-04:00"
+}

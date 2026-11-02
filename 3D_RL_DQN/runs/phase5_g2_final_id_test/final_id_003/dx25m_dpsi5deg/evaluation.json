@@ -1,0 +1,339 @@
+{
+  "schema": "p1b-phase5-g2-final-id-test-v1",
+  "status": "complete",
+  "manifest_sha256": "75cc70a4b25910558bf59afcd2210f6a6582d3af5b4a8a3d09ec0dce7b5d8c82",
+  "condition": {
+    "spatial_resolution_m": 25.0,
+    "heading_spacing_deg": 5.0
+  },
+  "checkpoint": {
+    "path": "3D_RL_DQN/checkpoints/phase4_extended_random_boxes/training_v2/g2_generalization/dx25m_dpsi5deg/seed0_ep10000_v1/phase4_seed0_final.pt",
+    "sha256": "cea13352ab8665d881598e2cd4de16b16803e88294c901ef81a69f205e93021b",
+    "kind": "final_training_state",
+    "episode": 10000,
+    "training_dataset_manifest_sha256": "f3736fe50298b5dd25a8cf37d32317b9b2d54a3d9d52a73cad7af3214e049886"
+  },
+  "runtime_metadata": {
+    "schema": "p1b-phase4-training-v2-g2-generalization-v1",
+    "condition": {
+      "spatial_resolution_m": 25.0,
+      "heading_spacing_deg": 5.0
+    },
+    "compatibility": {
+      "spatial_discretization_m": 25.0,
+      "angular_discretization_deg": 5.0,
+      "observation_schema_id": "p1b-terrain-observation-multiscale-v1",
+      "scalar_shape": [
+        8
+      ],
+      "spatial_shape": [
+        14,
+        41,
+        41
+      ],
+      "action_catalog_id": "p1b-heading-action-catalog-v1:94142da398e7d2ba5cac27c4ba31ca52f26fda13d32439bb8bb4dbd98d7c718c"
+    },
+    "graph_cache_count": 1,
+    "scenario_count_requested": 4,
+    "scenario_count_trainable": 4,
+    "training_scenario_count": 0,
+    "validation_scenario_count": 0,
+    "mission_failure_count": 0,
+    "mission_failures": [],
+    "reference_cache": "D:\\git\\git_research\\glider_hybrid_control\\3D_RL_DQN\\runs\\phase5_g2_final_id_test\\final_id_003\\dx25m_dpsi5deg\\bellman_references_v1.json",
+    "source_contract_sha256": "c2d96e61cac008f5991f6b8c2f5a5d28adaa6df6d3177d08ba61c99d543e5ef5",
+    "action_space": "exact_goal_backward_reachable_adjacency",
+    "powered_occlusion_required": true,
+    "observation_backend": "exact_batched_aabb_cuda",
+    "observation_cache_entries_per_context": 4096
+  },
+  "mission_failures": [],
+  "timing_sec": {
+    "runtime_and_bellman_setup_wall": 153.76426840000204,
+    "bellman_reference_runtime_sum": 134.84876509999594,
+    "checkpoint_load": 0.02448759999970207,
+    "dqn_evaluation_wall": 29.798677799997677,
+    "dqn_inference_runtime_sum": 29.64593559999048,
+    "checkpoint_load_excluded": 0.02645650000340538,
+    "dqn_cold_evaluation_wall_excluded": 29.798677799997677,
+    "dqn_cold_inference_runtime_sum_excluded": 29.64593559999048,
+    "dqn_warmup_wall_excluded": 25.729578800004674,
+    "dqn_warm_steady_state_evaluation_wall": 12.640064700004586,
+    "dqn_warm_steady_state_inference_runtime_sum": 12.635926500006462
+  },
+  "records": [
+    {
+      "scenario_id": "final_test_random_box_id__g2_random_boxes_final_id_003__low__0d0ff4af0d0a",
+      "split": "FINAL_TEST_RANDOM_BOX_ID",
+      "terrain_category": "g2_random_boxes_final_id_003",
+      "sensor_map": [
+        4.451781451839085,
+        -0.618308189390588,
+        0.0
+      ],
+      "bellman_J_A": 0.17041188941437363,
+      "bellman_trajectory": [
+        2131204,
+        1972727,
+        1814183,
+        1655639,
+        1501200,
+        1346832,
+        1192464,
+        1038096,
+        883728,
+        724819,
+        565767,
+        406719,
+        247671,
+        88623
+      ],
+      "bellman_runtime_sec": 28.608358199999202,
+      "dqn": {
+        "success": true,
+        "switching_state_id": 648140,
+        "trajectory": [
+          648140,
+          489599,
+          331055,
+          191164,
+          69851
+        ],
+        "reached_goal": true,
+        "trajectory_feasible": true,
+        "attacker_objective": 0.1879892837234402,
+        "glide_cost": 0.10997827481178475,
+        "powered_cost": 0.07801100891165547,
+        "candidate_successes": 987,
+        "candidate_count": 987,
+        "inference_runtime_sec": 6.994100699994306,
+        "status": "success"
+      },
+      "dqn_edge_hazards": [
+        0.005597350912715033,
+        0.00958508541451019,
+        0.01774413585317761,
+        0.017847733115119013,
+        0.017847733115119013
+      ],
+      "absolute_error": 0.017577394309066574,
+      "relative_error": 0.10314652557090881
+    },
+    {
+      "scenario_id": "final_test_random_box_id__g2_random_boxes_final_id_003__mixed__6f4da4272d4b",
+      "split": "FINAL_TEST_RANDOM_BOX_ID",
+      "terrain_category": "g2_random_boxes_final_id_003",
+      "sensor_map": [
+        3.942319614120054,
+        -1.235930651528875,
+        0.0
+      ],
+      "bellman_J_A": 0.16868423925509035,
+      "bellman_trajectory": [
+        2674726,
+        2520288,
+        2365920,
+        2211552,
+        2076342,
+        1931763,
+        1777392,
+        1623024,
+        1468656,
+        1314288,
+        1159920,
+        1005552,
+        851184,
+        696816,
+        542448,
+        388080
+      ],
+      "bellman_runtime_sec": 15.75697349999973,
+      "dqn": {
+        "success": true,
+        "switching_state_id": 1888268,
+        "trajectory": [
+          1888268,
+          1715610,
+          1556559,
+          1397511,
+          1238830,
+          1084392,
+          930024,
+          780413,
+          640588,
+          490973,
+          341289,
+          191601,
+          74539
+        ],
+        "reached_goal": true,
+        "trajectory_feasible": true,
+        "attacker_objective": 0.19798279061228524,
+        "glide_cost": 0.11784059263119698,
+        "powered_cost": 0.08014219798108825,
+        "candidate_successes": 361,
+        "candidate_count": 361,
+        "inference_runtime_sec": 2.8637842000025557,
+        "status": "success"
+      },
+      "dqn_edge_hazards": [
+        0.0014899623335636815,
+        0.0003671018185675306,
+        0.0002920502803125204,
+        0.0017733592889611458,
+        0.001094944542183777,
+        0.000976004253723167,
+        0.003249125640733256,
+        0.004298533905978737,
+        0.0012097281177523426,
+        0.0003023354426735189,
+        0.0005006439795706206,
+        0.0020812126568296955,
+        0.0020812126568296955
+      ],
+      "absolute_error": 0.02929855135719489,
+      "relative_error": 0.17368873041475186
+    },
+    {
+      "scenario_id": "final_test_random_box_id__g2_random_boxes_final_id_003__mixed__487a9ffaeb75",
+      "split": "FINAL_TEST_RANDOM_BOX_ID",
+      "terrain_category": "g2_random_boxes_final_id_003",
+      "sensor_map": [
+        6.1624048721636004,
+        0.3351328227507926,
+        0.0
+      ],
+      "bellman_J_A": 0.21620029805986085,
+      "bellman_trajectory": [
+        1270436,
+        1121042,
+        971714,
+        822529,
+        673345,
+        523733,
+        374049,
+        224361,
+        79357
+      ],
+      "bellman_runtime_sec": 65.70954779999738,
+      "dqn": {
+        "success": true,
+        "switching_state_id": 652748,
+        "trajectory": [
+          652748,
+          494207,
+          335663,
+          200382,
+          69847
+        ],
+        "reached_goal": true,
+        "trajectory_feasible": true,
+        "attacker_objective": 0.2531805492057558,
+        "glide_cost": 0.1783785392244729,
+        "powered_cost": 0.07480200998128289,
+        "candidate_successes": 2247,
+        "candidate_count": 2247,
+        "inference_runtime_sec": 14.868297399996663,
+        "status": "success"
+      },
+      "dqn_edge_hazards": [
+        0.0009228102679253636,
+        0.002655733543145316,
+        0.027045076739529855,
+        0.15940089196513907,
+        0.15940089196513907
+      ],
+      "absolute_error": 0.03698025114589493,
+      "relative_error": 0.17104625422697592
+    },
+    {
+      "scenario_id": "final_test_random_box_id__g2_random_boxes_final_id_003__high__4f274c713a26",
+      "split": "FINAL_TEST_RANDOM_BOX_ID",
+      "terrain_category": "g2_random_boxes_final_id_003",
+      "sensor_map": [
+        6.686999629969126,
+        -1.8862601652502695,
+        0.0
+      ],
+      "bellman_J_A": 0.16912772325883932,
+      "bellman_trajectory": [
+        1124996,
+        961701,
+        812306,
+        677094,
+        541878,
+        392546,
+        238176,
+        83808
+      ],
+      "bellman_runtime_sec": 24.77388559999963,
+      "dqn": {
+        "success": true,
+        "switching_state_id": 815827,
+        "trajectory": [
+          815827,
+          657287,
+          498743,
+          354099,
+          218886,
+          79060
+        ],
+        "reached_goal": true,
+        "trajectory_feasible": true,
+        "attacker_objective": 0.17669829362460515,
+        "glide_cost": 0.12655763579045828,
+        "powered_cost": 0.050140657834146875,
+        "candidate_successes": 654,
+        "candidate_count": 654,
+        "inference_runtime_sec": 4.919753299996955,
+        "status": "success"
+      },
+      "dqn_edge_hazards": [
+        0.0004036479092986076,
+        0.00136526126810242,
+        0.004595544197782843,
+        0.016103015663126843,
+        0.02719244276038038,
+        0.02719244276038038
+      ],
+      "absolute_error": 0.007570570365765833,
+      "relative_error": 0.04476244473639341
+    }
+  ],
+  "trajectory_html": "3D_RL_DQN/runs/phase5_g2_final_id_test/final_id_003/dx25m_dpsi5deg/trajectory_comparison_3d.html",
+  "acceptance": {
+    "accepted": false,
+    "success_rate": 1.0,
+    "median_relative_error": 0.13709638989894235,
+    "p90_relative_error": 0.17368873041475186,
+    "maximum_relative_error": 0.17368873041475186
+  },
+  "metrics": {
+    "generated_case_count": 4,
+    "mission_feasible_case_count": 4,
+    "mission_feasibility_rate": 1.0,
+    "mission_failure_count": 0,
+    "policy_successful_case_count": 4,
+    "policy_success_rate_on_feasible_missions": 1.0,
+    "median_relative_error": 0.13709638989894235,
+    "p90_relative_error_higher": 0.17368873041475186,
+    "maximum_relative_error": 0.17368873041475186
+  },
+  "timing_policy": {
+    "reported_dqn_computation_time": "dqn_warm_steady_state_evaluation_wall",
+    "excluded": [
+      "scene_graph_build",
+      "Bellman reference construction",
+      "checkpoint load",
+      "CUDA first-use initialization",
+      "observation/action/cache warm-up"
+    ],
+    "included": "steady-state greedy policy rollout over every admissible switching candidate and final authoritative trajectory scoring"
+  },
+  "trajectory_html_by_sensor": {
+    "low": "3D_RL_DQN/runs/phase5_g2_final_id_test/final_id_003/dx25m_dpsi5deg/trajectory_low_3d.html",
+    "mixed_a": "3D_RL_DQN/runs/phase5_g2_final_id_test/final_id_003/dx25m_dpsi5deg/trajectory_mixed_a_3d.html",
+    "mixed_b": "3D_RL_DQN/runs/phase5_g2_final_id_test/final_id_003/dx25m_dpsi5deg/trajectory_mixed_b_3d.html",
+    "high": "3D_RL_DQN/runs/phase5_g2_final_id_test/final_id_003/dx25m_dpsi5deg/trajectory_high_3d.html"
+  }
+}

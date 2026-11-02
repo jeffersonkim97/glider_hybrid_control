@@ -1,0 +1,230 @@
+{
+  "schema": "p1b-phase5-g2-final-id-test-v1",
+  "status": "frozen_before_evaluation",
+  "test_role": "first unseen in-distribution generalization probe",
+  "training_dataset_manifest_sha256": "f3736fe50298b5dd25a8cf37d32317b9b2d54a3d9d52a73cad7af3214e049886",
+  "split": "FINAL_TEST_RANDOM_BOX_ID",
+  "seed_contract": {
+    "terrain_seed_base": 28401,
+    "mission_seed_base": 28501,
+    "sensor_seed_base": 28601,
+    "terrain_index": 0,
+    "resample_attempt": 0,
+    "selection_policy": "generated_once_without_visual_or_performance_selection"
+  },
+  "terrain": {
+    "terrain_instance_id": "g2_random_boxes_final_id_000",
+    "split": "FINAL_TEST_RANDOM_BOX_ID",
+    "generation_seed": 28401,
+    "boxes": [
+      {
+        "center_x": -0.4742196642195834,
+        "center_y": -0.7394492369158168,
+        "width_x": 3.2194195426528918,
+        "width_y": 2.943934531098493,
+        "height": 3.836097981443987,
+        "base_z": 0.0
+      },
+      {
+        "center_x": -4.138445076578251,
+        "center_y": 2.427219037101935,
+        "width_x": 1.6988671326247877,
+        "width_y": 1.304513965035938,
+        "height": 1.5474906993381343,
+        "base_z": 0.0
+      },
+      {
+        "center_x": 0.31126183005001806,
+        "center_y": 2.6242692083248587,
+        "width_x": 1.2293106986899973,
+        "width_y": 1.1693286232118913,
+        "height": 2.7524498496834697,
+        "base_z": 0.0
+      },
+      {
+        "center_x": -3.847868529226271,
+        "center_y": -2.3917799786494265,
+        "width_x": 0.828517219995774,
+        "width_y": 1.757876134630863,
+        "height": 2.462642863998192,
+        "base_z": 0.0
+      },
+      {
+        "center_x": 2.5334379046458597,
+        "center_y": -1.7896315883075518,
+        "width_x": 1.0703559242294454,
+        "width_y": 2.1694979291264715,
+        "height": 1.5512953404916519,
+        "base_z": 0.0
+      }
+    ],
+    "terrain_hash": "c0b98df24adb1ffce8f897fbb1e3bf2924e484a10ded3fe7b56b85729965cc58"
+  },
+  "scenarios": [
+    {
+      "scenario_id": "final_test_random_box_id__g2_random_boxes_final_id_000__low__91e6629e718a",
+      "split": "FINAL_TEST_RANDOM_BOX_ID",
+      "terrain_category": "g2_random_boxes_final_id_000",
+      "terrain_hash": "c0b98df24adb1ffce8f897fbb1e3bf2924e484a10ded3fe7b56b85729965cc58",
+      "start_map": [
+        -7.853150085308179,
+        -0.12872887597185764,
+        0.0
+      ],
+      "goal_map": [
+        8.0,
+        -1.0,
+        0.0
+      ],
+      "goal_tolerance_m": 50.0,
+      "sensor_map": [
+        5.011641784477626,
+        -1.7036939523104984,
+        0.0
+      ],
+      "visibility_class": "low",
+      "visibility_fraction": 0.512,
+      "graph_cache_key": "28cc6d9a5d2a8b9420207858ccd54c1719a7928926d51cd2e84a128962116144"
+    },
+    {
+      "scenario_id": "final_test_random_box_id__g2_random_boxes_final_id_000__mixed__58a5cad6492c",
+      "split": "FINAL_TEST_RANDOM_BOX_ID",
+      "terrain_category": "g2_random_boxes_final_id_000",
+      "terrain_hash": "c0b98df24adb1ffce8f897fbb1e3bf2924e484a10ded3fe7b56b85729965cc58",
+      "start_map": [
+        -7.853150085308179,
+        -0.12872887597185764,
+        0.0
+      ],
+      "goal_map": [
+        8.0,
+        -1.0,
+        0.0
+      ],
+      "goal_tolerance_m": 50.0,
+      "sensor_map": [
+        5.0811054235902375,
+        1.3377263104881418,
+        0.0
+      ],
+      "visibility_class": "mixed",
+      "visibility_fraction": 0.6,
+      "graph_cache_key": "28cc6d9a5d2a8b9420207858ccd54c1719a7928926d51cd2e84a128962116144"
+    },
+    {
+      "scenario_id": "final_test_random_box_id__g2_random_boxes_final_id_000__mixed__8af4980c1b5d",
+      "split": "FINAL_TEST_RANDOM_BOX_ID",
+      "terrain_category": "g2_random_boxes_final_id_000",
+      "terrain_hash": "c0b98df24adb1ffce8f897fbb1e3bf2924e484a10ded3fe7b56b85729965cc58",
+      "start_map": [
+        -7.853150085308179,
+        -0.12872887597185764,
+        0.0
+      ],
+      "goal_map": [
+        8.0,
+        -1.0,
+        0.0
+      ],
+      "goal_tolerance_m": 50.0,
+      "sensor_map": [
+        5.714234334809559,
+        -0.26728208692200406,
+        0.0
+      ],
+      "visibility_class": "mixed",
+      "visibility_fraction": 0.592,
+      "graph_cache_key": "28cc6d9a5d2a8b9420207858ccd54c1719a7928926d51cd2e84a128962116144"
+    },
+    {
+      "scenario_id": "final_test_random_box_id__g2_random_boxes_final_id_000__high__2313799eadb0",
+      "split": "FINAL_TEST_RANDOM_BOX_ID",
+      "terrain_category": "g2_random_boxes_final_id_000",
+      "terrain_hash": "c0b98df24adb1ffce8f897fbb1e3bf2924e484a10ded3fe7b56b85729965cc58",
+      "start_map": [
+        -7.853150085308179,
+        -0.12872887597185764,
+        0.0
+      ],
+      "goal_map": [
+        8.0,
+        -1.0,
+        0.0
+      ],
+      "goal_tolerance_m": 50.0,
+      "sensor_map": [
+        6.132092362592923,
+        2.990585062778681,
+        0.0
+      ],
+      "visibility_class": "high",
+      "visibility_fraction": 0.656,
+      "graph_cache_key": "28cc6d9a5d2a8b9420207858ccd54c1719a7928926d51cd2e84a128962116144"
+    }
+  ],
+  "conditions": [
+    {
+      "spatial_resolution_m": 100.0,
+      "heading_spacing_deg": 5.0
+    },
+    {
+      "spatial_resolution_m": 50.0,
+      "heading_spacing_deg": 5.0
+    },
+    {
+      "spatial_resolution_m": 25.0,
+      "heading_spacing_deg": 5.0
+    },
+    {
+      "spatial_resolution_m": 10.0,
+      "heading_spacing_deg": 5.0
+    }
+  ],
+  "checkpoints": {
+    "dx100m_dpsi5deg": {
+      "path": "3D_RL_DQN/checkpoints/phase4_extended_random_boxes/training_v2/g2_generalization/dx100m_dpsi5deg/seed0_ep10000_v1/phase4_seed0_final.pt",
+      "sha256": "030b9d165d60cad0bbf052cde27b2ee7e4a31c7793f6768d8f612ed8887b6d18",
+      "kind": "final_training_state",
+      "episode": 10000,
+      "training_dataset_manifest_sha256": "f3736fe50298b5dd25a8cf37d32317b9b2d54a3d9d52a73cad7af3214e049886"
+    },
+    "dx50m_dpsi5deg": {
+      "path": "3D_RL_DQN/checkpoints/phase4_extended_random_boxes/training_v2/g2_generalization/dx50m_dpsi5deg/seed0_ep10000_v1/phase4_seed0_final.pt",
+      "sha256": "c2f0898cf75d2360fc459580f8e93f8ea8c2e52ec4ca3c840ba95d055601041d",
+      "kind": "final_training_state",
+      "episode": 10000,
+      "training_dataset_manifest_sha256": "f3736fe50298b5dd25a8cf37d32317b9b2d54a3d9d52a73cad7af3214e049886"
+    },
+    "dx25m_dpsi5deg": {
+      "path": "3D_RL_DQN/checkpoints/phase4_extended_random_boxes/training_v2/g2_generalization/dx25m_dpsi5deg/seed0_ep10000_v1/phase4_seed0_final.pt",
+      "sha256": "cea13352ab8665d881598e2cd4de16b16803e88294c901ef81a69f205e93021b",
+      "kind": "final_training_state",
+      "episode": 10000,
+      "training_dataset_manifest_sha256": "f3736fe50298b5dd25a8cf37d32317b9b2d54a3d9d52a73cad7af3214e049886"
+    },
+    "dx10m_dpsi5deg": {
+      "path": "3D_RL_DQN/checkpoints/phase4_extended_random_boxes/training_v2/g2_generalization/dx10m_dpsi5deg/seed0_ep10000_v1/phase4_seed0_final.pt",
+      "sha256": "1d3dad6004a37bbe74d23e7af1a3a4c33e3b1793617a2695c28036be1004e618",
+      "kind": "final_training_state",
+      "episode": 10000,
+      "training_dataset_manifest_sha256": "f3736fe50298b5dd25a8cf37d32317b9b2d54a3d9d52a73cad7af3214e049886"
+    }
+  },
+  "acceptance_rule": {
+    "scope": "descriptive for this four-case probe",
+    "success_rate_minimum": 1.0,
+    "median_relative_error_maximum": 0.1,
+    "p90_relative_error_maximum": 0.3,
+    "p90_method": "higher",
+    "maximum_relative_error_policy": "report_only",
+    "formal_conclusion_requires": "four final-ID terrains / sixteen cases"
+  },
+  "prohibited_uses": [
+    "training",
+    "checkpoint selection",
+    "early stopping",
+    "hyperparameter tuning",
+    "terrain reselection based on results"
+  ],
+  "manifest_sha256": "9c9d66042418fdbacec31f05a96f4c3d239abacf45486d37dbc50a97b43abe03"
+}

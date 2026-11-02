@@ -1,0 +1,168 @@
+{
+  "schema": "p1b-phase7-angular-sweep-v1",
+  "status": "complete",
+  "condition_contract": {
+    "spatial_resolution_m": 25.0,
+    "heading_spacings_deg": [
+      10.0,
+      5.0,
+      2.5
+    ],
+    "r_neighbor": 1,
+    "terrain_index": 1,
+    "training_seed": 0,
+    "training_episode_budget": 10000
+  },
+  "timing_contract": {
+    "primary_dqn": "first Local-SSE solve with empty problem caches",
+    "secondary_dqn": "repeated identical query with retained caches",
+    "offline_training_reported_separately": true
+  },
+  "sources": {
+    "training_dpsi10": {
+      "path": "3D_0827/figure/phase_4_extended_random_boxes/training_v2/g2_generalization/dx25m_dpsi10deg/seed0_ep10000_v1/g2_training_summary.json",
+      "sha256": "758e47502a3b7437921ea65de43d219d7b28d6d1e1dea006029118e3a8522568"
+    },
+    "training_dpsi5": {
+      "path": "3D_0827/figure/phase_4_extended_random_boxes/training_v2/g2_generalization/dx25m_dpsi5deg/seed0_ep10000_v1/g2_training_summary.json",
+      "sha256": "8aa4f8b26355c36e584afba0085423cf10cfd422e11522a443ef0d52a8d80cbf"
+    },
+    "training_dpsi2.5": {
+      "path": "3D_0827/figure/phase_4_extended_random_boxes/training_v2/g2_generalization/dx25m_dpsi2p5deg/seed0_ep10000_v1/g2_training_summary.json",
+      "sha256": "b4be17d27d983b7d5f81b68eba781b9eb16ed4df049444ee6dd9ceb9cc6cd7c8"
+    },
+    "local_sse_dpsi10": {
+      "path": "3D_RL_DQN/runs/phase7_angular_sweep/final_id_001/dx25m_dpsi10deg_r1/phase7_angular_local_sse.json",
+      "sha256": "540aab81218874fc0a288feca568f4d4b4b9ff9b749c95dc9948f8e2195aec56"
+    },
+    "local_sse_dpsi5": {
+      "path": "3D_RL_DQN/runs/phase6_g2_local_sse/final_id_001/dx25m_dpsi5deg_r1/phase6_g2_local_sse_pilot.json",
+      "sha256": "82c2233da5565aba153b84c5a0e569870b73d7be31f195d143d514afa1f65eba"
+    },
+    "local_sse_dpsi2.5": {
+      "path": "3D_RL_DQN/runs/phase7_angular_sweep/final_id_001/dx25m_dpsi2.5deg_r1/phase7_angular_local_sse.json",
+      "sha256": "5845524d84553d52775623808ef121e88d08232a9dbae2d1004366755baa70ee"
+    }
+  },
+  "rows": [
+    {
+      "spatial_resolution_m": 25.0,
+      "heading_spacing_deg": 10.0,
+      "r_neighbor": 1,
+      "action_count": 36,
+      "training_episodes": 10000,
+      "training_measured_seed_runtime_sec": 1931.839012299999,
+      "training_pure_runtime_sec": 1071.5531849000035,
+      "training_evaluation_runtime_sec": 737.5523562999952,
+      "training_best_episode": 10000,
+      "training_early_stopping_success": true,
+      "training_early_stopping_reason": "approved_accuracy_reached_and_stable",
+      "validation_success_rate": 1.0,
+      "validation_median_relative_error": 0.03884660427420481,
+      "validation_p90_relative_error_higher": 0.08581192639559879,
+      "validation_maximum_relative_error": 0.10708130751623665,
+      "frozen_model_validation_gate_pass": true,
+      "bellman_first_solve_sec": 177.60369859999992,
+      "dqn_first_solve_sec": 52.30155100000047,
+      "dqn_repeated_query_sec": 2.7211934000006295,
+      "bellman_over_dqn_first_solve_ratio": 3.3957635137818056,
+      "bellman_final_action_id": 169,
+      "dqn_final_action_id": 195,
+      "selected_sensor_distance_m": 127.4754878398196,
+      "same_sensor_exact_J_A": 0.1724872333855059,
+      "same_sensor_dqn_J_A": 0.17918300989417207,
+      "same_sensor_J_A_relative_error": 0.038818968669415886,
+      "bellman_final_J_D": 0.024384210124635045,
+      "exact_J_D_at_dqn_sensor": 0.010169745875169165,
+      "defender_J_D_relative_regret": 0.5829372440940868,
+      "exact_local_optimality_margin_J_D": -0.004774940445480675,
+      "exact_local_sse_verified": false,
+      "same_sensor_J_A_10pct_diagnostic_pass": true,
+      "primary_admissible_and_faster": false,
+      "training_summary": "3D_0827/figure/phase_4_extended_random_boxes/training_v2/g2_generalization/dx25m_dpsi10deg/seed0_ep10000_v1/g2_training_summary.json",
+      "local_sse_result": "3D_RL_DQN/runs/phase7_angular_sweep/final_id_001/dx25m_dpsi10deg_r1/phase7_angular_local_sse.json"
+    },
+    {
+      "spatial_resolution_m": 25.0,
+      "heading_spacing_deg": 5.0,
+      "r_neighbor": 1,
+      "action_count": 72,
+      "training_episodes": 10000,
+      "training_measured_seed_runtime_sec": 2919.9602237000017,
+      "training_pure_runtime_sec": 1227.1820535999996,
+      "training_evaluation_runtime_sec": 1473.2741282000025,
+      "training_best_episode": 9000,
+      "training_early_stopping_success": false,
+      "training_early_stopping_reason": "maximum_episode_budget_reached_without_approved_accuracy",
+      "validation_success_rate": 1.0,
+      "validation_median_relative_error": 0.06754398461989497,
+      "validation_p90_relative_error_higher": 0.355171684348132,
+      "validation_maximum_relative_error": 0.9495068165441528,
+      "frozen_model_validation_gate_pass": false,
+      "bellman_first_solve_sec": 961.4223362999983,
+      "dqn_first_solve_sec": 116.91675450000184,
+      "dqn_repeated_query_sec": 19.529376599995885,
+      "bellman_over_dqn_first_solve_ratio": 8.223135686681955,
+      "bellman_final_action_id": 449,
+      "dqn_final_action_id": 164,
+      "selected_sensor_distance_m": 270.4163456597992,
+      "same_sensor_exact_J_A": 0.16982562327318942,
+      "same_sensor_dqn_J_A": 0.18380121852656722,
+      "same_sensor_J_A_relative_error": 0.0822937963306986,
+      "bellman_final_J_D": 0.09346210974868008,
+      "exact_J_D_at_dqn_sensor": 0.00895021163433163,
+      "defender_J_D_relative_regret": 0.9042370040822021,
+      "exact_local_optimality_margin_J_D": -0.0010399222655119097,
+      "exact_local_sse_verified": false,
+      "same_sensor_J_A_10pct_diagnostic_pass": true,
+      "primary_admissible_and_faster": false,
+      "training_summary": "3D_0827/figure/phase_4_extended_random_boxes/training_v2/g2_generalization/dx25m_dpsi5deg/seed0_ep10000_v1/g2_training_summary.json",
+      "local_sse_result": "3D_RL_DQN/runs/phase6_g2_local_sse/final_id_001/dx25m_dpsi5deg_r1/phase6_g2_local_sse_pilot.json"
+    },
+    {
+      "spatial_resolution_m": 25.0,
+      "heading_spacing_deg": 2.5,
+      "r_neighbor": 1,
+      "action_count": 144,
+      "training_episodes": 10000,
+      "training_measured_seed_runtime_sec": 2855.9812488999996,
+      "training_pure_runtime_sec": 932.6838197999932,
+      "training_evaluation_runtime_sec": 1771.652245500005,
+      "training_best_episode": 10000,
+      "training_early_stopping_success": true,
+      "training_early_stopping_reason": "approved_accuracy_reached_and_stable",
+      "validation_success_rate": 1.0,
+      "validation_median_relative_error": 0.052181492015924084,
+      "validation_p90_relative_error_higher": 0.6028161569718562,
+      "validation_maximum_relative_error": 0.6593616143344025,
+      "frozen_model_validation_gate_pass": false,
+      "bellman_first_solve_sec": 981.2673633000013,
+      "dqn_first_solve_sec": 214.09531179999976,
+      "dqn_repeated_query_sec": 62.94311430000016,
+      "bellman_over_dqn_first_solve_ratio": 4.5833201813249715,
+      "bellman_final_action_id": 229,
+      "dqn_final_action_id": 351,
+      "selected_sensor_distance_m": 111.80339887498948,
+      "same_sensor_exact_J_A": 0.1786365995803121,
+      "same_sensor_dqn_J_A": 0.19804942541900028,
+      "same_sensor_J_A_relative_error": 0.10867216395910222,
+      "bellman_final_J_D": 0.026473074010401294,
+      "exact_J_D_at_dqn_sensor": 0.014516861409700627,
+      "defender_J_D_relative_regret": 0.4516367308157361,
+      "exact_local_optimality_margin_J_D": -0.005277226153600642,
+      "exact_local_sse_verified": false,
+      "same_sensor_J_A_10pct_diagnostic_pass": false,
+      "primary_admissible_and_faster": false,
+      "training_summary": "3D_0827/figure/phase_4_extended_random_boxes/training_v2/g2_generalization/dx25m_dpsi2p5deg/seed0_ep10000_v1/g2_training_summary.json",
+      "local_sse_result": "3D_RL_DQN/runs/phase7_angular_sweep/final_id_001/dx25m_dpsi2.5deg_r1/phase7_angular_local_sse.json"
+    }
+  ],
+  "outputs": {
+    "csv": "3D_RL_DQN/runs/phase7_angular_sweep/final_id_001/closeout_v1/phase7_angular_sweep.csv",
+    "report": "3D_RL_DQN/runs/phase7_angular_sweep/final_id_001/closeout_v1/phase7_angular_sweep.md",
+    "runtime_figure": "3D_RL_DQN/runs/phase7_angular_sweep/final_id_001/closeout_v1/phase7_angular_runtime.png",
+    "quality_figure": "3D_RL_DQN/runs/phase7_angular_sweep/final_id_001/closeout_v1/phase7_angular_quality.png",
+    "training_figure": "3D_RL_DQN/runs/phase7_angular_sweep/final_id_001/closeout_v1/phase7_angular_training_time.png"
+  },
+  "manifest_sha256": "ec0d9f6438e211c9547b3e0f986814152c3798fb1cdaaef1e63a28c286d22c15"
+}
