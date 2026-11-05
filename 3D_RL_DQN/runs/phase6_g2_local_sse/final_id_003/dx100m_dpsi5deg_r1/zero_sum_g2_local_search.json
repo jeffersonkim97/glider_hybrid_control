@@ -1,0 +1,2216 @@
+{
+  "schema": "p1b-zero-sum-g2-local-search-v1",
+  "status": "complete",
+  "scope": {
+    "full_local_sse": true,
+    "global_sse": false,
+    "new_training_performed": false,
+    "checkpoint_frozen": true,
+    "same_outer_search_and_neighborhood": true,
+    "only_attacker_br_backend_changes": true,
+    "zero_sum_primary_formulation": true,
+    "single_point_J_A_gap_is_the_zero_sum_certificate": true,
+    "exact_neighbor_audit_is_the_nonzero_sum_local_certificate": false
+  },
+  "condition": {
+    "terrain_index": 3,
+    "terrain_id": "g2_random_boxes_final_id_003",
+    "terrain_hash": "e5992abc052eaf43756dab53bc4c9510918d937a9eb2050ac6e4bc3021fe0784",
+    "spatial_resolution_m": 100.0,
+    "heading_spacing_deg": 5.0,
+    "r_neighbor": 1,
+    "leader_objective": "attacker_objective",
+    "leader_objective_sense": "maximize",
+    "detection_probability_role": "physical_diagnostic",
+    "nominal_defender_region_map": {
+      "x_min": 3.25,
+      "x_max": 6.75,
+      "y_min": -3.75,
+      "y_max": 3.75,
+      "z": 0.0
+    },
+    "defender_region_map": {
+      "x_min": 3.5,
+      "x_max": 6.5,
+      "y_min": -3.5,
+      "y_max": 3.5,
+      "z": 0.0
+    },
+    "defender_region_center_aligned_to_spacing": true,
+    "defender_action_count": 32,
+    "initial_action_id": 28,
+    "initial_sensor_map": [
+      6.5,
+      0.5,
+      0.0
+    ],
+    "initial_sensor_source": "frozen terrain-001 Mixed-B scenario"
+  },
+  "checkpoint": {
+    "path": "3D_RL_DQN/checkpoints/phase4_extended_random_boxes/training_v2/g2_generalization/dx100m_dpsi5deg/seed0_ep10000_v1/phase4_seed0_final.pt",
+    "sha256": "030b9d165d60cad0bbf052cde27b2ee7e4a31c7793f6768d8f612ed8887b6d18",
+    "source": "frozen_phase5_manifest",
+    "seed": 0,
+    "episode": 10000,
+    "training_dataset_manifest_sha256": "f3736fe50298b5dd25a8cf37d32317b9b2d54a3d9d52a73cad7af3214e049886",
+    "load_runtime_sec_excluded": 0.14805740001611412,
+    "gradient_updates": 0
+  },
+  "shared_setup": {
+    "scene_build_wall_sec_excluded": 0.18713360000401735,
+    "scene_build_timing": {
+      "T_setup_s": 0.008837300003506243,
+      "T_defender_grid_s": 0.0028791999793611467,
+      "T_shared_graph_s": 0.1747321000439115
+    },
+    "scene_sizes": {
+      "N_x": 17,
+      "N_y": 9,
+      "N_h": 6,
+      "N_psi": 72,
+      "N_S_cart": 66096,
+      "N_S_goal_reachable": 37449,
+      "A": 72,
+      "N_D": 32,
+      "neighbourhood_size": 9
+    },
+    "checkpoint_compatibility_checked": true
+  },
+  "exact_bellman_local_sse": {
+    "leader_objective": "attacker_objective",
+    "wall_runtime_sec": 31.559409499983303,
+    "timing_basis": "sum_of_per_response_runtime_across_resumed_runs",
+    "current_process_search_wall_sec": 7.853163800027687,
+    "best_response_runtime_sum_sec": 31.559409499983303,
+    "best_response_calls": 8,
+    "best_response_calls_reused_from_disk": 6,
+    "best_response_calls_computed_this_run": 2,
+    "cache_path": "3D_RL_DQN\\runs\\phase6_g2_local_sse\\final_id_003\\dx100m_dpsi5deg_r1\\exact_response_cache.json",
+    "cache_entries_loaded_at_start": 6,
+    "search": {
+      "initial_defender_action_id": 28,
+      "final_local_sse_action_id": 27,
+      "final_attacker_response_id": 50475,
+      "final_J_A": 0.5868624131023719,
+      "visited_defender_actions": [
+        28,
+        27
+      ],
+      "evaluated_defender_actions": [
+        28,
+        19,
+        20,
+        21,
+        27,
+        29,
+        18,
+        26
+      ],
+      "unique_defender_evaluations": 8,
+      "cached_evaluation_reuses": 4,
+      "initialization_recovery_attempted": false,
+      "initialization_neighbor_action_ids": [],
+      "initialization_feasible_neighbor_ids": [],
+      "initialization_infeasible_neighbor_ids": [],
+      "initialization_unknown_neighbor_ids": [],
+      "initialization_recovery_action_id": null,
+      "local_search_iterations": 2,
+      "neighbor_count_per_iteration": [
+        5,
+        5
+      ],
+      "feasible_neighbor_count_per_iteration": [
+        5,
+        5
+      ],
+      "infeasible_neighbor_diagnostics": [],
+      "unknown_neighbor_diagnostics": [],
+      "payoff_improvement_per_iteration": [
+        0.00425203177214839,
+        0.0
+      ],
+      "local_optimality_margin": 0.00425203177214839,
+      "termination_status": "certified_local_sse",
+      "local_sse_verified": true,
+      "attacker_exactness_verified": true,
+      "strong_tie_break_verified": true,
+      "independent_replay_status": null,
+      "isolated_feasible_local_solution": false,
+      "initialization_dependent_solution_concept": true,
+      "global_optimality_evaluated": false,
+      "global_optimal": null,
+      "solution_scope": "local Strong Stackelberg equilibrium over an explicit finite Defender grid neighborhood; not a global or continuous-space optimality claim",
+      "neighborhood_metadata": {
+        "configuration": {
+          "r_neighbor": 1,
+          "metric": "chebyshev_grid_index",
+          "radius_units": "integer Defender grid-index lengths",
+          "one_dimensional_rule": "0 < abs(j-i) <= r_neighbor",
+          "two_dimensional_rule": "0 < max(abs(p-i), abs(q-j)) <= r_neighbor",
+          "boundary_rule": "clip to explicitly configured grid actions"
+        },
+        "topology": {
+          "dimension": 2,
+          "ordered_action_grid_indices": [
+            {
+              "action_id": 0,
+              "grid_index": [
+                0,
+                0
+              ]
+            },
+            {
+              "action_id": 1,
+              "grid_index": [
+                0,
+                1
+              ]
+            },
+            {
+              "action_id": 2,
+              "grid_index": [
+                0,
+                2
+              ]
+            },
+            {
+              "action_id": 3,
+              "grid_index": [
+                0,
+                3
+              ]
+            },
+            {
+              "action_id": 4,
+              "grid_index": [
+                0,
+                4
+              ]
+            },
+            {
+              "action_id": 5,
+              "grid_index": [
+                0,
+                5
+              ]
+            },
+            {
+              "action_id": 6,
+              "grid_index": [
+                0,
+                6
+              ]
+            },
+            {
+              "action_id": 7,
+              "grid_index": [
+                0,
+                7
+              ]
+            },
+            {
+              "action_id": 8,
+              "grid_index": [
+                1,
+                0
+              ]
+            },
+            {
+              "action_id": 9,
+              "grid_index": [
+                1,
+                1
+              ]
+            },
+            {
+              "action_id": 10,
+              "grid_index": [
+                1,
+                2
+              ]
+            },
+            {
+              "action_id": 11,
+              "grid_index": [
+                1,
+                3
+              ]
+            },
+            {
+              "action_id": 12,
+              "grid_index": [
+                1,
+                4
+              ]
+            },
+            {
+              "action_id": 13,
+              "grid_index": [
+                1,
+                5
+              ]
+            },
+            {
+              "action_id": 14,
+              "grid_index": [
+                1,
+                6
+              ]
+            },
+            {
+              "action_id": 15,
+              "grid_index": [
+                1,
+                7
+              ]
+            },
+            {
+              "action_id": 16,
+              "grid_index": [
+                2,
+                0
+              ]
+            },
+            {
+              "action_id": 17,
+              "grid_index": [
+                2,
+                1
+              ]
+            },
+            {
+              "action_id": 18,
+              "grid_index": [
+                2,
+                2
+              ]
+            },
+            {
+              "action_id": 19,
+              "grid_index": [
+                2,
+                3
+              ]
+            },
+            {
+              "action_id": 20,
+              "grid_index": [
+                2,
+                4
+              ]
+            },
+            {
+              "action_id": 21,
+              "grid_index": [
+                2,
+                5
+              ]
+            },
+            {
+              "action_id": 22,
+              "grid_index": [
+                2,
+                6
+              ]
+            },
+            {
+              "action_id": 23,
+              "grid_index": [
+                2,
+                7
+              ]
+            },
+            {
+              "action_id": 24,
+              "grid_index": [
+                3,
+                0
+              ]
+            },
+            {
+              "action_id": 25,
+              "grid_index": [
+                3,
+                1
+              ]
+            },
+            {
+              "action_id": 26,
+              "grid_index": [
+                3,
+                2
+              ]
+            },
+            {
+              "action_id": 27,
+              "grid_index": [
+                3,
+                3
+              ]
+            },
+            {
+              "action_id": 28,
+              "grid_index": [
+                3,
+                4
+              ]
+            },
+            {
+              "action_id": 29,
+              "grid_index": [
+                3,
+                5
+              ]
+            },
+            {
+              "action_id": 30,
+              "grid_index": [
+                3,
+                6
+              ]
+            },
+            {
+              "action_id": 31,
+              "grid_index": [
+                3,
+                7
+              ]
+            }
+          ]
+        }
+      },
+      "iterations": [
+        {
+          "iteration": 0,
+          "current_action_id": 28,
+          "current_defender_value": 0.5826103813302235,
+          "neighbor_action_ids": [
+            19,
+            20,
+            21,
+            27,
+            29
+          ],
+          "feasible_neighbor_ids": [
+            19,
+            20,
+            21,
+            27,
+            29
+          ],
+          "infeasible_neighbor_ids": [],
+          "unknown_neighbor_ids": [],
+          "chosen_next_action_id": 27,
+          "payoff_improvement": 0.00425203177214839,
+          "local_verification": {
+            "candidate_action_id": 28,
+            "candidate_defender_value": 0.5826103813302235,
+            "neighbor_action_ids": [
+              19,
+              20,
+              21,
+              27,
+              29
+            ],
+            "feasible_neighbor_ids": [
+              19,
+              20,
+              21,
+              27,
+              29
+            ],
+            "infeasible_neighbor_diagnostics": [],
+            "unknown_neighbor_diagnostics": [],
+            "improving_neighbor_ids": [
+              27
+            ],
+            "equal_payoff_neighbor_ids": [],
+            "best_feasible_neighbor_value": 0.5868624131023719,
+            "local_optimality_margin": -0.00425203177214839,
+            "isolated_feasible_local_solution": false,
+            "exact_attacker_responses_verified": true,
+            "strong_tie_breaking_verified": true,
+            "local_sse_verified": false,
+            "global_condition_equivalent": false,
+            "comparison_scope": "local Strong Stackelberg equilibrium over an explicit finite Defender grid neighborhood; not a global or continuous-space optimality claim",
+            "neighborhood_metadata": {
+              "configuration": {
+                "r_neighbor": 1,
+                "metric": "chebyshev_grid_index",
+                "radius_units": "integer Defender grid-index lengths",
+                "one_dimensional_rule": "0 < abs(j-i) <= r_neighbor",
+                "two_dimensional_rule": "0 < max(abs(p-i), abs(q-j)) <= r_neighbor",
+                "boundary_rule": "clip to explicitly configured grid actions"
+              },
+              "topology": {
+                "dimension": 2,
+                "ordered_action_grid_indices": [
+                  {
+                    "action_id": 0,
+                    "grid_index": [
+                      0,
+                      0
+                    ]
+                  },
+                  {
+                    "action_id": 1,
+                    "grid_index": [
+                      0,
+                      1
+                    ]
+                  },
+                  {
+                    "action_id": 2,
+                    "grid_index": [
+                      0,
+                      2
+                    ]
+                  },
+                  {
+                    "action_id": 3,
+                    "grid_index": [
+                      0,
+                      3
+                    ]
+                  },
+                  {
+                    "action_id": 4,
+                    "grid_index": [
+                      0,
+                      4
+                    ]
+                  },
+                  {
+                    "action_id": 5,
+                    "grid_index": [
+                      0,
+                      5
+                    ]
+                  },
+                  {
+                    "action_id": 6,
+                    "grid_index": [
+                      0,
+                      6
+                    ]
+                  },
+                  {
+                    "action_id": 7,
+                    "grid_index": [
+                      0,
+                      7
+                    ]
+                  },
+                  {
+                    "action_id": 8,
+                    "grid_index": [
+                      1,
+                      0
+                    ]
+                  },
+                  {
+                    "action_id": 9,
+                    "grid_index": [
+                      1,
+                      1
+                    ]
+                  },
+                  {
+                    "action_id": 10,
+                    "grid_index": [
+                      1,
+                      2
+                    ]
+                  },
+                  {
+                    "action_id": 11,
+                    "grid_index": [
+                      1,
+                      3
+                    ]
+                  },
+                  {
+                    "action_id": 12,
+                    "grid_index": [
+                      1,
+                      4
+                    ]
+                  },
+                  {
+                    "action_id": 13,
+                    "grid_index": [
+                      1,
+                      5
+                    ]
+                  },
+                  {
+                    "action_id": 14,
+                    "grid_index": [
+                      1,
+                      6
+                    ]
+                  },
+                  {
+                    "action_id": 15,
+                    "grid_index": [
+                      1,
+                      7
+                    ]
+                  },
+                  {
+                    "action_id": 16,
+                    "grid_index": [
+                      2,
+                      0
+                    ]
+                  },
+                  {
+                    "action_id": 17,
+                    "grid_index": [
+                      2,
+                      1
+                    ]
+                  },
+                  {
+                    "action_id": 18,
+                    "grid_index": [
+                      2,
+                      2
+                    ]
+                  },
+                  {
+                    "action_id": 19,
+                    "grid_index": [
+                      2,
+                      3
+                    ]
+                  },
+                  {
+                    "action_id": 20,
+                    "grid_index": [
+                      2,
+                      4
+                    ]
+                  },
+                  {
+                    "action_id": 21,
+                    "grid_index": [
+                      2,
+                      5
+                    ]
+                  },
+                  {
+                    "action_id": 22,
+                    "grid_index": [
+                      2,
+                      6
+                    ]
+                  },
+                  {
+                    "action_id": 23,
+                    "grid_index": [
+                      2,
+                      7
+                    ]
+                  },
+                  {
+                    "action_id": 24,
+                    "grid_index": [
+                      3,
+                      0
+                    ]
+                  },
+                  {
+                    "action_id": 25,
+                    "grid_index": [
+                      3,
+                      1
+                    ]
+                  },
+                  {
+                    "action_id": 26,
+                    "grid_index": [
+                      3,
+                      2
+                    ]
+                  },
+                  {
+                    "action_id": 27,
+                    "grid_index": [
+                      3,
+                      3
+                    ]
+                  },
+                  {
+                    "action_id": 28,
+                    "grid_index": [
+                      3,
+                      4
+                    ]
+                  },
+                  {
+                    "action_id": 29,
+                    "grid_index": [
+                      3,
+                      5
+                    ]
+                  },
+                  {
+                    "action_id": 30,
+                    "grid_index": [
+                      3,
+                      6
+                    ]
+                  },
+                  {
+                    "action_id": 31,
+                    "grid_index": [
+                      3,
+                      7
+                    ]
+                  }
+                ]
+              }
+            },
+            "exact_attacker_verification_required": true,
+            "local_optimum_under_supplied_evaluations": false
+          }
+        },
+        {
+          "iteration": 1,
+          "current_action_id": 27,
+          "current_defender_value": 0.5868624131023719,
+          "neighbor_action_ids": [
+            18,
+            19,
+            20,
+            26,
+            28
+          ],
+          "feasible_neighbor_ids": [
+            18,
+            19,
+            20,
+            26,
+            28
+          ],
+          "infeasible_neighbor_ids": [],
+          "unknown_neighbor_ids": [],
+          "chosen_next_action_id": null,
+          "payoff_improvement": 0.0,
+          "local_verification": {
+            "candidate_action_id": 27,
+            "candidate_defender_value": 0.5868624131023719,
+            "neighbor_action_ids": [
+              18,
+              19,
+              20,
+              26,
+              28
+            ],
+            "feasible_neighbor_ids": [
+              18,
+              19,
+              20,
+              26,
+              28
+            ],
+            "infeasible_neighbor_diagnostics": [],
+            "unknown_neighbor_diagnostics": [],
+            "improving_neighbor_ids": [],
+            "equal_payoff_neighbor_ids": [],
+            "best_feasible_neighbor_value": 0.5826103813302235,
+            "local_optimality_margin": 0.00425203177214839,
+            "isolated_feasible_local_solution": false,
+            "exact_attacker_responses_verified": true,
+            "strong_tie_breaking_verified": true,
+            "local_sse_verified": true,
+            "global_condition_equivalent": false,
+            "comparison_scope": "local Strong Stackelberg equilibrium over an explicit finite Defender grid neighborhood; not a global or continuous-space optimality claim",
+            "neighborhood_metadata": {
+              "configuration": {
+                "r_neighbor": 1,
+                "metric": "chebyshev_grid_index",
+                "radius_units": "integer Defender grid-index lengths",
+                "one_dimensional_rule": "0 < abs(j-i) <= r_neighbor",
+                "two_dimensional_rule": "0 < max(abs(p-i), abs(q-j)) <= r_neighbor",
+                "boundary_rule": "clip to explicitly configured grid actions"
+              },
+              "topology": {
+                "dimension": 2,
+                "ordered_action_grid_indices": [
+                  {
+                    "action_id": 0,
+                    "grid_index": [
+                      0,
+                      0
+                    ]
+                  },
+                  {
+                    "action_id": 1,
+                    "grid_index": [
+                      0,
+                      1
+                    ]
+                  },
+                  {
+                    "action_id": 2,
+                    "grid_index": [
+                      0,
+                      2
+                    ]
+                  },
+                  {
+                    "action_id": 3,
+                    "grid_index": [
+                      0,
+                      3
+                    ]
+                  },
+                  {
+                    "action_id": 4,
+                    "grid_index": [
+                      0,
+                      4
+                    ]
+                  },
+                  {
+                    "action_id": 5,
+                    "grid_index": [
+                      0,
+                      5
+                    ]
+                  },
+                  {
+                    "action_id": 6,
+                    "grid_index": [
+                      0,
+                      6
+                    ]
+                  },
+                  {
+                    "action_id": 7,
+                    "grid_index": [
+                      0,
+                      7
+                    ]
+                  },
+                  {
+                    "action_id": 8,
+                    "grid_index": [
+                      1,
+                      0
+                    ]
+                  },
+                  {
+                    "action_id": 9,
+                    "grid_index": [
+                      1,
+                      1
+                    ]
+                  },
+                  {
+                    "action_id": 10,
+                    "grid_index": [
+                      1,
+                      2
+                    ]
+                  },
+                  {
+                    "action_id": 11,
+                    "grid_index": [
+                      1,
+                      3
+                    ]
+                  },
+                  {
+                    "action_id": 12,
+                    "grid_index": [
+                      1,
+                      4
+                    ]
+                  },
+                  {
+                    "action_id": 13,
+                    "grid_index": [
+                      1,
+                      5
+                    ]
+                  },
+                  {
+                    "action_id": 14,
+                    "grid_index": [
+                      1,
+                      6
+                    ]
+                  },
+                  {
+                    "action_id": 15,
+                    "grid_index": [
+                      1,
+                      7
+                    ]
+                  },
+                  {
+                    "action_id": 16,
+                    "grid_index": [
+                      2,
+                      0
+                    ]
+                  },
+                  {
+                    "action_id": 17,
+                    "grid_index": [
+                      2,
+                      1
+                    ]
+                  },
+                  {
+                    "action_id": 18,
+                    "grid_index": [
+                      2,
+                      2
+                    ]
+                  },
+                  {
+                    "action_id": 19,
+                    "grid_index": [
+                      2,
+                      3
+                    ]
+                  },
+                  {
+                    "action_id": 20,
+                    "grid_index": [
+                      2,
+                      4
+                    ]
+                  },
+                  {
+                    "action_id": 21,
+                    "grid_index": [
+                      2,
+                      5
+                    ]
+                  },
+                  {
+                    "action_id": 22,
+                    "grid_index": [
+                      2,
+                      6
+                    ]
+                  },
+                  {
+                    "action_id": 23,
+                    "grid_index": [
+                      2,
+                      7
+                    ]
+                  },
+                  {
+                    "action_id": 24,
+                    "grid_index": [
+                      3,
+                      0
+                    ]
+                  },
+                  {
+                    "action_id": 25,
+                    "grid_index": [
+                      3,
+                      1
+                    ]
+                  },
+                  {
+                    "action_id": 26,
+                    "grid_index": [
+                      3,
+                      2
+                    ]
+                  },
+                  {
+                    "action_id": 27,
+                    "grid_index": [
+                      3,
+                      3
+                    ]
+                  },
+                  {
+                    "action_id": 28,
+                    "grid_index": [
+                      3,
+                      4
+                    ]
+                  },
+                  {
+                    "action_id": 29,
+                    "grid_index": [
+                      3,
+                      5
+                    ]
+                  },
+                  {
+                    "action_id": 30,
+                    "grid_index": [
+                      3,
+                      6
+                    ]
+                  },
+                  {
+                    "action_id": 31,
+                    "grid_index": [
+                      3,
+                      7
+                    ]
+                  }
+                ]
+              }
+            },
+            "exact_attacker_verification_required": true,
+            "local_optimum_under_supplied_evaluations": true
+          }
+        }
+      ],
+      "runtime_decomposition_s": {
+        "total_local_search_s": 7.853062499954831,
+        "exact_defender_evaluation_s": 7.852827199967578,
+        "neighborhood_enumeration_s": 3.300001844763756e-05,
+        "local_verification_s": 0.0001577000366523862,
+        "search_control_residual_s": 4.459993215277791e-05
+      },
+      "peak_memory": null,
+      "exact_attacker_verification_required": true,
+      "leader_objective": "attacker_objective",
+      "final_leader_value": 0.5868624131023719
+    },
+    "final_response": {
+      "feasible": true,
+      "sensor_map": [
+        6.5,
+        -0.5,
+        0.0
+      ],
+      "attacker_objective": 0.5868624131023719,
+      "detection_probability": 0.5610553929117621,
+      "switching_state_id": 50475,
+      "trajectory": [
+        50475,
+        39528,
+        27935,
+        18153,
+        6039
+      ],
+      "candidate_count": 139,
+      "cooptimal_candidate_count": 3,
+      "strong_tie_break_verified": true,
+      "runtime_sec": 3.426225599978352,
+      "active_state_count": 5054,
+      "active_edge_count": 36087
+    }
+  },
+  "frozen_dqn_local_sse": {
+    "leader_objective": "attacker_objective",
+    "warmup_wall_sec_excluded": 41.05525570001919,
+    "wall_runtime_sec": 0.41435479995561764,
+    "first_query_wall_sec": 41.05525570001919,
+    "repeated_query_wall_sec": 0.41435479995561764,
+    "legacy_timing_field_note": "warmup_wall_sec_excluded is the first query and wall_runtime_sec is the repeated warm query",
+    "evaluator_wall_sum_sec": 0.3830024998751469,
+    "network_rollout_and_scoring_sum_sec": 0.3813403999665752,
+    "search": {
+      "initial_defender_action_id": 28,
+      "final_local_sse_action_id": 27,
+      "final_attacker_response_id": 50477,
+      "final_J_A": 0.598683985204552,
+      "visited_defender_actions": [
+        28,
+        27
+      ],
+      "evaluated_defender_actions": [
+        28,
+        19,
+        20,
+        21,
+        27,
+        29,
+        18,
+        26
+      ],
+      "unique_defender_evaluations": 8,
+      "cached_evaluation_reuses": 4,
+      "initialization_recovery_attempted": false,
+      "initialization_neighbor_action_ids": [],
+      "initialization_feasible_neighbor_ids": [],
+      "initialization_infeasible_neighbor_ids": [],
+      "initialization_unknown_neighbor_ids": [],
+      "initialization_recovery_action_id": null,
+      "local_search_iterations": 2,
+      "neighbor_count_per_iteration": [
+        5,
+        5
+      ],
+      "feasible_neighbor_count_per_iteration": [
+        5,
+        5
+      ],
+      "infeasible_neighbor_diagnostics": [],
+      "unknown_neighbor_diagnostics": [],
+      "payoff_improvement_per_iteration": [
+        0.012558529821720232,
+        0.0
+      ],
+      "local_optimality_margin": 0.012558529821720232,
+      "termination_status": "approximate_local_sse",
+      "local_sse_verified": false,
+      "attacker_exactness_verified": false,
+      "strong_tie_break_verified": false,
+      "independent_replay_status": null,
+      "isolated_feasible_local_solution": false,
+      "initialization_dependent_solution_concept": true,
+      "global_optimality_evaluated": false,
+      "global_optimal": null,
+      "solution_scope": "local Strong Stackelberg equilibrium over an explicit finite Defender grid neighborhood; not a global or continuous-space optimality claim",
+      "neighborhood_metadata": {
+        "configuration": {
+          "r_neighbor": 1,
+          "metric": "chebyshev_grid_index",
+          "radius_units": "integer Defender grid-index lengths",
+          "one_dimensional_rule": "0 < abs(j-i) <= r_neighbor",
+          "two_dimensional_rule": "0 < max(abs(p-i), abs(q-j)) <= r_neighbor",
+          "boundary_rule": "clip to explicitly configured grid actions"
+        },
+        "topology": {
+          "dimension": 2,
+          "ordered_action_grid_indices": [
+            {
+              "action_id": 0,
+              "grid_index": [
+                0,
+                0
+              ]
+            },
+            {
+              "action_id": 1,
+              "grid_index": [
+                0,
+                1
+              ]
+            },
+            {
+              "action_id": 2,
+              "grid_index": [
+                0,
+                2
+              ]
+            },
+            {
+              "action_id": 3,
+              "grid_index": [
+                0,
+                3
+              ]
+            },
+            {
+              "action_id": 4,
+              "grid_index": [
+                0,
+                4
+              ]
+            },
+            {
+              "action_id": 5,
+              "grid_index": [
+                0,
+                5
+              ]
+            },
+            {
+              "action_id": 6,
+              "grid_index": [
+                0,
+                6
+              ]
+            },
+            {
+              "action_id": 7,
+              "grid_index": [
+                0,
+                7
+              ]
+            },
+            {
+              "action_id": 8,
+              "grid_index": [
+                1,
+                0
+              ]
+            },
+            {
+              "action_id": 9,
+              "grid_index": [
+                1,
+                1
+              ]
+            },
+            {
+              "action_id": 10,
+              "grid_index": [
+                1,
+                2
+              ]
+            },
+            {
+              "action_id": 11,
+              "grid_index": [
+                1,
+                3
+              ]
+            },
+            {
+              "action_id": 12,
+              "grid_index": [
+                1,
+                4
+              ]
+            },
+            {
+              "action_id": 13,
+              "grid_index": [
+                1,
+                5
+              ]
+            },
+            {
+              "action_id": 14,
+              "grid_index": [
+                1,
+                6
+              ]
+            },
+            {
+              "action_id": 15,
+              "grid_index": [
+                1,
+                7
+              ]
+            },
+            {
+              "action_id": 16,
+              "grid_index": [
+                2,
+                0
+              ]
+            },
+            {
+              "action_id": 17,
+              "grid_index": [
+                2,
+                1
+              ]
+            },
+            {
+              "action_id": 18,
+              "grid_index": [
+                2,
+                2
+              ]
+            },
+            {
+              "action_id": 19,
+              "grid_index": [
+                2,
+                3
+              ]
+            },
+            {
+              "action_id": 20,
+              "grid_index": [
+                2,
+                4
+              ]
+            },
+            {
+              "action_id": 21,
+              "grid_index": [
+                2,
+                5
+              ]
+            },
+            {
+              "action_id": 22,
+              "grid_index": [
+                2,
+                6
+              ]
+            },
+            {
+              "action_id": 23,
+              "grid_index": [
+                2,
+                7
+              ]
+            },
+            {
+              "action_id": 24,
+              "grid_index": [
+                3,
+                0
+              ]
+            },
+            {
+              "action_id": 25,
+              "grid_index": [
+                3,
+                1
+              ]
+            },
+            {
+              "action_id": 26,
+              "grid_index": [
+                3,
+                2
+              ]
+            },
+            {
+              "action_id": 27,
+              "grid_index": [
+                3,
+                3
+              ]
+            },
+            {
+              "action_id": 28,
+              "grid_index": [
+                3,
+                4
+              ]
+            },
+            {
+              "action_id": 29,
+              "grid_index": [
+                3,
+                5
+              ]
+            },
+            {
+              "action_id": 30,
+              "grid_index": [
+                3,
+                6
+              ]
+            },
+            {
+              "action_id": 31,
+              "grid_index": [
+                3,
+                7
+              ]
+            }
+          ]
+        }
+      },
+      "iterations": [
+        {
+          "iteration": 0,
+          "current_action_id": 28,
+          "current_defender_value": 0.5861254553828318,
+          "neighbor_action_ids": [
+            19,
+            20,
+            21,
+            27,
+            29
+          ],
+          "feasible_neighbor_ids": [
+            19,
+            20,
+            21,
+            27,
+            29
+          ],
+          "infeasible_neighbor_ids": [],
+          "unknown_neighbor_ids": [],
+          "chosen_next_action_id": 27,
+          "payoff_improvement": 0.012558529821720232,
+          "local_verification": {
+            "candidate_action_id": 28,
+            "candidate_defender_value": 0.5861254553828318,
+            "neighbor_action_ids": [
+              19,
+              20,
+              21,
+              27,
+              29
+            ],
+            "feasible_neighbor_ids": [
+              19,
+              20,
+              21,
+              27,
+              29
+            ],
+            "infeasible_neighbor_diagnostics": [],
+            "unknown_neighbor_diagnostics": [],
+            "improving_neighbor_ids": [
+              27
+            ],
+            "equal_payoff_neighbor_ids": [],
+            "best_feasible_neighbor_value": 0.598683985204552,
+            "local_optimality_margin": -0.012558529821720232,
+            "isolated_feasible_local_solution": false,
+            "exact_attacker_responses_verified": false,
+            "strong_tie_breaking_verified": false,
+            "local_sse_verified": false,
+            "global_condition_equivalent": false,
+            "comparison_scope": "local Strong Stackelberg equilibrium over an explicit finite Defender grid neighborhood; not a global or continuous-space optimality claim",
+            "neighborhood_metadata": {
+              "configuration": {
+                "r_neighbor": 1,
+                "metric": "chebyshev_grid_index",
+                "radius_units": "integer Defender grid-index lengths",
+                "one_dimensional_rule": "0 < abs(j-i) <= r_neighbor",
+                "two_dimensional_rule": "0 < max(abs(p-i), abs(q-j)) <= r_neighbor",
+                "boundary_rule": "clip to explicitly configured grid actions"
+              },
+              "topology": {
+                "dimension": 2,
+                "ordered_action_grid_indices": [
+                  {
+                    "action_id": 0,
+                    "grid_index": [
+                      0,
+                      0
+                    ]
+                  },
+                  {
+                    "action_id": 1,
+                    "grid_index": [
+                      0,
+                      1
+                    ]
+                  },
+                  {
+                    "action_id": 2,
+                    "grid_index": [
+                      0,
+                      2
+                    ]
+                  },
+                  {
+                    "action_id": 3,
+                    "grid_index": [
+                      0,
+                      3
+                    ]
+                  },
+                  {
+                    "action_id": 4,
+                    "grid_index": [
+                      0,
+                      4
+                    ]
+                  },
+                  {
+                    "action_id": 5,
+                    "grid_index": [
+                      0,
+                      5
+                    ]
+                  },
+                  {
+                    "action_id": 6,
+                    "grid_index": [
+                      0,
+                      6
+                    ]
+                  },
+                  {
+                    "action_id": 7,
+                    "grid_index": [
+                      0,
+                      7
+                    ]
+                  },
+                  {
+                    "action_id": 8,
+                    "grid_index": [
+                      1,
+                      0
+                    ]
+                  },
+                  {
+                    "action_id": 9,
+                    "grid_index": [
+                      1,
+                      1
+                    ]
+                  },
+                  {
+                    "action_id": 10,
+                    "grid_index": [
+                      1,
+                      2
+                    ]
+                  },
+                  {
+                    "action_id": 11,
+                    "grid_index": [
+                      1,
+                      3
+                    ]
+                  },
+                  {
+                    "action_id": 12,
+                    "grid_index": [
+                      1,
+                      4
+                    ]
+                  },
+                  {
+                    "action_id": 13,
+                    "grid_index": [
+                      1,
+                      5
+                    ]
+                  },
+                  {
+                    "action_id": 14,
+                    "grid_index": [
+                      1,
+                      6
+                    ]
+                  },
+                  {
+                    "action_id": 15,
+                    "grid_index": [
+                      1,
+                      7
+                    ]
+                  },
+                  {
+                    "action_id": 16,
+                    "grid_index": [
+                      2,
+                      0
+                    ]
+                  },
+                  {
+                    "action_id": 17,
+                    "grid_index": [
+                      2,
+                      1
+                    ]
+                  },
+                  {
+                    "action_id": 18,
+                    "grid_index": [
+                      2,
+                      2
+                    ]
+                  },
+                  {
+                    "action_id": 19,
+                    "grid_index": [
+                      2,
+                      3
+                    ]
+                  },
+                  {
+                    "action_id": 20,
+                    "grid_index": [
+                      2,
+                      4
+                    ]
+                  },
+                  {
+                    "action_id": 21,
+                    "grid_index": [
+                      2,
+                      5
+                    ]
+                  },
+                  {
+                    "action_id": 22,
+                    "grid_index": [
+                      2,
+                      6
+                    ]
+                  },
+                  {
+                    "action_id": 23,
+                    "grid_index": [
+                      2,
+                      7
+                    ]
+                  },
+                  {
+                    "action_id": 24,
+                    "grid_index": [
+                      3,
+                      0
+                    ]
+                  },
+                  {
+                    "action_id": 25,
+                    "grid_index": [
+                      3,
+                      1
+                    ]
+                  },
+                  {
+                    "action_id": 26,
+                    "grid_index": [
+                      3,
+                      2
+                    ]
+                  },
+                  {
+                    "action_id": 27,
+                    "grid_index": [
+                      3,
+                      3
+                    ]
+                  },
+                  {
+                    "action_id": 28,
+                    "grid_index": [
+                      3,
+                      4
+                    ]
+                  },
+                  {
+                    "action_id": 29,
+                    "grid_index": [
+                      3,
+                      5
+                    ]
+                  },
+                  {
+                    "action_id": 30,
+                    "grid_index": [
+                      3,
+                      6
+                    ]
+                  },
+                  {
+                    "action_id": 31,
+                    "grid_index": [
+                      3,
+                      7
+                    ]
+                  }
+                ]
+              }
+            },
+            "exact_attacker_verification_required": false,
+            "local_optimum_under_supplied_evaluations": false
+          }
+        },
+        {
+          "iteration": 1,
+          "current_action_id": 27,
+          "current_defender_value": 0.598683985204552,
+          "neighbor_action_ids": [
+            18,
+            19,
+            20,
+            26,
+            28
+          ],
+          "feasible_neighbor_ids": [
+            18,
+            19,
+            20,
+            26,
+            28
+          ],
+          "infeasible_neighbor_ids": [],
+          "unknown_neighbor_ids": [],
+          "chosen_next_action_id": null,
+          "payoff_improvement": 0.0,
+          "local_verification": {
+            "candidate_action_id": 27,
+            "candidate_defender_value": 0.598683985204552,
+            "neighbor_action_ids": [
+              18,
+              19,
+              20,
+              26,
+              28
+            ],
+            "feasible_neighbor_ids": [
+              18,
+              19,
+              20,
+              26,
+              28
+            ],
+            "infeasible_neighbor_diagnostics": [],
+            "unknown_neighbor_diagnostics": [],
+            "improving_neighbor_ids": [],
+            "equal_payoff_neighbor_ids": [],
+            "best_feasible_neighbor_value": 0.5861254553828318,
+            "local_optimality_margin": 0.012558529821720232,
+            "isolated_feasible_local_solution": false,
+            "exact_attacker_responses_verified": false,
+            "strong_tie_breaking_verified": false,
+            "local_sse_verified": false,
+            "global_condition_equivalent": false,
+            "comparison_scope": "local Strong Stackelberg equilibrium over an explicit finite Defender grid neighborhood; not a global or continuous-space optimality claim",
+            "neighborhood_metadata": {
+              "configuration": {
+                "r_neighbor": 1,
+                "metric": "chebyshev_grid_index",
+                "radius_units": "integer Defender grid-index lengths",
+                "one_dimensional_rule": "0 < abs(j-i) <= r_neighbor",
+                "two_dimensional_rule": "0 < max(abs(p-i), abs(q-j)) <= r_neighbor",
+                "boundary_rule": "clip to explicitly configured grid actions"
+              },
+              "topology": {
+                "dimension": 2,
+                "ordered_action_grid_indices": [
+                  {
+                    "action_id": 0,
+                    "grid_index": [
+                      0,
+                      0
+                    ]
+                  },
+                  {
+                    "action_id": 1,
+                    "grid_index": [
+                      0,
+                      1
+                    ]
+                  },
+                  {
+                    "action_id": 2,
+                    "grid_index": [
+                      0,
+                      2
+                    ]
+                  },
+                  {
+                    "action_id": 3,
+                    "grid_index": [
+                      0,
+                      3
+                    ]
+                  },
+                  {
+                    "action_id": 4,
+                    "grid_index": [
+                      0,
+                      4
+                    ]
+                  },
+                  {
+                    "action_id": 5,
+                    "grid_index": [
+                      0,
+                      5
+                    ]
+                  },
+                  {
+                    "action_id": 6,
+                    "grid_index": [
+                      0,
+                      6
+                    ]
+                  },
+                  {
+                    "action_id": 7,
+                    "grid_index": [
+                      0,
+                      7
+                    ]
+                  },
+                  {
+                    "action_id": 8,
+                    "grid_index": [
+                      1,
+                      0
+                    ]
+                  },
+                  {
+                    "action_id": 9,
+                    "grid_index": [
+                      1,
+                      1
+                    ]
+                  },
+                  {
+                    "action_id": 10,
+                    "grid_index": [
+                      1,
+                      2
+                    ]
+                  },
+                  {
+                    "action_id": 11,
+                    "grid_index": [
+                      1,
+                      3
+                    ]
+                  },
+                  {
+                    "action_id": 12,
+                    "grid_index": [
+                      1,
+                      4
+                    ]
+                  },
+                  {
+                    "action_id": 13,
+                    "grid_index": [
+                      1,
+                      5
+                    ]
+                  },
+                  {
+                    "action_id": 14,
+                    "grid_index": [
+                      1,
+                      6
+                    ]
+                  },
+                  {
+                    "action_id": 15,
+                    "grid_index": [
+                      1,
+                      7
+                    ]
+                  },
+                  {
+                    "action_id": 16,
+                    "grid_index": [
+                      2,
+                      0
+                    ]
+                  },
+                  {
+                    "action_id": 17,
+                    "grid_index": [
+                      2,
+                      1
+                    ]
+                  },
+                  {
+                    "action_id": 18,
+                    "grid_index": [
+                      2,
+                      2
+                    ]
+                  },
+                  {
+                    "action_id": 19,
+                    "grid_index": [
+                      2,
+                      3
+                    ]
+                  },
+                  {
+                    "action_id": 20,
+                    "grid_index": [
+                      2,
+                      4
+                    ]
+                  },
+                  {
+                    "action_id": 21,
+                    "grid_index": [
+                      2,
+                      5
+                    ]
+                  },
+                  {
+                    "action_id": 22,
+                    "grid_index": [
+                      2,
+                      6
+                    ]
+                  },
+                  {
+                    "action_id": 23,
+                    "grid_index": [
+                      2,
+                      7
+                    ]
+                  },
+                  {
+                    "action_id": 24,
+                    "grid_index": [
+                      3,
+                      0
+                    ]
+                  },
+                  {
+                    "action_id": 25,
+                    "grid_index": [
+                      3,
+                      1
+                    ]
+                  },
+                  {
+                    "action_id": 26,
+                    "grid_index": [
+                      3,
+                      2
+                    ]
+                  },
+                  {
+                    "action_id": 27,
+                    "grid_index": [
+                      3,
+                      3
+                    ]
+                  },
+                  {
+                    "action_id": 28,
+                    "grid_index": [
+                      3,
+                      4
+                    ]
+                  },
+                  {
+                    "action_id": 29,
+                    "grid_index": [
+                      3,
+                      5
+                    ]
+                  },
+                  {
+                    "action_id": 30,
+                    "grid_index": [
+                      3,
+                      6
+                    ]
+                  },
+                  {
+                    "action_id": 31,
+                    "grid_index": [
+                      3,
+                      7
+                    ]
+                  }
+                ]
+              }
+            },
+            "exact_attacker_verification_required": false,
+            "local_optimum_under_supplied_evaluations": true
+          }
+        }
+      ],
+      "runtime_decomposition_s": {
+        "total_local_search_s": 0.41424829995958135,
+        "exact_defender_evaluation_s": 0.4140459999325685,
+        "neighborhood_enumeration_s": 2.8499984182417393e-05,
+        "local_verification_s": 0.00012909999350085855,
+        "search_control_residual_s": 4.4700049329549074e-05
+      },
+      "peak_memory": null,
+      "exact_attacker_verification_required": false,
+      "leader_objective": "attacker_objective",
+      "final_leader_value": 0.598683985204552
+    },
+    "evaluated": [
+      {
+        "action_id": 28,
+        "sensor_map": [
+          6.5,
+          0.5,
+          0.0
+        ],
+        "success": true,
+        "switching_state_id": 23754,
+        "trajectory": [
+          23754,
+          14473,
+          5989
+        ],
+        "reached_goal": true,
+        "trajectory_feasible": true,
+        "attacker_objective": 0.5861254553828318,
+        "glide_cost": 0.5196804609520944,
+        "powered_cost": 0.06644499443073733,
+        "candidate_successes": 669,
+        "candidate_count": 669,
+        "inference_runtime_sec": 0.14939660002710298,
+        "status": "success",
+        "detection_probability": 0.563904043722006,
+        "leader_value": 0.5861254553828318,
+        "leader_objective": "attacker_objective",
+        "cumulative_hazard": 0.8298929766414507,
+        "evaluator_wall_sec": 0.14978529996005818
+      },
+      {
+        "action_id": 19,
+        "sensor_map": [
+          5.5,
+          -0.5,
+          0.0
+        ],
+        "success": true,
+        "switching_state_id": 52997,
+        "trajectory": [
+          52997,
+          41254,
+          31541,
+          19431,
+          6035
+        ],
+        "reached_goal": true,
+        "trajectory_feasible": true,
+        "attacker_objective": 0.2259739845739437,
+        "glide_cost": 0.1585522783142815,
+        "powered_cost": 0.06742170625966219,
+        "candidate_successes": 125,
+        "candidate_count": 125,
+        "inference_runtime_sec": 0.026946300000417978,
+        "status": "success",
+        "detection_probability": 0.07100583169617916,
+        "leader_value": 0.2259739845739437,
+        "leader_objective": "attacker_objective",
+        "cumulative_hazard": 0.07365281757893702,
+        "evaluator_wall_sec": 0.02711629995610565
+      },
+      {
+        "action_id": 20,
+        "sensor_map": [
+          5.5,
+          0.5,
+          0.0
+        ],
+        "success": true,
+        "switching_state_id": 23754,
+        "trajectory": [
+          23754,
+          14473,
+          5989
+        ],
+        "reached_goal": true,
+        "trajectory_feasible": true,
+        "attacker_objective": 0.20729713187662568,
+        "glide_cost": 0.14085213744588834,
+        "powered_cost": 0.06644499443073733,
+        "candidate_successes": 501,
+        "candidate_count": 501,
+        "inference_runtime_sec": 0.09809569997014478,
+        "status": "success",
+        "detection_probability": 0.06968899022639391,
+        "leader_value": 0.20729713187662568,
+        "leader_objective": "attacker_objective",
+        "cumulative_hazard": 0.07223632962903848,
+        "evaluator_wall_sec": 0.09839100000681356
+      },
+      {
+        "action_id": 21,
+        "sensor_map": [
+          5.5,
+          1.5,
+          0.0
+        ],
+        "success": true,
+        "switching_state_id": 23826,
+        "trajectory": [
+          23826,
+          15699,
+          5985
+        ],
+        "reached_goal": true,
+        "trajectory_feasible": true,
+        "attacker_objective": 0.17643635060593726,
+        "glide_cost": 0.10135977535805625,
+        "powered_cost": 0.07507657524788103,
+        "candidate_successes": 49,
+        "candidate_count": 49,
+        "inference_runtime_sec": 0.012975499965250492,
+        "status": "success",
+        "detection_probability": 0.02554507121492745,
+        "leader_value": 0.17643635060593726,
+        "leader_objective": "attacker_objective",
+        "cumulative_hazard": 0.025877011709478016,
+        "evaluator_wall_sec": 0.013137499976437539
+      },
+      {
+        "action_id": 27,
+        "sensor_map": [
+          6.5,
+          -0.5,
+          0.0
+        ],
+        "success": true,
+        "switching_state_id": 50477,
+        "trajectory": [
+          50477,
+          38734,
+          29021,
+          19373,
+          6035
+        ],
+        "reached_goal": true,
+        "trajectory_feasible": true,
+        "attacker_objective": 0.598683985204552,
+        "glide_cost": 0.5444408640719176,
+        "powered_cost": 0.054243121132634395,
+        "candidate_successes": 139,
+        "candidate_count": 139,
+        "inference_runtime_sec": 0.029013300023507327,
+        "status": "success",
+        "detection_probability": 0.5633893622966316,
+        "leader_value": 0.598683985204552,
+        "leader_objective": "attacker_objective",
+        "cumulative_hazard": 0.8287134702905323,
+        "evaluator_wall_sec": 0.029185799998231232
+      },
+      {
+        "action_id": 29,
+        "sensor_map": [
+          6.5,
+          1.5,
+          0.0
+        ],
+        "success": true,
+        "switching_state_id": 12810,
+        "trajectory": [
+          12810,
+          5980
+        ],
+        "reached_goal": true,
+        "trajectory_feasible": true,
+        "attacker_objective": 0.19451809127944014,
+        "glide_cost": 0.12153723453638221,
+        "powered_cost": 0.07298085674305792,
+        "candidate_successes": 61,
+        "candidate_count": 61,
+        "inference_runtime_sec": 0.01457749999826774,
+        "status": "success",
+        "detection_probability": 0.06694341627366279,
+        "leader_value": 0.19451809127944014,
+        "leader_objective": "attacker_objective",
+        "cumulative_hazard": 0.0692894328930058,
+        "evaluator_wall_sec": 0.014721699990332127
+      },
+      {
+        "action_id": 18,
+        "sensor_map": [
+          5.5,
+          -1.5,
+          0.0
+        ],
+        "success": true,
+        "switching_state_id": 42053,
+        "trajectory": [
+          42053,
+          32337,
+          19437,
+          6035
+        ],
+        "reached_goal": true,
+        "trajectory_feasible": true,
+        "attacker_objective": 0.19483260191091128,
+        "glide_cost": 0.12528850625201154,
+        "powered_cost": 0.06954409565889975,
+        "candidate_successes": 118,
+        "candidate_count": 118,
+        "inference_runtime_sec": 0.022759900020901114,
+        "status": "success",
+        "detection_probability": 0.02785747132778689,
+        "leader_value": 0.19483260191091128,
+        "leader_objective": "attacker_objective",
+        "cumulative_hazard": 0.028252850835042868,
+        "evaluator_wall_sec": 0.022907699982170016
+      },
+      {
+        "action_id": 26,
+        "sensor_map": [
+          6.5,
+          -1.5,
+          0.0
+        ],
+        "success": true,
+        "switching_state_id": 51702,
+        "trajectory": [
+          51702,
+          39958,
+          30245,
+          18135,
+          6043
+        ],
+        "reached_goal": true,
+        "trajectory_feasible": true,
+        "attacker_objective": 0.21545435723610773,
+        "glide_cost": 0.15856276910954992,
+        "powered_cost": 0.05689158812655783,
+        "candidate_successes": 138,
+        "candidate_count": 138,
+        "inference_runtime_sec": 0.0275755999609828,
+        "status": "success",
+        "detection_probability": 0.07102532326694679,
+        "leader_value": 0.21545435723610773,
+        "leader_objective": "attacker_objective",
+        "cumulative_hazard": 0.07367379916947381,
+        "evaluator_wall_sec": 0.027757200004998595
+      }
+    ],
+    "warmup_evaluated_action_ids": [
+      18,
+      19,
+      20,
+      21,
+      26,
+      27,
+      28,
+      29
+    ]
+  },
+  "comparison": {
+    "selected_defender_action_match": true,
+    "selected_sensor_distance_m": 0.0,
+    "bellman_over_dqn_runtime_speedup": 76.16518380712301,
+    "bellman_over_dqn_first_query_ratio": 0.7687057104352306,
+    "bellman_over_dqn_repeated_query_ratio": 76.16518380712301,
+    "dqn_selected_sensor_exact_response": {
+      "feasible": true,
+      "sensor_map": [
+        6.5,
+        -0.5,
+        0.0
+      ],
+      "attacker_objective": 0.5868624131023719,
+      "detection_probability": 0.5610553929117621,
+      "switching_state_id": 50475,
+      "trajectory": [
+        50475,
+        39528,
+        27935,
+        18153,
+        6039
+      ],
+      "candidate_count": 139,
+      "cooptimal_candidate_count": 3,
+      "strong_tie_break_verified": true,
+      "runtime_sec": 3.426225599978352,
+      "active_state_count": 5054,
+      "active_edge_count": 36087
+    },
+    "dqn_selected_sensor_J_A_absolute_gap": 0.011821572102180156,
+    "dqn_selected_sensor_J_A_relative_gap": 0.020143685876365724,
+    "exact_baseline_minus_dqn_selected_exact_J_D": 0.0,
+    "exact_baseline_minus_dqn_selected_exact_J_A": 0.0,
+    "zero_sum_single_point_certificate": {
+      "certificate_type": "single_exact_best_response_at_returned_action",
+      "approximate_value_U_tilde": 0.598683985204552,
+      "exact_value_U": 0.5868624131023719,
+      "raw_delta": 0.011821572102180156,
+      "certified_delta": 0.011821572102180156,
+      "one_sided_inequality_verified": true,
+      "numerical_tolerance": 1e-10,
+      "guarantee": "returned action is a certified_delta-approximate r-local Stackelberg solution for the finite zero-sum game"
+    },
+    "dqn_selected_sensor_exact_neighbor_audit": null,
+    "exact_audit_additional_best_response_calls": 0,
+    "exact_audit_additional_best_response_runtime_sec": 0.0,
+    "exact_audit_new_action_ids": []
+  }
+}

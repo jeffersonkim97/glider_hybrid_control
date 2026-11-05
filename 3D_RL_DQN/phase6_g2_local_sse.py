@@ -48,6 +48,7 @@ from phase4_multi_terrain import (
 from phase4_v2_run_a import RunAGoalReachableProblem
 from phase5_g2_final_id_test import (
     FINAL_ID_SCHEMA,
+    FINAL_TERRAIN_COUNT,
     configure_final_terrain,
     freeze_final_id_000,
 )
@@ -55,7 +56,14 @@ from sparse_additive import solve_sparse_additive_bellman
 
 
 PHASE6_SCHEMA = "p1b-phase6-g2-local-sse-pilot-v1"
+ZERO_SUM_SCHEMA = "p1b-zero-sum-g2-local-search-v1"
 EXACT_CACHE_SCHEMA = "p1b-phase6-g2-exact-response-cache-v1"
+LEADER_OBJECTIVE_DETECTION_PROBABILITY = "detection_probability"
+LEADER_OBJECTIVE_ATTACKER_COST = "attacker_objective"
+SUPPORTED_LEADER_OBJECTIVES = (
+    LEADER_OBJECTIVE_DETECTION_PROBABILITY,
+    LEADER_OBJECTIVE_ATTACKER_COST,
+)
 DEFAULT_TERRAIN_INDEX = 1
 DEFAULT_SPATIAL_RESOLUTION_M = 25.0
 DEFAULT_HEADING_SPACING_DEG = 5.0
@@ -133,7 +141,22 @@ def _load_exact_response_cache(
     payload = json.loads(path.read_text(encoding="utf-8"))
     if payload.get("schema") != EXACT_CACHE_SCHEMA:
         raise RuntimeError(f"unexpected exact cache schema in {path}")
-    if payload.get("contract") != expected_contract:
+    actual_contract = payload.get("contract")
+    if not isinstance(actual_contract, dict):
+        raise RuntimeError(f"exact response cache has no contract in {path}")
+    # ``result_schema`` identifies the experiment that first populated the
+    # cache, not the exact Attacker-response problem. Ignoring only that key
+    # lets the theorem-bearing zero-sum outer search reuse Phase-6/7 responses
+    # while every physical/discretization/grid field remains guarded.
+    response_contract = {
+        key: value for key, value in actual_contract.items()
+        if key != "result_schema"
+    }
+    expected_response_contract = {
+        key: value for key, value in expected_contract.items()
+        if key != "result_schema"
+    }
+    if response_contract != expected_response_contract:
         raise RuntimeError(
             "exact response cache contract mismatch; refusing stale results"
         )
@@ -179,6 +202,43 @@ def _file_sha256(path: Path) -> str:
 
 def _condition_tag(dx_m: float, heading_deg: float, radius: int) -> str:
     return f"dx{dx_m:g}m_dpsi{heading_deg:g}deg_r{int(radius)}"
+
+
+def _normalize_leader_objective(value: str) -> str:
+    normalized = str(value).strip().lower()
+    if normalized not in SUPPORTED_LEADER_OBJECTIVES:
+        raise ValueError(
+            "leader objective must be one of "
+            f"{SUPPORTED_LEADER_OBJECTIVES}, got {value!r}"
+        )
+    return normalized
+
+
+def _leader_value(
+    *, attacker_objective: float, detection_probability: float,
+    leader_objective: str,
+) -> float:
+    objective = _normalize_leader_objective(leader_objective)
+    if objective == LEADER_OBJECTIVE_ATTACKER_COST:
+        return float(attacker_objective)
+    return float(detection_probability)
+
+
+def _search_result_payload(search: Any, leader_objective: str) -> dict[str, Any]:
+    """Serialize the legacy search result without mislabeling zero-sum value."""
+
+    objective = _normalize_leader_objective(leader_objective)
+    payload = search.as_dict()
+    leader_value = payload.get("final_J_D")
+    payload["leader_objective"] = objective
+    payload["final_leader_value"] = leader_value
+    if objective == LEADER_OBJECTIVE_ATTACKER_COST:
+        # LocalSSESearchResult historically names the maximized scalar
+        # ``final_J_D``. In zero-sum mode that scalar is J_A, so remove the
+        # misleading alias from the new-schema output. Physical P_D remains in
+        # the final response/evaluation record.
+        payload.pop("final_J_D", None)
+    return payload
 
 
 def _center_aligned_defender_region(
@@ -292,7 +352,8 @@ def _exact_g2_best_response(
 
 
 def _local_evaluation_from_exact(
-    action_id: int, response: ExactG2Response,
+    action_id: int, response: ExactG2Response, *,
+    leader_objective: str = LEADER_OBJECTIVE_DETECTION_PROBABILITY,
 ) -> LocalDefenderEvaluation:
     if not response.feasible:
         return LocalDefenderEvaluation(
@@ -305,7 +366,11 @@ def _local_evaluation_from_exact(
         )
     return LocalDefenderEvaluation(
         action_id=action_id, status="feasible",
-        defender_value=float(response.detection_probability),
+        defender_value=_leader_value(
+            attacker_objective=float(response.attacker_objective),
+            detection_probability=float(response.detection_probability),
+            leader_objective=leader_objective,
+        ),
         attacker_objective=float(response.attacker_objective),
         selected_attacker_response_id=int(response.switching_state_id),
         exact_attacker_best_response_verified=True,
@@ -383,6 +448,40 @@ def _exact_neighbor_audit(
     }
 
 
+def _zero_sum_single_point_certificate(
+    *, approximate_J: float, exact_J: float,
+    numerical_tolerance: float = 1.0e-10,
+) -> dict[str, Any]:
+    """Return the theorem certificate at the learned search's final action."""
+
+    approximate = float(approximate_J)
+    exact = float(exact_J)
+    tolerance = float(numerical_tolerance)
+    if not np.isfinite(approximate) or not np.isfinite(exact):
+        raise ValueError("zero-sum certificate values must be finite")
+    if not np.isfinite(tolerance) or tolerance < 0.0:
+        raise ValueError("numerical tolerance must be finite and nonnegative")
+    raw_delta = approximate - exact
+    if raw_delta < -tolerance:
+        raise RuntimeError(
+            "zero-sum one-sided inequality violated: the feasible learned "
+            f"response has J={approximate:.16g}, below exact J={exact:.16g}"
+        )
+    return {
+        "certificate_type": "single_exact_best_response_at_returned_action",
+        "approximate_value_U_tilde": approximate,
+        "exact_value_U": exact,
+        "raw_delta": raw_delta,
+        "certified_delta": max(0.0, raw_delta),
+        "one_sided_inequality_verified": True,
+        "numerical_tolerance": tolerance,
+        "guarantee": (
+            "returned action is a certified_delta-approximate r-local "
+            "Stackelberg solution for the finite zero-sum game"
+        ),
+    }
+
+
 def run_phase6_pilot(
     *, terrain_index: int = DEFAULT_TERRAIN_INDEX,
     spatial_resolution_m: float = DEFAULT_SPATIAL_RESOLUTION_M,
@@ -393,9 +492,20 @@ def run_phase6_pilot(
     result_schema: str = PHASE6_SCHEMA,
     experiment_label: str = "Phase-6",
     output_stem: str = "phase6_g2_local_sse_pilot",
+    leader_objective: str = LEADER_OBJECTIVE_DETECTION_PROBABILITY,
 ) -> Path:
-    if int(terrain_index) != 1:
-        raise ValueError("the frozen Phase-6 pilot contract uses terrain index 1")
+    leader_objective = _normalize_leader_objective(leader_objective)
+    zero_sum = leader_objective == LEADER_OBJECTIVE_ATTACKER_COST
+    if zero_sum and output_stem == "phase6_g2_local_sse_pilot":
+        raise ValueError(
+            "zero-sum results require a distinct output_stem so legacy "
+            "detection-probability results cannot be overwritten"
+        )
+    if not 0 <= int(terrain_index) < FINAL_TERRAIN_COUNT:
+        raise ValueError(
+            "the frozen Phase-6 final-ID contract uses terrain indices in "
+            f"[0, {FINAL_TERRAIN_COUNT - 1}]"
+        )
     if float(spatial_resolution_m) not in SUPPORTED_SPATIAL_RESOLUTIONS_M:
         raise ValueError(
             "the frozen Phase-6 comparison uses dx in "
@@ -519,7 +629,7 @@ def run_phase6_pilot(
         "defender_grid_sha256": defender_grid_sha256,
         "initial_action_id": int(scene.seed_action_id),
     }
-    if result_schema != PHASE6_SCHEMA:
+    if result_schema != PHASE6_SCHEMA and not zero_sum:
         exact_cache_contract["result_schema"] = result_schema
     exact_cache = _load_exact_response_cache(
         exact_cache_path, exact_cache_contract,
@@ -568,6 +678,7 @@ def run_phase6_pilot(
     def exact_evaluator(action_id: int) -> LocalDefenderEvaluation:
         return _local_evaluation_from_exact(
             int(action_id), exact_response(int(action_id)),
+            leader_objective=leader_objective,
         )
 
     print("Running exact powered-occluded Local-SSE...", flush=True)
@@ -733,22 +844,30 @@ def run_phase6_pilot(
         scored = context.problem.evaluate_trajectory(
             evaluation.trajectory, reached_goal=True,
         )
-        defender_value = float(
+        detection_probability = float(
             hazard_to_detection_probability(scored.cumulative_hazard)
+        )
+        defender_value = _leader_value(
+            attacker_objective=float(evaluation.attacker_objective),
+            detection_probability=detection_probability,
+            leader_objective=leader_objective,
         )
         elapsed = perf_counter() - started
         dqn_evaluator_wall += elapsed
         dqn_records[action_id] = {
             "action_id": action_id, "sensor_map": list(sensor),
             **evaluation.as_dict(),
-            "detection_probability": defender_value,
+            "detection_probability": detection_probability,
+            "leader_value": defender_value,
+            "leader_objective": leader_objective,
             "cumulative_hazard": float(scored.cumulative_hazard),
             "evaluator_wall_sec": elapsed,
         }
         print(
             f"  DQN BR action={action_id} sensor={sensor} "
             f"J_A={evaluation.attacker_objective:.6f} "
-            f"J_D={defender_value:.6f} "
+            f"J_D={detection_probability:.6f} "
+            f"leader={defender_value:.6f} ({leader_objective}) "
             f"candidates={evaluation.candidate_count} wall={elapsed:.3f}s",
             flush=True,
         )
@@ -827,12 +946,22 @@ def run_phase6_pilot(
     exact_at_dqn = exact_response(int(dqn_final_id))
     if not exact_at_dqn.feasible:
         raise RuntimeError("DQN-selected action is exact-model infeasible")
-    exact_audit = _exact_neighbor_audit(
-        selected_action_id=int(dqn_final_id),
-        scene=scene,
-        configuration=neighborhood,
-        exact_response=exact_response,
-    )
+    if zero_sum:
+        exact_audit = None
+        zero_sum_certificate = _zero_sum_single_point_certificate(
+            approximate_J=float(
+                dqn_records[int(dqn_final_id)]["attacker_objective"]
+            ),
+            exact_J=float(exact_at_dqn.attacker_objective),
+        )
+    else:
+        exact_audit = _exact_neighbor_audit(
+            selected_action_id=int(dqn_final_id),
+            scene=scene,
+            configuration=neighborhood,
+            exact_response=exact_response,
+        )
+        zero_sum_certificate = None
 
     exact_final_id = exact_search.final_local_sse_action_id
     if exact_final_id is None:
@@ -850,6 +979,9 @@ def run_phase6_pilot(
     exact_payoff_difference = float(exact_final.detection_probability) - float(
         exact_at_dqn.detection_probability
     )
+    exact_zero_sum_value_difference = float(
+        exact_final.attacker_objective
+    ) - float(exact_at_dqn.attacker_objective)
 
     exact_audit_new_action_ids = sorted(
         set(exact_cache) - set(exact_cache_ids_before_audit)
@@ -871,8 +1003,11 @@ def run_phase6_pilot(
             "checkpoint_frozen": True,
             "same_outer_search_and_neighborhood": True,
             "only_attacker_br_backend_changes": True,
-            "single_point_J_A_gap_is_not_a_nonzero_sum_local_certificate": True,
-            "exact_neighbor_audit_is_the_local_certificate": True,
+            "zero_sum_primary_formulation": zero_sum,
+            "single_point_J_A_gap_is_the_zero_sum_certificate": zero_sum,
+            "exact_neighbor_audit_is_the_nonzero_sum_local_certificate": (
+                not zero_sum
+            ),
         },
         "condition": {
             "terrain_index": terrain_index,
@@ -881,6 +1016,11 @@ def run_phase6_pilot(
             "spatial_resolution_m": spatial_resolution_m,
             "heading_spacing_deg": heading_spacing_deg,
             "r_neighbor": r_neighbor,
+            "leader_objective": leader_objective,
+            "leader_objective_sense": "maximize",
+            "detection_probability_role": (
+                "physical_diagnostic" if zero_sum else "leader_objective"
+            ),
             "nominal_defender_region_map": nominal_defender_region.as_dict(),
             "defender_region_map": defender_region.as_dict(),
             "defender_region_center_aligned_to_spacing": True,
@@ -908,6 +1048,7 @@ def run_phase6_pilot(
             "checkpoint_compatibility_checked": compatibility_checked,
         },
         "exact_bellman_local_sse": {
+            "leader_objective": leader_objective,
             "wall_runtime_sec": exact_benchmark_runtime,
             "timing_basis": exact_timing_basis,
             "current_process_search_wall_sec": exact_current_process_wall,
@@ -923,15 +1064,26 @@ def run_phase6_pilot(
                 project_paths.WORKSPACE_ROOT
             )),
             "cache_entries_loaded_at_start": len(initial_cached_action_ids),
-            "search": exact_search.as_dict(),
+            "search": _search_result_payload(
+                exact_search, leader_objective,
+            ),
             "final_response": exact_final.as_dict(),
         },
         "frozen_dqn_local_sse": {
+            "leader_objective": leader_objective,
             "warmup_wall_sec_excluded": warm_wall,
             "wall_runtime_sec": dqn_wall,
+            "first_query_wall_sec": warm_wall,
+            "repeated_query_wall_sec": dqn_wall,
+            "legacy_timing_field_note": (
+                "warmup_wall_sec_excluded is the first query and "
+                "wall_runtime_sec is the repeated warm query"
+            ),
             "evaluator_wall_sum_sec": dqn_evaluator_wall,
             "network_rollout_and_scoring_sum_sec": dqn_inference_wall,
-            "search": dqn_search.as_dict(),
+            "search": _search_result_payload(
+                dqn_search, leader_objective,
+            ),
             "evaluated": [
                 dqn_records[action_id]
                 for action_id in dqn_search.evaluated_defender_actions
@@ -944,6 +1096,12 @@ def run_phase6_pilot(
             "bellman_over_dqn_runtime_speedup": (
                 exact_benchmark_runtime / dqn_wall
             ),
+            "bellman_over_dqn_first_query_ratio": (
+                exact_benchmark_runtime / warm_wall
+            ),
+            "bellman_over_dqn_repeated_query_ratio": (
+                exact_benchmark_runtime / dqn_wall
+            ),
             "dqn_selected_sensor_exact_response": exact_at_dqn.as_dict(),
             "dqn_selected_sensor_J_A_absolute_gap": dqn_j_a_gap,
             "dqn_selected_sensor_J_A_relative_gap": (
@@ -952,6 +1110,10 @@ def run_phase6_pilot(
             "exact_baseline_minus_dqn_selected_exact_J_D": (
                 exact_payoff_difference
             ),
+            "exact_baseline_minus_dqn_selected_exact_J_A": (
+                exact_zero_sum_value_difference
+            ),
+            "zero_sum_single_point_certificate": zero_sum_certificate,
             "dqn_selected_sensor_exact_neighbor_audit": exact_audit,
             "exact_audit_additional_best_response_calls": (
                 exact_computed_calls - exact_computed_calls_before_audit
@@ -965,6 +1127,32 @@ def run_phase6_pilot(
     output_path = output_dir / f"{output_stem}.json"
     _write_json(output_path, result)
 
+    if zero_sum:
+        certificate_lines = [
+            f"- Primary leader objective: `{leader_objective}` (zero-sum)",
+            f"- Certified delta at the DQN-selected sensor: "
+            f"`{zero_sum_certificate['certified_delta']:.8f}`",
+            "- One-sided feasible-response inequality verified: "
+            f"`{zero_sum_certificate['one_sided_inequality_verified']}`",
+            "",
+            "The returned frozen-DQN action is a delta-approximate r-local "
+            "Stackelberg solution for the finite zero-sum game. The "
+            "certificate uses one exact best response at the returned action; "
+            "J_D is reported only as a physical diagnostic.",
+        ]
+    else:
+        certificate_lines = [
+            f"- Primary leader objective: `{leader_objective}` (non-zero-sum)",
+            f"- Exact-baseline minus DQN-selected exact `J_D`: "
+            f"`{exact_payoff_difference:.8f}`",
+            f"- DQN-selected sensor exact local certificate: "
+            f"`{exact_audit['exact_local_sse_verified']}`",
+            "",
+            "Because the implemented game is non-zero-sum, the single-point "
+            "J_A gap is diagnostic only; the exact selected-plus-neighbor "
+            "audit supplies the local Stackelberg certificate.",
+        ]
+
     markdown = [
         f"# {experiment_label} G2 Local-SSE Pilot",
         "",
@@ -972,14 +1160,14 @@ def run_phase6_pilot(
         f"heading `{heading_spacing_deg:g} deg`, Chebyshev `r={r_neighbor}`.",
         "No training or fine-tuning was performed.",
         "",
-        "| Method | Time | Evaluations | Final action | Final sensor | J_A | J_D |",
-        "|:---|---:|---:|---:|:---|---:|---:|",
-        f"| Exact Bellman | {exact_benchmark_runtime:.3f} s | "
+        "| Method | First query | Repeated query | Evaluations | Final action | Final sensor | J_A | J_D |",
+        "|:---|---:|---:|---:|---:|:---|---:|---:|",
+        f"| Exact Bellman | {exact_benchmark_runtime:.3f} s | n/a | "
         f"{exact_search.unique_defender_evaluations} | {exact_final_id} | "
         f"`{scene.defender_grid.position(int(exact_final_id))}` | "
         f"{exact_final.attacker_objective:.8f} | "
         f"{exact_final.detection_probability:.8f} |",
-        f"| Frozen DQN | {dqn_wall:.3f} s | "
+        f"| Frozen DQN | {warm_wall:.3f} s | {dqn_wall:.3f} s | "
         f"{dqn_search.unique_defender_evaluations} | {dqn_final_id} | "
         f"`{scene.defender_grid.position(int(dqn_final_id))}` | "
         f"{dqn_final_record['attacker_objective']:.8f} | "
@@ -987,26 +1175,47 @@ def run_phase6_pilot(
         "",
         f"- Selected action match: `{selected_match}`",
         f"- Selected sensor distance: `{selected_distance_m:.3f} m`",
-        f"- Bellman/DQN runtime ratio: "
+        f"- Bellman/DQN first-query ratio: "
+        f"`{exact_benchmark_runtime / warm_wall:.3f}x`",
+        f"- Bellman/DQN repeated-query ratio: "
         f"`{exact_benchmark_runtime / dqn_wall:.3f}x`",
         f"- Exact timing basis: `{exact_timing_basis}`",
         f"- Exact responses reused from disk: `{exact_search_reused_calls}`",
         f"- DQN-selected sensor exact `J_A` gap: `{dqn_j_a_gap:.8f}`",
-        f"- Exact-baseline minus DQN-selected exact `J_D`: "
-        f"`{exact_payoff_difference:.8f}`",
-        f"- DQN-selected sensor exact local certificate: "
-        f"`{exact_audit['exact_local_sse_verified']}`",
+        *certificate_lines,
         "",
         "The DQN warm-up pass, shared scene construction, and checkpoint load "
-        "are excluded from benchmark timings. Because the implemented game is "
-        "non-zero-sum, the single-point J_A gap is diagnostic only; the exact "
-        "selected-plus-neighbor audit supplies the local Stackelberg certificate.",
+        "are excluded from benchmark timings.",
     ]
     (output_dir / f"{output_stem}.md").write_text(
         "\n".join(markdown) + "\n", encoding="utf-8",
     )
     print(f"Wrote {output_path}", flush=True)
     return output_path
+
+
+def run_zero_sum_local_sse(
+    *, terrain_index: int = DEFAULT_TERRAIN_INDEX,
+    spatial_resolution_m: float = DEFAULT_SPATIAL_RESOLUTION_M,
+    heading_spacing_deg: float = DEFAULT_HEADING_SPACING_DEG,
+    r_neighbor: int = DEFAULT_R_NEIGHBOR,
+    device_name: str = "cuda",
+    output_root: Path | None = None,
+) -> Path:
+    """Run the theorem-bearing zero-sum outer search without retraining."""
+
+    return run_phase6_pilot(
+        terrain_index=terrain_index,
+        spatial_resolution_m=spatial_resolution_m,
+        heading_spacing_deg=heading_spacing_deg,
+        r_neighbor=r_neighbor,
+        device_name=device_name,
+        output_root=output_root,
+        result_schema=ZERO_SUM_SCHEMA,
+        experiment_label="Zero-sum",
+        output_stem="zero_sum_g2_local_search",
+        leader_objective=LEADER_OBJECTIVE_ATTACKER_COST,
+    )
 
 
 def main() -> None:
@@ -1016,14 +1225,27 @@ def main() -> None:
     parser.add_argument("--heading-spacing-deg", type=float, default=5.0)
     parser.add_argument("--r-neighbor", type=int, default=1)
     parser.add_argument("--device", choices=("cuda",), default="cuda")
-    arguments = parser.parse_args()
-    output = run_phase6_pilot(
-        terrain_index=arguments.terrain_index,
-        spatial_resolution_m=arguments.spatial_resolution_m,
-        heading_spacing_deg=arguments.heading_spacing_deg,
-        r_neighbor=arguments.r_neighbor,
-        device_name=arguments.device,
+    parser.add_argument(
+        "--leader-objective",
+        choices=SUPPORTED_LEADER_OBJECTIVES,
+        default=LEADER_OBJECTIVE_DETECTION_PROBABILITY,
+        help=(
+            "detection_probability preserves the legacy non-zero-sum run; "
+            "attacker_objective runs the paper's zero-sum outer search"
+        ),
     )
+    arguments = parser.parse_args()
+    common = {
+        "terrain_index": arguments.terrain_index,
+        "spatial_resolution_m": arguments.spatial_resolution_m,
+        "heading_spacing_deg": arguments.heading_spacing_deg,
+        "r_neighbor": arguments.r_neighbor,
+        "device_name": arguments.device,
+    }
+    if arguments.leader_objective == LEADER_OBJECTIVE_ATTACKER_COST:
+        output = run_zero_sum_local_sse(**common)
+    else:
+        output = run_phase6_pilot(**common)
     print(output, flush=True)
 
 
@@ -1033,6 +1255,9 @@ if __name__ == "__main__":
 
 __all__ = [
     "ExactG2Response",
+    "LEADER_OBJECTIVE_ATTACKER_COST",
+    "LEADER_OBJECTIVE_DETECTION_PROBABILITY",
     "SUPPORTED_SPATIAL_RESOLUTIONS_M",
     "run_phase6_pilot",
+    "run_zero_sum_local_sse",
 ]

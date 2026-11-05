@@ -1,0 +1,6405 @@
+{
+  "schema": "p1b-zero-sum-g2-local-search-v1",
+  "status": "complete",
+  "scope": {
+    "full_local_sse": true,
+    "global_sse": false,
+    "new_training_performed": false,
+    "checkpoint_frozen": true,
+    "same_outer_search_and_neighborhood": true,
+    "only_attacker_br_backend_changes": true,
+    "zero_sum_primary_formulation": true,
+    "single_point_J_A_gap_is_the_zero_sum_certificate": true,
+    "exact_neighbor_audit_is_the_nonzero_sum_local_certificate": false
+  },
+  "condition": {
+    "terrain_index": 3,
+    "terrain_id": "g2_random_boxes_final_id_003",
+    "terrain_hash": "e5992abc052eaf43756dab53bc4c9510918d937a9eb2050ac6e4bc3021fe0784",
+    "spatial_resolution_m": 50.0,
+    "heading_spacing_deg": 5.0,
+    "r_neighbor": 1,
+    "leader_objective": "attacker_objective",
+    "leader_objective_sense": "maximize",
+    "detection_probability_role": "physical_diagnostic",
+    "nominal_defender_region_map": {
+      "x_min": 3.25,
+      "x_max": 6.75,
+      "y_min": -3.75,
+      "y_max": 3.75,
+      "z": 0.0
+    },
+    "defender_region_map": {
+      "x_min": 3.25,
+      "x_max": 6.75,
+      "y_min": -3.75,
+      "y_max": 3.75,
+      "z": 0.0
+    },
+    "defender_region_center_aligned_to_spacing": true,
+    "defender_action_count": 128,
+    "initial_action_id": 104,
+    "initial_sensor_map": [
+      6.25,
+      0.25,
+      0.0
+    ],
+    "initial_sensor_source": "frozen terrain-001 Mixed-B scenario"
+  },
+  "checkpoint": {
+    "path": "3D_RL_DQN/checkpoints/phase4_extended_random_boxes/training_v2/g2_generalization/dx50m_dpsi5deg/seed0_ep10000_v1/phase4_seed0_final.pt",
+    "sha256": "c2f0898cf75d2360fc459580f8e93f8ea8c2e52ec4ca3c840ba95d055601041d",
+    "source": "frozen_phase5_manifest",
+    "seed": 0,
+    "episode": 10000,
+    "training_dataset_manifest_sha256": "f3736fe50298b5dd25a8cf37d32317b9b2d54a3d9d52a73cad7af3214e049886",
+    "load_runtime_sec_excluded": 0.14662830001907423,
+    "gradient_updates": 0
+  },
+  "shared_setup": {
+    "scene_build_wall_sec_excluded": 0.5839533000253141,
+    "scene_build_timing": {
+      "T_setup_s": 0.008412899973336607,
+      "T_defender_grid_s": 0.009315900038927794,
+      "T_shared_graph_s": 0.5637820999836549
+    },
+    "scene_sizes": {
+      "N_x": 33,
+      "N_y": 17,
+      "N_h": 11,
+      "N_psi": 72,
+      "N_S_cart": 444312,
+      "N_S_goal_reachable": 327838,
+      "A": 72,
+      "N_D": 128,
+      "neighbourhood_size": 9
+    },
+    "checkpoint_compatibility_checked": true
+  },
+  "exact_bellman_local_sse": {
+    "leader_objective": "attacker_objective",
+    "wall_runtime_sec": 165.80249360002927,
+    "timing_basis": "sum_of_per_response_runtime_across_resumed_runs",
+    "current_process_search_wall_sec": 0.0006413999944925308,
+    "best_response_runtime_sum_sec": 165.80249360002927,
+    "best_response_calls": 11,
+    "best_response_calls_reused_from_disk": 11,
+    "best_response_calls_computed_this_run": 0,
+    "cache_path": "3D_RL_DQN\\runs\\phase6_g2_local_sse\\final_id_003\\dx50m_dpsi5deg_r1\\exact_response_cache.json",
+    "cache_entries_loaded_at_start": 11,
+    "search": {
+      "initial_defender_action_id": 104,
+      "final_local_sse_action_id": 119,
+      "final_attacker_response_id": 357484,
+      "final_J_A": 0.44297646640879984,
+      "visited_defender_actions": [
+        104,
+        119
+      ],
+      "evaluated_defender_actions": [
+        104,
+        87,
+        88,
+        89,
+        103,
+        105,
+        119,
+        120,
+        121,
+        102,
+        118
+      ],
+      "unique_defender_evaluations": 11,
+      "cached_evaluation_reuses": 4,
+      "initialization_recovery_attempted": false,
+      "initialization_neighbor_action_ids": [],
+      "initialization_feasible_neighbor_ids": [],
+      "initialization_infeasible_neighbor_ids": [],
+      "initialization_unknown_neighbor_ids": [],
+      "initialization_recovery_action_id": null,
+      "local_search_iterations": 2,
+      "neighbor_count_per_iteration": [
+        8,
+        5
+      ],
+      "feasible_neighbor_count_per_iteration": [
+        8,
+        5
+      ],
+      "infeasible_neighbor_diagnostics": [],
+      "unknown_neighbor_diagnostics": [],
+      "payoff_improvement_per_iteration": [
+        0.212193056489356,
+        0.0
+      ],
+      "local_optimality_margin": 0.010111533206187628,
+      "termination_status": "certified_local_sse",
+      "local_sse_verified": true,
+      "attacker_exactness_verified": true,
+      "strong_tie_break_verified": true,
+      "independent_replay_status": null,
+      "isolated_feasible_local_solution": false,
+      "initialization_dependent_solution_concept": true,
+      "global_optimality_evaluated": false,
+      "global_optimal": null,
+      "solution_scope": "local Strong Stackelberg equilibrium over an explicit finite Defender grid neighborhood; not a global or continuous-space optimality claim",
+      "neighborhood_metadata": {
+        "configuration": {
+          "r_neighbor": 1,
+          "metric": "chebyshev_grid_index",
+          "radius_units": "integer Defender grid-index lengths",
+          "one_dimensional_rule": "0 < abs(j-i) <= r_neighbor",
+          "two_dimensional_rule": "0 < max(abs(p-i), abs(q-j)) <= r_neighbor",
+          "boundary_rule": "clip to explicitly configured grid actions"
+        },
+        "topology": {
+          "dimension": 2,
+          "ordered_action_grid_indices": [
+            {
+              "action_id": 0,
+              "grid_index": [
+                0,
+                0
+              ]
+            },
+            {
+              "action_id": 1,
+              "grid_index": [
+                0,
+                1
+              ]
+            },
+            {
+              "action_id": 2,
+              "grid_index": [
+                0,
+                2
+              ]
+            },
+            {
+              "action_id": 3,
+              "grid_index": [
+                0,
+                3
+              ]
+            },
+            {
+              "action_id": 4,
+              "grid_index": [
+                0,
+                4
+              ]
+            },
+            {
+              "action_id": 5,
+              "grid_index": [
+                0,
+                5
+              ]
+            },
+            {
+              "action_id": 6,
+              "grid_index": [
+                0,
+                6
+              ]
+            },
+            {
+              "action_id": 7,
+              "grid_index": [
+                0,
+                7
+              ]
+            },
+            {
+              "action_id": 8,
+              "grid_index": [
+                0,
+                8
+              ]
+            },
+            {
+              "action_id": 9,
+              "grid_index": [
+                0,
+                9
+              ]
+            },
+            {
+              "action_id": 10,
+              "grid_index": [
+                0,
+                10
+              ]
+            },
+            {
+              "action_id": 11,
+              "grid_index": [
+                0,
+                11
+              ]
+            },
+            {
+              "action_id": 12,
+              "grid_index": [
+                0,
+                12
+              ]
+            },
+            {
+              "action_id": 13,
+              "grid_index": [
+                0,
+                13
+              ]
+            },
+            {
+              "action_id": 14,
+              "grid_index": [
+                0,
+                14
+              ]
+            },
+            {
+              "action_id": 15,
+              "grid_index": [
+                0,
+                15
+              ]
+            },
+            {
+              "action_id": 16,
+              "grid_index": [
+                1,
+                0
+              ]
+            },
+            {
+              "action_id": 17,
+              "grid_index": [
+                1,
+                1
+              ]
+            },
+            {
+              "action_id": 18,
+              "grid_index": [
+                1,
+                2
+              ]
+            },
+            {
+              "action_id": 19,
+              "grid_index": [
+                1,
+                3
+              ]
+            },
+            {
+              "action_id": 20,
+              "grid_index": [
+                1,
+                4
+              ]
+            },
+            {
+              "action_id": 21,
+              "grid_index": [
+                1,
+                5
+              ]
+            },
+            {
+              "action_id": 22,
+              "grid_index": [
+                1,
+                6
+              ]
+            },
+            {
+              "action_id": 23,
+              "grid_index": [
+                1,
+                7
+              ]
+            },
+            {
+              "action_id": 24,
+              "grid_index": [
+                1,
+                8
+              ]
+            },
+            {
+              "action_id": 25,
+              "grid_index": [
+                1,
+                9
+              ]
+            },
+            {
+              "action_id": 26,
+              "grid_index": [
+                1,
+                10
+              ]
+            },
+            {
+              "action_id": 27,
+              "grid_index": [
+                1,
+                11
+              ]
+            },
+            {
+              "action_id": 28,
+              "grid_index": [
+                1,
+                12
+              ]
+            },
+            {
+              "action_id": 29,
+              "grid_index": [
+                1,
+                13
+              ]
+            },
+            {
+              "action_id": 30,
+              "grid_index": [
+                1,
+                14
+              ]
+            },
+            {
+              "action_id": 31,
+              "grid_index": [
+                1,
+                15
+              ]
+            },
+            {
+              "action_id": 32,
+              "grid_index": [
+                2,
+                0
+              ]
+            },
+            {
+              "action_id": 33,
+              "grid_index": [
+                2,
+                1
+              ]
+            },
+            {
+              "action_id": 34,
+              "grid_index": [
+                2,
+                2
+              ]
+            },
+            {
+              "action_id": 35,
+              "grid_index": [
+                2,
+                3
+              ]
+            },
+            {
+              "action_id": 36,
+              "grid_index": [
+                2,
+                4
+              ]
+            },
+            {
+              "action_id": 37,
+              "grid_index": [
+                2,
+                5
+              ]
+            },
+            {
+              "action_id": 38,
+              "grid_index": [
+                2,
+                6
+              ]
+            },
+            {
+              "action_id": 39,
+              "grid_index": [
+                2,
+                7
+              ]
+            },
+            {
+              "action_id": 40,
+              "grid_index": [
+                2,
+                8
+              ]
+            },
+            {
+              "action_id": 41,
+              "grid_index": [
+                2,
+                9
+              ]
+            },
+            {
+              "action_id": 42,
+              "grid_index": [
+                2,
+                10
+              ]
+            },
+            {
+              "action_id": 43,
+              "grid_index": [
+                2,
+                11
+              ]
+            },
+            {
+              "action_id": 44,
+              "grid_index": [
+                2,
+                12
+              ]
+            },
+            {
+              "action_id": 45,
+              "grid_index": [
+                2,
+                13
+              ]
+            },
+            {
+              "action_id": 46,
+              "grid_index": [
+                2,
+                14
+              ]
+            },
+            {
+              "action_id": 47,
+              "grid_index": [
+                2,
+                15
+              ]
+            },
+            {
+              "action_id": 48,
+              "grid_index": [
+                3,
+                0
+              ]
+            },
+            {
+              "action_id": 49,
+              "grid_index": [
+                3,
+                1
+              ]
+            },
+            {
+              "action_id": 50,
+              "grid_index": [
+                3,
+                2
+              ]
+            },
+            {
+              "action_id": 51,
+              "grid_index": [
+                3,
+                3
+              ]
+            },
+            {
+              "action_id": 52,
+              "grid_index": [
+                3,
+                4
+              ]
+            },
+            {
+              "action_id": 53,
+              "grid_index": [
+                3,
+                5
+              ]
+            },
+            {
+              "action_id": 54,
+              "grid_index": [
+                3,
+                6
+              ]
+            },
+            {
+              "action_id": 55,
+              "grid_index": [
+                3,
+                7
+              ]
+            },
+            {
+              "action_id": 56,
+              "grid_index": [
+                3,
+                8
+              ]
+            },
+            {
+              "action_id": 57,
+              "grid_index": [
+                3,
+                9
+              ]
+            },
+            {
+              "action_id": 58,
+              "grid_index": [
+                3,
+                10
+              ]
+            },
+            {
+              "action_id": 59,
+              "grid_index": [
+                3,
+                11
+              ]
+            },
+            {
+              "action_id": 60,
+              "grid_index": [
+                3,
+                12
+              ]
+            },
+            {
+              "action_id": 61,
+              "grid_index": [
+                3,
+                13
+              ]
+            },
+            {
+              "action_id": 62,
+              "grid_index": [
+                3,
+                14
+              ]
+            },
+            {
+              "action_id": 63,
+              "grid_index": [
+                3,
+                15
+              ]
+            },
+            {
+              "action_id": 64,
+              "grid_index": [
+                4,
+                0
+              ]
+            },
+            {
+              "action_id": 65,
+              "grid_index": [
+                4,
+                1
+              ]
+            },
+            {
+              "action_id": 66,
+              "grid_index": [
+                4,
+                2
+              ]
+            },
+            {
+              "action_id": 67,
+              "grid_index": [
+                4,
+                3
+              ]
+            },
+            {
+              "action_id": 68,
+              "grid_index": [
+                4,
+                4
+              ]
+            },
+            {
+              "action_id": 69,
+              "grid_index": [
+                4,
+                5
+              ]
+            },
+            {
+              "action_id": 70,
+              "grid_index": [
+                4,
+                6
+              ]
+            },
+            {
+              "action_id": 71,
+              "grid_index": [
+                4,
+                7
+              ]
+            },
+            {
+              "action_id": 72,
+              "grid_index": [
+                4,
+                8
+              ]
+            },
+            {
+              "action_id": 73,
+              "grid_index": [
+                4,
+                9
+              ]
+            },
+            {
+              "action_id": 74,
+              "grid_index": [
+                4,
+                10
+              ]
+            },
+            {
+              "action_id": 75,
+              "grid_index": [
+                4,
+                11
+              ]
+            },
+            {
+              "action_id": 76,
+              "grid_index": [
+                4,
+                12
+              ]
+            },
+            {
+              "action_id": 77,
+              "grid_index": [
+                4,
+                13
+              ]
+            },
+            {
+              "action_id": 78,
+              "grid_index": [
+                4,
+                14
+              ]
+            },
+            {
+              "action_id": 79,
+              "grid_index": [
+                4,
+                15
+              ]
+            },
+            {
+              "action_id": 80,
+              "grid_index": [
+                5,
+                0
+              ]
+            },
+            {
+              "action_id": 81,
+              "grid_index": [
+                5,
+                1
+              ]
+            },
+            {
+              "action_id": 82,
+              "grid_index": [
+                5,
+                2
+              ]
+            },
+            {
+              "action_id": 83,
+              "grid_index": [
+                5,
+                3
+              ]
+            },
+            {
+              "action_id": 84,
+              "grid_index": [
+                5,
+                4
+              ]
+            },
+            {
+              "action_id": 85,
+              "grid_index": [
+                5,
+                5
+              ]
+            },
+            {
+              "action_id": 86,
+              "grid_index": [
+                5,
+                6
+              ]
+            },
+            {
+              "action_id": 87,
+              "grid_index": [
+                5,
+                7
+              ]
+            },
+            {
+              "action_id": 88,
+              "grid_index": [
+                5,
+                8
+              ]
+            },
+            {
+              "action_id": 89,
+              "grid_index": [
+                5,
+                9
+              ]
+            },
+            {
+              "action_id": 90,
+              "grid_index": [
+                5,
+                10
+              ]
+            },
+            {
+              "action_id": 91,
+              "grid_index": [
+                5,
+                11
+              ]
+            },
+            {
+              "action_id": 92,
+              "grid_index": [
+                5,
+                12
+              ]
+            },
+            {
+              "action_id": 93,
+              "grid_index": [
+                5,
+                13
+              ]
+            },
+            {
+              "action_id": 94,
+              "grid_index": [
+                5,
+                14
+              ]
+            },
+            {
+              "action_id": 95,
+              "grid_index": [
+                5,
+                15
+              ]
+            },
+            {
+              "action_id": 96,
+              "grid_index": [
+                6,
+                0
+              ]
+            },
+            {
+              "action_id": 97,
+              "grid_index": [
+                6,
+                1
+              ]
+            },
+            {
+              "action_id": 98,
+              "grid_index": [
+                6,
+                2
+              ]
+            },
+            {
+              "action_id": 99,
+              "grid_index": [
+                6,
+                3
+              ]
+            },
+            {
+              "action_id": 100,
+              "grid_index": [
+                6,
+                4
+              ]
+            },
+            {
+              "action_id": 101,
+              "grid_index": [
+                6,
+                5
+              ]
+            },
+            {
+              "action_id": 102,
+              "grid_index": [
+                6,
+                6
+              ]
+            },
+            {
+              "action_id": 103,
+              "grid_index": [
+                6,
+                7
+              ]
+            },
+            {
+              "action_id": 104,
+              "grid_index": [
+                6,
+                8
+              ]
+            },
+            {
+              "action_id": 105,
+              "grid_index": [
+                6,
+                9
+              ]
+            },
+            {
+              "action_id": 106,
+              "grid_index": [
+                6,
+                10
+              ]
+            },
+            {
+              "action_id": 107,
+              "grid_index": [
+                6,
+                11
+              ]
+            },
+            {
+              "action_id": 108,
+              "grid_index": [
+                6,
+                12
+              ]
+            },
+            {
+              "action_id": 109,
+              "grid_index": [
+                6,
+                13
+              ]
+            },
+            {
+              "action_id": 110,
+              "grid_index": [
+                6,
+                14
+              ]
+            },
+            {
+              "action_id": 111,
+              "grid_index": [
+                6,
+                15
+              ]
+            },
+            {
+              "action_id": 112,
+              "grid_index": [
+                7,
+                0
+              ]
+            },
+            {
+              "action_id": 113,
+              "grid_index": [
+                7,
+                1
+              ]
+            },
+            {
+              "action_id": 114,
+              "grid_index": [
+                7,
+                2
+              ]
+            },
+            {
+              "action_id": 115,
+              "grid_index": [
+                7,
+                3
+              ]
+            },
+            {
+              "action_id": 116,
+              "grid_index": [
+                7,
+                4
+              ]
+            },
+            {
+              "action_id": 117,
+              "grid_index": [
+                7,
+                5
+              ]
+            },
+            {
+              "action_id": 118,
+              "grid_index": [
+                7,
+                6
+              ]
+            },
+            {
+              "action_id": 119,
+              "grid_index": [
+                7,
+                7
+              ]
+            },
+            {
+              "action_id": 120,
+              "grid_index": [
+                7,
+                8
+              ]
+            },
+            {
+              "action_id": 121,
+              "grid_index": [
+                7,
+                9
+              ]
+            },
+            {
+              "action_id": 122,
+              "grid_index": [
+                7,
+                10
+              ]
+            },
+            {
+              "action_id": 123,
+              "grid_index": [
+                7,
+                11
+              ]
+            },
+            {
+              "action_id": 124,
+              "grid_index": [
+                7,
+                12
+              ]
+            },
+            {
+              "action_id": 125,
+              "grid_index": [
+                7,
+                13
+              ]
+            },
+            {
+              "action_id": 126,
+              "grid_index": [
+                7,
+                14
+              ]
+            },
+            {
+              "action_id": 127,
+              "grid_index": [
+                7,
+                15
+              ]
+            }
+          ]
+        }
+      },
+      "iterations": [
+        {
+          "iteration": 0,
+          "current_action_id": 104,
+          "current_defender_value": 0.23078340991944385,
+          "neighbor_action_ids": [
+            87,
+            88,
+            89,
+            103,
+            105,
+            119,
+            120,
+            121
+          ],
+          "feasible_neighbor_ids": [
+            87,
+            88,
+            89,
+            103,
+            105,
+            119,
+            120,
+            121
+          ],
+          "infeasible_neighbor_ids": [],
+          "unknown_neighbor_ids": [],
+          "chosen_next_action_id": 119,
+          "payoff_improvement": 0.212193056489356,
+          "local_verification": {
+            "candidate_action_id": 104,
+            "candidate_defender_value": 0.23078340991944385,
+            "neighbor_action_ids": [
+              87,
+              88,
+              89,
+              103,
+              105,
+              119,
+              120,
+              121
+            ],
+            "feasible_neighbor_ids": [
+              87,
+              88,
+              89,
+              103,
+              105,
+              119,
+              120,
+              121
+            ],
+            "infeasible_neighbor_diagnostics": [],
+            "unknown_neighbor_diagnostics": [],
+            "improving_neighbor_ids": [
+              103,
+              119,
+              120
+            ],
+            "equal_payoff_neighbor_ids": [],
+            "best_feasible_neighbor_value": 0.44297646640879984,
+            "local_optimality_margin": -0.212193056489356,
+            "isolated_feasible_local_solution": false,
+            "exact_attacker_responses_verified": true,
+            "strong_tie_breaking_verified": true,
+            "local_sse_verified": false,
+            "global_condition_equivalent": false,
+            "comparison_scope": "local Strong Stackelberg equilibrium over an explicit finite Defender grid neighborhood; not a global or continuous-space optimality claim",
+            "neighborhood_metadata": {
+              "configuration": {
+                "r_neighbor": 1,
+                "metric": "chebyshev_grid_index",
+                "radius_units": "integer Defender grid-index lengths",
+                "one_dimensional_rule": "0 < abs(j-i) <= r_neighbor",
+                "two_dimensional_rule": "0 < max(abs(p-i), abs(q-j)) <= r_neighbor",
+                "boundary_rule": "clip to explicitly configured grid actions"
+              },
+              "topology": {
+                "dimension": 2,
+                "ordered_action_grid_indices": [
+                  {
+                    "action_id": 0,
+                    "grid_index": [
+                      0,
+                      0
+                    ]
+                  },
+                  {
+                    "action_id": 1,
+                    "grid_index": [
+                      0,
+                      1
+                    ]
+                  },
+                  {
+                    "action_id": 2,
+                    "grid_index": [
+                      0,
+                      2
+                    ]
+                  },
+                  {
+                    "action_id": 3,
+                    "grid_index": [
+                      0,
+                      3
+                    ]
+                  },
+                  {
+                    "action_id": 4,
+                    "grid_index": [
+                      0,
+                      4
+                    ]
+                  },
+                  {
+                    "action_id": 5,
+                    "grid_index": [
+                      0,
+                      5
+                    ]
+                  },
+                  {
+                    "action_id": 6,
+                    "grid_index": [
+                      0,
+                      6
+                    ]
+                  },
+                  {
+                    "action_id": 7,
+                    "grid_index": [
+                      0,
+                      7
+                    ]
+                  },
+                  {
+                    "action_id": 8,
+                    "grid_index": [
+                      0,
+                      8
+                    ]
+                  },
+                  {
+                    "action_id": 9,
+                    "grid_index": [
+                      0,
+                      9
+                    ]
+                  },
+                  {
+                    "action_id": 10,
+                    "grid_index": [
+                      0,
+                      10
+                    ]
+                  },
+                  {
+                    "action_id": 11,
+                    "grid_index": [
+                      0,
+                      11
+                    ]
+                  },
+                  {
+                    "action_id": 12,
+                    "grid_index": [
+                      0,
+                      12
+                    ]
+                  },
+                  {
+                    "action_id": 13,
+                    "grid_index": [
+                      0,
+                      13
+                    ]
+                  },
+                  {
+                    "action_id": 14,
+                    "grid_index": [
+                      0,
+                      14
+                    ]
+                  },
+                  {
+                    "action_id": 15,
+                    "grid_index": [
+                      0,
+                      15
+                    ]
+                  },
+                  {
+                    "action_id": 16,
+                    "grid_index": [
+                      1,
+                      0
+                    ]
+                  },
+                  {
+                    "action_id": 17,
+                    "grid_index": [
+                      1,
+                      1
+                    ]
+                  },
+                  {
+                    "action_id": 18,
+                    "grid_index": [
+                      1,
+                      2
+                    ]
+                  },
+                  {
+                    "action_id": 19,
+                    "grid_index": [
+                      1,
+                      3
+                    ]
+                  },
+                  {
+                    "action_id": 20,
+                    "grid_index": [
+                      1,
+                      4
+                    ]
+                  },
+                  {
+                    "action_id": 21,
+                    "grid_index": [
+                      1,
+                      5
+                    ]
+                  },
+                  {
+                    "action_id": 22,
+                    "grid_index": [
+                      1,
+                      6
+                    ]
+                  },
+                  {
+                    "action_id": 23,
+                    "grid_index": [
+                      1,
+                      7
+                    ]
+                  },
+                  {
+                    "action_id": 24,
+                    "grid_index": [
+                      1,
+                      8
+                    ]
+                  },
+                  {
+                    "action_id": 25,
+                    "grid_index": [
+                      1,
+                      9
+                    ]
+                  },
+                  {
+                    "action_id": 26,
+                    "grid_index": [
+                      1,
+                      10
+                    ]
+                  },
+                  {
+                    "action_id": 27,
+                    "grid_index": [
+                      1,
+                      11
+                    ]
+                  },
+                  {
+                    "action_id": 28,
+                    "grid_index": [
+                      1,
+                      12
+                    ]
+                  },
+                  {
+                    "action_id": 29,
+                    "grid_index": [
+                      1,
+                      13
+                    ]
+                  },
+                  {
+                    "action_id": 30,
+                    "grid_index": [
+                      1,
+                      14
+                    ]
+                  },
+                  {
+                    "action_id": 31,
+                    "grid_index": [
+                      1,
+                      15
+                    ]
+                  },
+                  {
+                    "action_id": 32,
+                    "grid_index": [
+                      2,
+                      0
+                    ]
+                  },
+                  {
+                    "action_id": 33,
+                    "grid_index": [
+                      2,
+                      1
+                    ]
+                  },
+                  {
+                    "action_id": 34,
+                    "grid_index": [
+                      2,
+                      2
+                    ]
+                  },
+                  {
+                    "action_id": 35,
+                    "grid_index": [
+                      2,
+                      3
+                    ]
+                  },
+                  {
+                    "action_id": 36,
+                    "grid_index": [
+                      2,
+                      4
+                    ]
+                  },
+                  {
+                    "action_id": 37,
+                    "grid_index": [
+                      2,
+                      5
+                    ]
+                  },
+                  {
+                    "action_id": 38,
+                    "grid_index": [
+                      2,
+                      6
+                    ]
+                  },
+                  {
+                    "action_id": 39,
+                    "grid_index": [
+                      2,
+                      7
+                    ]
+                  },
+                  {
+                    "action_id": 40,
+                    "grid_index": [
+                      2,
+                      8
+                    ]
+                  },
+                  {
+                    "action_id": 41,
+                    "grid_index": [
+                      2,
+                      9
+                    ]
+                  },
+                  {
+                    "action_id": 42,
+                    "grid_index": [
+                      2,
+                      10
+                    ]
+                  },
+                  {
+                    "action_id": 43,
+                    "grid_index": [
+                      2,
+                      11
+                    ]
+                  },
+                  {
+                    "action_id": 44,
+                    "grid_index": [
+                      2,
+                      12
+                    ]
+                  },
+                  {
+                    "action_id": 45,
+                    "grid_index": [
+                      2,
+                      13
+                    ]
+                  },
+                  {
+                    "action_id": 46,
+                    "grid_index": [
+                      2,
+                      14
+                    ]
+                  },
+                  {
+                    "action_id": 47,
+                    "grid_index": [
+                      2,
+                      15
+                    ]
+                  },
+                  {
+                    "action_id": 48,
+                    "grid_index": [
+                      3,
+                      0
+                    ]
+                  },
+                  {
+                    "action_id": 49,
+                    "grid_index": [
+                      3,
+                      1
+                    ]
+                  },
+                  {
+                    "action_id": 50,
+                    "grid_index": [
+                      3,
+                      2
+                    ]
+                  },
+                  {
+                    "action_id": 51,
+                    "grid_index": [
+                      3,
+                      3
+                    ]
+                  },
+                  {
+                    "action_id": 52,
+                    "grid_index": [
+                      3,
+                      4
+                    ]
+                  },
+                  {
+                    "action_id": 53,
+                    "grid_index": [
+                      3,
+                      5
+                    ]
+                  },
+                  {
+                    "action_id": 54,
+                    "grid_index": [
+                      3,
+                      6
+                    ]
+                  },
+                  {
+                    "action_id": 55,
+                    "grid_index": [
+                      3,
+                      7
+                    ]
+                  },
+                  {
+                    "action_id": 56,
+                    "grid_index": [
+                      3,
+                      8
+                    ]
+                  },
+                  {
+                    "action_id": 57,
+                    "grid_index": [
+                      3,
+                      9
+                    ]
+                  },
+                  {
+                    "action_id": 58,
+                    "grid_index": [
+                      3,
+                      10
+                    ]
+                  },
+                  {
+                    "action_id": 59,
+                    "grid_index": [
+                      3,
+                      11
+                    ]
+                  },
+                  {
+                    "action_id": 60,
+                    "grid_index": [
+                      3,
+                      12
+                    ]
+                  },
+                  {
+                    "action_id": 61,
+                    "grid_index": [
+                      3,
+                      13
+                    ]
+                  },
+                  {
+                    "action_id": 62,
+                    "grid_index": [
+                      3,
+                      14
+                    ]
+                  },
+                  {
+                    "action_id": 63,
+                    "grid_index": [
+                      3,
+                      15
+                    ]
+                  },
+                  {
+                    "action_id": 64,
+                    "grid_index": [
+                      4,
+                      0
+                    ]
+                  },
+                  {
+                    "action_id": 65,
+                    "grid_index": [
+                      4,
+                      1
+                    ]
+                  },
+                  {
+                    "action_id": 66,
+                    "grid_index": [
+                      4,
+                      2
+                    ]
+                  },
+                  {
+                    "action_id": 67,
+                    "grid_index": [
+                      4,
+                      3
+                    ]
+                  },
+                  {
+                    "action_id": 68,
+                    "grid_index": [
+                      4,
+                      4
+                    ]
+                  },
+                  {
+                    "action_id": 69,
+                    "grid_index": [
+                      4,
+                      5
+                    ]
+                  },
+                  {
+                    "action_id": 70,
+                    "grid_index": [
+                      4,
+                      6
+                    ]
+                  },
+                  {
+                    "action_id": 71,
+                    "grid_index": [
+                      4,
+                      7
+                    ]
+                  },
+                  {
+                    "action_id": 72,
+                    "grid_index": [
+                      4,
+                      8
+                    ]
+                  },
+                  {
+                    "action_id": 73,
+                    "grid_index": [
+                      4,
+                      9
+                    ]
+                  },
+                  {
+                    "action_id": 74,
+                    "grid_index": [
+                      4,
+                      10
+                    ]
+                  },
+                  {
+                    "action_id": 75,
+                    "grid_index": [
+                      4,
+                      11
+                    ]
+                  },
+                  {
+                    "action_id": 76,
+                    "grid_index": [
+                      4,
+                      12
+                    ]
+                  },
+                  {
+                    "action_id": 77,
+                    "grid_index": [
+                      4,
+                      13
+                    ]
+                  },
+                  {
+                    "action_id": 78,
+                    "grid_index": [
+                      4,
+                      14
+                    ]
+                  },
+                  {
+                    "action_id": 79,
+                    "grid_index": [
+                      4,
+                      15
+                    ]
+                  },
+                  {
+                    "action_id": 80,
+                    "grid_index": [
+                      5,
+                      0
+                    ]
+                  },
+                  {
+                    "action_id": 81,
+                    "grid_index": [
+                      5,
+                      1
+                    ]
+                  },
+                  {
+                    "action_id": 82,
+                    "grid_index": [
+                      5,
+                      2
+                    ]
+                  },
+                  {
+                    "action_id": 83,
+                    "grid_index": [
+                      5,
+                      3
+                    ]
+                  },
+                  {
+                    "action_id": 84,
+                    "grid_index": [
+                      5,
+                      4
+                    ]
+                  },
+                  {
+                    "action_id": 85,
+                    "grid_index": [
+                      5,
+                      5
+                    ]
+                  },
+                  {
+                    "action_id": 86,
+                    "grid_index": [
+                      5,
+                      6
+                    ]
+                  },
+                  {
+                    "action_id": 87,
+                    "grid_index": [
+                      5,
+                      7
+                    ]
+                  },
+                  {
+                    "action_id": 88,
+                    "grid_index": [
+                      5,
+                      8
+                    ]
+                  },
+                  {
+                    "action_id": 89,
+                    "grid_index": [
+                      5,
+                      9
+                    ]
+                  },
+                  {
+                    "action_id": 90,
+                    "grid_index": [
+                      5,
+                      10
+                    ]
+                  },
+                  {
+                    "action_id": 91,
+                    "grid_index": [
+                      5,
+                      11
+                    ]
+                  },
+                  {
+                    "action_id": 92,
+                    "grid_index": [
+                      5,
+                      12
+                    ]
+                  },
+                  {
+                    "action_id": 93,
+                    "grid_index": [
+                      5,
+                      13
+                    ]
+                  },
+                  {
+                    "action_id": 94,
+                    "grid_index": [
+                      5,
+                      14
+                    ]
+                  },
+                  {
+                    "action_id": 95,
+                    "grid_index": [
+                      5,
+                      15
+                    ]
+                  },
+                  {
+                    "action_id": 96,
+                    "grid_index": [
+                      6,
+                      0
+                    ]
+                  },
+                  {
+                    "action_id": 97,
+                    "grid_index": [
+                      6,
+                      1
+                    ]
+                  },
+                  {
+                    "action_id": 98,
+                    "grid_index": [
+                      6,
+                      2
+                    ]
+                  },
+                  {
+                    "action_id": 99,
+                    "grid_index": [
+                      6,
+                      3
+                    ]
+                  },
+                  {
+                    "action_id": 100,
+                    "grid_index": [
+                      6,
+                      4
+                    ]
+                  },
+                  {
+                    "action_id": 101,
+                    "grid_index": [
+                      6,
+                      5
+                    ]
+                  },
+                  {
+                    "action_id": 102,
+                    "grid_index": [
+                      6,
+                      6
+                    ]
+                  },
+                  {
+                    "action_id": 103,
+                    "grid_index": [
+                      6,
+                      7
+                    ]
+                  },
+                  {
+                    "action_id": 104,
+                    "grid_index": [
+                      6,
+                      8
+                    ]
+                  },
+                  {
+                    "action_id": 105,
+                    "grid_index": [
+                      6,
+                      9
+                    ]
+                  },
+                  {
+                    "action_id": 106,
+                    "grid_index": [
+                      6,
+                      10
+                    ]
+                  },
+                  {
+                    "action_id": 107,
+                    "grid_index": [
+                      6,
+                      11
+                    ]
+                  },
+                  {
+                    "action_id": 108,
+                    "grid_index": [
+                      6,
+                      12
+                    ]
+                  },
+                  {
+                    "action_id": 109,
+                    "grid_index": [
+                      6,
+                      13
+                    ]
+                  },
+                  {
+                    "action_id": 110,
+                    "grid_index": [
+                      6,
+                      14
+                    ]
+                  },
+                  {
+                    "action_id": 111,
+                    "grid_index": [
+                      6,
+                      15
+                    ]
+                  },
+                  {
+                    "action_id": 112,
+                    "grid_index": [
+                      7,
+                      0
+                    ]
+                  },
+                  {
+                    "action_id": 113,
+                    "grid_index": [
+                      7,
+                      1
+                    ]
+                  },
+                  {
+                    "action_id": 114,
+                    "grid_index": [
+                      7,
+                      2
+                    ]
+                  },
+                  {
+                    "action_id": 115,
+                    "grid_index": [
+                      7,
+                      3
+                    ]
+                  },
+                  {
+                    "action_id": 116,
+                    "grid_index": [
+                      7,
+                      4
+                    ]
+                  },
+                  {
+                    "action_id": 117,
+                    "grid_index": [
+                      7,
+                      5
+                    ]
+                  },
+                  {
+                    "action_id": 118,
+                    "grid_index": [
+                      7,
+                      6
+                    ]
+                  },
+                  {
+                    "action_id": 119,
+                    "grid_index": [
+                      7,
+                      7
+                    ]
+                  },
+                  {
+                    "action_id": 120,
+                    "grid_index": [
+                      7,
+                      8
+                    ]
+                  },
+                  {
+                    "action_id": 121,
+                    "grid_index": [
+                      7,
+                      9
+                    ]
+                  },
+                  {
+                    "action_id": 122,
+                    "grid_index": [
+                      7,
+                      10
+                    ]
+                  },
+                  {
+                    "action_id": 123,
+                    "grid_index": [
+                      7,
+                      11
+                    ]
+                  },
+                  {
+                    "action_id": 124,
+                    "grid_index": [
+                      7,
+                      12
+                    ]
+                  },
+                  {
+                    "action_id": 125,
+                    "grid_index": [
+                      7,
+                      13
+                    ]
+                  },
+                  {
+                    "action_id": 126,
+                    "grid_index": [
+                      7,
+                      14
+                    ]
+                  },
+                  {
+                    "action_id": 127,
+                    "grid_index": [
+                      7,
+                      15
+                    ]
+                  }
+                ]
+              }
+            },
+            "exact_attacker_verification_required": true,
+            "local_optimum_under_supplied_evaluations": false
+          }
+        },
+        {
+          "iteration": 1,
+          "current_action_id": 119,
+          "current_defender_value": 0.44297646640879984,
+          "neighbor_action_ids": [
+            102,
+            103,
+            104,
+            118,
+            120
+          ],
+          "feasible_neighbor_ids": [
+            102,
+            103,
+            104,
+            118,
+            120
+          ],
+          "infeasible_neighbor_ids": [],
+          "unknown_neighbor_ids": [],
+          "chosen_next_action_id": null,
+          "payoff_improvement": 0.0,
+          "local_verification": {
+            "candidate_action_id": 119,
+            "candidate_defender_value": 0.44297646640879984,
+            "neighbor_action_ids": [
+              102,
+              103,
+              104,
+              118,
+              120
+            ],
+            "feasible_neighbor_ids": [
+              102,
+              103,
+              104,
+              118,
+              120
+            ],
+            "infeasible_neighbor_diagnostics": [],
+            "unknown_neighbor_diagnostics": [],
+            "improving_neighbor_ids": [],
+            "equal_payoff_neighbor_ids": [],
+            "best_feasible_neighbor_value": 0.4328649332026122,
+            "local_optimality_margin": 0.010111533206187628,
+            "isolated_feasible_local_solution": false,
+            "exact_attacker_responses_verified": true,
+            "strong_tie_breaking_verified": true,
+            "local_sse_verified": true,
+            "global_condition_equivalent": false,
+            "comparison_scope": "local Strong Stackelberg equilibrium over an explicit finite Defender grid neighborhood; not a global or continuous-space optimality claim",
+            "neighborhood_metadata": {
+              "configuration": {
+                "r_neighbor": 1,
+                "metric": "chebyshev_grid_index",
+                "radius_units": "integer Defender grid-index lengths",
+                "one_dimensional_rule": "0 < abs(j-i) <= r_neighbor",
+                "two_dimensional_rule": "0 < max(abs(p-i), abs(q-j)) <= r_neighbor",
+                "boundary_rule": "clip to explicitly configured grid actions"
+              },
+              "topology": {
+                "dimension": 2,
+                "ordered_action_grid_indices": [
+                  {
+                    "action_id": 0,
+                    "grid_index": [
+                      0,
+                      0
+                    ]
+                  },
+                  {
+                    "action_id": 1,
+                    "grid_index": [
+                      0,
+                      1
+                    ]
+                  },
+                  {
+                    "action_id": 2,
+                    "grid_index": [
+                      0,
+                      2
+                    ]
+                  },
+                  {
+                    "action_id": 3,
+                    "grid_index": [
+                      0,
+                      3
+                    ]
+                  },
+                  {
+                    "action_id": 4,
+                    "grid_index": [
+                      0,
+                      4
+                    ]
+                  },
+                  {
+                    "action_id": 5,
+                    "grid_index": [
+                      0,
+                      5
+                    ]
+                  },
+                  {
+                    "action_id": 6,
+                    "grid_index": [
+                      0,
+                      6
+                    ]
+                  },
+                  {
+                    "action_id": 7,
+                    "grid_index": [
+                      0,
+                      7
+                    ]
+                  },
+                  {
+                    "action_id": 8,
+                    "grid_index": [
+                      0,
+                      8
+                    ]
+                  },
+                  {
+                    "action_id": 9,
+                    "grid_index": [
+                      0,
+                      9
+                    ]
+                  },
+                  {
+                    "action_id": 10,
+                    "grid_index": [
+                      0,
+                      10
+                    ]
+                  },
+                  {
+                    "action_id": 11,
+                    "grid_index": [
+                      0,
+                      11
+                    ]
+                  },
+                  {
+                    "action_id": 12,
+                    "grid_index": [
+                      0,
+                      12
+                    ]
+                  },
+                  {
+                    "action_id": 13,
+                    "grid_index": [
+                      0,
+                      13
+                    ]
+                  },
+                  {
+                    "action_id": 14,
+                    "grid_index": [
+                      0,
+                      14
+                    ]
+                  },
+                  {
+                    "action_id": 15,
+                    "grid_index": [
+                      0,
+                      15
+                    ]
+                  },
+                  {
+                    "action_id": 16,
+                    "grid_index": [
+                      1,
+                      0
+                    ]
+                  },
+                  {
+                    "action_id": 17,
+                    "grid_index": [
+                      1,
+                      1
+                    ]
+                  },
+                  {
+                    "action_id": 18,
+                    "grid_index": [
+                      1,
+                      2
+                    ]
+                  },
+                  {
+                    "action_id": 19,
+                    "grid_index": [
+                      1,
+                      3
+                    ]
+                  },
+                  {
+                    "action_id": 20,
+                    "grid_index": [
+                      1,
+                      4
+                    ]
+                  },
+                  {
+                    "action_id": 21,
+                    "grid_index": [
+                      1,
+                      5
+                    ]
+                  },
+                  {
+                    "action_id": 22,
+                    "grid_index": [
+                      1,
+                      6
+                    ]
+                  },
+                  {
+                    "action_id": 23,
+                    "grid_index": [
+                      1,
+                      7
+                    ]
+                  },
+                  {
+                    "action_id": 24,
+                    "grid_index": [
+                      1,
+                      8
+                    ]
+                  },
+                  {
+                    "action_id": 25,
+                    "grid_index": [
+                      1,
+                      9
+                    ]
+                  },
+                  {
+                    "action_id": 26,
+                    "grid_index": [
+                      1,
+                      10
+                    ]
+                  },
+                  {
+                    "action_id": 27,
+                    "grid_index": [
+                      1,
+                      11
+                    ]
+                  },
+                  {
+                    "action_id": 28,
+                    "grid_index": [
+                      1,
+                      12
+                    ]
+                  },
+                  {
+                    "action_id": 29,
+                    "grid_index": [
+                      1,
+                      13
+                    ]
+                  },
+                  {
+                    "action_id": 30,
+                    "grid_index": [
+                      1,
+                      14
+                    ]
+                  },
+                  {
+                    "action_id": 31,
+                    "grid_index": [
+                      1,
+                      15
+                    ]
+                  },
+                  {
+                    "action_id": 32,
+                    "grid_index": [
+                      2,
+                      0
+                    ]
+                  },
+                  {
+                    "action_id": 33,
+                    "grid_index": [
+                      2,
+                      1
+                    ]
+                  },
+                  {
+                    "action_id": 34,
+                    "grid_index": [
+                      2,
+                      2
+                    ]
+                  },
+                  {
+                    "action_id": 35,
+                    "grid_index": [
+                      2,
+                      3
+                    ]
+                  },
+                  {
+                    "action_id": 36,
+                    "grid_index": [
+                      2,
+                      4
+                    ]
+                  },
+                  {
+                    "action_id": 37,
+                    "grid_index": [
+                      2,
+                      5
+                    ]
+                  },
+                  {
+                    "action_id": 38,
+                    "grid_index": [
+                      2,
+                      6
+                    ]
+                  },
+                  {
+                    "action_id": 39,
+                    "grid_index": [
+                      2,
+                      7
+                    ]
+                  },
+                  {
+                    "action_id": 40,
+                    "grid_index": [
+                      2,
+                      8
+                    ]
+                  },
+                  {
+                    "action_id": 41,
+                    "grid_index": [
+                      2,
+                      9
+                    ]
+                  },
+                  {
+                    "action_id": 42,
+                    "grid_index": [
+                      2,
+                      10
+                    ]
+                  },
+                  {
+                    "action_id": 43,
+                    "grid_index": [
+                      2,
+                      11
+                    ]
+                  },
+                  {
+                    "action_id": 44,
+                    "grid_index": [
+                      2,
+                      12
+                    ]
+                  },
+                  {
+                    "action_id": 45,
+                    "grid_index": [
+                      2,
+                      13
+                    ]
+                  },
+                  {
+                    "action_id": 46,
+                    "grid_index": [
+                      2,
+                      14
+                    ]
+                  },
+                  {
+                    "action_id": 47,
+                    "grid_index": [
+                      2,
+                      15
+                    ]
+                  },
+                  {
+                    "action_id": 48,
+                    "grid_index": [
+                      3,
+                      0
+                    ]
+                  },
+                  {
+                    "action_id": 49,
+                    "grid_index": [
+                      3,
+                      1
+                    ]
+                  },
+                  {
+                    "action_id": 50,
+                    "grid_index": [
+                      3,
+                      2
+                    ]
+                  },
+                  {
+                    "action_id": 51,
+                    "grid_index": [
+                      3,
+                      3
+                    ]
+                  },
+                  {
+                    "action_id": 52,
+                    "grid_index": [
+                      3,
+                      4
+                    ]
+                  },
+                  {
+                    "action_id": 53,
+                    "grid_index": [
+                      3,
+                      5
+                    ]
+                  },
+                  {
+                    "action_id": 54,
+                    "grid_index": [
+                      3,
+                      6
+                    ]
+                  },
+                  {
+                    "action_id": 55,
+                    "grid_index": [
+                      3,
+                      7
+                    ]
+                  },
+                  {
+                    "action_id": 56,
+                    "grid_index": [
+                      3,
+                      8
+                    ]
+                  },
+                  {
+                    "action_id": 57,
+                    "grid_index": [
+                      3,
+                      9
+                    ]
+                  },
+                  {
+                    "action_id": 58,
+                    "grid_index": [
+                      3,
+                      10
+                    ]
+                  },
+                  {
+                    "action_id": 59,
+                    "grid_index": [
+                      3,
+                      11
+                    ]
+                  },
+                  {
+                    "action_id": 60,
+                    "grid_index": [
+                      3,
+                      12
+                    ]
+                  },
+                  {
+                    "action_id": 61,
+                    "grid_index": [
+                      3,
+                      13
+                    ]
+                  },
+                  {
+                    "action_id": 62,
+                    "grid_index": [
+                      3,
+                      14
+                    ]
+                  },
+                  {
+                    "action_id": 63,
+                    "grid_index": [
+                      3,
+                      15
+                    ]
+                  },
+                  {
+                    "action_id": 64,
+                    "grid_index": [
+                      4,
+                      0
+                    ]
+                  },
+                  {
+                    "action_id": 65,
+                    "grid_index": [
+                      4,
+                      1
+                    ]
+                  },
+                  {
+                    "action_id": 66,
+                    "grid_index": [
+                      4,
+                      2
+                    ]
+                  },
+                  {
+                    "action_id": 67,
+                    "grid_index": [
+                      4,
+                      3
+                    ]
+                  },
+                  {
+                    "action_id": 68,
+                    "grid_index": [
+                      4,
+                      4
+                    ]
+                  },
+                  {
+                    "action_id": 69,
+                    "grid_index": [
+                      4,
+                      5
+                    ]
+                  },
+                  {
+                    "action_id": 70,
+                    "grid_index": [
+                      4,
+                      6
+                    ]
+                  },
+                  {
+                    "action_id": 71,
+                    "grid_index": [
+                      4,
+                      7
+                    ]
+                  },
+                  {
+                    "action_id": 72,
+                    "grid_index": [
+                      4,
+                      8
+                    ]
+                  },
+                  {
+                    "action_id": 73,
+                    "grid_index": [
+                      4,
+                      9
+                    ]
+                  },
+                  {
+                    "action_id": 74,
+                    "grid_index": [
+                      4,
+                      10
+                    ]
+                  },
+                  {
+                    "action_id": 75,
+                    "grid_index": [
+                      4,
+                      11
+                    ]
+                  },
+                  {
+                    "action_id": 76,
+                    "grid_index": [
+                      4,
+                      12
+                    ]
+                  },
+                  {
+                    "action_id": 77,
+                    "grid_index": [
+                      4,
+                      13
+                    ]
+                  },
+                  {
+                    "action_id": 78,
+                    "grid_index": [
+                      4,
+                      14
+                    ]
+                  },
+                  {
+                    "action_id": 79,
+                    "grid_index": [
+                      4,
+                      15
+                    ]
+                  },
+                  {
+                    "action_id": 80,
+                    "grid_index": [
+                      5,
+                      0
+                    ]
+                  },
+                  {
+                    "action_id": 81,
+                    "grid_index": [
+                      5,
+                      1
+                    ]
+                  },
+                  {
+                    "action_id": 82,
+                    "grid_index": [
+                      5,
+                      2
+                    ]
+                  },
+                  {
+                    "action_id": 83,
+                    "grid_index": [
+                      5,
+                      3
+                    ]
+                  },
+                  {
+                    "action_id": 84,
+                    "grid_index": [
+                      5,
+                      4
+                    ]
+                  },
+                  {
+                    "action_id": 85,
+                    "grid_index": [
+                      5,
+                      5
+                    ]
+                  },
+                  {
+                    "action_id": 86,
+                    "grid_index": [
+                      5,
+                      6
+                    ]
+                  },
+                  {
+                    "action_id": 87,
+                    "grid_index": [
+                      5,
+                      7
+                    ]
+                  },
+                  {
+                    "action_id": 88,
+                    "grid_index": [
+                      5,
+                      8
+                    ]
+                  },
+                  {
+                    "action_id": 89,
+                    "grid_index": [
+                      5,
+                      9
+                    ]
+                  },
+                  {
+                    "action_id": 90,
+                    "grid_index": [
+                      5,
+                      10
+                    ]
+                  },
+                  {
+                    "action_id": 91,
+                    "grid_index": [
+                      5,
+                      11
+                    ]
+                  },
+                  {
+                    "action_id": 92,
+                    "grid_index": [
+                      5,
+                      12
+                    ]
+                  },
+                  {
+                    "action_id": 93,
+                    "grid_index": [
+                      5,
+                      13
+                    ]
+                  },
+                  {
+                    "action_id": 94,
+                    "grid_index": [
+                      5,
+                      14
+                    ]
+                  },
+                  {
+                    "action_id": 95,
+                    "grid_index": [
+                      5,
+                      15
+                    ]
+                  },
+                  {
+                    "action_id": 96,
+                    "grid_index": [
+                      6,
+                      0
+                    ]
+                  },
+                  {
+                    "action_id": 97,
+                    "grid_index": [
+                      6,
+                      1
+                    ]
+                  },
+                  {
+                    "action_id": 98,
+                    "grid_index": [
+                      6,
+                      2
+                    ]
+                  },
+                  {
+                    "action_id": 99,
+                    "grid_index": [
+                      6,
+                      3
+                    ]
+                  },
+                  {
+                    "action_id": 100,
+                    "grid_index": [
+                      6,
+                      4
+                    ]
+                  },
+                  {
+                    "action_id": 101,
+                    "grid_index": [
+                      6,
+                      5
+                    ]
+                  },
+                  {
+                    "action_id": 102,
+                    "grid_index": [
+                      6,
+                      6
+                    ]
+                  },
+                  {
+                    "action_id": 103,
+                    "grid_index": [
+                      6,
+                      7
+                    ]
+                  },
+                  {
+                    "action_id": 104,
+                    "grid_index": [
+                      6,
+                      8
+                    ]
+                  },
+                  {
+                    "action_id": 105,
+                    "grid_index": [
+                      6,
+                      9
+                    ]
+                  },
+                  {
+                    "action_id": 106,
+                    "grid_index": [
+                      6,
+                      10
+                    ]
+                  },
+                  {
+                    "action_id": 107,
+                    "grid_index": [
+                      6,
+                      11
+                    ]
+                  },
+                  {
+                    "action_id": 108,
+                    "grid_index": [
+                      6,
+                      12
+                    ]
+                  },
+                  {
+                    "action_id": 109,
+                    "grid_index": [
+                      6,
+                      13
+                    ]
+                  },
+                  {
+                    "action_id": 110,
+                    "grid_index": [
+                      6,
+                      14
+                    ]
+                  },
+                  {
+                    "action_id": 111,
+                    "grid_index": [
+                      6,
+                      15
+                    ]
+                  },
+                  {
+                    "action_id": 112,
+                    "grid_index": [
+                      7,
+                      0
+                    ]
+                  },
+                  {
+                    "action_id": 113,
+                    "grid_index": [
+                      7,
+                      1
+                    ]
+                  },
+                  {
+                    "action_id": 114,
+                    "grid_index": [
+                      7,
+                      2
+                    ]
+                  },
+                  {
+                    "action_id": 115,
+                    "grid_index": [
+                      7,
+                      3
+                    ]
+                  },
+                  {
+                    "action_id": 116,
+                    "grid_index": [
+                      7,
+                      4
+                    ]
+                  },
+                  {
+                    "action_id": 117,
+                    "grid_index": [
+                      7,
+                      5
+                    ]
+                  },
+                  {
+                    "action_id": 118,
+                    "grid_index": [
+                      7,
+                      6
+                    ]
+                  },
+                  {
+                    "action_id": 119,
+                    "grid_index": [
+                      7,
+                      7
+                    ]
+                  },
+                  {
+                    "action_id": 120,
+                    "grid_index": [
+                      7,
+                      8
+                    ]
+                  },
+                  {
+                    "action_id": 121,
+                    "grid_index": [
+                      7,
+                      9
+                    ]
+                  },
+                  {
+                    "action_id": 122,
+                    "grid_index": [
+                      7,
+                      10
+                    ]
+                  },
+                  {
+                    "action_id": 123,
+                    "grid_index": [
+                      7,
+                      11
+                    ]
+                  },
+                  {
+                    "action_id": 124,
+                    "grid_index": [
+                      7,
+                      12
+                    ]
+                  },
+                  {
+                    "action_id": 125,
+                    "grid_index": [
+                      7,
+                      13
+                    ]
+                  },
+                  {
+                    "action_id": 126,
+                    "grid_index": [
+                      7,
+                      14
+                    ]
+                  },
+                  {
+                    "action_id": 127,
+                    "grid_index": [
+                      7,
+                      15
+                    ]
+                  }
+                ]
+              }
+            },
+            "exact_attacker_verification_required": true,
+            "local_optimum_under_supplied_evaluations": true
+          }
+        }
+      ],
+      "runtime_decomposition_s": {
+        "total_local_search_s": 0.0005356000037863851,
+        "exact_defender_evaluation_s": 8.58000130392611e-05,
+        "neighborhood_enumeration_s": 8.630001684650779e-05,
+        "local_verification_s": 0.00032489997101947665,
+        "search_control_residual_s": 3.860000288113952e-05
+      },
+      "peak_memory": null,
+      "exact_attacker_verification_required": true,
+      "leader_objective": "attacker_objective",
+      "final_leader_value": 0.44297646640879984
+    },
+    "final_response": {
+      "feasible": true,
+      "sensor_map": [
+        6.75,
+        -0.25,
+        0.0
+      ],
+      "attacker_objective": 0.44297646640879984,
+      "detection_probability": 0.4215119041238465,
+      "switching_state_id": 357484,
+      "trajectory": [
+        357484,
+        317160,
+        276840,
+        236520,
+        196200,
+        155880,
+        113323,
+        72936,
+        23610
+      ],
+      "candidate_count": 298,
+      "cooptimal_candidate_count": 2,
+      "strong_tie_break_verified": true,
+      "runtime_sec": 7.684550200006925,
+      "active_state_count": 126810,
+      "active_edge_count": 3523811
+    }
+  },
+  "frozen_dqn_local_sse": {
+    "leader_objective": "attacker_objective",
+    "warmup_wall_sec_excluded": 74.07956679997733,
+    "wall_runtime_sec": 3.3733628999907523,
+    "first_query_wall_sec": 74.07956679997733,
+    "repeated_query_wall_sec": 3.3733628999907523,
+    "legacy_timing_field_note": "warmup_wall_sec_excluded is the first query and wall_runtime_sec is the repeated warm query",
+    "evaluator_wall_sum_sec": 3.3632109001046047,
+    "network_rollout_and_scoring_sum_sec": 3.3565347000258043,
+    "search": {
+      "initial_defender_action_id": 104,
+      "final_local_sse_action_id": 119,
+      "final_attacker_response_id": 354821,
+      "final_J_A": 0.5028510961547691,
+      "visited_defender_actions": [
+        104,
+        119
+      ],
+      "evaluated_defender_actions": [
+        104,
+        87,
+        88,
+        89,
+        103,
+        105,
+        119,
+        120,
+        121,
+        102,
+        118
+      ],
+      "unique_defender_evaluations": 11,
+      "cached_evaluation_reuses": 4,
+      "initialization_recovery_attempted": false,
+      "initialization_neighbor_action_ids": [],
+      "initialization_feasible_neighbor_ids": [],
+      "initialization_infeasible_neighbor_ids": [],
+      "initialization_unknown_neighbor_ids": [],
+      "initialization_recovery_action_id": null,
+      "local_search_iterations": 2,
+      "neighbor_count_per_iteration": [
+        8,
+        5
+      ],
+      "feasible_neighbor_count_per_iteration": [
+        8,
+        5
+      ],
+      "infeasible_neighbor_diagnostics": [],
+      "unknown_neighbor_diagnostics": [],
+      "payoff_improvement_per_iteration": [
+        0.2502982188906967,
+        0.0
+      ],
+      "local_optimality_margin": 0.0638270579623299,
+      "termination_status": "approximate_local_sse",
+      "local_sse_verified": false,
+      "attacker_exactness_verified": false,
+      "strong_tie_break_verified": false,
+      "independent_replay_status": null,
+      "isolated_feasible_local_solution": false,
+      "initialization_dependent_solution_concept": true,
+      "global_optimality_evaluated": false,
+      "global_optimal": null,
+      "solution_scope": "local Strong Stackelberg equilibrium over an explicit finite Defender grid neighborhood; not a global or continuous-space optimality claim",
+      "neighborhood_metadata": {
+        "configuration": {
+          "r_neighbor": 1,
+          "metric": "chebyshev_grid_index",
+          "radius_units": "integer Defender grid-index lengths",
+          "one_dimensional_rule": "0 < abs(j-i) <= r_neighbor",
+          "two_dimensional_rule": "0 < max(abs(p-i), abs(q-j)) <= r_neighbor",
+          "boundary_rule": "clip to explicitly configured grid actions"
+        },
+        "topology": {
+          "dimension": 2,
+          "ordered_action_grid_indices": [
+            {
+              "action_id": 0,
+              "grid_index": [
+                0,
+                0
+              ]
+            },
+            {
+              "action_id": 1,
+              "grid_index": [
+                0,
+                1
+              ]
+            },
+            {
+              "action_id": 2,
+              "grid_index": [
+                0,
+                2
+              ]
+            },
+            {
+              "action_id": 3,
+              "grid_index": [
+                0,
+                3
+              ]
+            },
+            {
+              "action_id": 4,
+              "grid_index": [
+                0,
+                4
+              ]
+            },
+            {
+              "action_id": 5,
+              "grid_index": [
+                0,
+                5
+              ]
+            },
+            {
+              "action_id": 6,
+              "grid_index": [
+                0,
+                6
+              ]
+            },
+            {
+              "action_id": 7,
+              "grid_index": [
+                0,
+                7
+              ]
+            },
+            {
+              "action_id": 8,
+              "grid_index": [
+                0,
+                8
+              ]
+            },
+            {
+              "action_id": 9,
+              "grid_index": [
+                0,
+                9
+              ]
+            },
+            {
+              "action_id": 10,
+              "grid_index": [
+                0,
+                10
+              ]
+            },
+            {
+              "action_id": 11,
+              "grid_index": [
+                0,
+                11
+              ]
+            },
+            {
+              "action_id": 12,
+              "grid_index": [
+                0,
+                12
+              ]
+            },
+            {
+              "action_id": 13,
+              "grid_index": [
+                0,
+                13
+              ]
+            },
+            {
+              "action_id": 14,
+              "grid_index": [
+                0,
+                14
+              ]
+            },
+            {
+              "action_id": 15,
+              "grid_index": [
+                0,
+                15
+              ]
+            },
+            {
+              "action_id": 16,
+              "grid_index": [
+                1,
+                0
+              ]
+            },
+            {
+              "action_id": 17,
+              "grid_index": [
+                1,
+                1
+              ]
+            },
+            {
+              "action_id": 18,
+              "grid_index": [
+                1,
+                2
+              ]
+            },
+            {
+              "action_id": 19,
+              "grid_index": [
+                1,
+                3
+              ]
+            },
+            {
+              "action_id": 20,
+              "grid_index": [
+                1,
+                4
+              ]
+            },
+            {
+              "action_id": 21,
+              "grid_index": [
+                1,
+                5
+              ]
+            },
+            {
+              "action_id": 22,
+              "grid_index": [
+                1,
+                6
+              ]
+            },
+            {
+              "action_id": 23,
+              "grid_index": [
+                1,
+                7
+              ]
+            },
+            {
+              "action_id": 24,
+              "grid_index": [
+                1,
+                8
+              ]
+            },
+            {
+              "action_id": 25,
+              "grid_index": [
+                1,
+                9
+              ]
+            },
+            {
+              "action_id": 26,
+              "grid_index": [
+                1,
+                10
+              ]
+            },
+            {
+              "action_id": 27,
+              "grid_index": [
+                1,
+                11
+              ]
+            },
+            {
+              "action_id": 28,
+              "grid_index": [
+                1,
+                12
+              ]
+            },
+            {
+              "action_id": 29,
+              "grid_index": [
+                1,
+                13
+              ]
+            },
+            {
+              "action_id": 30,
+              "grid_index": [
+                1,
+                14
+              ]
+            },
+            {
+              "action_id": 31,
+              "grid_index": [
+                1,
+                15
+              ]
+            },
+            {
+              "action_id": 32,
+              "grid_index": [
+                2,
+                0
+              ]
+            },
+            {
+              "action_id": 33,
+              "grid_index": [
+                2,
+                1
+              ]
+            },
+            {
+              "action_id": 34,
+              "grid_index": [
+                2,
+                2
+              ]
+            },
+            {
+              "action_id": 35,
+              "grid_index": [
+                2,
+                3
+              ]
+            },
+            {
+              "action_id": 36,
+              "grid_index": [
+                2,
+                4
+              ]
+            },
+            {
+              "action_id": 37,
+              "grid_index": [
+                2,
+                5
+              ]
+            },
+            {
+              "action_id": 38,
+              "grid_index": [
+                2,
+                6
+              ]
+            },
+            {
+              "action_id": 39,
+              "grid_index": [
+                2,
+                7
+              ]
+            },
+            {
+              "action_id": 40,
+              "grid_index": [
+                2,
+                8
+              ]
+            },
+            {
+              "action_id": 41,
+              "grid_index": [
+                2,
+                9
+              ]
+            },
+            {
+              "action_id": 42,
+              "grid_index": [
+                2,
+                10
+              ]
+            },
+            {
+              "action_id": 43,
+              "grid_index": [
+                2,
+                11
+              ]
+            },
+            {
+              "action_id": 44,
+              "grid_index": [
+                2,
+                12
+              ]
+            },
+            {
+              "action_id": 45,
+              "grid_index": [
+                2,
+                13
+              ]
+            },
+            {
+              "action_id": 46,
+              "grid_index": [
+                2,
+                14
+              ]
+            },
+            {
+              "action_id": 47,
+              "grid_index": [
+                2,
+                15
+              ]
+            },
+            {
+              "action_id": 48,
+              "grid_index": [
+                3,
+                0
+              ]
+            },
+            {
+              "action_id": 49,
+              "grid_index": [
+                3,
+                1
+              ]
+            },
+            {
+              "action_id": 50,
+              "grid_index": [
+                3,
+                2
+              ]
+            },
+            {
+              "action_id": 51,
+              "grid_index": [
+                3,
+                3
+              ]
+            },
+            {
+              "action_id": 52,
+              "grid_index": [
+                3,
+                4
+              ]
+            },
+            {
+              "action_id": 53,
+              "grid_index": [
+                3,
+                5
+              ]
+            },
+            {
+              "action_id": 54,
+              "grid_index": [
+                3,
+                6
+              ]
+            },
+            {
+              "action_id": 55,
+              "grid_index": [
+                3,
+                7
+              ]
+            },
+            {
+              "action_id": 56,
+              "grid_index": [
+                3,
+                8
+              ]
+            },
+            {
+              "action_id": 57,
+              "grid_index": [
+                3,
+                9
+              ]
+            },
+            {
+              "action_id": 58,
+              "grid_index": [
+                3,
+                10
+              ]
+            },
+            {
+              "action_id": 59,
+              "grid_index": [
+                3,
+                11
+              ]
+            },
+            {
+              "action_id": 60,
+              "grid_index": [
+                3,
+                12
+              ]
+            },
+            {
+              "action_id": 61,
+              "grid_index": [
+                3,
+                13
+              ]
+            },
+            {
+              "action_id": 62,
+              "grid_index": [
+                3,
+                14
+              ]
+            },
+            {
+              "action_id": 63,
+              "grid_index": [
+                3,
+                15
+              ]
+            },
+            {
+              "action_id": 64,
+              "grid_index": [
+                4,
+                0
+              ]
+            },
+            {
+              "action_id": 65,
+              "grid_index": [
+                4,
+                1
+              ]
+            },
+            {
+              "action_id": 66,
+              "grid_index": [
+                4,
+                2
+              ]
+            },
+            {
+              "action_id": 67,
+              "grid_index": [
+                4,
+                3
+              ]
+            },
+            {
+              "action_id": 68,
+              "grid_index": [
+                4,
+                4
+              ]
+            },
+            {
+              "action_id": 69,
+              "grid_index": [
+                4,
+                5
+              ]
+            },
+            {
+              "action_id": 70,
+              "grid_index": [
+                4,
+                6
+              ]
+            },
+            {
+              "action_id": 71,
+              "grid_index": [
+                4,
+                7
+              ]
+            },
+            {
+              "action_id": 72,
+              "grid_index": [
+                4,
+                8
+              ]
+            },
+            {
+              "action_id": 73,
+              "grid_index": [
+                4,
+                9
+              ]
+            },
+            {
+              "action_id": 74,
+              "grid_index": [
+                4,
+                10
+              ]
+            },
+            {
+              "action_id": 75,
+              "grid_index": [
+                4,
+                11
+              ]
+            },
+            {
+              "action_id": 76,
+              "grid_index": [
+                4,
+                12
+              ]
+            },
+            {
+              "action_id": 77,
+              "grid_index": [
+                4,
+                13
+              ]
+            },
+            {
+              "action_id": 78,
+              "grid_index": [
+                4,
+                14
+              ]
+            },
+            {
+              "action_id": 79,
+              "grid_index": [
+                4,
+                15
+              ]
+            },
+            {
+              "action_id": 80,
+              "grid_index": [
+                5,
+                0
+              ]
+            },
+            {
+              "action_id": 81,
+              "grid_index": [
+                5,
+                1
+              ]
+            },
+            {
+              "action_id": 82,
+              "grid_index": [
+                5,
+                2
+              ]
+            },
+            {
+              "action_id": 83,
+              "grid_index": [
+                5,
+                3
+              ]
+            },
+            {
+              "action_id": 84,
+              "grid_index": [
+                5,
+                4
+              ]
+            },
+            {
+              "action_id": 85,
+              "grid_index": [
+                5,
+                5
+              ]
+            },
+            {
+              "action_id": 86,
+              "grid_index": [
+                5,
+                6
+              ]
+            },
+            {
+              "action_id": 87,
+              "grid_index": [
+                5,
+                7
+              ]
+            },
+            {
+              "action_id": 88,
+              "grid_index": [
+                5,
+                8
+              ]
+            },
+            {
+              "action_id": 89,
+              "grid_index": [
+                5,
+                9
+              ]
+            },
+            {
+              "action_id": 90,
+              "grid_index": [
+                5,
+                10
+              ]
+            },
+            {
+              "action_id": 91,
+              "grid_index": [
+                5,
+                11
+              ]
+            },
+            {
+              "action_id": 92,
+              "grid_index": [
+                5,
+                12
+              ]
+            },
+            {
+              "action_id": 93,
+              "grid_index": [
+                5,
+                13
+              ]
+            },
+            {
+              "action_id": 94,
+              "grid_index": [
+                5,
+                14
+              ]
+            },
+            {
+              "action_id": 95,
+              "grid_index": [
+                5,
+                15
+              ]
+            },
+            {
+              "action_id": 96,
+              "grid_index": [
+                6,
+                0
+              ]
+            },
+            {
+              "action_id": 97,
+              "grid_index": [
+                6,
+                1
+              ]
+            },
+            {
+              "action_id": 98,
+              "grid_index": [
+                6,
+                2
+              ]
+            },
+            {
+              "action_id": 99,
+              "grid_index": [
+                6,
+                3
+              ]
+            },
+            {
+              "action_id": 100,
+              "grid_index": [
+                6,
+                4
+              ]
+            },
+            {
+              "action_id": 101,
+              "grid_index": [
+                6,
+                5
+              ]
+            },
+            {
+              "action_id": 102,
+              "grid_index": [
+                6,
+                6
+              ]
+            },
+            {
+              "action_id": 103,
+              "grid_index": [
+                6,
+                7
+              ]
+            },
+            {
+              "action_id": 104,
+              "grid_index": [
+                6,
+                8
+              ]
+            },
+            {
+              "action_id": 105,
+              "grid_index": [
+                6,
+                9
+              ]
+            },
+            {
+              "action_id": 106,
+              "grid_index": [
+                6,
+                10
+              ]
+            },
+            {
+              "action_id": 107,
+              "grid_index": [
+                6,
+                11
+              ]
+            },
+            {
+              "action_id": 108,
+              "grid_index": [
+                6,
+                12
+              ]
+            },
+            {
+              "action_id": 109,
+              "grid_index": [
+                6,
+                13
+              ]
+            },
+            {
+              "action_id": 110,
+              "grid_index": [
+                6,
+                14
+              ]
+            },
+            {
+              "action_id": 111,
+              "grid_index": [
+                6,
+                15
+              ]
+            },
+            {
+              "action_id": 112,
+              "grid_index": [
+                7,
+                0
+              ]
+            },
+            {
+              "action_id": 113,
+              "grid_index": [
+                7,
+                1
+              ]
+            },
+            {
+              "action_id": 114,
+              "grid_index": [
+                7,
+                2
+              ]
+            },
+            {
+              "action_id": 115,
+              "grid_index": [
+                7,
+                3
+              ]
+            },
+            {
+              "action_id": 116,
+              "grid_index": [
+                7,
+                4
+              ]
+            },
+            {
+              "action_id": 117,
+              "grid_index": [
+                7,
+                5
+              ]
+            },
+            {
+              "action_id": 118,
+              "grid_index": [
+                7,
+                6
+              ]
+            },
+            {
+              "action_id": 119,
+              "grid_index": [
+                7,
+                7
+              ]
+            },
+            {
+              "action_id": 120,
+              "grid_index": [
+                7,
+                8
+              ]
+            },
+            {
+              "action_id": 121,
+              "grid_index": [
+                7,
+                9
+              ]
+            },
+            {
+              "action_id": 122,
+              "grid_index": [
+                7,
+                10
+              ]
+            },
+            {
+              "action_id": 123,
+              "grid_index": [
+                7,
+                11
+              ]
+            },
+            {
+              "action_id": 124,
+              "grid_index": [
+                7,
+                12
+              ]
+            },
+            {
+              "action_id": 125,
+              "grid_index": [
+                7,
+                13
+              ]
+            },
+            {
+              "action_id": 126,
+              "grid_index": [
+                7,
+                14
+              ]
+            },
+            {
+              "action_id": 127,
+              "grid_index": [
+                7,
+                15
+              ]
+            }
+          ]
+        }
+      },
+      "iterations": [
+        {
+          "iteration": 0,
+          "current_action_id": 104,
+          "current_defender_value": 0.2525528772640724,
+          "neighbor_action_ids": [
+            87,
+            88,
+            89,
+            103,
+            105,
+            119,
+            120,
+            121
+          ],
+          "feasible_neighbor_ids": [
+            87,
+            88,
+            89,
+            103,
+            105,
+            119,
+            120,
+            121
+          ],
+          "infeasible_neighbor_ids": [],
+          "unknown_neighbor_ids": [],
+          "chosen_next_action_id": 119,
+          "payoff_improvement": 0.2502982188906967,
+          "local_verification": {
+            "candidate_action_id": 104,
+            "candidate_defender_value": 0.2525528772640724,
+            "neighbor_action_ids": [
+              87,
+              88,
+              89,
+              103,
+              105,
+              119,
+              120,
+              121
+            ],
+            "feasible_neighbor_ids": [
+              87,
+              88,
+              89,
+              103,
+              105,
+              119,
+              120,
+              121
+            ],
+            "infeasible_neighbor_diagnostics": [],
+            "unknown_neighbor_diagnostics": [],
+            "improving_neighbor_ids": [
+              103,
+              119,
+              120
+            ],
+            "equal_payoff_neighbor_ids": [],
+            "best_feasible_neighbor_value": 0.5028510961547691,
+            "local_optimality_margin": -0.2502982188906967,
+            "isolated_feasible_local_solution": false,
+            "exact_attacker_responses_verified": false,
+            "strong_tie_breaking_verified": false,
+            "local_sse_verified": false,
+            "global_condition_equivalent": false,
+            "comparison_scope": "local Strong Stackelberg equilibrium over an explicit finite Defender grid neighborhood; not a global or continuous-space optimality claim",
+            "neighborhood_metadata": {
+              "configuration": {
+                "r_neighbor": 1,
+                "metric": "chebyshev_grid_index",
+                "radius_units": "integer Defender grid-index lengths",
+                "one_dimensional_rule": "0 < abs(j-i) <= r_neighbor",
+                "two_dimensional_rule": "0 < max(abs(p-i), abs(q-j)) <= r_neighbor",
+                "boundary_rule": "clip to explicitly configured grid actions"
+              },
+              "topology": {
+                "dimension": 2,
+                "ordered_action_grid_indices": [
+                  {
+                    "action_id": 0,
+                    "grid_index": [
+                      0,
+                      0
+                    ]
+                  },
+                  {
+                    "action_id": 1,
+                    "grid_index": [
+                      0,
+                      1
+                    ]
+                  },
+                  {
+                    "action_id": 2,
+                    "grid_index": [
+                      0,
+                      2
+                    ]
+                  },
+                  {
+                    "action_id": 3,
+                    "grid_index": [
+                      0,
+                      3
+                    ]
+                  },
+                  {
+                    "action_id": 4,
+                    "grid_index": [
+                      0,
+                      4
+                    ]
+                  },
+                  {
+                    "action_id": 5,
+                    "grid_index": [
+                      0,
+                      5
+                    ]
+                  },
+                  {
+                    "action_id": 6,
+                    "grid_index": [
+                      0,
+                      6
+                    ]
+                  },
+                  {
+                    "action_id": 7,
+                    "grid_index": [
+                      0,
+                      7
+                    ]
+                  },
+                  {
+                    "action_id": 8,
+                    "grid_index": [
+                      0,
+                      8
+                    ]
+                  },
+                  {
+                    "action_id": 9,
+                    "grid_index": [
+                      0,
+                      9
+                    ]
+                  },
+                  {
+                    "action_id": 10,
+                    "grid_index": [
+                      0,
+                      10
+                    ]
+                  },
+                  {
+                    "action_id": 11,
+                    "grid_index": [
+                      0,
+                      11
+                    ]
+                  },
+                  {
+                    "action_id": 12,
+                    "grid_index": [
+                      0,
+                      12
+                    ]
+                  },
+                  {
+                    "action_id": 13,
+                    "grid_index": [
+                      0,
+                      13
+                    ]
+                  },
+                  {
+                    "action_id": 14,
+                    "grid_index": [
+                      0,
+                      14
+                    ]
+                  },
+                  {
+                    "action_id": 15,
+                    "grid_index": [
+                      0,
+                      15
+                    ]
+                  },
+                  {
+                    "action_id": 16,
+                    "grid_index": [
+                      1,
+                      0
+                    ]
+                  },
+                  {
+                    "action_id": 17,
+                    "grid_index": [
+                      1,
+                      1
+                    ]
+                  },
+                  {
+                    "action_id": 18,
+                    "grid_index": [
+                      1,
+                      2
+                    ]
+                  },
+                  {
+                    "action_id": 19,
+                    "grid_index": [
+                      1,
+                      3
+                    ]
+                  },
+                  {
+                    "action_id": 20,
+                    "grid_index": [
+                      1,
+                      4
+                    ]
+                  },
+                  {
+                    "action_id": 21,
+                    "grid_index": [
+                      1,
+                      5
+                    ]
+                  },
+                  {
+                    "action_id": 22,
+                    "grid_index": [
+                      1,
+                      6
+                    ]
+                  },
+                  {
+                    "action_id": 23,
+                    "grid_index": [
+                      1,
+                      7
+                    ]
+                  },
+                  {
+                    "action_id": 24,
+                    "grid_index": [
+                      1,
+                      8
+                    ]
+                  },
+                  {
+                    "action_id": 25,
+                    "grid_index": [
+                      1,
+                      9
+                    ]
+                  },
+                  {
+                    "action_id": 26,
+                    "grid_index": [
+                      1,
+                      10
+                    ]
+                  },
+                  {
+                    "action_id": 27,
+                    "grid_index": [
+                      1,
+                      11
+                    ]
+                  },
+                  {
+                    "action_id": 28,
+                    "grid_index": [
+                      1,
+                      12
+                    ]
+                  },
+                  {
+                    "action_id": 29,
+                    "grid_index": [
+                      1,
+                      13
+                    ]
+                  },
+                  {
+                    "action_id": 30,
+                    "grid_index": [
+                      1,
+                      14
+                    ]
+                  },
+                  {
+                    "action_id": 31,
+                    "grid_index": [
+                      1,
+                      15
+                    ]
+                  },
+                  {
+                    "action_id": 32,
+                    "grid_index": [
+                      2,
+                      0
+                    ]
+                  },
+                  {
+                    "action_id": 33,
+                    "grid_index": [
+                      2,
+                      1
+                    ]
+                  },
+                  {
+                    "action_id": 34,
+                    "grid_index": [
+                      2,
+                      2
+                    ]
+                  },
+                  {
+                    "action_id": 35,
+                    "grid_index": [
+                      2,
+                      3
+                    ]
+                  },
+                  {
+                    "action_id": 36,
+                    "grid_index": [
+                      2,
+                      4
+                    ]
+                  },
+                  {
+                    "action_id": 37,
+                    "grid_index": [
+                      2,
+                      5
+                    ]
+                  },
+                  {
+                    "action_id": 38,
+                    "grid_index": [
+                      2,
+                      6
+                    ]
+                  },
+                  {
+                    "action_id": 39,
+                    "grid_index": [
+                      2,
+                      7
+                    ]
+                  },
+                  {
+                    "action_id": 40,
+                    "grid_index": [
+                      2,
+                      8
+                    ]
+                  },
+                  {
+                    "action_id": 41,
+                    "grid_index": [
+                      2,
+                      9
+                    ]
+                  },
+                  {
+                    "action_id": 42,
+                    "grid_index": [
+                      2,
+                      10
+                    ]
+                  },
+                  {
+                    "action_id": 43,
+                    "grid_index": [
+                      2,
+                      11
+                    ]
+                  },
+                  {
+                    "action_id": 44,
+                    "grid_index": [
+                      2,
+                      12
+                    ]
+                  },
+                  {
+                    "action_id": 45,
+                    "grid_index": [
+                      2,
+                      13
+                    ]
+                  },
+                  {
+                    "action_id": 46,
+                    "grid_index": [
+                      2,
+                      14
+                    ]
+                  },
+                  {
+                    "action_id": 47,
+                    "grid_index": [
+                      2,
+                      15
+                    ]
+                  },
+                  {
+                    "action_id": 48,
+                    "grid_index": [
+                      3,
+                      0
+                    ]
+                  },
+                  {
+                    "action_id": 49,
+                    "grid_index": [
+                      3,
+                      1
+                    ]
+                  },
+                  {
+                    "action_id": 50,
+                    "grid_index": [
+                      3,
+                      2
+                    ]
+                  },
+                  {
+                    "action_id": 51,
+                    "grid_index": [
+                      3,
+                      3
+                    ]
+                  },
+                  {
+                    "action_id": 52,
+                    "grid_index": [
+                      3,
+                      4
+                    ]
+                  },
+                  {
+                    "action_id": 53,
+                    "grid_index": [
+                      3,
+                      5
+                    ]
+                  },
+                  {
+                    "action_id": 54,
+                    "grid_index": [
+                      3,
+                      6
+                    ]
+                  },
+                  {
+                    "action_id": 55,
+                    "grid_index": [
+                      3,
+                      7
+                    ]
+                  },
+                  {
+                    "action_id": 56,
+                    "grid_index": [
+                      3,
+                      8
+                    ]
+                  },
+                  {
+                    "action_id": 57,
+                    "grid_index": [
+                      3,
+                      9
+                    ]
+                  },
+                  {
+                    "action_id": 58,
+                    "grid_index": [
+                      3,
+                      10
+                    ]
+                  },
+                  {
+                    "action_id": 59,
+                    "grid_index": [
+                      3,
+                      11
+                    ]
+                  },
+                  {
+                    "action_id": 60,
+                    "grid_index": [
+                      3,
+                      12
+                    ]
+                  },
+                  {
+                    "action_id": 61,
+                    "grid_index": [
+                      3,
+                      13
+                    ]
+                  },
+                  {
+                    "action_id": 62,
+                    "grid_index": [
+                      3,
+                      14
+                    ]
+                  },
+                  {
+                    "action_id": 63,
+                    "grid_index": [
+                      3,
+                      15
+                    ]
+                  },
+                  {
+                    "action_id": 64,
+                    "grid_index": [
+                      4,
+                      0
+                    ]
+                  },
+                  {
+                    "action_id": 65,
+                    "grid_index": [
+                      4,
+                      1
+                    ]
+                  },
+                  {
+                    "action_id": 66,
+                    "grid_index": [
+                      4,
+                      2
+                    ]
+                  },
+                  {
+                    "action_id": 67,
+                    "grid_index": [
+                      4,
+                      3
+                    ]
+                  },
+                  {
+                    "action_id": 68,
+                    "grid_index": [
+                      4,
+                      4
+                    ]
+                  },
+                  {
+                    "action_id": 69,
+                    "grid_index": [
+                      4,
+                      5
+                    ]
+                  },
+                  {
+                    "action_id": 70,
+                    "grid_index": [
+                      4,
+                      6
+                    ]
+                  },
+                  {
+                    "action_id": 71,
+                    "grid_index": [
+                      4,
+                      7
+                    ]
+                  },
+                  {
+                    "action_id": 72,
+                    "grid_index": [
+                      4,
+                      8
+                    ]
+                  },
+                  {
+                    "action_id": 73,
+                    "grid_index": [
+                      4,
+                      9
+                    ]
+                  },
+                  {
+                    "action_id": 74,
+                    "grid_index": [
+                      4,
+                      10
+                    ]
+                  },
+                  {
+                    "action_id": 75,
+                    "grid_index": [
+                      4,
+                      11
+                    ]
+                  },
+                  {
+                    "action_id": 76,
+                    "grid_index": [
+                      4,
+                      12
+                    ]
+                  },
+                  {
+                    "action_id": 77,
+                    "grid_index": [
+                      4,
+                      13
+                    ]
+                  },
+                  {
+                    "action_id": 78,
+                    "grid_index": [
+                      4,
+                      14
+                    ]
+                  },
+                  {
+                    "action_id": 79,
+                    "grid_index": [
+                      4,
+                      15
+                    ]
+                  },
+                  {
+                    "action_id": 80,
+                    "grid_index": [
+                      5,
+                      0
+                    ]
+                  },
+                  {
+                    "action_id": 81,
+                    "grid_index": [
+                      5,
+                      1
+                    ]
+                  },
+                  {
+                    "action_id": 82,
+                    "grid_index": [
+                      5,
+                      2
+                    ]
+                  },
+                  {
+                    "action_id": 83,
+                    "grid_index": [
+                      5,
+                      3
+                    ]
+                  },
+                  {
+                    "action_id": 84,
+                    "grid_index": [
+                      5,
+                      4
+                    ]
+                  },
+                  {
+                    "action_id": 85,
+                    "grid_index": [
+                      5,
+                      5
+                    ]
+                  },
+                  {
+                    "action_id": 86,
+                    "grid_index": [
+                      5,
+                      6
+                    ]
+                  },
+                  {
+                    "action_id": 87,
+                    "grid_index": [
+                      5,
+                      7
+                    ]
+                  },
+                  {
+                    "action_id": 88,
+                    "grid_index": [
+                      5,
+                      8
+                    ]
+                  },
+                  {
+                    "action_id": 89,
+                    "grid_index": [
+                      5,
+                      9
+                    ]
+                  },
+                  {
+                    "action_id": 90,
+                    "grid_index": [
+                      5,
+                      10
+                    ]
+                  },
+                  {
+                    "action_id": 91,
+                    "grid_index": [
+                      5,
+                      11
+                    ]
+                  },
+                  {
+                    "action_id": 92,
+                    "grid_index": [
+                      5,
+                      12
+                    ]
+                  },
+                  {
+                    "action_id": 93,
+                    "grid_index": [
+                      5,
+                      13
+                    ]
+                  },
+                  {
+                    "action_id": 94,
+                    "grid_index": [
+                      5,
+                      14
+                    ]
+                  },
+                  {
+                    "action_id": 95,
+                    "grid_index": [
+                      5,
+                      15
+                    ]
+                  },
+                  {
+                    "action_id": 96,
+                    "grid_index": [
+                      6,
+                      0
+                    ]
+                  },
+                  {
+                    "action_id": 97,
+                    "grid_index": [
+                      6,
+                      1
+                    ]
+                  },
+                  {
+                    "action_id": 98,
+                    "grid_index": [
+                      6,
+                      2
+                    ]
+                  },
+                  {
+                    "action_id": 99,
+                    "grid_index": [
+                      6,
+                      3
+                    ]
+                  },
+                  {
+                    "action_id": 100,
+                    "grid_index": [
+                      6,
+                      4
+                    ]
+                  },
+                  {
+                    "action_id": 101,
+                    "grid_index": [
+                      6,
+                      5
+                    ]
+                  },
+                  {
+                    "action_id": 102,
+                    "grid_index": [
+                      6,
+                      6
+                    ]
+                  },
+                  {
+                    "action_id": 103,
+                    "grid_index": [
+                      6,
+                      7
+                    ]
+                  },
+                  {
+                    "action_id": 104,
+                    "grid_index": [
+                      6,
+                      8
+                    ]
+                  },
+                  {
+                    "action_id": 105,
+                    "grid_index": [
+                      6,
+                      9
+                    ]
+                  },
+                  {
+                    "action_id": 106,
+                    "grid_index": [
+                      6,
+                      10
+                    ]
+                  },
+                  {
+                    "action_id": 107,
+                    "grid_index": [
+                      6,
+                      11
+                    ]
+                  },
+                  {
+                    "action_id": 108,
+                    "grid_index": [
+                      6,
+                      12
+                    ]
+                  },
+                  {
+                    "action_id": 109,
+                    "grid_index": [
+                      6,
+                      13
+                    ]
+                  },
+                  {
+                    "action_id": 110,
+                    "grid_index": [
+                      6,
+                      14
+                    ]
+                  },
+                  {
+                    "action_id": 111,
+                    "grid_index": [
+                      6,
+                      15
+                    ]
+                  },
+                  {
+                    "action_id": 112,
+                    "grid_index": [
+                      7,
+                      0
+                    ]
+                  },
+                  {
+                    "action_id": 113,
+                    "grid_index": [
+                      7,
+                      1
+                    ]
+                  },
+                  {
+                    "action_id": 114,
+                    "grid_index": [
+                      7,
+                      2
+                    ]
+                  },
+                  {
+                    "action_id": 115,
+                    "grid_index": [
+                      7,
+                      3
+                    ]
+                  },
+                  {
+                    "action_id": 116,
+                    "grid_index": [
+                      7,
+                      4
+                    ]
+                  },
+                  {
+                    "action_id": 117,
+                    "grid_index": [
+                      7,
+                      5
+                    ]
+                  },
+                  {
+                    "action_id": 118,
+                    "grid_index": [
+                      7,
+                      6
+                    ]
+                  },
+                  {
+                    "action_id": 119,
+                    "grid_index": [
+                      7,
+                      7
+                    ]
+                  },
+                  {
+                    "action_id": 120,
+                    "grid_index": [
+                      7,
+                      8
+                    ]
+                  },
+                  {
+                    "action_id": 121,
+                    "grid_index": [
+                      7,
+                      9
+                    ]
+                  },
+                  {
+                    "action_id": 122,
+                    "grid_index": [
+                      7,
+                      10
+                    ]
+                  },
+                  {
+                    "action_id": 123,
+                    "grid_index": [
+                      7,
+                      11
+                    ]
+                  },
+                  {
+                    "action_id": 124,
+                    "grid_index": [
+                      7,
+                      12
+                    ]
+                  },
+                  {
+                    "action_id": 125,
+                    "grid_index": [
+                      7,
+                      13
+                    ]
+                  },
+                  {
+                    "action_id": 126,
+                    "grid_index": [
+                      7,
+                      14
+                    ]
+                  },
+                  {
+                    "action_id": 127,
+                    "grid_index": [
+                      7,
+                      15
+                    ]
+                  }
+                ]
+              }
+            },
+            "exact_attacker_verification_required": false,
+            "local_optimum_under_supplied_evaluations": false
+          }
+        },
+        {
+          "iteration": 1,
+          "current_action_id": 119,
+          "current_defender_value": 0.5028510961547691,
+          "neighbor_action_ids": [
+            102,
+            103,
+            104,
+            118,
+            120
+          ],
+          "feasible_neighbor_ids": [
+            102,
+            103,
+            104,
+            118,
+            120
+          ],
+          "infeasible_neighbor_ids": [],
+          "unknown_neighbor_ids": [],
+          "chosen_next_action_id": null,
+          "payoff_improvement": 0.0,
+          "local_verification": {
+            "candidate_action_id": 119,
+            "candidate_defender_value": 0.5028510961547691,
+            "neighbor_action_ids": [
+              102,
+              103,
+              104,
+              118,
+              120
+            ],
+            "feasible_neighbor_ids": [
+              102,
+              103,
+              104,
+              118,
+              120
+            ],
+            "infeasible_neighbor_diagnostics": [],
+            "unknown_neighbor_diagnostics": [],
+            "improving_neighbor_ids": [],
+            "equal_payoff_neighbor_ids": [],
+            "best_feasible_neighbor_value": 0.4390240381924392,
+            "local_optimality_margin": 0.0638270579623299,
+            "isolated_feasible_local_solution": false,
+            "exact_attacker_responses_verified": false,
+            "strong_tie_breaking_verified": false,
+            "local_sse_verified": false,
+            "global_condition_equivalent": false,
+            "comparison_scope": "local Strong Stackelberg equilibrium over an explicit finite Defender grid neighborhood; not a global or continuous-space optimality claim",
+            "neighborhood_metadata": {
+              "configuration": {
+                "r_neighbor": 1,
+                "metric": "chebyshev_grid_index",
+                "radius_units": "integer Defender grid-index lengths",
+                "one_dimensional_rule": "0 < abs(j-i) <= r_neighbor",
+                "two_dimensional_rule": "0 < max(abs(p-i), abs(q-j)) <= r_neighbor",
+                "boundary_rule": "clip to explicitly configured grid actions"
+              },
+              "topology": {
+                "dimension": 2,
+                "ordered_action_grid_indices": [
+                  {
+                    "action_id": 0,
+                    "grid_index": [
+                      0,
+                      0
+                    ]
+                  },
+                  {
+                    "action_id": 1,
+                    "grid_index": [
+                      0,
+                      1
+                    ]
+                  },
+                  {
+                    "action_id": 2,
+                    "grid_index": [
+                      0,
+                      2
+                    ]
+                  },
+                  {
+                    "action_id": 3,
+                    "grid_index": [
+                      0,
+                      3
+                    ]
+                  },
+                  {
+                    "action_id": 4,
+                    "grid_index": [
+                      0,
+                      4
+                    ]
+                  },
+                  {
+                    "action_id": 5,
+                    "grid_index": [
+                      0,
+                      5
+                    ]
+                  },
+                  {
+                    "action_id": 6,
+                    "grid_index": [
+                      0,
+                      6
+                    ]
+                  },
+                  {
+                    "action_id": 7,
+                    "grid_index": [
+                      0,
+                      7
+                    ]
+                  },
+                  {
+                    "action_id": 8,
+                    "grid_index": [
+                      0,
+                      8
+                    ]
+                  },
+                  {
+                    "action_id": 9,
+                    "grid_index": [
+                      0,
+                      9
+                    ]
+                  },
+                  {
+                    "action_id": 10,
+                    "grid_index": [
+                      0,
+                      10
+                    ]
+                  },
+                  {
+                    "action_id": 11,
+                    "grid_index": [
+                      0,
+                      11
+                    ]
+                  },
+                  {
+                    "action_id": 12,
+                    "grid_index": [
+                      0,
+                      12
+                    ]
+                  },
+                  {
+                    "action_id": 13,
+                    "grid_index": [
+                      0,
+                      13
+                    ]
+                  },
+                  {
+                    "action_id": 14,
+                    "grid_index": [
+                      0,
+                      14
+                    ]
+                  },
+                  {
+                    "action_id": 15,
+                    "grid_index": [
+                      0,
+                      15
+                    ]
+                  },
+                  {
+                    "action_id": 16,
+                    "grid_index": [
+                      1,
+                      0
+                    ]
+                  },
+                  {
+                    "action_id": 17,
+                    "grid_index": [
+                      1,
+                      1
+                    ]
+                  },
+                  {
+                    "action_id": 18,
+                    "grid_index": [
+                      1,
+                      2
+                    ]
+                  },
+                  {
+                    "action_id": 19,
+                    "grid_index": [
+                      1,
+                      3
+                    ]
+                  },
+                  {
+                    "action_id": 20,
+                    "grid_index": [
+                      1,
+                      4
+                    ]
+                  },
+                  {
+                    "action_id": 21,
+                    "grid_index": [
+                      1,
+                      5
+                    ]
+                  },
+                  {
+                    "action_id": 22,
+                    "grid_index": [
+                      1,
+                      6
+                    ]
+                  },
+                  {
+                    "action_id": 23,
+                    "grid_index": [
+                      1,
+                      7
+                    ]
+                  },
+                  {
+                    "action_id": 24,
+                    "grid_index": [
+                      1,
+                      8
+                    ]
+                  },
+                  {
+                    "action_id": 25,
+                    "grid_index": [
+                      1,
+                      9
+                    ]
+                  },
+                  {
+                    "action_id": 26,
+                    "grid_index": [
+                      1,
+                      10
+                    ]
+                  },
+                  {
+                    "action_id": 27,
+                    "grid_index": [
+                      1,
+                      11
+                    ]
+                  },
+                  {
+                    "action_id": 28,
+                    "grid_index": [
+                      1,
+                      12
+                    ]
+                  },
+                  {
+                    "action_id": 29,
+                    "grid_index": [
+                      1,
+                      13
+                    ]
+                  },
+                  {
+                    "action_id": 30,
+                    "grid_index": [
+                      1,
+                      14
+                    ]
+                  },
+                  {
+                    "action_id": 31,
+                    "grid_index": [
+                      1,
+                      15
+                    ]
+                  },
+                  {
+                    "action_id": 32,
+                    "grid_index": [
+                      2,
+                      0
+                    ]
+                  },
+                  {
+                    "action_id": 33,
+                    "grid_index": [
+                      2,
+                      1
+                    ]
+                  },
+                  {
+                    "action_id": 34,
+                    "grid_index": [
+                      2,
+                      2
+                    ]
+                  },
+                  {
+                    "action_id": 35,
+                    "grid_index": [
+                      2,
+                      3
+                    ]
+                  },
+                  {
+                    "action_id": 36,
+                    "grid_index": [
+                      2,
+                      4
+                    ]
+                  },
+                  {
+                    "action_id": 37,
+                    "grid_index": [
+                      2,
+                      5
+                    ]
+                  },
+                  {
+                    "action_id": 38,
+                    "grid_index": [
+                      2,
+                      6
+                    ]
+                  },
+                  {
+                    "action_id": 39,
+                    "grid_index": [
+                      2,
+                      7
+                    ]
+                  },
+                  {
+                    "action_id": 40,
+                    "grid_index": [
+                      2,
+                      8
+                    ]
+                  },
+                  {
+                    "action_id": 41,
+                    "grid_index": [
+                      2,
+                      9
+                    ]
+                  },
+                  {
+                    "action_id": 42,
+                    "grid_index": [
+                      2,
+                      10
+                    ]
+                  },
+                  {
+                    "action_id": 43,
+                    "grid_index": [
+                      2,
+                      11
+                    ]
+                  },
+                  {
+                    "action_id": 44,
+                    "grid_index": [
+                      2,
+                      12
+                    ]
+                  },
+                  {
+                    "action_id": 45,
+                    "grid_index": [
+                      2,
+                      13
+                    ]
+                  },
+                  {
+                    "action_id": 46,
+                    "grid_index": [
+                      2,
+                      14
+                    ]
+                  },
+                  {
+                    "action_id": 47,
+                    "grid_index": [
+                      2,
+                      15
+                    ]
+                  },
+                  {
+                    "action_id": 48,
+                    "grid_index": [
+                      3,
+                      0
+                    ]
+                  },
+                  {
+                    "action_id": 49,
+                    "grid_index": [
+                      3,
+                      1
+                    ]
+                  },
+                  {
+                    "action_id": 50,
+                    "grid_index": [
+                      3,
+                      2
+                    ]
+                  },
+                  {
+                    "action_id": 51,
+                    "grid_index": [
+                      3,
+                      3
+                    ]
+                  },
+                  {
+                    "action_id": 52,
+                    "grid_index": [
+                      3,
+                      4
+                    ]
+                  },
+                  {
+                    "action_id": 53,
+                    "grid_index": [
+                      3,
+                      5
+                    ]
+                  },
+                  {
+                    "action_id": 54,
+                    "grid_index": [
+                      3,
+                      6
+                    ]
+                  },
+                  {
+                    "action_id": 55,
+                    "grid_index": [
+                      3,
+                      7
+                    ]
+                  },
+                  {
+                    "action_id": 56,
+                    "grid_index": [
+                      3,
+                      8
+                    ]
+                  },
+                  {
+                    "action_id": 57,
+                    "grid_index": [
+                      3,
+                      9
+                    ]
+                  },
+                  {
+                    "action_id": 58,
+                    "grid_index": [
+                      3,
+                      10
+                    ]
+                  },
+                  {
+                    "action_id": 59,
+                    "grid_index": [
+                      3,
+                      11
+                    ]
+                  },
+                  {
+                    "action_id": 60,
+                    "grid_index": [
+                      3,
+                      12
+                    ]
+                  },
+                  {
+                    "action_id": 61,
+                    "grid_index": [
+                      3,
+                      13
+                    ]
+                  },
+                  {
+                    "action_id": 62,
+                    "grid_index": [
+                      3,
+                      14
+                    ]
+                  },
+                  {
+                    "action_id": 63,
+                    "grid_index": [
+                      3,
+                      15
+                    ]
+                  },
+                  {
+                    "action_id": 64,
+                    "grid_index": [
+                      4,
+                      0
+                    ]
+                  },
+                  {
+                    "action_id": 65,
+                    "grid_index": [
+                      4,
+                      1
+                    ]
+                  },
+                  {
+                    "action_id": 66,
+                    "grid_index": [
+                      4,
+                      2
+                    ]
+                  },
+                  {
+                    "action_id": 67,
+                    "grid_index": [
+                      4,
+                      3
+                    ]
+                  },
+                  {
+                    "action_id": 68,
+                    "grid_index": [
+                      4,
+                      4
+                    ]
+                  },
+                  {
+                    "action_id": 69,
+                    "grid_index": [
+                      4,
+                      5
+                    ]
+                  },
+                  {
+                    "action_id": 70,
+                    "grid_index": [
+                      4,
+                      6
+                    ]
+                  },
+                  {
+                    "action_id": 71,
+                    "grid_index": [
+                      4,
+                      7
+                    ]
+                  },
+                  {
+                    "action_id": 72,
+                    "grid_index": [
+                      4,
+                      8
+                    ]
+                  },
+                  {
+                    "action_id": 73,
+                    "grid_index": [
+                      4,
+                      9
+                    ]
+                  },
+                  {
+                    "action_id": 74,
+                    "grid_index": [
+                      4,
+                      10
+                    ]
+                  },
+                  {
+                    "action_id": 75,
+                    "grid_index": [
+                      4,
+                      11
+                    ]
+                  },
+                  {
+                    "action_id": 76,
+                    "grid_index": [
+                      4,
+                      12
+                    ]
+                  },
+                  {
+                    "action_id": 77,
+                    "grid_index": [
+                      4,
+                      13
+                    ]
+                  },
+                  {
+                    "action_id": 78,
+                    "grid_index": [
+                      4,
+                      14
+                    ]
+                  },
+                  {
+                    "action_id": 79,
+                    "grid_index": [
+                      4,
+                      15
+                    ]
+                  },
+                  {
+                    "action_id": 80,
+                    "grid_index": [
+                      5,
+                      0
+                    ]
+                  },
+                  {
+                    "action_id": 81,
+                    "grid_index": [
+                      5,
+                      1
+                    ]
+                  },
+                  {
+                    "action_id": 82,
+                    "grid_index": [
+                      5,
+                      2
+                    ]
+                  },
+                  {
+                    "action_id": 83,
+                    "grid_index": [
+                      5,
+                      3
+                    ]
+                  },
+                  {
+                    "action_id": 84,
+                    "grid_index": [
+                      5,
+                      4
+                    ]
+                  },
+                  {
+                    "action_id": 85,
+                    "grid_index": [
+                      5,
+                      5
+                    ]
+                  },
+                  {
+                    "action_id": 86,
+                    "grid_index": [
+                      5,
+                      6
+                    ]
+                  },
+                  {
+                    "action_id": 87,
+                    "grid_index": [
+                      5,
+                      7
+                    ]
+                  },
+                  {
+                    "action_id": 88,
+                    "grid_index": [
+                      5,
+                      8
+                    ]
+                  },
+                  {
+                    "action_id": 89,
+                    "grid_index": [
+                      5,
+                      9
+                    ]
+                  },
+                  {
+                    "action_id": 90,
+                    "grid_index": [
+                      5,
+                      10
+                    ]
+                  },
+                  {
+                    "action_id": 91,
+                    "grid_index": [
+                      5,
+                      11
+                    ]
+                  },
+                  {
+                    "action_id": 92,
+                    "grid_index": [
+                      5,
+                      12
+                    ]
+                  },
+                  {
+                    "action_id": 93,
+                    "grid_index": [
+                      5,
+                      13
+                    ]
+                  },
+                  {
+                    "action_id": 94,
+                    "grid_index": [
+                      5,
+                      14
+                    ]
+                  },
+                  {
+                    "action_id": 95,
+                    "grid_index": [
+                      5,
+                      15
+                    ]
+                  },
+                  {
+                    "action_id": 96,
+                    "grid_index": [
+                      6,
+                      0
+                    ]
+                  },
+                  {
+                    "action_id": 97,
+                    "grid_index": [
+                      6,
+                      1
+                    ]
+                  },
+                  {
+                    "action_id": 98,
+                    "grid_index": [
+                      6,
+                      2
+                    ]
+                  },
+                  {
+                    "action_id": 99,
+                    "grid_index": [
+                      6,
+                      3
+                    ]
+                  },
+                  {
+                    "action_id": 100,
+                    "grid_index": [
+                      6,
+                      4
+                    ]
+                  },
+                  {
+                    "action_id": 101,
+                    "grid_index": [
+                      6,
+                      5
+                    ]
+                  },
+                  {
+                    "action_id": 102,
+                    "grid_index": [
+                      6,
+                      6
+                    ]
+                  },
+                  {
+                    "action_id": 103,
+                    "grid_index": [
+                      6,
+                      7
+                    ]
+                  },
+                  {
+                    "action_id": 104,
+                    "grid_index": [
+                      6,
+                      8
+                    ]
+                  },
+                  {
+                    "action_id": 105,
+                    "grid_index": [
+                      6,
+                      9
+                    ]
+                  },
+                  {
+                    "action_id": 106,
+                    "grid_index": [
+                      6,
+                      10
+                    ]
+                  },
+                  {
+                    "action_id": 107,
+                    "grid_index": [
+                      6,
+                      11
+                    ]
+                  },
+                  {
+                    "action_id": 108,
+                    "grid_index": [
+                      6,
+                      12
+                    ]
+                  },
+                  {
+                    "action_id": 109,
+                    "grid_index": [
+                      6,
+                      13
+                    ]
+                  },
+                  {
+                    "action_id": 110,
+                    "grid_index": [
+                      6,
+                      14
+                    ]
+                  },
+                  {
+                    "action_id": 111,
+                    "grid_index": [
+                      6,
+                      15
+                    ]
+                  },
+                  {
+                    "action_id": 112,
+                    "grid_index": [
+                      7,
+                      0
+                    ]
+                  },
+                  {
+                    "action_id": 113,
+                    "grid_index": [
+                      7,
+                      1
+                    ]
+                  },
+                  {
+                    "action_id": 114,
+                    "grid_index": [
+                      7,
+                      2
+                    ]
+                  },
+                  {
+                    "action_id": 115,
+                    "grid_index": [
+                      7,
+                      3
+                    ]
+                  },
+                  {
+                    "action_id": 116,
+                    "grid_index": [
+                      7,
+                      4
+                    ]
+                  },
+                  {
+                    "action_id": 117,
+                    "grid_index": [
+                      7,
+                      5
+                    ]
+                  },
+                  {
+                    "action_id": 118,
+                    "grid_index": [
+                      7,
+                      6
+                    ]
+                  },
+                  {
+                    "action_id": 119,
+                    "grid_index": [
+                      7,
+                      7
+                    ]
+                  },
+                  {
+                    "action_id": 120,
+                    "grid_index": [
+                      7,
+                      8
+                    ]
+                  },
+                  {
+                    "action_id": 121,
+                    "grid_index": [
+                      7,
+                      9
+                    ]
+                  },
+                  {
+                    "action_id": 122,
+                    "grid_index": [
+                      7,
+                      10
+                    ]
+                  },
+                  {
+                    "action_id": 123,
+                    "grid_index": [
+                      7,
+                      11
+                    ]
+                  },
+                  {
+                    "action_id": 124,
+                    "grid_index": [
+                      7,
+                      12
+                    ]
+                  },
+                  {
+                    "action_id": 125,
+                    "grid_index": [
+                      7,
+                      13
+                    ]
+                  },
+                  {
+                    "action_id": 126,
+                    "grid_index": [
+                      7,
+                      14
+                    ]
+                  },
+                  {
+                    "action_id": 127,
+                    "grid_index": [
+                      7,
+                      15
+                    ]
+                  }
+                ]
+              }
+            },
+            "exact_attacker_verification_required": false,
+            "local_optimum_under_supplied_evaluations": true
+          }
+        }
+      ],
+      "runtime_decomposition_s": {
+        "total_local_search_s": 3.373248499992769,
+        "exact_defender_evaluation_s": 3.372815500071738,
+        "neighborhood_enumeration_s": 9.580003097653389e-05,
+        "local_verification_s": 0.0002796999760903418,
+        "search_control_residual_s": 5.749991396442056e-05
+      },
+      "peak_memory": null,
+      "exact_attacker_verification_required": false,
+      "leader_objective": "attacker_objective",
+      "final_leader_value": 0.5028510961547691
+    },
+    "evaluated": [
+      {
+        "action_id": 104,
+        "sensor_map": [
+          6.25,
+          0.25,
+          0.0
+        ],
+        "success": true,
+        "switching_state_id": 167177,
+        "trajectory": [
+          167177,
+          124991,
+          82799,
+          59268,
+          21258
+        ],
+        "reached_goal": true,
+        "trajectory_feasible": true,
+        "attacker_objective": 0.2525528772640724,
+        "glide_cost": 0.19024933381046377,
+        "powered_cost": 0.06230354345360863,
+        "candidate_successes": 1421,
+        "candidate_count": 1421,
+        "inference_runtime_sec": 0.4927183000254445,
+        "status": "success",
+        "detection_probability": 0.11692856712789895,
+        "leader_value": 0.2525528772640724,
+        "leader_objective": "attacker_objective",
+        "cumulative_hazard": 0.12434918372033883,
+        "evaluator_wall_sec": 0.49354429997038096
+      },
+      {
+        "action_id": 87,
+        "sensor_map": [
+          5.75,
+          -0.25,
+          0.0
+        ],
+        "success": true,
+        "switching_state_id": 167177,
+        "trajectory": [
+          167177,
+          124991,
+          82799,
+          59268,
+          21258
+        ],
+        "reached_goal": true,
+        "trajectory_feasible": true,
+        "attacker_objective": 0.2226939296949824,
+        "glide_cost": 0.16039038624137375,
+        "powered_cost": 0.06230354345360863,
+        "candidate_successes": 283,
+        "candidate_count": 283,
+        "inference_runtime_sec": 0.10908570000901818,
+        "status": "success",
+        "detection_probability": 0.06258696544545742,
+        "leader_value": 0.2226939296949824,
+        "leader_objective": "attacker_objective",
+        "cumulative_hazard": 0.06463128858215875,
+        "evaluator_wall_sec": 0.10939120000693947
+      },
+      {
+        "action_id": 88,
+        "sensor_map": [
+          5.75,
+          0.25,
+          0.0
+        ],
+        "success": true,
+        "switching_state_id": 169263,
+        "trajectory": [
+          169263,
+          127079,
+          84887,
+          56815,
+          21253
+        ],
+        "reached_goal": true,
+        "trajectory_feasible": true,
+        "attacker_objective": 0.21291741297318623,
+        "glide_cost": 0.16849164933932434,
+        "powered_cost": 0.0444257636338619,
+        "candidate_successes": 1219,
+        "candidate_count": 1219,
+        "inference_runtime_sec": 0.4243436999968253,
+        "status": "success",
+        "detection_probability": 0.06084102981484041,
+        "leader_value": 0.21291741297318623,
+        "leader_objective": "attacker_objective",
+        "cumulative_hazard": 0.06277051678125978,
+        "evaluator_wall_sec": 0.425237100047525
+      },
+      {
+        "action_id": 89,
+        "sensor_map": [
+          5.75,
+          0.75,
+          0.0
+        ],
+        "success": true,
+        "switching_state_id": 89132,
+        "trajectory": [
+          89132,
+          46943,
+          18800
+        ],
+        "reached_goal": true,
+        "trajectory_feasible": true,
+        "attacker_objective": 0.18719930549522124,
+        "glide_cost": 0.10681141090482352,
+        "powered_cost": 0.08038789459039773,
+        "candidate_successes": 1208,
+        "candidate_count": 1208,
+        "inference_runtime_sec": 0.4341116999858059,
+        "status": "success",
+        "detection_probability": 0.05086043068345894,
+        "leader_value": 0.18719930549522124,
+        "leader_objective": "attacker_objective",
+        "cumulative_hazard": 0.05219942130548013,
+        "evaluator_wall_sec": 0.43483130005188286
+      },
+      {
+        "action_id": 103,
+        "sensor_map": [
+          6.25,
+          -0.25,
+          0.0
+        ],
+        "success": true,
+        "switching_state_id": 354821,
+        "trajectory": [
+          354821,
+          319261,
+          281250,
+          239111,
+          194027,
+          156386,
+          118449,
+          75883,
+          21296
+        ],
+        "reached_goal": true,
+        "trajectory_feasible": true,
+        "attacker_objective": 0.2869344320411364,
+        "glide_cost": 0.21800894072396793,
+        "powered_cost": 0.06892549131716845,
+        "candidate_successes": 271,
+        "candidate_count": 271,
+        "inference_runtime_sec": 0.10392700001830235,
+        "status": "success",
+        "detection_probability": 0.12848860971387813,
+        "leader_value": 0.2869344320411364,
+        "leader_objective": "attacker_objective",
+        "cumulative_hazard": 0.13752634435862088,
+        "evaluator_wall_sec": 0.10419250000268221
+      },
+      {
+        "action_id": 105,
+        "sensor_map": [
+          6.25,
+          0.75,
+          0.0
+        ],
+        "success": true,
+        "switching_state_id": 89060,
+        "trajectory": [
+          89060,
+          46871,
+          18799
+        ],
+        "reached_goal": true,
+        "trajectory_feasible": true,
+        "attacker_objective": 0.20605252521612039,
+        "glide_cost": 0.1304076308831128,
+        "powered_cost": 0.07564489433300757,
+        "candidate_successes": 1396,
+        "candidate_count": 1396,
+        "inference_runtime_sec": 0.4826593999750912,
+        "status": "success",
+        "detection_probability": 0.08728942452116106,
+        "leader_value": 0.20605252521612039,
+        "leader_objective": "attacker_objective",
+        "cumulative_hazard": 0.0913364525002058,
+        "evaluator_wall_sec": 0.48341079999227077
+      },
+      {
+        "action_id": 119,
+        "sensor_map": [
+          6.75,
+          -0.25,
+          0.0
+        ],
+        "success": true,
+        "switching_state_id": 354821,
+        "trajectory": [
+          354821,
+          319261,
+          281250,
+          239111,
+          194027,
+          156386,
+          118449,
+          75883,
+          21296
+        ],
+        "reached_goal": true,
+        "trajectory_feasible": true,
+        "attacker_objective": 0.5028510961547691,
+        "glide_cost": 0.4339256048376007,
+        "powered_cost": 0.06892549131716845,
+        "candidate_successes": 298,
+        "candidate_count": 298,
+        "inference_runtime_sec": 0.11384770000586286,
+        "status": "success",
+        "detection_probability": 0.4341123238957917,
+        "leader_value": 0.5028510961547691,
+        "leader_objective": "attacker_objective",
+        "cumulative_hazard": 0.5693596725858864,
+        "evaluator_wall_sec": 0.11426430003484711
+      },
+      {
+        "action_id": 120,
+        "sensor_map": [
+          6.75,
+          0.25,
+          0.0
+        ],
+        "success": true,
+        "switching_state_id": 89060,
+        "trajectory": [
+          89060,
+          46871,
+          18799
+        ],
+        "reached_goal": true,
+        "trajectory_feasible": true,
+        "attacker_objective": 0.4390240381924392,
+        "glide_cost": 0.3633791438594316,
+        "powered_cost": 0.07564489433300757,
+        "candidate_successes": 1437,
+        "candidate_count": 1437,
+        "inference_runtime_sec": 0.4835768000339158,
+        "status": "success",
+        "detection_probability": 0.4272348338398763,
+        "leader_value": 0.4390240381924392,
+        "leader_objective": "attacker_objective",
+        "cumulative_hazard": 0.5572794784528434,
+        "evaluator_wall_sec": 0.4845329999807291
+      },
+      {
+        "action_id": 121,
+        "sensor_map": [
+          6.75,
+          0.75,
+          0.0
+        ],
+        "success": true,
+        "switching_state_id": 129017,
+        "trajectory": [
+          129017,
+          86831,
+          49178,
+          18798
+        ],
+        "reached_goal": true,
+        "trajectory_feasible": true,
+        "attacker_objective": 0.23450376096388,
+        "glide_cost": 0.1845331869677591,
+        "powered_cost": 0.049970573996120905,
+        "candidate_successes": 1451,
+        "candidate_count": 1451,
+        "inference_runtime_sec": 0.502505199983716,
+        "status": "success",
+        "detection_probability": 0.13343517174270336,
+        "leader_value": 0.23450376096388,
+        "leader_objective": "attacker_objective",
+        "cumulative_hazard": 0.14321835640199282,
+        "evaluator_wall_sec": 0.5035066999844275
+      },
+      {
+        "action_id": 102,
+        "sensor_map": [
+          6.25,
+          -0.75,
+          0.0
+        ],
+        "success": true,
+        "switching_state_id": 314429,
+        "trajectory": [
+          314429,
+          278869,
+          240858,
+          198719,
+          160781,
+          109073,
+          66375,
+          21299
+        ],
+        "reached_goal": true,
+        "trajectory_feasible": true,
+        "attacker_objective": 0.23951768908635826,
+        "glide_cost": 0.1734657021494533,
+        "powered_cost": 0.06605198693690495,
+        "candidate_successes": 264,
+        "candidate_count": 264,
+        "inference_runtime_sec": 0.10259660001611337,
+        "status": "success",
+        "detection_probability": 0.08119154786740566,
+        "leader_value": 0.23951768908635826,
+        "leader_objective": "attacker_objective",
+        "cumulative_hazard": 0.08467760911003391,
+        "evaluator_wall_sec": 0.10286140005337074
+      },
+      {
+        "action_id": 118,
+        "sensor_map": [
+          6.75,
+          -0.75,
+          0.0
+        ],
+        "success": true,
+        "switching_state_id": 378790,
+        "trajectory": [
+          378790,
+          343165,
+          307597,
+          269586,
+          231570,
+          193554,
+          155669,
+          120531,
+          80208,
+          23605
+        ],
+        "reached_goal": true,
+        "trajectory_feasible": true,
+        "attacker_objective": 0.30382312049605886,
+        "glide_cost": 0.22752603184498238,
+        "powered_cost": 0.07629708865107648,
+        "candidate_successes": 285,
+        "candidate_count": 285,
+        "inference_runtime_sec": 0.10716259997570887,
+        "status": "success",
+        "detection_probability": 0.16858421322113407,
+        "leader_value": 0.30382312049605886,
+        "leader_objective": "attacker_objective",
+        "cumulative_hazard": 0.18462526415663982,
+        "evaluator_wall_sec": 0.1074382999795489
+      }
+    ],
+    "warmup_evaluated_action_ids": [
+      87,
+      88,
+      89,
+      102,
+      103,
+      104,
+      105,
+      118,
+      119,
+      120,
+      121
+    ]
+  },
+  "comparison": {
+    "selected_defender_action_match": true,
+    "selected_sensor_distance_m": 0.0,
+    "bellman_over_dqn_runtime_speedup": 49.1505060426448,
+    "bellman_over_dqn_first_query_ratio": 2.238167699437465,
+    "bellman_over_dqn_repeated_query_ratio": 49.1505060426448,
+    "dqn_selected_sensor_exact_response": {
+      "feasible": true,
+      "sensor_map": [
+        6.75,
+        -0.25,
+        0.0
+      ],
+      "attacker_objective": 0.44297646640879984,
+      "detection_probability": 0.4215119041238465,
+      "switching_state_id": 357484,
+      "trajectory": [
+        357484,
+        317160,
+        276840,
+        236520,
+        196200,
+        155880,
+        113323,
+        72936,
+        23610
+      ],
+      "candidate_count": 298,
+      "cooptimal_candidate_count": 2,
+      "strong_tie_break_verified": true,
+      "runtime_sec": 7.684550200006925,
+      "active_state_count": 126810,
+      "active_edge_count": 3523811
+    },
+    "dqn_selected_sensor_J_A_absolute_gap": 0.05987462974596924,
+    "dqn_selected_sensor_J_A_relative_gap": 0.13516435812351726,
+    "exact_baseline_minus_dqn_selected_exact_J_D": 0.0,
+    "exact_baseline_minus_dqn_selected_exact_J_A": 0.0,
+    "zero_sum_single_point_certificate": {
+      "certificate_type": "single_exact_best_response_at_returned_action",
+      "approximate_value_U_tilde": 0.5028510961547691,
+      "exact_value_U": 0.44297646640879984,
+      "raw_delta": 0.05987462974596924,
+      "certified_delta": 0.05987462974596924,
+      "one_sided_inequality_verified": true,
+      "numerical_tolerance": 1e-10,
+      "guarantee": "returned action is a certified_delta-approximate r-local Stackelberg solution for the finite zero-sum game"
+    },
+    "dqn_selected_sensor_exact_neighbor_audit": null,
+    "exact_audit_additional_best_response_calls": 0,
+    "exact_audit_additional_best_response_runtime_sec": 0.0,
+    "exact_audit_new_action_ids": []
+  }
+}

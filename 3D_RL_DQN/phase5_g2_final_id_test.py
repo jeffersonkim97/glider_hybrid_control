@@ -197,7 +197,11 @@ def freeze_final_id_000() -> tuple[
     manifest_without_hash = {
         "schema": FINAL_ID_SCHEMA,
         "status": "frozen_before_evaluation",
-        "test_role": "reserved unseen in-distribution generalization probe",
+        "test_role": (
+            "first unseen in-distribution generalization probe"
+            if FINAL_TERRAIN_INDEX == 0
+            else "reserved unseen in-distribution generalization probe"
+        ),
         "training_dataset_manifest_sha256": training_manifest["manifest_sha256"],
         "split": G2_FINAL_ID_TEST,
         "seed_contract": {
