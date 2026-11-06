@@ -268,8 +268,20 @@ def _exact_g2_best_response(
     """Exact powered-occluded BR with the existing Strong follower tie rule."""
 
     started = perf_counter()
-    problem = RunAGoalReachableProblem(scene, sensor_map)
-    starts = problem.switching_state_ids()
+    try:
+        problem = RunAGoalReachableProblem(scene, sensor_map)
+        starts = problem.switching_state_ids()
+    except ValueError as error:
+        if str(error) != "all target-mesh vertices must lie in front of the sensor":
+            raise
+        return ExactG2Response(
+            feasible=False, sensor_map=sensor_map, attacker_objective=None,
+            detection_probability=None, switching_state_id=None, trajectory=(),
+            candidate_count=0, cooptimal_candidate_count=0,
+            strong_tie_break_verified=True,
+            runtime_sec=perf_counter() - started,
+            active_state_count=None, active_edge_count=None,
+        )
     if not starts:
         return ExactG2Response(
             feasible=False, sensor_map=sensor_map, attacker_objective=None,
@@ -654,7 +666,15 @@ def run_phase6_pilot(
             print(
                 f"  Exact BR action={action_id} sensor={sensor}", flush=True,
             )
-            response = _exact_g2_best_response(scene, sensor)
+            try:
+                response = _exact_g2_best_response(scene, sensor)
+            except Exception as error:
+                print(
+                    f"    exact evaluator failed for action={action_id}: "
+                    f"{type(error).__name__}: {error}",
+                    flush=True,
+                )
+                raise
             exact_cache[action_id] = response
             exact_computed_calls += 1
             exact_computed_runtime += response.runtime_sec
@@ -695,6 +715,16 @@ def run_phase6_pilot(
         int(action_id) for action_id in exact_search.evaluated_defender_actions
     )
     exact_search_calls = len(exact_search_action_ids)
+    missing_exact_action_ids = tuple(
+        action_id for action_id in exact_search_action_ids
+        if action_id not in exact_cache
+    )
+    if missing_exact_action_ids:
+        raise RuntimeError(
+            "exact Local-SSE evaluator failed for action IDs "
+            f"{missing_exact_action_ids}; diagnostics="
+            f"{exact_search.unknown_neighbor_diagnostics}"
+        )
     exact_search_runtime = sum(
         exact_cache[action_id].runtime_sec
         for action_id in exact_search_action_ids
@@ -747,8 +777,16 @@ def run_phase6_pilot(
         sensor = tuple(
             float(value) for value in scene.defender_grid.position(action_id)
         )
-        problem = RunAGoalReachableProblem(scene, sensor)
-        starts = problem.switching_state_ids()
+        try:
+            problem = RunAGoalReachableProblem(scene, sensor)
+            starts = problem.switching_state_ids()
+        except ValueError as error:
+            if str(error) != (
+                "all target-mesh vertices must lie in front of the sensor"
+            ):
+                raise
+            context_cache[action_id] = None
+            return None
         if not starts:
             context_cache[action_id] = None
             return None
